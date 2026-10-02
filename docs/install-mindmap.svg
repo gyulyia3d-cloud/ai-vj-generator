@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" width="1600" height="1200" role="img" aria-labelledby="t d">
+  <title id="t">AI VJ Generator — como instalar</title>
+  <desc id="d">Mapa mental em cinco passos: pré-requisitos, baixar, instalar a skill, usar e levar para o palco.</desc>
+  <style>
+    .bg{fill:#000}
+    .ln{stroke:#fff;stroke-opacity:.45;stroke-width:1.5;fill:none}
+    .bx{fill:#000;stroke:#fff;stroke-width:1.5}
+    .bx2{fill:#0d0d0d;stroke:#333;stroke-width:1}
+    .root{fill:#fff}
+    text{font-family:"Martian Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;fill:#fff}
+    .h1{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:700;font-size:30px;letter-spacing:-.01em}
+    .sub{font-size:13px;fill:#999;letter-spacing:.06em}
+    .rt{fill:#000;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:700;font-size:21px}
+    .rt2{fill:#000;font-size:11px;letter-spacing:.12em}
+    .n{font-size:30px;font-weight:700}
+    .l1{font-size:15px;font-weight:600;letter-spacing:.1em}
+    .l1s{font-size:10.5px;fill:#999;letter-spacing:.08em}
+    .lab{font-size:10px;fill:#999;letter-spacing:.12em}
+    .cmd{font-size:13.5px}
+    .ft{font-size:11px;fill:#999;letter-spacing:.14em}
+  </style>
+  <rect class="bg" width="1600" height="1200"/>
+
+  <!-- marcas de canto -->
+  <path class="ln" d="M24 48V24H48M1552 24H1576V48M24 1152V1176H48M1576 1152V1176H1552"/>
+
+  <text class="h1" x="40" y="72">AI VJ GENERATOR — COMO INSTALAR</text>
+  <text class="sub" x="40" y="104">MAPA PARA INICIANTES · SIGA DE CIMA PARA BAIXO · CADA CAIXA À DIREITA É UM COMANDO OU AÇÃO</text>
+
+  <!-- tronco: raiz → passos -->
+  <path class="ln" d="M300 638H340M340 238V1038M340 238H380M340 422H380M340 606H380M340 822H380M340 1038H380"/>
+  <!-- galhos: passos → ações -->
+  <path class="ln" d="M680 238H720M720 174V302M720 174H760M720 238H760M720 302H760"/>
+  <path class="ln" d="M680 422H720M720 390V454M720 390H760M720 454H760"/>
+  <path class="ln" d="M680 606H720M720 542V670M720 542H760M720 606H760M720 670H760"/>
+  <path class="ln" d="M680 822H720M720 758V886M720 758H760M720 822H760M720 886H760"/>
+  <path class="ln" d="M680 1038H720M720 974V1102M720 974H760M720 1038H760M720 1102H760"/>
+
+  <!-- raiz -->
+  <rect class="root" x="40" y="586" width="260" height="104"/>
+  <text class="rt" x="60" y="628">AI VJ</text>
+  <text class="rt" x="60" y="654">GENERATOR</text>
+  <text class="rt2" x="60" y="678">SKILL + MOTOR · MIT</text>
+
+  <!-- 01 -->
+  <rect class="bx" x="380" y="206" width="300" height="64"/>
+  <text class="n" x="396" y="250">01</text><text class="l1" x="452" y="234">PRÉ-REQUISITOS</text><text class="l1s" x="452" y="254">O QUE TER ANTES</text>
+  <rect class="bx2" x="760" y="150" width="800" height="48"/><text class="lab" x="776" y="168">GIT · CONFIRA NO TERMINAL</text><text class="cmd" x="776" y="188">git --version</text>
+  <rect class="bx2" x="760" y="214" width="800" height="48"/><text class="lab" x="776" y="232">NODE.JS 18+ · OPCIONAL (SERVIDOR LOCAL E BUILD)</text><text class="cmd" x="776" y="252">node --version</text>
+  <rect class="bx2" x="760" y="278" width="800" height="48"/><text class="lab" x="776" y="296">CLAUDE</text><text class="cmd" x="776" y="316">Claude Code (terminal / desktop) ou claude.ai com Skills ativadas</text>
+
+  <!-- 02 -->
+  <rect class="bx" x="380" y="390" width="300" height="64"/>
+  <text class="n" x="396" y="434">02</text><text class="l1" x="452" y="418">BAIXAR</text><text class="l1s" x="452" y="438">O REPOSITÓRIO DO GITHUB</text>
+  <rect class="bx2" x="760" y="366" width="800" height="48"/><text class="lab" x="776" y="384">TERMINAL</text><text class="cmd" x="776" y="404">git clone https://github.com/SEU-USUARIO/ai-vj-generator.git</text>
+  <rect class="bx2" x="760" y="430" width="800" height="48"/><text class="lab" x="776" y="448">SEM GIT</text><text class="cmd" x="776" y="468">Botão Code → Download ZIP → descompacte a pasta</text>
+
+  <!-- 03 -->
+  <rect class="bx" x="380" y="574" width="300" height="64"/>
+  <text class="n" x="396" y="618">03</text><text class="l1" x="452" y="602">INSTALAR A SKILL</text><text class="l1s" x="452" y="622">DENTRO DA PASTA BAIXADA</text>
+  <rect class="bx2" x="760" y="518" width="800" height="48"/><text class="lab" x="776" y="536">MAC / LINUX</text><text class="cmd" x="776" y="556">cd ai-vj-generator &amp;&amp; sh install.sh</text>
+  <rect class="bx2" x="760" y="582" width="800" height="48"/><text class="lab" x="776" y="600">WINDOWS · POWERSHELL</text><text class="cmd" x="776" y="620">cd ai-vj-generator; powershell -ExecutionPolicy Bypass -File install.ps1</text>
+  <rect class="bx2" x="760" y="646" width="800" height="48"/><text class="lab" x="776" y="664">CLAUDE.AI</text><text class="cmd" x="776" y="684">Zip de skill/ai-vj-generator → Configurações → Capacidades → Skills → Enviar</text>
+
+  <!-- 04 -->
+  <rect class="bx" x="380" y="790" width="300" height="64"/>
+  <text class="n" x="396" y="834">04</text><text class="l1" x="452" y="818">USAR</text><text class="l1s" x="452" y="838">COM OU SEM O CLAUDE</text>
+  <rect class="bx2" x="760" y="734" width="800" height="48"/><text class="lab" x="776" y="752">NO CLAUDE · DIGITE</text><text class="cmd" x="776" y="772">"Quero visuais para meu set: LED 5120×500, 132 BPM, industrial"</text>
+  <rect class="bx2" x="760" y="798" width="800" height="48"/><text class="lab" x="776" y="816">SEM O CLAUDE · SERVIDOR LOCAL</text><text class="cmd" x="776" y="836">node scripts/serve.mjs   →   abra http://localhost:5173</text>
+  <rect class="bx2" x="760" y="862" width="800" height="48"/><text class="lab" x="776" y="880">MAIS SIMPLES</text><text class="cmd" x="776" y="900">Dê dois cliques em app/index.html · NOVO BRIEFING ou EXEMPLO</text>
+
+  <!-- 05 -->
+  <rect class="bx" x="380" y="1006" width="300" height="64"/>
+  <text class="n" x="396" y="1050">05</text><text class="l1" x="452" y="1034">LEVAR PRO PALCO</text><text class="l1s" x="452" y="1054">EXPORTAR E PROJETAR</text>
+  <rect class="bx2" x="760" y="950" width="800" height="48"/><text class="lab" x="776" y="968">RESOLUME</text><text class="cmd" x="776" y="988">EXPORTAR → PNG α (ZIP) → Alley → DXV3 com Alpha → BPM Sync</text>
+  <rect class="bx2" x="760" y="1014" width="800" height="48"/><text class="lab" x="776" y="1032">PRÉVIA RÁPIDA</text><text class="cmd" x="776" y="1052">GRAVAR → arquivo WebM (sem alpha)</text>
+  <rect class="bx2" x="760" y="1078" width="800" height="48"/><text class="lab" x="776" y="1096">AO VIVO</text><text class="cmd" x="776" y="1116">Janela de saída → 2º monitor · NDI / Spout via OBS (bridge)</text>
+
+  <text class="ft" x="40" y="1170">GYULYIA.COM · @GYULYIA · AI VJ GENERATOR · OPEN SOURCE MIT</text>
+</svg>

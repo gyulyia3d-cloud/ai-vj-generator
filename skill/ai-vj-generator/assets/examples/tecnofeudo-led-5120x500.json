@@ -1,0 +1,89 @@
+{
+  "schema": "ai-vj-generator/1",
+  "id": "example-tecnofeudo-led",
+  "meta": {
+    "name": "TECNOFEUDO CLUB",
+    "artist": "EXEMPLO · TECHNO INDUSTRIAL",
+    "context": "Set de VJ ao vivo · 2 paredes de LED em L",
+    "brief": "Techno industrial a 132 BPM. Agressivo mas legível do fundo da pista. Saída: Resolume com alpha, branco para colorir no software. Evitar linha fina e scanline (moiré).",
+    "moods": ["industrial", "agressivo", "club"],
+    "grammar": {
+      "form": "Blocos, faixas e tipo gigante; nada abaixo de 4 px",
+      "motion": "Em degrau, cortes secos no beat; deriva só no campo de fundo",
+      "rhythm": "Glitch em bloco no beat 1; evento de palavra a cada 4 compassos",
+      "color": "Branco sobre preto, acento laranja de alarme como evento (5%)",
+      "density": "Alta na pista, mas um herói por compasso",
+      "depth": "4 planos: campo, herói, informação, pós",
+      "texture": "Limpa: sem grão nem scanline (LED)",
+      "transition": "Glitch de 1 beat entre composições",
+      "audio": "Autônomo no BPM; o kick move só o herói quando o áudio estiver ligado"
+    }
+  },
+  "canvas": { "w": 5120, "h": 500, "fps": 30, "target": "led", "pitch": 3.9, "dist": 18, "safe": 0.04,
+    "displays": [{ "x": 0, "y": 0, "w": 2560, "h": 500 }, { "x": 2560, "y": 0, "w": 2560, "h": 500 }] },
+  "time": { "bpm": 132, "bars": 4, "loop": true, "seamless": true, "mode": "loop", "transition": "glitch", "trBeats": 1 },
+  "audio": { "reactive": false, "sens": 1, "smooth": 0.7 },
+  "seed": 513377,
+  "palette": { "bg": "#000000", "primary": "#F2F0EA", "secondary": "#5A5D63", "accent": "#FF4A1C" },
+  "compositions": [
+    {
+      "name": "PRENSA",
+      "hypothesis": "ESTRUTURA — duas prensas de faixas horizontais fecham no kick; uma régua corre a parede inteira.",
+      "motion": "step",
+      "layers": [
+        { "type": "bg", "name": "FUNDO", "p": { "grain": 0 } },
+        { "type": "lines", "name": "PRENSA", "p": { "dir": "h", "count": 6, "weight": 26, "scroll": 1, "stepped": true, "pulseAmt": 1.5, "accentEvery": 3 } },
+        { "type": "structure", "name": "RÉGUA", "opacity": 0.8, "p": { "rings": false, "spiral": false, "angle": false, "grid": 240, "gridA": 0.1, "ui": 2.4 } },
+        { "type": "hud", "name": "MOLDURA", "p": { "ui": 2.4, "reticle": false, "sub": "PAREDE A / PAREDE B", "date": "132 BPM · 5120×500", "foot": "PRENSA · CALOR · MALHA · GOLPE · FRATURA" } },
+        { "type": "post", "name": "PÓS", "p": { "scan": 0, "vig": 0, "prob": 0.3, "slices": 8 } }
+      ]
+    },
+    {
+      "name": "CALOR",
+      "hypothesis": "FLUXO — um campo de calor deriva lento pela parede inteira; é a única composição sem corte.",
+      "motion": "smooth",
+      "layers": [
+        { "type": "bg", "name": "FUNDO", "p": { "grain": 0 } },
+        { "type": "shader", "name": "CALOR GLSL", "p": { "alphaMode": "alpha", "res": 0.5, "p1": 3.0, "p2": 0.8, "p3": 0.6, "p4": 1.0,
+          "src": "void main(){vec2 uv=gl_FragCoord.xy/uRes; vec2 q=vec2(uv.x*uRes.x/uRes.y*.35,uv.y); vec2 L=loopv(uP.y)+uSeed; float f=fbm(q*uP.x+L); float bands=step(.5,fract(f*6.+uPh*floor(uP.z*4.+.5))); float k=bands*smoothstep(.25,.75,f)*uP.w+uPulse*.08; gl_FragColor=outc(mix(uC1,uC2,step(.82,f)),clamp(k,0.,1.));}" } },
+        { "type": "flow", "name": "FAGULHAS", "opacity": 0.7, "p": { "count": 700, "trail": 6, "amp": 0.06, "width": 3, "acc": 0.1 } }
+      ]
+    },
+    {
+      "name": "MALHA",
+      "hypothesis": "DENSIDADE — túnel retangular esticado na proporção da parede, com log de máquina rolando por cima.",
+      "motion": "step",
+      "layers": [
+        { "type": "bg", "name": "FUNDO", "p": { "grain": 0 } },
+        { "type": "tunnel", "name": "TÚNEL", "p": { "shape": "rect", "count": 24, "cycles": 1, "aspect": 10.24, "weight": 8, "pulseAmt": 2 } },
+        { "type": "data", "name": "LOG", "opacity": 0.85, "p": { "rows": 14, "ui": 2.4, "tele": false, "tags": "PRENSA,CALOR,MALHA,GOLPE,FRATURA" } },
+        { "type": "event", "name": "EVENTO", "p": { "every": 4, "words": "PRESSÃO|SINAL|LIMIAR", "mode": "band", "size": 1.1, "sub": "TECNOFEUDO · {ID} · CONF {CONF}" } },
+        { "type": "post", "name": "PÓS", "p": { "scan": 0, "vig": 0, "prob": 0.7, "slices": 12 } }
+      ]
+    },
+    {
+      "name": "GOLPE",
+      "hypothesis": "RITMO — uma linha de palavra gigante troca a cada colcheia; quadrados marcam o contratempo.",
+      "motion": "step",
+      "layers": [
+        { "type": "bg", "name": "FUNDO", "p": { "grain": 0 } },
+        { "type": "typewall", "name": "PALAVRA", "p": { "words": "PRESSÃO|SINAL|LIMIAR", "rows": 1, "fill": 0.86, "font": "archivo", "scroll": 1, "outline": "alt", "stroke": 5, "div": "1/8" } },
+        { "type": "shape", "name": "CONTRATEMPO", "opacity": 0.9, "p": { "kind": "square", "layout": "linear", "count": 16, "size": 70, "spread": 300, "fill": true, "alt": true, "strokeW": 0, "div": "1/8" } },
+        { "type": "post", "name": "PÓS", "p": { "scan": 0, "vig": 0, "prob": 0.5, "slices": 10 } }
+      ]
+    },
+    {
+      "name": "FRATURA",
+      "hypothesis": "TRANSFORMAÇÃO — faixas industriais rasgam o organismo medido; a máquina perde a leitura no fim do loop.",
+      "motion": "step",
+      "layers": [
+        { "type": "bg", "name": "FUNDO", "p": { "grain": 0 } },
+        { "type": "shader", "name": "FAIXAS", "opacity": 0.6, "blend": "screen", "p": { "preset": "FAIXAS", "alphaMode": "alpha", "res": 0.6 } },
+        { "type": "organism", "name": "MATÉRIA", "p": { "cx": 0.5, "size": 1.25, "spin": 3, "dot": 2.2, "scanBars": "1" } },
+        { "type": "measure", "name": "MEDIÇÃO", "p": { "ui": 2.4 } },
+        { "type": "event", "name": "EVENTO", "p": { "every": 4, "at": 3, "words": "FRATURA|LIMIAR", "mode": "full" } },
+        { "type": "post", "name": "PÓS", "p": { "scan": 0, "vig": 0, "prob": 0.5, "slices": 12 } }
+      ]
+    }
+  ]
+}
