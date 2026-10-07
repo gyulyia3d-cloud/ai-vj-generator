@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.3.0 (não lançado) · Fase 1 do roadmap v9: documentação, neutralidade de IA, briefing estruturado
+
+- **Qualquer IA, ou nenhuma:** `portable/PROMPT.md` (instruções em um arquivo), `AGENTS.md`, `docs/AI-AGNOSTIC.md`, esquemas JSON (`schema/project.schema.json`, `schema/brief.schema.json`) e `scripts/schema_check.py` (validador sem `pip`).
+- **Briefing estruturado:** `scripts/brief_check.py` (nota 0–100 e as 4 próximas perguntas) e exemplos em `examples/briefs/`.
+- **Geração sem IA:** `scripts/brief_to_project.py` transforma um brief em projeto válido (12 climas, paleta OKLCH, camadas em tiers com fundo quieto e herói dominante, estratégia de áudio); determinístico.
+- **Áudio estruturado:** `audio.strategy` (`none/subtle/structural/rhythmic/full`) no motor (escala a reação; `none` zera, mantém movimento por tempo integrado e ondas do BPM) e no validador; `meta.contract.layerBudget` e `audioStrategyReason` como exceções declaradas; `references/audio-direction.md`.
+- **Docs:** `docs/README.md`, `QUICKSTART.md`, `AI-AGNOSTIC.md`, `ROADMAP.md` (oficial, v9).
+- Teste: `generator_check.mjs` (12 climas validam, abrem, desenham e fecham o loop).
+
 ## 2.2.0 (não lançado) · V7 fase 1: áudio estendido, modulação e ponte ISF
 
 - **Áudio estendido** (`references/audio-bus.md`): `uMidHit uHighHit uPres uBassT uMidT uHighT uAudT uOnBeat uBSin uBSin2 uBSin4 uBTri uBpm`, também em `K.t.*` das camadas de código. Tempo integrado sintético fecha o loop (valor = compassos por loop); ao vivo integra de verdade. Tudo determinístico.

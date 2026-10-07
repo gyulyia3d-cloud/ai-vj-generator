@@ -1,0 +1,11 @@
+{
+  "name": "Quiet Hour",
+  "lang": "pt",
+  "concept": "Uma peça lenta e contemplativa para uma sala; nada reage à música, só respira.",
+  "mood": ["calm"],
+  "energy": 0.15,
+  "surface": { "type": "screen", "w": 1920, "h": 1080, "fps": 30 },
+  "time": { "bpm": 70, "bars": 8 },
+  "audio": { "strategy": "none", "reason": "Peça contemplativa para sala silenciosa." },
+  "compositions": 2
+}

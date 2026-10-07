@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/gyulyia3d-cloud/ai-vj-generator/schema/brief.schema.json",
+  "title": "AI VJ Generator brief",
+  "description": "A structured briefing any person, form or AI can fill. brief_check.py reports what is missing; brief_to_project.py turns it into a project without any AI.",
+  "type": "object",
+  "required": ["name", "concept", "surface", "time"],
+  "additionalProperties": true,
+  "properties": {
+    "name": { "type": "string", "minLength": 2, "description": "Project name." },
+    "concept": { "type": "string", "minLength": 12, "description": "One or two sentences: what the piece is about and what the audience should feel." },
+    "mood": { "type": "array", "items": { "type": "string", "enum": ["industrial", "organic", "cosmic", "urban", "ritual", "glitch", "minimal", "liquid", "crystalline", "retro", "aggressive", "calm"] }, "maxItems": 3, "description": "1 to 3 tags. They pick hue, scheme and generators." },
+    "energy": { "type": "number", "minimum": 0, "maximum": 1, "description": "0 calm, 1 relentless." },
+    "density": { "type": "string", "enum": ["sparse", "balanced", "dense"] },
+    "palette": {
+      "type": "object",
+      "properties": {
+        "hue": { "type": "number", "minimum": 0, "maximum": 360, "description": "OKLCH hue in degrees; comes from the concept." },
+        "scheme": { "type": "string", "enum": ["mono", "analogous", "complement", "split", "triad", "tetrad"] },
+        "colors": { "type": "array", "items": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" }, "minItems": 4, "maxItems": 4, "description": "Exact bg, primary, secondary, accent (wins over hue)." }
+      }
+    },
+    "surface": {
+      "type": "object",
+      "required": ["w", "h"],
+      "properties": {
+        "type": { "type": "string", "enum": ["screen", "led", "projection", "mapping", "multi"] },
+        "w": { "type": "integer", "minimum": 16, "maximum": 16384, "description": "Real pixel width of the canvas that enters the processor / projector." },
+        "h": { "type": "integer", "minimum": 16, "maximum": 16384 },
+        "fps": { "type": "integer", "enum": [24, 25, 30, 50, 60] },
+        "pitchMm": { "type": "number", "minimum": 0.5, "maximum": 60 },
+        "viewingDistanceM": { "type": "array", "items": { "type": "number", "minimum": 0.3 }, "minItems": 2, "maxItems": 2 },
+        "folds": { "type": "array", "items": { "type": "integer", "minimum": 1 }, "description": "x positions (px) of physical corners." }
+      }
+    },
+    "time": {
+      "type": "object",
+      "required": ["bpm"],
+      "properties": {
+        "bpm": { "type": "number", "minimum": 40, "maximum": 240 },
+        "bars": { "type": "integer", "enum": [1, 2, 4, 8, 16, 32] }
+      }
+    },
+    "audio": {
+      "type": "object",
+      "properties": {
+        "strategy": { "type": "string", "enum": ["none", "subtle", "structural", "rhythmic", "full"], "description": "How much the music drives the picture." },
+        "reason": { "type": "string", "description": "Required in spirit when strategy is none." }
+      }
+    },
+    "output": { "type": "object", "properties": { "mode": { "type": "string", "enum": ["alpha", "rgb", "white-alpha"] } } },
+    "text": { "type": "object", "properties": { "title": { "type": "string" }, "words": { "type": "array", "items": { "type": "string" }, "maxItems": 12 } } },
+    "compositions": { "type": "integer", "minimum": 1, "maximum": 6, "description": "How many compositions in the set (default 3)." },
+    "focalEvent": { "type": "string", "description": "The one dominant event of the piece." },
+    "banned": { "type": "array", "items": { "type": "string" }, "description": "Effects this piece must not use." },
+    "seed": { "type": "integer" },
+    "lang": { "type": "string", "enum": ["en", "pt"] }
+  }
+}

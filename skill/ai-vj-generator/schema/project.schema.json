@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/gyulyia3d-cloud/ai-vj-generator/schema/project.schema.json",
+  "title": "AI VJ Generator project (schema ai-vj-generator/2)",
+  "description": "Structure only. Layer parameters, GLSL rules, audio roles and craft rules are checked by scripts/validate_project.py. Any AI that can write this JSON can drive the engine.",
+  "type": "object",
+  "required": ["schema", "canvas", "time", "compositions"],
+  "properties": {
+    "schema": { "type": "string", "enum": ["ai-vj-generator/1", "ai-vj-generator/2"] },
+    "id": { "type": "string", "minLength": 1 },
+    "seed": { "type": "integer" },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "lang": { "type": "string", "enum": ["en", "pt"] },
+        "brief": { "type": "string" },
+        "contract": { "type": "object" },
+        "spec": { "type": "object" }
+      }
+    },
+    "canvas": {
+      "type": "object",
+      "required": ["w", "h"],
+      "properties": {
+        "w": { "type": "integer", "minimum": 16, "maximum": 16384 },
+        "h": { "type": "integer", "minimum": 16, "maximum": 16384 },
+        "fps": { "type": "integer", "enum": [24, 25, 30, 50, 60] },
+        "target": { "type": "string", "enum": ["screen", "led", "projection", "mapping", "multi", "software", "export"] },
+        "folds": { "type": "array", "items": { "type": "number" } },
+        "safe": { "type": "number", "minimum": 0, "maximum": 0.4 }
+      }
+    },
+    "time": {
+      "type": "object",
+      "properties": {
+        "bpm": { "type": "number", "minimum": 40, "maximum": 240 },
+        "bars": { "type": "integer", "enum": [1, 2, 4, 8, 16, 32] },
+        "loop": { "type": "boolean" },
+        "seamless": { "type": "boolean" },
+        "transition": { "type": "string", "enum": ["cut", "fade", "wipe", "glitch", "zoom", "slide", "iris", "blinds"] }
+      }
+    },
+    "audio": {
+      "type": "object",
+      "properties": {
+        "reactive": { "type": "boolean" },
+        "sens": { "type": "number", "minimum": 0, "maximum": 4 },
+        "smooth": { "type": "number", "minimum": 0, "maximum": 0.98 },
+        "strategy": { "type": "string", "enum": ["none", "subtle", "structural", "rhythmic", "full"] }
+      }
+    },
+    "palette": {
+      "type": "object",
+      "properties": {
+        "bg": { "type": "string" }, "primary": { "type": "string" }, "secondary": { "type": "string" }, "accent": { "type": "string" },
+        "mode": { "type": "string", "enum": ["white-alpha"] }
+      }
+    },
+    "compositions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "layers"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "hypothesis": { "type": "string" },
+          "motion": { "type": "string", "enum": ["step", "smooth"] },
+          "layers": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["type"],
+              "properties": {
+                "type": { "type": "string", "minLength": 1 },
+                "name": { "type": "string" },
+                "role": { "type": "string" },
+                "on": { "type": "boolean" },
+                "opacity": { "type": "number", "minimum": 0, "maximum": 1 },
+                "blend": { "type": "string", "enum": ["normal", "add", "screen", "multiply", "difference", "overlay", "lighten"] },
+                "p": { "type": "object" },
+                "mod": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["k", "src"],
+                    "properties": {
+                      "k": { "type": "string" },
+                      "src": { "type": "string", "enum": ["bass", "mid", "high", "rms", "hit", "mhit", "hhit", "pres", "onbeat", "bsin", "bsin2", "bsin4", "btri", "lfo"] },
+                      "min": { "type": "number" }, "max": { "type": "number" },
+                      "mode": { "type": "string", "enum": ["set", "add", "mul"] },
+                      "cycles": { "type": "integer", "minimum": 1 },
+                      "shape": { "type": "string", "enum": ["sin", "tri", "saw"] }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "assets": { "type": "object" },
+    "capabilities": { "type": "object" }
+  }
+}

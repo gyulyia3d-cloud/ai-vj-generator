@@ -6,6 +6,8 @@
 
 ![Como instalar — mapa mental](docs/install-mindmap.svg)
 
+**Documentação:** [docs/README.md](docs/README.md) · começo rápido (com Claude, outra IA ou sem IA): [docs/QUICKSTART.md](docs/QUICKSTART.md) · roadmap: [docs/ROADMAP.md](docs/ROADMAP.md)
+
 ## Instalação em um comando
 
 macOS / Linux:
