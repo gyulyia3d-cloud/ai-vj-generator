@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.3.0 (não lançado) · Fase 1 do roadmap v9: documentação, neutralidade de IA, briefing estruturado
+## 2.3.0 (07/10/2026) · Fase 1 do roadmap v9: documentação, neutralidade de IA, briefing estruturado
 
 - **Qualquer IA, ou nenhuma:** `portable/PROMPT.md` (instruções em um arquivo), `AGENTS.md`, `docs/AI-AGNOSTIC.md`, esquemas JSON (`schema/project.schema.json`, `schema/brief.schema.json`) e `scripts/schema_check.py` (validador sem `pip`).
 - **Briefing estruturado:** `scripts/brief_check.py` (nota 0–100 e as 4 próximas perguntas) e exemplos em `examples/briefs/`.
@@ -9,7 +9,7 @@
 - **Docs:** `docs/README.md`, `QUICKSTART.md`, `AI-AGNOSTIC.md`, `ROADMAP.md` (oficial, v9).
 - Teste: `generator_check.mjs` (12 climas validam, abrem, desenham e fecham o loop).
 
-## 2.2.0 (não lançado) · V7 fase 1: áudio estendido, modulação e ponte ISF
+## 2.2.0 (07/10/2026, publicada junto com a 2.3.0) · V7 fase 1: áudio estendido, modulação e ponte ISF
 
 - **Áudio estendido** (`references/audio-bus.md`): `uMidHit uHighHit uPres uBassT uMidT uHighT uAudT uOnBeat uBSin uBSin2 uBSin4 uBTri uBpm`, também em `K.t.*` das camadas de código. Tempo integrado sintético fecha o loop (valor = compassos por loop); ao vivo integra de verdade. Tudo determinístico.
 - **`layer.mod`**: qualquer parâmetro numérico recebe fonte de áudio, onda do BPM ou LFO em ciclos inteiros (`set/add/mul`). Validador confere fontes, modo, ciclos inteiros e conta camadas reativas.
@@ -22,7 +22,7 @@
 - **Verificação:** `scripts/seed_census.mjs` (seeds em branco, quase-duplicatas, A-B-A).
 - Testes: `v7_check.mjs`, `isf_check.mjs`, `lib_check.mjs`, `test_export_slices.py`; `check.mjs` roda todos.
 
-## 2.1.0 (não lançado) · V5: briefing inteligente, conhecimento técnico e primeiro passo da UI
+## 2.1.0 (publicada junto com a 2.3.0) · V5: briefing inteligente, conhecimento técnico e primeiro passo da UI
 
 - **Briefing inteligente** (`references/briefing/`): Brief Ledger, 11 arquétipos com ficha própria, pontuação por valor de informação, checagens de consistência, resumo ("entendi assim") antes do contrato, banco de perguntas de conceito, música, performer, risco e sucesso. `meta.spec` no schema, validado contra o canvas.
 - **Ferramentas novas** (todas testadas): `surface_calc.py` (LED, projeção, blend, loop, legibilidade, pixelmap), `palette.py` (OKLCH), `recipes.py` (11 receitas matemáticas e físicas em `references/recipes/`), `loop_check.mjs` (fecha o loop? por camada, com controle negativo), `ui_check.mjs`, `cdp.mjs`.
@@ -35,7 +35,7 @@
 - **V6 (07/10/2026):** botão **Cor** sob a vista (Alpha, Standard por teoria das cores, Personalizada com seletor, RGB e HEX, e a paleta do briefing em `meta.briefPalette`); botão do menu (G) na linha do divisor; aba **+Efeitos** com botão Visualizar (um quadro ao passar o mouse, animação de 200 px a 10 fps ao clicar); rodapé com créditos, instagram.com/gyulyia e gyulyia.com; botão Evento removido; Explodir virou **Mostrar camadas**; pop-up de ajuda com X; idioma **EN / PT-BR** no motor (`meta.lang`) e na skill; **objeto 3D** (`.obj`, `.glb`, `.stl`) com render shader, wireframe ou nuvem de pontos, giro que fecha o loop e modelo dentro do JSON.
 - **Skill:** `/how-to-use` (EN e PT-BR, roda sozinho no primeiro uso depois da instalação via `.first-run`), pergunta de idioma antes do briefing, `scripts/output_viewer.mjs` gera `OUTPUT.html` clicável com todos os arquivos gerados. Teste novo: `features_check.mjs`.
 
-## 2.0.0 (não lançado) · arquitetura V4
+## 2.0.0 (publicada junto com a 2.3.0) · arquitetura V4
 
 ### Rodada de qualidade estética e áudio (06/10/2026)
 
