@@ -29,6 +29,7 @@ What was studied from the GITHUBS folder, what it was worth, where it went, and 
 | **generative-art-node** | layered asset composition with rarity (HashLips) | MIT | REFERENCE | "layers in an order with rarity weights" is the opposite of our authored layers; noted, not adopted |
 | **gaussian-splatting** | 3-D reconstruction research code | research, non-commercial licence | SKIP | out of scope for a 2-D deterministic engine; a splat-based scene would be imported as pre-rendered media |
 | **plotly.py** | Python charting library | MIT | SKIP | not relevant to generative visuals |
+| **PlumberManager** (editor React de fluxo de sinal de encanamento) | shell com menu lateral redimensionável e recolhível, histórico de comandos com rótulos, paleta de busca Ctrl+K, tour de boas-vindas, tela de início com modelos e recentes, widget embutível em shadow DOM, exportação SVG/PNG/PDF, grafo de fluxo automático (dagre), mini-mapa, painel de propriedades | not checked: the zip has no licence file, so concepts only | ADOPTED / SUGGESTED | **adotado (reescrito, sem código):** histórico de comandos com rótulo e lista, largura do menu ajustável com minimizar, painel de propriedades por camada. **Sugerido, ainda não feito:** paleta de comandos Ctrl+K, tour de boas-vindas, tela de início com modelos e recentes, grafo de camadas com mini-mapa, exportar a ficha em PDF, embutir o motor como widget → `ui-research.md` |
 
 ## Finish-pass vocabulary mapped from three.js post-processing
 

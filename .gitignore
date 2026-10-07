@@ -5,3 +5,4 @@ node_modules/
 Thumbs.db
 *.aivj.html
 *.rar
+.first-run

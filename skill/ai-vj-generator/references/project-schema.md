@@ -6,10 +6,11 @@ Write only what differs from defaults. The engine normalizes the file: missing f
 {
   "schema": "ai-vj-generator/2",
   "id": "kebab-case-unique-id",
-  "meta": { "name": "PROJECT NAME", "artist": "", "context": "", "brief": "",
+  "meta": { "lang": "en|pt", "briefPalette": {}, "name": "PROJECT NAME", "artist": "", "context": "", "brief": "",
             "contract": { "concept": "", "audienceEffect": "", "semioticIntent": "", "visualLanguage": "", "formLanguage": "", "materialLanguage": "",
                           "colorLogic": "", "spatialLogic": "", "motionLanguage": "", "typographyLanguage": "", "temporalArc": "", "loopGrammar": "cyclic",
-                          "technicalStrategy": "", "forbiddenShortcuts": "" },
+                          "technicalStrategy": "", "forbiddenShortcuts": "",
+                          "focalEvent": "", "releaseZone": "", "banned": "", "tension": "balanced", "imperfection": "" },
             "spec": { "archetype": ["stage-led"], "confirmed": { "pixelMap": [1920, 1080], "pitchMm": 3.9, "viewingDistanceM": [8, 40] },
                       "zones": { "performer": { "x": 0.33, "y": 0.45, "w": 0.34, "h": 0.55 } }, "assumed": [], "show": { "bpm": [124, 134] }, "risks": [] },
             "moods": ["industrial"], "grammar": { "form": "", "motion": "", "rhythm": "", "color": "", "density": "", "depth": "", "texture": "", "transition": "", "audio": "" } },
@@ -44,9 +45,10 @@ Write only what differs from defaults. The engine normalizes the file: missing f
 | `p.echo` `p.echoStep` `p.echoFade` | any layer: `echo` 0–8 earlier-frame copies behind the layer, `echoStep` 1–24 frames apart, `echoFade` 0.1–0.95 opacity decay per copy (deterministic trails; not for video) |
 | `audio.reactive` | default `true`; shaders react with the music or with BPM-locked synthetic bands (`audio-bus.md`) |
 | `layer.vars` | code layers only: list of `{k, l, t, d, min, max, step, opts}`, the sliders of the layer |
+| `layer.mod` | list of `{k, src, min, max, mode, cycles, shape}`: drives any numeric `p` parameter from the audio bus or an LFO (see `audio-bus.md`, Modulation) |
 | `time.bars` | 1 2 4 8 16 32 (loop length in 4/4 bars) |
 | `time.mode` | `loop` `pingpong` `reverse` `random` `phase` `audio` `manual` |
-| `time.transition` | `cut` `fade` `wipe` `glitch` |
+| `time.transition` | `cut` `fade` `wipe` `glitch` `zoom` `slide` `iris` `blinds` (the outgoing composition is a snapshot that zooms away, slides out, opens an iris or dissolves through blinds; pick by the concept's argument, `references/tension-and-release.md` §5) |
 | `composition.motion` | `step` (interface, quantized) or `smooth` (matter, eased); affects `measure` and `hud` |
 | `layer.blend` | `normal` `add` `screen` `multiply` `difference` `overlay` `lighten` |
 | color params | palette key `bg` `primary` `secondary` `accent`, or `#RRGGBB` |
@@ -140,6 +142,22 @@ Loop length is rounded to whole frames: `round(60 / bpm × 4 × bars × fps)`. A
 
 Parameters, the kit `K` for `code` and the rules for walls, white-alpha and assets are in `walls-code-assets.md`. All use `wall` (`all`, `0`, `1`, …), colour keys including `field`, and the common parameters below. `logo` takes `media`, `media2`…`media4` (file names present in `assets`).
 
+### `instrument` — information instruments tied to the signal (V7, briefing)
+`kind` `bars` (`radial` `scope` `radar` `rings` `heat`) · `n` 48 elements · `size` 0.4 (fraction of the short side; for `bars`/`scope`/`heat` the half-width as fraction of W) · `cx` `cy` 0.5 · `weight` 3 · `gap` 0.3 · `mirror` false · `color` · `hot`. Live audio shows the real spectrum/waveform; without a source it shows the BPM-locked synthetic bands, so it always agrees with what drives the image (cause and effect, `tension-and-release.md` §8). `radar` completes whole turns per loop; `rings` shows bass/mid/high/rms as arcs.
+
+### `bitfield` — bitwise cell field (V7, briefing)
+`form` 0–7 (fixed formulas of x, y, t) · `cell` 14 px · `steps` 16 (8/16/32/64 steps per loop; the field steps, so the loop closes) · `mask` 2 (bit shift) · `levels` 2 or 4 · `invertHit` true (flip on a strong bass hit) · `color` `hot`. Integer maths only.
+
+### `sim` — baked simulation with state (V7, briefing)
+`kind` `reaction` (Gray-Scott reaction-diffusion: labyrinths, spots, coral) or `ink` (dye carried by a loop-periodic flow field; marbled ink, not full Navier-Stokes) · `res` 160 cells across (32–400; the grid height follows the canvas aspect) · `feed` 0.037 `kill` 0.06 (reaction: ~0.037/0.06 labyrinth, ~0.03/0.062 spots, ~0.055/0.062 dots) · `speed` 2 (simulation sub-steps) · `drops` 8 (injections per loop, locked to the beat grid) · `flow` 1 `dissipate` 0.998 (ink) · `threshold` 0.25 · `soft` 0.25 · `smooth` true · `color` `hot` (hot = the dense core).
+How it closes the loop: it warms up one loop, records two, and cross-fades them (`out[f] = (1-f/LF)·S[LF+f] + (f/LF)·S[f]`), so the last frame continues into the first and any frame is a pure function of project + seed + frame (scroll and export agree). Cost: one bake of ~0.6 s at 160 cells (cached; changes to the parameters, seed, bars, fps or canvas aspect re-bake). It does not read live audio (the injections follow the beat grid; hits only add a small brightness lift). Use `layer.mod` on `threshold`/`soft` for music-driven look.
+
+### `parallax` — depth-banded still (V7)
+`media` (image) · `mediad` (depth map, white = near; empty = luminance) · `bands` 14 · `orbit` `sway` (`circle` `dolly`) · `amp` 0.03 (fraction of W) · `cycles` 1 (whole sways per loop) · `zoom` 0.04 · `hitPush` 0.01 · `invertDepth` false · `fit` `cover`. See `depth-and-splats.md`.
+
+### `splat` — Gaussian splats / point cloud `.ply` (V7)
+`media` (a `.ply` imported in MÍDIA, embedded in the project as compact data) · `max` 15000 points drawn (about 30 ms per frame at half resolution in a software-GL test; 60000 is about 120 ms: use it for exports, not live) · `size` 0.42 · `dot` 1 · `turns` 1 whole orbits per loop · `tilt` -12 · `dist` 3.2 · `depthFade` 0.5 · `colorMode` `palette` (`source`) · `alpha` 0.8 · `hitPulse` true · `color` `hot`. Isotropic soft discs sorted back to front; see `depth-and-splats.md`.
+
 ### `shader` — GLSL fragment layer (fixed slot)
 `preset` `CAMPO FBM` | `CÉLULAS` | `ANÉIS SDF` | `FAIXAS` | `KALEIDO` | `FLUXO WARP` | `GRADE SDF` | `INTERFERÊNCIA` · `p1`…`p4` (defaults come from the preset) · `alphaMode` `alpha` (`opaque`) · `res` 1 (0.25…1 internal resolution) · `c1` `primary` · `c2` `accent` · `cbg` `bg` · `src` custom GLSL body (empty = preset).
 
@@ -157,6 +175,7 @@ Parameters, the kit `K` for `code` and the rules for walls, white-alpha and asse
 **Custom GLSL contract** (WebGL 1, GLSL ES 1.00). Write only `void main(){…}` plus your own functions. Provided:
 
 - audio uniforms (always live or BPM-locked synthetic, so every shader reacts): `uBass` `uMid` `uHigh` `uRms` (0–1.5 bands, scaled by the layer response) · `uHit` (bass transient, decays in ~150 ms) · `uAud` (the band chosen in the layer's AUDIO panel). **Every shader must read at least one and give each a role.**
+- V7 uniforms (same rules, all deterministic): `uMidHit` `uHighHit` (band transients) · `uPres` (presence) · `uBassT` `uMidT` `uHighT` `uAudT` (**integrated time**, `bars` units per loop in synthetic mode: use `sin(uBassT*TAU)`/`fract`) · `uOnBeat` · `uBSin` `uBSin2` `uBSin4` `uBTri` (BPM waves) · `uBpm` (BPM/100). Meaning and roles: `audio-bus.md` (Extended vocabulary).
 - uniforms: `vec2 uRes` · `float uPh` (loop phase 0→1, the seamless clock) · `uT` (seconds) · `uBeat` (beat index, wraps with the loop) · `uBp` (beat phase) · `uPulse` (beat envelope or audio) · `uAud` · `uAlpha` · `uSeed` · `vec3 uC1 uC2 uBg` · `vec4 uP` (= p1…p4)
 - helpers: `vjRot(a)` mat2, `vjPal(t,a,b,c,d)` cosine palette, `vjSdBox`, `vjSdCircle`, `vjSmin` (smooth min), `vjKaleid(p,n)`, `vjEaseOut(t)`, `vjPulse(x,k)` · `hash(vec2)`, `noise(vec2)`, `fbm(vec2)`, `loopv(r)` (a point moving on a circle of radius r once per loop: use it to move through noise space seamlessly), `outc(color, coverage)` (writes alpha or opaque output), `TAU`
 - loop rule: animate with `uPh` times whole numbers, or `loopv()`. Never use `uT` for motion that must loop.

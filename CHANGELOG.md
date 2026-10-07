@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.2.0 (não lançado) · V7 fase 1: áudio estendido, modulação e ponte ISF
+
+- **Áudio estendido** (`references/audio-bus.md`): `uMidHit uHighHit uPres uBassT uMidT uHighT uAudT uOnBeat uBSin uBSin2 uBSin4 uBTri uBpm`, também em `K.t.*` das camadas de código. Tempo integrado sintético fecha o loop (valor = compassos por loop); ao vivo integra de verdade. Tudo determinístico.
+- **`layer.mod`**: qualquer parâmetro numérico recebe fonte de áudio, onda do BPM ou LFO em ciclos inteiros (`set/add/mul`). Validador confere fontes, modo, ciclos inteiros e conta camadas reativas.
+- **Ponte ISF** (`scripts/isf.py`, `references/isf-bridge.md`): exporta cada camada de shader como `.fs` para Resolume/Wire/VDMX e importa geradores ISF de passe único como camada de shader (crédito preservado).
+- **Biblioteca GLSL `#include`** (`references/glsl-lib/lib.glsl`, `glsl-library.md`): 12 módulos escritos do zero (hash, simplex/curl/ridged, Worley/Voronoi, SDF 2D e 3D, raymarch, Oklab e tonemap, dither e meio-tom, espaço, easing, pós, emulação de LED/CRT). Números de linha dos erros não mudam; validador acusa módulo inexistente. `node scripts/embed-glsl-lib.mjs` embute no motor.
+- **Drama** (`references/tension-and-release.md`): evento focal, zona de respiro, imperfeição seedada, lista de banidos, gramática de passagem, emoção → movimento, ritmo como composição. Contrato ganha `focalEvent releaseZone banned tension imperfection` (aviso quando vazio).
+- **Transições novas:** `zoom`, `slide`, `iris`, `blinds`.
+- **Camadas novas:** `instrument` (bars, radial, scope, radar, rings, heat; ligadas ao sinal real), `bitfield` (campo de bits que fecha o loop), `sim` (reação-difusão e tinta, assadas em loop, determinísticas, ~0,6 s de bake), `parallax` (imagem + profundidade, 2.5D), `splat` (`.ply` de Gaussian Splatting e nuvens de pontos, aproximação isotrópica).
+- **Saída:** modo palco por URL (`?stage=1&alpha=1&comp=N&play=0&q=1`) para OBS + Spout2 → Resolume (`bridge-obs-spout.md`); `scripts/export_slices.py` gera XML de Advanced Output do Resolume (conferido contra um arquivo real salvo pelo Arena), mapa JSON e padrão de teste; `scripts/depth_estimate.py` (modelo aberto se instalado, senão heurística).
+- **Verificação:** `scripts/seed_census.mjs` (seeds em branco, quase-duplicatas, A-B-A).
+- Testes: `v7_check.mjs`, `isf_check.mjs`, `lib_check.mjs`, `test_export_slices.py`; `check.mjs` roda todos.
+
 ## 2.1.0 (não lançado) · V5: briefing inteligente, conhecimento técnico e primeiro passo da UI
 
 - **Briefing inteligente** (`references/briefing/`): Brief Ledger, 11 arquétipos com ficha própria, pontuação por valor de informação, checagens de consistência, resumo ("entendi assim") antes do contrato, banco de perguntas de conceito, música, performer, risco e sucesso. `meta.spec` no schema, validado contra o canvas.
@@ -8,6 +21,10 @@
 - **Interface:** aba **Ficha** (ficha de produção, zonas na viewport, calculadoras que espelham o Python, PRODUCTION_SPEC.md). Valores vindos do JSON são escapados (teste de injeção com teste de mutação).
 - **Correções:** `--json` depois do subcomando, saída UTF-8 no Windows, entradas zero ou negativas com mensagem clara, `analyze_*.py -h` e arquivo ausente, finais de linha CRLF vs LF, contradições herdadas no roteador (3–8 vs 6–10 camadas, 3 vs 4 rodadas).
 - `check.mjs` roda os testes unitários, a galeria de receitas, o fechamento de loop (e seu controle negativo) e a interface.
+- **Interface (continuação):** menu com largura ajustável e minimizável; temas escuro, claro e sistema; layout responsivo de 320 a 2560 px em pé e deitado; desfazer e refazer para qualquer alteração (histórico nomeado); campos numéricos digitáveis com contas seguras; leitura de coordenadas e zona desenhada na vista; aba **Receitas** (12 receitas embutidas, prévia, adicionar como camada); **cartões de teste** com um clique; painel **Cor perceptual** OKLCH com paridade comprovada com `palette.py`; tipografia Martian Mono nos títulos e Helvetica em caixa alta no texto. Testes novos: `ui_layout_check.mjs`, `recipes_ui_check.mjs`, `embed-recipes.mjs --check`.
+- `PlumberManager` analisado (ver `repo-analysis.md`): adotado o histórico com rótulos e o menu redimensionável; sugeridos Ctrl+K, tour, tela de início, grafo de camadas.
+- **V6 (07/10/2026):** botão **Cor** sob a vista (Alpha, Standard por teoria das cores, Personalizada com seletor, RGB e HEX, e a paleta do briefing em `meta.briefPalette`); botão do menu (G) na linha do divisor; aba **+Efeitos** com botão Visualizar (um quadro ao passar o mouse, animação de 200 px a 10 fps ao clicar); rodapé com créditos, instagram.com/gyulyia e gyulyia.com; botão Evento removido; Explodir virou **Mostrar camadas**; pop-up de ajuda com X; idioma **EN / PT-BR** no motor (`meta.lang`) e na skill; **objeto 3D** (`.obj`, `.glb`, `.stl`) com render shader, wireframe ou nuvem de pontos, giro que fecha o loop e modelo dentro do JSON.
+- **Skill:** `/how-to-use` (EN e PT-BR, roda sozinho no primeiro uso depois da instalação via `.first-run`), pergunta de idioma antes do briefing, `scripts/output_viewer.mjs` gera `OUTPUT.html` clicável com todos os arquivos gerados. Teste novo: `features_check.mjs`.
 
 ## 2.0.0 (não lançado) · arquitetura V4
 

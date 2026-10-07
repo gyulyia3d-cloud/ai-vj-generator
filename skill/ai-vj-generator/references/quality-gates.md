@@ -59,3 +59,9 @@ Does it communicate the briefing and the concept? Is the semiotic intent readabl
 ## Evaluation harness
 
 `evals/` in the repository holds golden prompts (ultra-wide LED, mapped façade, kinetic type, 8-bar audio loop, reference transformation, technique restraint) and a rubric. Run the same prompt twice and compare architecture, visual hypotheses and parameter reuse; a regression is two different briefs converging on the same composition grammar.
+
+## V7 checks
+
+- **Seed census** (`node scripts/seed_census.mjs project.aivj.json --seeds 12`): renders each composition across seeds and reports blank seeds, near-duplicate seeds (the piece does not vary with its seed), the A-B-A test (render A, B, A: the two A must be identical, otherwise global state leaks) and coverage spread. Run it when the briefing wants variants, or before delivering a set that ships with seed controls. A composition flagged "the seed barely changes the piece" is not a bug by itself (a fixed layout is allowed) but must be a choice.
+- **Hierarchy**: the contract names one `focalEvent` and one `releaseZone` per composition and a `banned` list (`tension-and-release.md`); the validator warns when they are empty.
+- **Audio roles**: integrated time (`uBassT`…) for travel, transients for accents, presence for openness; at most 3 audio-driven layers (modulators count).

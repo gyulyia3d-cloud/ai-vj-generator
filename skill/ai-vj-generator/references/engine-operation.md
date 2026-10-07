@@ -281,3 +281,19 @@ A aba **Ficha** guarda e mostra `meta.spec`, a ficha de produção do projeto (`
 - **PRODUCTION_SPEC.md** para copiar ou baixar, com os cartões de teste a rodar primeiro no local.
 
 Teste: `node scripts/ui_check.mjs` compara as calculadoras JS com o Python, percorre o fluxo, valida o JSON exportado e tenta injetar HTML pela ficha.
+
+## Receitas, cartões de teste e cor (V5)
+
+- Aba **Receitas**: as receitas de `references/recipes/` vão **embutidas no motor** (`node scripts/embed-recipes.mjs`, conferido por `check.mjs`). Busque, filtre, veja a prévia e **adicione como camada** depois da camada selecionada; cada adição é um passo do histórico (`Receita …`).
+- Código de receita é código do próprio motor, mas só entra **autorizado** se o projeto já tinha código autorizado. Se não, a barra de autorização aparece como em qualquer código.
+- **Cartões de teste**: um clique cria a composição `CARTÕES DE TESTE` (receita `testcard`) já com N de projetores e sobreposição lidos da ficha. Rode primeiro no local, antes de qualquer arte.
+- **Cor perceptual** (aba Projeto): edite L, C e h ou o hexadecimal de cada papel; o contraste contra o fundo e os avisos da superfície (LED, projeção, tela) aparecem ao lado; **Gerar esquema** aplica o mesmo resultado de `scripts/palette.py scheme`. O teste `recipes_ui_check.mjs` compara os dois.
+- Teclado: **Ctrl+Z** desfaz qualquer alteração, **Ctrl+Y** ou **Ctrl+Shift+Z** refaz; dentro de um campo de texto em edição vale o desfazer nativo do campo.
+
+## V6: cor, 3D, idioma e ajuda
+
+- **Botão Cor** (sob a vista, depois de Áudio): Alpha (branco α), Standard (6 esquemas OKLCH a partir de um matiz, ajustados à superfície), Personalizada (seletor, RGB e HEX) e Briefing (restaura `meta.briefPalette`, que o motor grava ao carregar o projeto). Cada troca é um passo do histórico.
+- **Objeto 3D:** Mídia > Objeto 3D (`.obj`, `.glb` sem compressão, `.stl`), ou arraste para a vista. A camada fixa `OBJETO 3D` liga sozinha; em Parâm. escolha `shader` (faces sombreadas), `wireframe` ou `pointcloud`, o giro Y (voltas inteiras por loop, fecha o loop), a inclinação, a perspectiva e a luz. O modelo é centrado e normalizado; o arquivo viaja em `assets` (`kind: model`). Limite de 400 mil triângulos; o shader desenha até 30 mil faces por quadro.
+- **+Efeitos:** o botão Visualizar mostra uma prévia leve; passar o mouse mostra um quadro.
+- **Idioma:** botão EN / PT-BR no cabeçalho; `meta.lang` define o idioma ao abrir. Textos longos de ajuda e notas seguem em português; rótulos, botões, abas e avisos curtos são traduzidos.
+- **Ajuda:** o botão `?` reabre o pop-up; "Não mostrar ao abrir" o silencia.

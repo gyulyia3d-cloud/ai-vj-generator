@@ -49,3 +49,36 @@ BPM is a transport variable: BPM → beat phase → bar phase → event scheduli
 ## Designing audio behavior
 
 Write one line per reactive layer: "this layer listens to X because the concept says Y, and it moves Z". If you cannot write it, remove the binding. Put the reasoning in the layer's `role` and the contract's `audio` relationship.
+
+## Extended vocabulary (V7)
+
+The bus now carries more than level and hit. Idea taken from how performance shader hosts (Synesthesia scenes, Astrofox reactors) separate *how loud*, *how sudden* and *how long it travelled*. All of it is deterministic: with no source the values come from the BPM, in the export too.
+
+| Uniform / `K.t.` | Meaning | Use |
+|---|---|---|
+| `uBass uMid uHigh uRms` | smoothed level per band | size, brightness, amplitude |
+| `uHit` `uMidHit` `uHighHit` | transient of the band (sudden rise, decays ~150 ms) | accents, flashes, steps, glitch triggers |
+| `uPres` | presence: how much mid/high is above the bass (0–1) | open the image up when the track gets airy; close it when it is all low end |
+| `uBassT` `uMidT` `uHighT` `uAudT` | **integrated time**: runs faster when the band is loud or hits, never jumps. Synthetic mode: exactly *bars* units per loop, so `sin(uBassT*TAU)` and `fract(uBassT)` close the loop. Live audio: real integration (does not close) | travel through noise space, rotation, camera motion that follows the music |
+| `uOnBeat` | beat pulse (1 on the beat, decays) | one-frame accents on the grid |
+| `uBSin uBSin2 uBSin4` `uBTri` | sine over 1, 2 and 4 beats; triangle over 1 beat (0–1) | breathing and sway locked to the tempo, with no audio needed |
+| `uBpm` | BPM / 100 | scale speeds with tempo |
+
+Rules:
+- **Integrated time replaces `uPh * k` when the motion should feel played by the music.** Use `uPh` when the motion must be exactly periodic whatever the audio.
+- Per-band roles (the shader rule stays): low = mass and structure, mid = body and rotation, high = detail and sparkle, hit = accent, integrated time = travel. Do not wire every band to size.
+- Because integrated time is monotonic, use only `sin/cos/fract` of it for anything that must loop.
+
+### Modulation: `layer.mod`
+
+Any numeric parameter of any layer can be driven without writing code:
+
+```json
+"mod": [
+  { "k": "p1", "src": "bass", "min": 1.5, "max": 3.0, "mode": "set" },
+  { "k": "dot", "src": "lfo", "cycles": 2, "shape": "tri", "min": 0.8, "max": 1.6 },
+  { "k": "spin", "src": "onbeat", "min": 0, "max": 2, "mode": "add" }
+]
+```
+
+`src`: `bass mid high rms hit mhit hhit pres onbeat bsin bsin2 bsin4 btri lfo`. The source (0–1) is mapped to `min..max`; `mode` is `set` (default), `add` or `mul`. `lfo` takes `cycles` (whole number: the loop closes), `shape` `sin` (default), `tri`, `saw`. Audio sources count toward the limit of 3 reactive layers per composition (the validator warns); `lfo` and the BPM waves are free. Modulation runs after the per-layer defaults, before drawing, and is a pure function of the frame.

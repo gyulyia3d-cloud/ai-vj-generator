@@ -43,6 +43,7 @@ export async function openPage(file, { chrome, width = 1400, height = 900, waitF
   };
   const send = (method, params = {}) => new Promise(res => { const i = ++id; wait.set(i, res); ws.send(JSON.stringify({ id: i, method, params })); });
   await send('Page.enable');
+  await send('Page.addScriptToEvaluateOnNewDocument', { source: 'window.__NOHOW = 1;' });
   const evaluate = async expression => {
     const m = await send('Runtime.evaluate', { expression, awaitPromise: true, returnByValue: true });
     if (m.error) throw new Error(m.error.message);
@@ -50,6 +51,7 @@ export async function openPage(file, { chrome, width = 1400, height = 900, waitF
     return m.result.result.value;
   };
   for (let i = 0; i < 80; i++) { if (await evaluate(waitFor).catch(() => false)) break; await sleep(250); }
+  await evaluate("window.__NOHOW = 1; { const h = document.querySelector('#howto'); if (h && !h.hidden) document.querySelector('#howClose').click(); } if (window.AIVJ && AIVJ.setLang) AIVJ.setLang('pt', true); 1").catch(() => {});
   await sleep(800);
   return { evaluate, close, dialogs, send };
 }

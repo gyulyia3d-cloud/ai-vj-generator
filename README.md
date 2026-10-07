@@ -28,7 +28,7 @@ O instalador copia as 4 skills de `skill/` para `~/.claude/skills/`. Reinicie o 
 
 | | |
 |---|---|
-| **Comandos `/`** | `/vj <briefing>` conduz tudo do zero; `/vj-reference` só analisa anexos; `/vj-critique` avalia um projeto pronto e propõe mutações. |
+| **Comandos `/`** | `/vj <briefing>` conduz tudo do zero; `/vj-reference` só analisa anexos; `/vj-critique` avalia um projeto pronto e propõe mutações; `/how-to-use` explica tudo (EN e PT-BR) e roda sozinho no primeiro uso. |
 | **Entrevista no chat** | Perguntas em rodadas de até 4, só as que mudam a solução e ancoradas no que foi medido nos anexos. Só o técnico tem padrão; paleta, conceito e composições vêm do briefing. |
 | **Anexos analisados** | Imagens e vídeos viram medições (paleta em OKLab, peso visual, simetria, periodicidade, cortes, movimento de câmera) mais a leitura do Claude, e então um princípio, nunca uma cópia. Requer `pip install pillow numpy`; vídeo também precisa de ffmpeg. |
 | **Gramática visual** | O briefing vira 9 decisões: forma, movimento, ritmo, cor, densidade, profundidade, textura, transição, relação sonora. |

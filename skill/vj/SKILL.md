@@ -11,6 +11,7 @@ Start a **new** VJ project from zero with the briefing below. Previous projects,
 
 Briefing from the user: $ARGUMENTS
 
+0. Follow section 0 of the main skill first: run `/how-to-use` if `.first-run` is missing, then ask English or Português (Brasil) and set `meta.lang`.
 1. Invoke the `ai-vj-generator` skill and follow it as the source of truth. Its files are in the sibling folder `../ai-vj-generator/` (relative to this skill's base directory).
 2. Read `../ai-vj-generator/references/briefing-flow.md` first and follow it step by step: intake, analysis of every attached image or video, **diagnosis** (`briefing/diagnosis.md`: Brief Ledger, archetype, value-of-information questions, the archetype's spec sheet in `briefing/archetypes.md`), interview in the chat (`interview.md`, `briefing/question-bank.md`), **readback** of the confirmed and derived numbers (`scripts/surface_calc.py`), creative contract (`creative-contract.md`), build, look at the result, score and critique (`quality-gates.md`), deliver.
 3. If the briefing above is empty, ask for it in the chat: what is being created, where it will be shown (and its real pixel size), how it should feel. Do not start building until the briefing exists.

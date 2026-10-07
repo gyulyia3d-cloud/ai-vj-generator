@@ -49,3 +49,13 @@ Optional, but the validator checks that `osc`, `ndi`, `spout`, `syphon`, `sdi`, 
 ## Resolume-friendly delivery
 
 Native canvas size, alpha policy, fps, loop length, PNG sequence or video as requested, and a compact routing note. White-alpha: RGB set to white, luminance becomes alpha; document whether the destination expects straight or premultiplied alpha.
+
+## V7 additions
+
+| Item | Label | How |
+|---|---|---|
+| Shader as ISF `.fs` (Resolume, Wire, VDMX, MadMapper) | EXPORTABLE | `scripts/isf.py export` (`isf-bridge.md`) |
+| ISF generator into a project | SUPPORTED (single-pass generators) | `scripts/isf.py import` |
+| Spout into Resolume | REQUIRES BRIDGE | OBS Browser Source + Spout2 plugin, `?stage=1&alpha=1` (`bridge-obs-spout.md`) |
+| Resolume Advanced Output slices + test pattern | EXPORTABLE | `scripts/export_slices.py` |
+| Stage mode (clean output, transparent) | SUPPORTED | URL parameters `stage alpha comp play q` |

@@ -17,7 +17,7 @@ honesty of the capabilities block (OSC, NDI, Spout, Syphon and SDI need a bridge
 Exit code 1 when there are errors. It cannot compile GLSL: open the HTML and read
 the validation panel for that. It reads the parameter registry from ../assets/engine.html.
 """
-import json
+import json, os
 import re
 import shutil
 import subprocess
@@ -79,7 +79,56 @@ def load_registry():
     return reg, common, pal
 
 
+GLSL_LIB = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "references", "glsl-lib", "lib.glsl")
+
+
+def glsl_modules():
+    mods, cur = {}, None
+    try:
+        lines = open(GLSL_LIB, encoding="utf-8").read().replace("\r\n", "\n").split("\n")
+    except OSError:
+        return mods
+    for line in lines:
+        m = re.match(r"^//@module\s+(\S+)(?:\s+requires\s+(.+))?$", line)
+        if m:
+            cur = mods[m.group(1)] = {"req": re.split(r"[\s,]+", m.group(2).strip()) if m.group(2) else [], "src": []}
+        elif cur is not None and not line.startswith("//@doc") and line.strip():
+            cur["src"].append(line.strip())
+    return mods
+
+
+def expand_includes(code, where, out):
+    """#include name pulls a module from references/glsl-lib/lib.glsl (same expansion as the engine)."""
+    pat = re.compile(r"^[ \t]*#include[ \t]+([\w.]+)[ \t]*$", re.M)
+    want = pat.findall(code)
+    if not want:
+        return code
+    mods, seen, body = glsl_modules(), set(), []
+
+    def add(n):
+        if n in seen:
+            return
+        seen.add(n)
+        if n not in mods:
+            out["errors"].append(f"{where}: unknown GLSL module '{n}' (known: {', '.join(sorted(mods))})")
+            return
+        for r in mods[n]["req"]:
+            add(r)
+        body.append(" ".join(mods[n]["src"]))
+    for n in want:
+        add(n)
+    first = [True]
+
+    def sub(_):
+        if first[0]:
+            first[0] = False
+            return " ".join(body)
+        return ""
+    return pat.sub(sub, code)
+
+
 def lint_glsl(code, where, out):
+    code = expand_includes(code, where, out)
     e, w = out["errors"], out["warnings"]
     if not re.search(r"void\s+main\s*\(\s*\)", code):
         e.append(f"{where}: no void main()")
@@ -177,11 +226,13 @@ def check_param(reg_def, key, val, where, out):
 
 
 SCHEMAS = ("ai-vj-generator/1", "ai-vj-generator/2")
-AUDIO_UNIFORMS = re.compile(r"\b(uBass|uMid|uHigh|uRms|uHit|uAud)\b")
+AUDIO_UNIFORMS = re.compile(r"\b(uBass|uMid|uHigh|uRms|uHit|uAud|uMidHit|uHighHit|uBassT|uMidT|uHighT|uAudT|uPres|uOnBeat|uBSin|uBSin2|uBSin4|uBTri)\b")
+MOD_SRC = {"bass", "mid", "high", "rms", "hit", "mhit", "hhit", "pres", "onbeat", "bsin", "bsin2", "bsin4", "btri", "lfo"}
+MOD_FREE = {"lfo", "onbeat", "bsin", "bsin2", "bsin4", "btri"}
 DEFAULT_LAYER_NAMES = {"SHADER", "FORMA", "TEXTO", "IMAGEM", "VÍDEO", "VIDEO", "FUNDO", "LAYER", "CAMADA", "SHAPE", "TEXT", "IMAGE"}
 CONTRACT_KEYS = ("concept", "audienceEffect", "semioticIntent", "visualLanguage", "formLanguage", "materialLanguage",
                  "colorLogic", "spatialLogic", "motionLanguage", "typographyLanguage", "temporalArc", "loopGrammar",
-                 "technicalStrategy", "forbiddenShortcuts")
+                 "technicalStrategy", "forbiddenShortcuts", "layerBudget", "audioStrategyReason", "focalEvent", "releaseZone", "banned", "tension", "imperfection")
 CONTRACT_REQUIRED = ("concept", "audienceEffect", "semioticIntent", "visualLanguage", "colorLogic", "spatialLogic",
                      "motionLanguage", "temporalArc", "loopGrammar", "technicalStrategy", "forbiddenShortcuts")
 LOOP_GRAMMARS = ("cyclic", "morphological", "continuous", "event", "evolutionary")
@@ -213,6 +264,10 @@ def check_contract(meta, out):
     lg = str(c.get("loopGrammar", "")).lower()
     if lg and not any(g in lg for g in LOOP_GRAMMARS):
         w.append(f"meta.contract.loopGrammar should name one of {', '.join(LOOP_GRAMMARS)}")
+    if not str(c.get("banned", "")).strip() and not c.get("banned"):
+        w.append("meta.contract.banned is empty: list the effects this piece must NOT use (references/tension-and-release.md §4)")
+    if not str(c.get("focalEvent", "")).strip():
+        w.append("meta.contract.focalEvent is empty: name the one dominant event of the piece (references/tension-and-release.md §1)")
 
 
 def check_capabilities(cap, out):
@@ -318,7 +373,13 @@ def check_spec(meta, cv, tm, out):
         n.append("spec: the show spans a BPM range; prefer a tempo-independent loop (phase-driven motion, loops that close at any tempo)")
 
 
+STRATEGIES = ("none", "subtle", "structural", "rhythmic", "full")
+AUDIO_STRATEGY = "rhythmic"
+LAYER_MIN = 5
+
+
 def validate(path, extra_assets=()):
+    global AUDIO_STRATEGY, LAYER_MIN
     out = {"errors": [], "warnings": [], "notes": []}
     e, w = out["errors"], out["warnings"]
     reg, common, stock = load_registry()
@@ -329,6 +390,19 @@ def validate(path, extra_assets=()):
     except Exception as ex:
         e.append(f"JSON does not parse: {ex}")
         return out
+    AUDIO_STRATEGY, LAYER_MIN = "rhythmic", 5
+    strat = (P.get("audio") or {}).get("strategy")
+    if strat is not None:
+        if strat not in STRATEGIES:
+            e.append(f"audio.strategy {strat!r} is not one of {', '.join(STRATEGIES)}")
+        else:
+            AUDIO_STRATEGY = strat
+            if strat == "none" and not str(((P.get("meta") or {}).get("contract") or {}).get("audioStrategyReason", "")).strip():
+                w.append("audio.strategy is 'none': say why in meta.contract.audioStrategyReason (a deliberate silent piece is fine, an accidental one is not)")
+    lb = ((P.get("meta") or {}).get("contract") or {}).get("layerBudget")
+    if isinstance(lb, dict) and isinstance(lb.get("min"), int) and 1 <= lb["min"] <= 10:
+        LAYER_MIN = lb["min"]
+        w.append(f"meta.contract.layerBudget.min = {lb['min']}: fewer layers than the default 5-6 is a declared choice; the hierarchy still has to read")
     schema = P.get("schema")
     if schema not in SCHEMAS:
         e.append(f"schema must be 'ai-vj-generator/2' (or the older /1), got {schema!r}")
@@ -379,8 +453,8 @@ def validate(path, extra_assets=()):
     if assets:
         tot = 0
         for nm, a in assets.items():
-            if not isinstance(a, dict) or a.get("kind") not in ("image", "font") or not str(a.get("data", "")).startswith("data:"):
-                e.append(f"assets.{nm}: needs kind 'image' or 'font' and a data: URL")
+            if not isinstance(a, dict) or a.get("kind") not in ("image", "font", "model") or not str(a.get("data", "")).startswith("data:"):
+                e.append(f"assets.{nm}: needs kind 'image', 'font' or 'model' and a data: URL")
                 continue
             tot += len(a["data"])
         if tot > 12 * 1048576:
@@ -437,6 +511,24 @@ def validate(path, extra_assets=()):
             if v2 and L.get("on", True) and t not in ("bg", "post") and not str(L.get("role", "")).strip():
                 w.append(f"{lw}: no role; say in one sentence why this layer exists (traces to meta.contract)")
             lp = L.get("p") or {}
+            mods = L.get("mod")
+            if mods is not None:
+                if not isinstance(mods, list):
+                    e.append(f"{lw}.mod: expected a list of modulators")
+                else:
+                    for mi, m in enumerate(mods):
+                        mw = f"{lw}.mod[{mi}]"
+                        if not isinstance(m, dict) or not m.get("k"):
+                            e.append(f"{mw}: needs 'k' (parameter name)")
+                            continue
+                        if m.get("src") not in MOD_SRC:
+                            e.append(f"{mw}.src: {m.get('src')!r} is not one of {sorted(MOD_SRC)}")
+                        if m.get("mode", "set") not in ("set", "add", "mul"):
+                            e.append(f"{mw}.mode: must be set, add or mul")
+                        if m.get("src") == "lfo" and not float(m.get("cycles", 1)).is_integer():
+                            e.append(f"{mw}.cycles: must be a whole number or the loop does not close")
+                        if m.get("src") not in MOD_FREE and L.get("on", True) and t != "shader":
+                            w.append(f"{mw}: audio-driven modulation counts toward the 3 reactive layers per composition")
             if L.get("on", True) and t != "shader" and isinstance(lp.get("audio"), (int, float)) and lp["audio"] > 0:
                 reactive += 1
             op = L.get("opacity", 1)
@@ -458,7 +550,7 @@ def validate(path, extra_assets=()):
                         lint_glsl(v, lw + ".src", out)
                     continue
                 check_param(allowed, k, v, lw, out)
-            if t == "shader":
+            if t == "shader" and AUDIO_STRATEGY != "none":
                 sp = L.get("p") or {}
                 if L.get("on", True) and isinstance(sp.get("audio"), (int, float)) and sp["audio"] <= 0:
                     e.append(f"{lw}: shader with p.audio = 0. Every shader must be audio-reactive (references/audio-bus.md); remove the key or use 0.35..1")
@@ -471,9 +563,9 @@ def validate(path, extra_assets=()):
                 w.append(f"{lw}: shader with no src and no preset renders the default CAMPO FBM preset")
         # craft rules: layered, named, with a hero (references/craft-and-finish.md)
         body = [x for x in layers if x.get("on", True) and x.get("type") not in ("bg", "post")]
-        if v2 and len(body) < 5:
+        if v2 and len(body) < LAYER_MIN:
             e.append(f"{where}: only {len(body)} visible layer(s) besides bg/post. A composition needs 6-10 (5 is the minimum): tiers ground, hero, structure, instruments, information, event, finish (references/craft-and-finish.md)")
-        elif len(body) < 6:
+        elif len(body) < max(6, LAYER_MIN):
             w.append(f"{where}: {len(body)} visible layers besides bg/post; 6-10 is the target so the piece can be played and rebalanced (references/craft-and-finish.md)")
         default_names = [x.get("name") for x in body if str(x.get("name", "")).strip().upper() in DEFAULT_LAYER_NAMES]
         if default_names:

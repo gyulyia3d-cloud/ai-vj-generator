@@ -63,3 +63,17 @@ For each composition fix: concept, form, topology, composition, depth, material,
 ## Creative IR → project JSON → renderer
 
 The contract is the creative intermediate representation. The project JSON is the source of truth for the work; the HTML is only a view and controller over it. Never bury a creative decision in the interface that is not in the JSON.
+
+## V7 fields (drama)
+
+Add to the contract, before any code (details and how to choose in `tension-and-release.md`):
+
+```yaml
+  focalEvent:   the single dominant event of each composition (one sentence)
+  releaseZone:  the quiet region that lets it land (where, how much)
+  banned:       effects this piece must NOT use (3-6 items; stops the default look)
+  tension:      relaxed | balanced | assertive
+  imperfection: 0-2 seeded flaws (registration drift, uneven density, dry edge, late layer)
+```
+
+`banned` and `focalEvent` produce a validator warning when empty.

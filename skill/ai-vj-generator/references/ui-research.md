@@ -12,7 +12,7 @@ Input for the interface phase (after the documentation phase). Nothing here is b
 
 ## Status
 
-Feito: **painel de ficha de produção**, **calculadora de superfície** (aba Ficha, `scripts/ui_check.mjs`) e **zonas na viewport**. Falta: navegador de receitas, cartões de teste, painel de paleta, visão do público, monitor de segurança, mutate com histórico, clip launcher, mapa de controle.
+Feito: **painel de ficha de produção**, **calculadora de superfície**, **zonas na viewport** (aba Ficha), **navegador de receitas** com prévia, **cartões de teste** com um clique, **painel de cor OKLCH** (L C h e hex, contraste, esquema por superfície), **menu com largura ajustável ou minimizado**, **tema escuro, claro e sistema**, **layout responsivo** (celular a 4K, em pé e deitado), **desfazer e refazer universais** com histórico nomeado (Ctrl+Z, Ctrl+Y), **campos numéricos digitáveis** com contas (`1920/2`), setas, Shift/Alt, arrastar o rótulo e duplo clique para o padrão, **leitura de coordenadas** e **zona desenhada na vista**. Falta: visão do público, monitor de segurança, mutate com histórico, paleta de comandos (Ctrl+K), tour de boas-vindas, mini-mapa do grafo de camadas.
 
 ## Backlog, by priority
 

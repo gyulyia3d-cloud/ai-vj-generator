@@ -45,6 +45,7 @@ Cada `/vj` começa do zero. O Claude analisa o texto e os anexos, faz perguntas 
 | `/vj <briefing>` | Fluxo completo, do zero |
 | `/vj-reference` | Só analisa as imagens e vídeos anexados e devolve a gramática de referência |
 | `/vj-critique` | Avalia um projeto pronto contra o briefing e propõe mutações |
+| `/how-to-use` | Explica tudo o que a skill faz no chat (EN ou PT-BR); roda sozinho no primeiro uso |
 
 ### Análise de imagens e vídeos (opcional, recomendado)
 

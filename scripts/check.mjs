@@ -122,7 +122,7 @@ try {
   e.status === 3 ? console.log('  --   QA headless pulado: ' + msg.trim().split('\n')[0]) : bad('QA headless: ' + msg);
 }
 // V5: calculadora de superfície e paleta (testes unitários) e galeria de receitas renderizada no motor
-for (const tst of ['test_surface_calc.py', 'test_palette.py']) {
+for (const tst of ['test_surface_calc.py', 'test_palette.py', 'test_recipes.py', 'test_export_slices.py']) {
   try { execFileSync('python', [join(SKILL, 'scripts', tst)], { stdio: 'pipe' }); ok('testes ' + tst); }
   catch (e) { bad('testes ' + tst + ': ' + String(e.stderr || e.stdout).split('\n').slice(-6).join(' | ')); }
 }
@@ -160,5 +160,45 @@ try {
 } catch (e) {
   e.status === 3 ? console.log('  --   ui_check pulado (sem navegador)') : bad('ui_check: ' + String(e.stdout).split('\n').filter(l => /ERRO/.test(l)).slice(0, 4).join(' | '));
 }
+// V5: receitas embutidas, paleta OKLCH (paridade com palette.py) e aba Receitas
+try {
+  execFileSync(process.execPath, [join(SKILL, 'scripts', 'recipes_ui_check.mjs')], { stdio: 'pipe' });
+  ok('interface: receitas e paleta OKLCH (embutido, histórico, paridade, segurança)');
+} catch (e) {
+  e.status === 3 ? console.log('  --   recipes_ui_check pulado (sem navegador)') : bad('recipes_ui_check: ' + String(e.stdout).split('\n').filter(l => /ERRO/.test(l)).slice(0, 4).join(' | '));
+}
+// V5: layout, tema, histórico, números e coordenadas
+try {
+  execFileSync(process.execPath, [join(SKILL, 'scripts', 'ui_layout_check.mjs')], { stdio: 'pipe' });
+  ok('interface: layout, tema, histórico, números e coordenadas');
+} catch (e) {
+  e.status === 3 ? console.log('  --   ui_layout_check pulado (sem navegador)') : bad('ui_layout_check: ' + String(e.stdout).split('\n').filter(l => /ERRO/.test(l)).slice(0, 4).join(' | '));
+}
+// receitas embutidas no motor = references/recipes
+try { execFileSync(process.execPath, [join(ROOT, 'scripts', 'embed-recipes.mjs'), '--check'], { stdio: 'pipe' }); ok('receitas embutidas no motor em dia'); }
+catch (e) { bad('receitas embutidas: ' + String(e.stderr || e.stdout).trim().slice(0, 160)); }
+// V6: botão Cor, menu na linha do divisor, +Efeitos com prévia, ajuda, idioma EN/PT-BR e objeto 3D
+try {
+  execFileSync(process.execPath, [join(SKILL, 'scripts', 'features_check.mjs')], { stdio: 'pipe' });
+  ok('interface: paletas, +Efeitos, ajuda, idioma e objeto 3D');
+} catch (e) {
+  e.status === 3 ? console.log('  --   features_check pulado (sem navegador)') : bad('features_check: ' + String(e.stdout).split('\n').filter(l => /ERRO/.test(l)).slice(0, 4).join(' | '));
+}
+try { execFileSync(process.execPath, [join(ROOT, 'scripts', 'embed-glsl-lib.mjs'), '--check'], { stdio: 'pipe' }); ok('biblioteca GLSL embutida no motor em dia'); }
+catch (e) { bad('GLSL embed: ' + String(e.stderr || e.stdout).trim().slice(0, 160)); }
+// V7: vocabulário de áudio estendido, layer.mod e ponte ISF
+const NL = String.fromCharCode(10);
+for (const [f, label] of [['v7_check.mjs', 'áudio V7 (tempo integrado fecha o loop) e layer.mod'], ['isf_check.mjs', 'ponte ISF (exportar, importar, compilar)'], ['lib_check.mjs', 'biblioteca GLSL (#include) compila e desenha']]) {
+  try { execFileSync(process.execPath, [join(SKILL, 'scripts', f)], { stdio: 'pipe' }); ok(label); }
+  catch (e) { e.status === 3 ? console.log(`  --   ${f} pulado (sem navegador)`) : bad(`${f}: ` + String(e.stdout).split(NL).filter(l => /ERRO/.test(l)).slice(0, 4).join(' | ')); }
+}
+// visualizador de arquivos gerados (OUTPUT.html)
+try {
+  const dir = (await import('node:fs')).mkdtempSync(join(tmpdir(), 'aivj-out-')), fs = await import('node:fs');
+  fs.writeFileSync(join(dir, 'a.aivj.json'), '{"x":"<script>alert(1)</script>"}'); fs.writeFileSync(join(dir, 'b.md'), '# oi');
+  execFileSync(process.execPath, [join(SKILL, 'scripts', 'output_viewer.mjs'), dir, '--lang', 'pt'], { stdio: 'pipe' });
+  const h = fs.readFileSync(join(dir, 'OUTPUT.html'), 'utf8');
+  /<details/.test(h) && !/<script>alert/.test(h) && h.includes('a.aivj.json') ? ok('output_viewer gera OUTPUT.html e escapa o conteúdo') : bad('output_viewer: página inválida ou sem escape');
+} catch (e) { bad('output_viewer: ' + String(e.message).slice(0, 160)); }
 console.log(fail ? `\n${fail} problema(s).` : '\nTudo certo.');
 process.exit(fail ? 1 : 0);

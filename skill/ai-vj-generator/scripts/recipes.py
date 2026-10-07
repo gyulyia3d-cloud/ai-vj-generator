@@ -47,7 +47,12 @@ def make_layer(r, sets=None, name=None, role=None, blend="normal", opacity=1.0):
         for k, val in sets.items():
             if k not in v:
                 sys.exit(f"recipe {r['id']} has no variable '{k}' (has: {', '.join(v)})")
-            v[k] = check_number(r["id"], k, val, spec[k].get("min"), spec[k].get("max"))
+            if spec[k].get("t", "n") == "s":
+                if str(val) not in [str(o) for o in spec[k].get("opts", [])]:
+                    sys.exit(f"recipe {r['id']}: '{k}' must be one of {spec[k].get('opts')} (got {val!r})")
+                v[k] = str(val)
+            else:
+                v[k] = check_number(r["id"], k, val, spec[k].get("min"), spec[k].get("max"))
         p = {"src": source(r)}
         for k, val in v.items():
             if val != next(x["d"] for x in r["vars"] if x["k"] == k):

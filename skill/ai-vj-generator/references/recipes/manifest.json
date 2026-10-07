@@ -551,6 +551,69 @@
           1
         ]
       }
+    },
+    {
+      "id": "testcard",
+      "kind": "code",
+      "file": "code/testcard.js",
+      "title": "Test cards for the site",
+      "principle": "seven cards drawn in project pixels (grid and rulers, 1-px checks, grey ramp and gamma strip, colour bars, safe frame, moving bar, blend zones) for the first minutes on a real surface",
+      "means": [
+        "calibration",
+        "alignment",
+        "diagnosis before art"
+      ],
+      "tier": "tool",
+      "loop": "closes: `auto` shows one card per bar; a fixed card repeats each bar",
+      "audio": {},
+      "cost": "low",
+      "wide": "drawn in project pixels, so a 5120x500 strip gets a 5120x500 grid; fold lines are marked",
+      "usage": "Deliver it as its own composition for every LED, mapped or projected project. Set blendN and blendPx from the spec (surface_calc.py blend). It is a tool: keep it plain, never restyle it.",
+      "vars": [
+        {
+          "k": "card",
+          "l": "Cartão",
+          "t": "s",
+          "d": "auto",
+          "opts": [
+            "auto",
+            "grade",
+            "pixel",
+            "rampa",
+            "barras",
+            "moldura",
+            "movimento",
+            "blend"
+          ]
+        },
+        {
+          "k": "step",
+          "l": "Passo da grade (px)",
+          "t": "n",
+          "d": 100,
+          "min": 20,
+          "max": 400,
+          "step": 10
+        },
+        {
+          "k": "blendN",
+          "l": "Projetores (blend)",
+          "t": "n",
+          "d": 2,
+          "min": 2,
+          "max": 6,
+          "step": 1
+        },
+        {
+          "k": "blendPx",
+          "l": "Sobreposição (px)",
+          "t": "n",
+          "d": 256,
+          "min": 16,
+          "max": 1024,
+          "step": 8
+        }
+      ]
     }
   ]
 }
