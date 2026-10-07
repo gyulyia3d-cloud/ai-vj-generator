@@ -15,7 +15,7 @@ O modo STANDARD preserva o motor de camadas original, um organismo em filotaxia 
 ## Instalação
 
 ```bash
-git clone https://github.com/SEU-USUARIO/ai-vj-generator.git && cd ai-vj-generator && sh install.sh
+git clone https://github.com/gyulyia3d-cloud/ai-vj-generator.git && cd ai-vj-generator && sh install.sh
 ```
 
 No Windows, troque o final por `powershell -ExecutionPolicy Bypass -File install.ps1`. Para usar sem o Claude, basta abrir `app/index.html` no navegador.

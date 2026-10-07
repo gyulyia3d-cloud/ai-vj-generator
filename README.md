@@ -11,13 +11,13 @@
 macOS / Linux:
 
 ```bash
-git clone https://github.com/SEU-USUARIO/ai-vj-generator.git && cd ai-vj-generator && sh install.sh
+git clone https://github.com/gyulyia3d-cloud/ai-vj-generator.git && cd ai-vj-generator && sh install.sh
 ```
 
 Windows (PowerShell):
 
 ```powershell
-git clone https://github.com/SEU-USUARIO/ai-vj-generator.git; cd ai-vj-generator; powershell -ExecutionPolicy Bypass -File install.ps1
+git clone https://github.com/gyulyia3d-cloud/ai-vj-generator.git; cd ai-vj-generator; powershell -ExecutionPolicy Bypass -File install.ps1
 ```
 
 O instalador copia as 4 skills de `skill/` para `~/.claude/skills/`. Reinicie o Claude Code e digite: `/vj set de techno industrial, LED 5120×500, 132 BPM, anexei duas referências`. Guia completo, incluindo claude.ai: [INSTALL.md](INSTALL.md).

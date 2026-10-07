@@ -23,13 +23,13 @@ Pré-requisitos: [Git](https://git-scm.com) e [Claude Code](https://claude.com/c
 macOS / Linux:
 
 ```bash
-git clone https://github.com/SEU-USUARIO/ai-vj-generator.git && cd ai-vj-generator && sh install.sh
+git clone https://github.com/gyulyia3d-cloud/ai-vj-generator.git && cd ai-vj-generator && sh install.sh
 ```
 
 Windows (PowerShell):
 
 ```powershell
-git clone https://github.com/SEU-USUARIO/ai-vj-generator.git; cd ai-vj-generator; powershell -ExecutionPolicy Bypass -File install.ps1
+git clone https://github.com/gyulyia3d-cloud/ai-vj-generator.git; cd ai-vj-generator; powershell -ExecutionPolicy Bypass -File install.ps1
 ```
 
 O instalador copia as 4 pastas de `skill/` para `~/.claude/skills/`: `ai-vj-generator` (a skill principal) e os comandos `vj`, `vj-reference` e `vj-critique`. Instale as quatro juntas, porque os comandos apontam para a principal na pasta ao lado. Para instalar só num projeto, copie as mesmas pastas para `.claude/skills/` dentro dele.

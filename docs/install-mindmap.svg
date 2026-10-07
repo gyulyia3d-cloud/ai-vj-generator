@@ -52,7 +52,7 @@
   <!-- 02 -->
   <rect class="bx" x="380" y="390" width="300" height="64"/>
   <text class="n" x="396" y="434">02</text><text class="l1" x="452" y="418">BAIXAR</text><text class="l1s" x="452" y="438">O REPOSITÓRIO DO GITHUB</text>
-  <rect class="bx2" x="760" y="366" width="800" height="48"/><text class="lab" x="776" y="384">TERMINAL</text><text class="cmd" x="776" y="404">git clone https://github.com/SEU-USUARIO/ai-vj-generator.git</text>
+  <rect class="bx2" x="760" y="366" width="800" height="48"/><text class="lab" x="776" y="384">TERMINAL</text><text class="cmd" x="776" y="404">git clone https://github.com/gyulyia3d-cloud/ai-vj-generator.git</text>
   <rect class="bx2" x="760" y="430" width="800" height="48"/><text class="lab" x="776" y="448">SEM GIT</text><text class="cmd" x="776" y="468">Botão Code → Download ZIP → descompacte a pasta</text>
 
   <!-- 03 -->
