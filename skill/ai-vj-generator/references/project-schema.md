@@ -1,30 +1,49 @@
-# PROJECT JSON — schema `ai-vj-generator/1`
+# PROJECT JSON — schema `ai-vj-generator/2`
 
 Write only what differs from defaults. The engine normalizes the file: missing fields take defaults, unknown layer types are dropped with a warning, and the five fixed media slots (SHADER, IMAGEM, VÍDEO, FORMA, TEXTO) are appended, switched off, to any composition that lacks them.
 
 ```json
 {
-  "schema": "ai-vj-generator/1",
+  "schema": "ai-vj-generator/2",
   "id": "kebab-case-unique-id",
   "meta": { "name": "PROJECT NAME", "artist": "", "context": "", "brief": "",
+            "contract": { "concept": "", "audienceEffect": "", "semioticIntent": "", "visualLanguage": "", "formLanguage": "", "materialLanguage": "",
+                          "colorLogic": "", "spatialLogic": "", "motionLanguage": "", "typographyLanguage": "", "temporalArc": "", "loopGrammar": "cyclic",
+                          "technicalStrategy": "", "forbiddenShortcuts": "" },
+            "spec": { "archetype": ["stage-led"], "confirmed": { "pixelMap": [1920, 1080], "pitchMm": 3.9, "viewingDistanceM": [8, 40] },
+                      "zones": { "performer": { "x": 0.33, "y": 0.45, "w": 0.34, "h": 0.55 } }, "assumed": [], "show": { "bpm": [124, 134] }, "risks": [] },
             "moods": ["industrial"], "grammar": { "form": "", "motion": "", "rhythm": "", "color": "", "density": "", "depth": "", "texture": "", "transition": "", "audio": "" } },
   "canvas": { "w": 1920, "h": 1080, "fps": 30, "target": "screen", "safe": 0.05,
               "pitch": 3.9, "dist": 15, "displays": [{ "x": 0, "y": 0, "w": 960, "h": 1080 }] },
   "time": { "bpm": 120, "bars": 4, "loop": true, "seamless": true, "mode": "loop", "transition": "cut", "trBeats": 1 },
-  "audio": { "reactive": false, "sens": 1, "smooth": 0.7 },
+  "audio": { "reactive": true, "sens": 1, "smooth": 0.7 },
   "seed": 184729,
   "palette": { "bg": "#000000", "primary": "#FFFFFF", "secondary": "#666666", "accent": "#FFFFFF" },
   "compositions": [
     { "name": "NAME", "hypothesis": "SLOT — one sentence", "motion": "step", "palette": { "accent": "#FF2A3D" },
-      "layers": [ { "type": "bg", "name": "FUNDO", "on": true, "opacity": 1, "blend": "normal", "p": { } } ] }
-  ]
+      "layers": [ { "type": "bg", "name": "FUNDO", "on": true, "opacity": 1, "blend": "normal", "role": "why this layer exists", "p": { } } ] }
+  ],
+  "capabilities": { "supported": ["preview", "outputWindow"], "exportable": ["pngSequenceAlpha", "webm"], "requiresBridge": ["ndi", "osc"], "conceptual": ["midi"] }
 }
 ```
+
+## Schema 2 (V4) in one paragraph
+
+`ai-vj-generator/2` is `/1` plus four optional blocks the engine ignores for rendering and the skill uses for rigor: `meta.spec` (the production spec from the brief diagnosis: confirmed and derived surface facts, performer and occluded zones, assumptions, show context and risks; shape in `briefing/diagnosis.md` §6; the validator checks it against `canvas`), `meta.contract` (the creative contract, shown in the PROJETO tab; fields in `creative-contract.md`), `layer.role` (one sentence: why the layer exists, traced to the contract) and a top-level `capabilities` object (honest transport labels; see `capabilities.md`). Schema `/1` files still load and validate. Everything else below is unchanged.
 
 | Field | Values |
 |---|---|
 | `canvas.target` | `screen` `led` `projection` `mapping` `multi` `software` `export` |
 | `canvas.fps` | 24 25 30 50 60 |
+| `canvas.folds` | list of x positions in canvas pixels, each a physical corner: `[2560]` splits a 5120-wide map into two walls. See `walls-code-assets.md` |
+| `canvas.gutter` | 90 (0…600, 1080-units): strip around each fold where nothing readable sits |
+| `palette.mode` | `"white-alpha"` → every colour a level of white (primary 100%, secondary 72%, field 43%); export "Branco α (luma)" |
+| `palette.field` | colour of a plane behind a figure that belongs to another layer (default: 43% between bg and primary) |
+| `assets` | `{ "name.png": { "kind": "image", "data": "data:…", "logo": true }, "Font": { "kind": "font", "data": "data:…" } }`. Do not write by hand: `make-artifact --assets <folder>` |
+| `layer.role` | one sentence: why this layer exists (schema 2); traced to `meta.contract` |
+| `p.echo` `p.echoStep` `p.echoFade` | any layer: `echo` 0–8 earlier-frame copies behind the layer, `echoStep` 1–24 frames apart, `echoFade` 0.1–0.95 opacity decay per copy (deterministic trails; not for video) |
+| `audio.reactive` | default `true`; shaders react with the music or with BPM-locked synthetic bands (`audio-bus.md`) |
+| `layer.vars` | code layers only: list of `{k, l, t, d, min, max, step, opts}`, the sliders of the layer |
 | `time.bars` | 1 2 4 8 16 32 (loop length in 4/4 bars) |
 | `time.mode` | `loop` `pingpong` `reverse` `random` `phase` `audio` `manual` |
 | `time.transition` | `cut` `fade` `wipe` `glitch` |
@@ -48,7 +67,7 @@ Sizes in generator params are in "1080-units": the engine scales by `k = min(H, 
 
 `structure`, `measure` and the `hud` reticle all anchor to the `cx`/`cy` of the composition's first `organism` layer, even when that layer is off. Move the organism and they follow.
 
-Per-layer `audio` only acts when `audio.reactive` is true and the user connected a source in the ÁUDIO tab; otherwise the same layers pulse on the BPM. Setting `audio` on the hero while reactive is off is correct: it is ready for when the user turns audio on.
+Per-layer `audio` on **non-shader** layers acts only when `audio.reactive` is true and a source is connected (ÁUDIO tab: file, microphone or **Fonte de teste**); otherwise those layers pulse on the BPM. **Shader layers always react** (response floor 0.35, default 0.8): with the music when a source is connected, with BPM-locked synthetic bands otherwise.
 
 Loop length is rounded to whole frames: `round(60 / bpm × 4 × bars × fps)`. At 132 BPM, 4 bars, 30 FPS that is 218 frames (7.267 s, 0.18 frame short of exact). Content is driven by loop phase, so frame 217 still meets frame 0; Resolume BPM Sync absorbs the sub-frame difference. Never change FPS or bars to chase an integer.
 
@@ -91,7 +110,7 @@ Loop length is rounded to whole frames: `round(60 / bpm × 4 × bars × fps)`. A
 ### `event` — color wipe + word (standard)
 | key | default | notes |
 |---|---|---|
-| `every` | 8 (0…64) | bars; 0 = only manual (key X) |
+| `every` | 8 (0…64) | bars; 0 = only manual (key X). If `every` ≥ `time.bars`, the event fires once per loop at bar `at` |
 | `at` | 0 | bar offset |
 | `dur` | 2 | beats |
 | `words` | `"PADRÃO DETECTADO"` | separate with `\|`; one is picked per event by seed |
@@ -112,33 +131,51 @@ Loop length is rounded to whole frames: `round(60 / bpm × 4 × bars × fps)`. A
 ### `tunnel` — concentric shapes moving outward (briefing)
 `shape` `rect` (`circle` `tri` `hex`) · `count` 18 · `cycles` 1 · `power` 2.2 · `size` 1 · `aspect` 1.78 (set to W/H for wide walls) · `weight` 3 · `spin` 0 · `twist` 0 · `pulseAmt` 1.2 · `cx` `cy` 0.5 · `hit` true · `color` · `hot`.
 
+`count` shapes are spaced evenly in depth; each travels outward and wraps. `cycles` = how many times the whole set advances one full spacing per loop (2 = twice as fast as 1). `size` 1 makes the outermost shape reach about 0.6 × the canvas diagonal (it overfills the frame on purpose); `power` > 1 bunches shapes near the center (perspective). Two tunnels with slightly different `cx` or `count` and `blend: difference` on a black ground produce a moiré of rings.
+
 ### `typewall` — giant scrolling words (briefing)
 `words` `|`-separated · `rows` 4 (1 for very wide walls) · `fill` 0.82 · `font` `archivo` (`bebas` `mono` `helvetica` or an imported font name) · `weight` 800 · `scroll` 1 · `change` true (new word per division) · `outline` `alt` (`none` `all`) · `stroke` 2 · `sep` `"  /  "` · `upper` true · `hit` true · `color` · `hot`.
 
+### `pixeltext`, `symbols`, `hazard`, `blocks`, `logo`, `code` — wall-aware (briefing)
+
+Parameters, the kit `K` for `code` and the rules for walls, white-alpha and assets are in `walls-code-assets.md`. All use `wall` (`all`, `0`, `1`, …), colour keys including `field`, and the common parameters below. `logo` takes `media`, `media2`…`media4` (file names present in `assets`).
+
 ### `shader` — GLSL fragment layer (fixed slot)
-`preset` `CAMPO FBM` | `CÉLULAS` | `ANÉIS SDF` | `FAIXAS` · `p1`…`p4` (defaults come from the preset) · `alphaMode` `alpha` (`opaque`) · `res` 1 (0.25…1 internal resolution) · `c1` `primary` · `c2` `accent` · `cbg` `bg` · `src` custom GLSL body (empty = preset).
+`preset` `CAMPO FBM` | `CÉLULAS` | `ANÉIS SDF` | `FAIXAS` | `KALEIDO` | `FLUXO WARP` | `GRADE SDF` | `INTERFERÊNCIA` · `p1`…`p4` (defaults come from the preset) · `alphaMode` `alpha` (`opaque`) · `res` 1 (0.25…1 internal resolution) · `c1` `primary` · `c2` `accent` · `cbg` `bg` · `src` custom GLSL body (empty = preset).
 
 | Preset | p1 | p2 | p3 | p4 |
 |---|---|---|---|---|
 | CAMPO FBM | scale 2.2 | drift radius 0.7 | warp 0.9 | contrast 1.4 |
+| KALEIDO | sides 6 | zoom 3 | texture 0.6 | detail 0.5 |
+| FLUXO WARP | scale 1.6 | warp 1.1 | detail 0.5 | contrast 1.5 |
+| GRADE SDF | cells 8 | cycles 1 | stroke 0.5 | fill 0.35 |
+| INTERFERÊNCIA | frequency 9 | cycles 1 | thickness 0.5 | distance 0.45 |
 | CÉLULAS | density 6 | cycles 1 | edge 0.4 | fill 0.3 |
 | ANÉIS SDF | rings 9 | cycles 1 | thickness 0.35 | distortion 0.5 |
 | FAIXAS | lines 14 | cycles 1 | duty 0.55 | glitch 0.5 |
 
 **Custom GLSL contract** (WebGL 1, GLSL ES 1.00). Write only `void main(){…}` plus your own functions. Provided:
 
+- audio uniforms (always live or BPM-locked synthetic, so every shader reacts): `uBass` `uMid` `uHigh` `uRms` (0–1.5 bands, scaled by the layer response) · `uHit` (bass transient, decays in ~150 ms) · `uAud` (the band chosen in the layer's AUDIO panel). **Every shader must read at least one and give each a role.**
 - uniforms: `vec2 uRes` · `float uPh` (loop phase 0→1, the seamless clock) · `uT` (seconds) · `uBeat` (beat index, wraps with the loop) · `uBp` (beat phase) · `uPulse` (beat envelope or audio) · `uAud` · `uAlpha` · `uSeed` · `vec3 uC1 uC2 uBg` · `vec4 uP` (= p1…p4)
-- helpers: `hash(vec2)`, `noise(vec2)`, `fbm(vec2)`, `loopv(r)` (a point moving on a circle of radius r once per loop: use it to move through noise space seamlessly), `outc(color, coverage)` (writes alpha or opaque output), `TAU`
+- helpers: `vjRot(a)` mat2, `vjPal(t,a,b,c,d)` cosine palette, `vjSdBox`, `vjSdCircle`, `vjSmin` (smooth min), `vjKaleid(p,n)`, `vjEaseOut(t)`, `vjPulse(x,k)` · `hash(vec2)`, `noise(vec2)`, `fbm(vec2)`, `loopv(r)` (a point moving on a circle of radius r once per loop: use it to move through noise space seamlessly), `outc(color, coverage)` (writes alpha or opaque output), `TAU`
 - loop rule: animate with `uPh` times whole numbers, or `loopv()`. Never use `uT` for motion that must loop.
+- seed: `uSeed` = `(project.seed % 997) × 0.173`, a small float. Add it to any `hash`/`noise` argument so a new seed gives a sibling piece.
+- one layer = one color pair (`uC1`, `uC2`) over a transparent or `cbg` ground. For three color roles in one composition, stack two shader layers (each with its own `c1`/`c2` and `blend`), or write the third role as alpha.
+- `p1`…`p4` reach the shader unclamped from the JSON; the ranges in the preset table only limit the UI sliders. Keep values inside them so a slider nudge does not jump.
+- `res` (0.25…1) renders the shader at a fraction of the canvas and scales it up: widths measured in pixels grow as `res` falls. Hairlines need `res` 1.
+- ES 1.00 only: `float a = 1.0;` (not `1`), `mod(x, y)` (no integer `%`), constant loop bounds, no `texture2D`/`#version`. `scripts/validate_project.py` checks these; the interface reports the rest with line numbers.
 
 ### `image`, `video` — media (fixed slots)
 `media` file name · `fit` `cover` (`contain` `fill` `none`) · `mirror` · `flip` · `cropL` `cropR` `cropT` `cropB` 0…0.49 · `anim` `none` (`pulse` `flash`) · `tint` `none` or color. Video adds `rate` 1 · `start` `end` (s) · `play` `loop` (`reverse` `pingpong` `sync` = stretch the clip over the loop).
 
 ### `shape` — vector forms (fixed slot)
-`kind` `ring` (`circle` `square` `triangle` `line` `cross` `hex`) · `size` 160 · `count` 1 · `layout` `single` (`linear` `radial` `grid`) · `spread` 260 · `fill` false · `fillC` · `stroke` · `strokeW` 3 · `radius` 0 · `spin` 0 · `pulseAmt` 0.2 · `alt` false (accent walks across the shapes per division) · `hot`.
+`kind` `ring` (`circle` `square` `triangle` `line` `cross` `hex`) · positioned from the canvas center, with `x`/`y` as offsets · `size` 160 · `count` 1 · `layout` `single` (`linear` `radial` `grid`) · `spread` 260 · `fill` false · `fillC` (fill color) · `stroke` (stroke **color**) · `strokeW` 3 (stroke width; 0 = no stroke) · `radius` 0 · `spin` 0 · `pulseAmt` 0.2 · `alt` false (accent walks across the shapes per division) · `hot`.
 
 ### `text` — typography (fixed slot)
 `content` (multiline) · `font` `mono` (`helvetica` `archivo` `bebas` or imported) · `size` 96 · `weight` 700 · `tracking` 0.02 (em) · `leading` 1.05 · `align` `center` · `upper` true · `fill` true · `color` · `outline` 0 · `outlineC` · `shadow` 0 · `glow` 0 · `glowC` · `anim` `static` (`pulse` `scramble` `strobe` `marquee` `type`).
+
+**Positioning.** The text block is vertically centered on the canvas. Its horizontal anchor depends on `align`: `left` → 6% of the width, `center` → 50%, `right` → 94%. Common `x`/`y` are **offsets in canvas pixels from that anchor**, not absolute positions. Examples at 1920×1080: a flush-left caption in the bottom-left corner is `align: left, x: 0, y: 420`; top-right is `align: right, x: 0, y: -420`. Never use large negative `x` with `align: left`: it pushes the text off the canvas.
 
 ## Minimal composition example
 
@@ -151,4 +188,4 @@ Loop length is rounded to whole frames: `round(60 / bpm × 4 × bars × fps)`. A
     { "type": "post", "name": "PÓS", "p": { "scan": 0, "prob": 0.5 } } ] }
 ```
 
-Full worked projects: `examples/tecnofeudo-led-5120x500.json` (LED, custom GLSL, displays) and `examples/noite-filotaxia-1080p.json` in the repository.
+The repository's `examples/` folder holds two projects that show the **file format** only. Do not open them to start a project and never copy their names, words, palettes or compositions: every project is derived from its own briefing.

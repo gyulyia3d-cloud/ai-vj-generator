@@ -29,7 +29,7 @@ Revisão do "GYULYIA — VJ Generative Composition Engine" (73 seções) como sk
 - **Shader com código próprio.** A camada SHADER aceita GLSL escrito pelo Claude, com um contrato de uniforms que fecha o loop (`uPh`, `loopv()`). É onde entra o code art de verdade, sem o Claude reescrever o renderer.
 - **Unidades de 1080.** Tamanhos escalam por `min(H, W·9/16)/1080`, então o mesmo projeto lê em 16:9, 9:16 e 10:1 (paredes em L).
 - **Alpha correto.** O teste de export revelou que scanline e vinheta pintavam véu preto sobre o PNG transparente (0,4% de pixels transparentes). Agora elas são omitidas no export alpha (de 62% a 86% transparentes).
-- **Branco α (luma → alpha)**, o fluxo de trabalho de LED que já existia no TECNOFEUDO, para colorir no Resolume.
+- **Branco α (luma → alpha)**, o fluxo de LED em que tudo sai branco e a cor se escolhe no Resolume.
 - **Validação antes do export**: mídia ausente, erro de shader com número de linha, varredura que não divide o loop, moiré no LED, canvas acima de 8192 px, estimativa de memória.
 - **Displays recortados** do canvas mestre, com janelas de saída individuais.
 - **Desfazer** (Ctrl+Z, 60 passos), copiar e colar camada e parâmetros, explosão 3D com arraste, manipulação direta na viewport (arrastar move; Shift escala; Alt gira).

@@ -1,0 +1,374 @@
+{
+  "schema": "ai-vj-generator/2",
+  "id": "example-contrato-v4",
+  "meta": {
+    "name": "EXEMPLO DE FORMATO V4",
+    "artist": "EXEMPLO · SÓ O FORMATO DO ARQUIVO",
+    "context": "Mostra onde ficam o contrato criativo, o papel de cada camada e as capacidades. Não copie nomes, palavras, paleta nem composições.",
+    "brief": "Exemplo mínimo do schema 2: um mundo, três composições, cada camada com um porquê.",
+    "contract": {
+      "concept": "O intervalo entre dois sinais: a pausa que dá peso à próxima batida.",
+      "audienceEffect": "Expectativa contida que se resolve em alívio físico no retorno do loop.",
+      "semioticIntent": "Silêncio → ausência de figura → campo vazio → régua que mede o vazio → evento que o rompe.",
+      "visualLanguage": "Medição fria sobre um vazio escuro; só uma coisa se move por vez.",
+      "formLanguage": "Linhas longas e retângulos; nenhum círculo.",
+      "materialLanguage": "Plano e mate, sem brilho; o grão só aparece na pausa.",
+      "colorLogic": "Fundo quase preto, osso para a figura, um único acento que só existe no evento.",
+      "spatialLogic": "Figuras fora do centro; o vazio ocupa mais de metade do quadro.",
+      "motionLanguage": "Deslocamentos secos em degrau, sem easing contínuo; o corte vem antes do tempo forte.",
+      "typographyLanguage": "Sem texto.",
+      "temporalArc": "Estabelece a régua, deixa o vazio crescer, rompe no compasso final, volta ao início.",
+      "loopGrammar": "event: estável → acúmulo → evento → recuperação → estável",
+      "technicalStrategy": "Geradores vetoriais para as réguas (formas discretas); um shader só onde o campo é pixel a pixel.",
+      "forbiddenShortcuts": "Ruído com brilho, rotação constante, tudo centralizado, todas as camadas reagindo ao áudio."
+    },
+    "moods": [
+      "contido",
+      "técnico"
+    ],
+    "grammar": {
+      "form": "Linhas e retângulos",
+      "motion": "Degrau",
+      "rhythm": "Uma pulsação por compasso",
+      "color": "Osso sobre quase preto, um acento",
+      "density": "Baixa",
+      "depth": "Plana",
+      "texture": "Mate",
+      "transition": "Corte no compasso",
+      "audio": "Só os graves, só no evento"
+    }
+  },
+  "canvas": {
+    "w": 1920,
+    "h": 1080,
+    "fps": 30,
+    "target": "screen",
+    "safe": 0.05
+  },
+  "time": {
+    "bpm": 120,
+    "bars": 4,
+    "loop": true,
+    "seamless": true,
+    "mode": "loop",
+    "transition": "cut",
+    "trBeats": 1
+  },
+  "audio": {
+    "reactive": false,
+    "sens": 1,
+    "smooth": 0.75
+  },
+  "seed": 90417,
+  "palette": {
+    "bg": "#08090B",
+    "primary": "#E9E4D8",
+    "secondary": "#5C6168",
+    "accent": "#C8F04A"
+  },
+  "capabilities": {
+    "supported": [
+      "preview",
+      "outputWindow",
+      "fullscreen"
+    ],
+    "exportable": [
+      "pngSequenceAlpha",
+      "pngSequenceWhiteAlpha",
+      "webm"
+    ],
+    "requiresBridge": [
+      "ndi",
+      "spout",
+      "osc"
+    ],
+    "conceptual": [
+      "midi"
+    ]
+  },
+  "compositions": [
+    {
+      "name": "RÉGUA VAZIA",
+      "hypothesis": "ESTABELECER — só a régua mede o vazio; tudo o mais é leitura discreta.",
+      "motion": "step",
+      "layers": [
+        {
+          "type": "bg",
+          "name": "O VAZIO",
+          "role": "o vazio sobre o qual tudo é medido",
+          "p": {
+            "grain": 0
+          }
+        },
+        {
+          "type": "flow",
+          "name": "POEIRA DE SINAL",
+          "role": "atmosfera de fundo, quase invisível, que mostra que o vazio está vivo",
+          "opacity": 0.25,
+          "p": {
+            "count": 300,
+            "trail": 6,
+            "amp": 0.08,
+            "alpha": 0.4
+          }
+        },
+        {
+          "type": "structure",
+          "name": "MALHA DO VÁCUO",
+          "role": "a grade que dá unidade de medida aos outros níveis",
+          "opacity": 0.6,
+          "p": {
+            "rings": false,
+            "spiral": false,
+            "angle": false,
+            "gridA": 0.05
+          }
+        },
+        {
+          "type": "lines",
+          "name": "RÉGUA",
+          "role": "o herói: a única coisa que se move em degrau a cada tempo",
+          "p": {
+            "dir": "h",
+            "count": 12,
+            "weight": 3,
+            "stepped": true,
+            "div": "1/4"
+          }
+        },
+        {
+          "type": "shape",
+          "name": "MARCADOR FORA DO CENTRO",
+          "role": "segundo ponto focal, deslocado, que dá para onde o olho viajar",
+          "opacity": 0.8,
+          "p": {
+            "kind": "ring",
+            "size": 220,
+            "strokeW": 2,
+            "x": 520,
+            "y": -210
+          }
+        },
+        {
+          "type": "data",
+          "name": "LEITURA",
+          "role": "informação quantizada a cada 1/4 de tempo; textura de leitura, não conteúdo",
+          "opacity": 0.45,
+          "p": {
+            "rows": 14,
+            "ui": 0.9
+          }
+        },
+        {
+          "type": "hud",
+          "name": "MOLDURA",
+          "role": "registros de canto e relógio: ancoram a peça às bordas",
+          "p": {
+            "sub": "INTERVALO / MEDIDA",
+            "date": "120 BPM",
+            "foot": "RÉGUA VAZIA"
+          }
+        },
+        {
+          "type": "post",
+          "name": "ACABAMENTO",
+          "role": "unifica as camadas com uma textura mínima",
+          "p": {
+            "scan": 0.12,
+            "prob": 0.05,
+            "slices": 2
+          }
+        }
+      ]
+    },
+    {
+      "name": "ACÚMULO",
+      "hypothesis": "TENSÃO — retângulos concêntricos acumulam sem nunca chegar à borda; a régua ecoa mais lenta.",
+      "motion": "step",
+      "layers": [
+        {
+          "type": "bg",
+          "name": "O VAZIO",
+          "role": "continua o vazio da composição anterior",
+          "p": {
+            "grain": 0
+          }
+        },
+        {
+          "type": "shader",
+          "name": "CAMPO DE TENSÃO",
+          "role": "pressão de fundo: o único campo pixel a pixel; reage a todas as bandas",
+          "opacity": 0.35,
+          "blend": "screen",
+          "p": {
+            "preset": "FLUXO WARP",
+            "alphaMode": "alpha",
+            "res": 0.6,
+            "audio": 0.8,
+            "band": "bass"
+          }
+        },
+        {
+          "type": "tunnel",
+          "name": "ANÉIS RETOS",
+          "role": "o herói: mede a tensão que cresce, deslocado para a esquerda",
+          "p": {
+            "shape": "rect",
+            "count": 10,
+            "weight": 2,
+            "cx": 0.35,
+            "cy": 0.6
+          }
+        },
+        {
+          "type": "lines",
+          "name": "RÉGUA FINA",
+          "role": "ecoa a régua da primeira composição, mais lenta",
+          "opacity": 0.5,
+          "p": {
+            "dir": "v",
+            "count": 6,
+            "weight": 2,
+            "div": "1/2",
+            "audio": 0.6,
+            "band": "bass"
+          }
+        },
+        {
+          "type": "shape",
+          "name": "ÂNCORA",
+          "role": "marca o centro de gravidade do acúmulo",
+          "opacity": 0.7,
+          "p": {
+            "kind": "cross",
+            "size": 90,
+            "strokeW": 2,
+            "x": -310,
+            "y": 130
+          }
+        },
+        {
+          "type": "data",
+          "name": "CONTAGEM",
+          "role": "conta os compassos até o rompimento",
+          "opacity": 0.45,
+          "p": {
+            "rows": 10,
+            "ui": 0.9
+          }
+        },
+        {
+          "type": "hud",
+          "name": "MOLDURA",
+          "role": "mesmo sistema de bordas da composição anterior, para o conjunto ler como um só",
+          "p": {
+            "sub": "INTERVALO / ACÚMULO",
+            "date": "120 BPM",
+            "foot": "ACÚMULO"
+          }
+        },
+        {
+          "type": "post",
+          "name": "ACABAMENTO",
+          "role": "mesma textura mínima do conjunto",
+          "p": {
+            "scan": 0.12,
+            "prob": 0.08,
+            "slices": 2
+          }
+        }
+      ]
+    },
+    {
+      "name": "ROMPIMENTO",
+      "hypothesis": "EVENTO — o campo inteiro acende no tempo forte e some em meio compasso.",
+      "motion": "smooth",
+      "layers": [
+        {
+          "type": "bg",
+          "name": "O VAZIO",
+          "role": "o vazio volta depois do evento",
+          "p": {
+            "grain": 0
+          }
+        },
+        {
+          "type": "shader",
+          "name": "CAMPO DO EVENTO",
+          "role": "o rompimento: interferência que se acende no tempo forte",
+          "blend": "screen",
+          "opacity": 0.6,
+          "p": {
+            "preset": "INTERFERÊNCIA",
+            "alphaMode": "alpha",
+            "res": 0.6,
+            "audio": 1,
+            "band": "bass"
+          }
+        },
+        {
+          "type": "symbols",
+          "name": "MATRIZ DE SINAIS",
+          "role": "textura de sinalização que cresce com o evento",
+          "opacity": 0.5,
+          "p": {
+            "pattern": "ring",
+            "cell": 120,
+            "density": 0.6
+          }
+        },
+        {
+          "type": "lines",
+          "name": "RÉGUA DO RETORNO",
+          "role": "a régua da composição 1 reaparece, agora em movimento contínuo",
+          "opacity": 0.6,
+          "p": {
+            "dir": "h",
+            "count": 12,
+            "weight": 3,
+            "div": "1/8"
+          }
+        },
+        {
+          "type": "blocks",
+          "name": "CORTE EM BLOCOS",
+          "role": "glitch em bloco só no tempo forte do compasso",
+          "p": {
+            "amt": 0.5,
+            "cell": 120
+          }
+        },
+        {
+          "type": "event",
+          "name": "SINAL",
+          "role": "marca o acento; é o único uso do verde",
+          "p": {
+            "every": 4,
+            "words": "AGORA",
+            "mode": "word"
+          }
+        },
+        {
+          "type": "hud",
+          "name": "MOLDURA",
+          "role": "mantém as bordas do conjunto",
+          "p": {
+            "sub": "INTERVALO / ROMPIMENTO",
+            "date": "120 BPM",
+            "foot": "ROMPIMENTO"
+          }
+        },
+        {
+          "type": "post",
+          "name": "ACABAMENTO",
+          "role": "textura do conjunto",
+          "p": {
+            "scan": 0.12,
+            "prob": 0.2,
+            "slices": 3
+          }
+        }
+      ]
+    }
+  ]
+}

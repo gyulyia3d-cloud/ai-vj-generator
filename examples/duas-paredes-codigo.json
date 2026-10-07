@@ -1,0 +1,121 @@
+{
+  "schema": "ai-vj-generator/1",
+  "id": "exemplo-duas-paredes",
+  "meta": {
+    "name": "PASSAGEM DE TURNO",
+    "artist": "",
+    "context": "Exemplo de FORMATO: duas paredes em L, branco alpha, camada de código com variáveis. Não é ponto de partida.",
+    "brief": "Duas paredes se respondem em torno da quina: a esquerda pergunta, a direita responde, no compasso.",
+    "grammar": {
+      "form": "bloco de pixel e faixa",
+      "motion": "degrau no beat",
+      "rhythm": "um gesto por batida",
+      "color": "branco em três níveis",
+      "density": "baixa, figuras grandes",
+      "depth": "plana",
+      "texture": "nenhuma",
+      "transition": "corte",
+      "audio": "sem áudio"
+    }
+  },
+  "canvas": {
+    "w": 5120,
+    "h": 500,
+    "fps": 30,
+    "target": "led",
+    "folds": [
+      2560
+    ],
+    "gutter": 90
+  },
+  "time": {
+    "bpm": 124,
+    "bars": 4,
+    "loop": true,
+    "seamless": true,
+    "mode": "loop",
+    "transition": "cut",
+    "trBeats": 1
+  },
+  "audio": {
+    "reactive": false
+  },
+  "seed": 20260501,
+  "palette": {
+    "mode": "white-alpha"
+  },
+  "compositions": [
+    {
+      "name": "PERGUNTA E RESPOSTA",
+      "hypothesis": "ESPELHO — A palavra entra na parede esquerda e a outra responde na direita, a faixa de risco marca o tempo.",
+      "motion": "step",
+      "layers": [
+        {
+          "type": "hazard",
+          "name": "FAIXA",
+          "p": {
+            "y": 0.9,
+            "h": 100,
+            "color": "field"
+          }
+        },
+        {
+          "type": "pixeltext",
+          "name": "PALAVRA",
+          "p": {
+            "words": "DE DIA|DE NOITE|AGORA",
+            "per": "bar",
+            "words2": "offset",
+            "reveal": "pixels",
+            "exit": "dissolve",
+            "size": 0.86,
+            "hmax": 0.6,
+            "cy": 0.44
+          }
+        },
+        {
+          "type": "blocks",
+          "name": "BLOCOS",
+          "p": {
+            "amt": 0.4,
+            "tone": "mix"
+          }
+        }
+      ]
+    },
+    {
+      "name": "RÉGUA DO TURNO",
+      "hypothesis": "CONTAGEM — Uma barra por parede enche no compasso; o número do beat aparece em bloco.",
+      "motion": "step",
+      "layers": [
+        {
+          "type": "code",
+          "name": "BARRA",
+          "vars": [
+            {
+              "k": "alt",
+              "l": "Altura da barra",
+              "t": "n",
+              "d": 70,
+              "min": 20,
+              "max": 300,
+              "step": 1
+            },
+            {
+              "k": "cell",
+              "l": "Célula do número",
+              "t": "n",
+              "d": 70,
+              "min": 12,
+              "max": 120,
+              "step": 1
+            }
+          ],
+          "p": {
+            "src": "for (const w of K.walls) {\n  const full = w.sw * 0.84, len = full * K.ease.out(K.t.barT * 1.2);\n  const x0 = w.cx - full / 2, y = K.h * 0.74;\n  c.fillStyle = K.field; K.rect(c, x0, y, full, K.v.alt);\n  c.fillStyle = K.ink;   K.rect(c, x0, y, len, K.v.alt);\n  const n = String((K.t.beat % 4) + 1), cell = K.v.cell;\n  c.fillStyle = K.ink;\n  K.bText(c, n, w.cx - K.bW(n, cell) / 2, K.h * 0.12, cell);\n}\nK.glitch(c, 0.3, 5);"
+          }
+        }
+      ]
+    }
+  ]
+}

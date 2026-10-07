@@ -2,7 +2,7 @@
 
 **Do briefing ao palco, em camadas.**
 
-O AI VJ Generator é uma skill open source para o Claude que trabalha como diretora de arte de um set de VJ. Você conta onde vai projetar, o que o público deve sentir e qual é o BPM. Ela entrevista só o que muda a solução, transforma as respostas numa gramática visual e entrega um gerador ao vivo com cinco composições, cada uma com uma hipótese própria: estrutura, fluxo, densidade, ritmo e transformação. Cada composição é uma pilha de camadas que você liga, desliga, mistura e explode em 3D, com todos os parâmetros em slider e número, sincronizados ao BPM ou reagindo ao áudio.
+O AI VJ Generator é uma skill open source para o Claude que trabalha como diretora de arte de um set de VJ. Você conta onde vai projetar, o que o público deve sentir e qual é o BPM. Cada briefing começa do zero: sem presets, sem modelos, sem exemplos. Ela analisa o texto e as imagens e vídeos anexados (com medições, não só com o olhar), entrevista no chat só o que muda a solução, e escreve um sistema visual a partir do tema, com de três a cinco composições que defendem ideias diferentes. Cada composição é uma pilha de camadas que você liga, desliga, mistura e explode em 3D, com todos os parâmetros em slider e número, sincronizados ao BPM ou reagindo ao áudio.
 
 ## A engenharia criativa
 

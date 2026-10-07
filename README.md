@@ -1,6 +1,6 @@
 # AI VJ Generator
 
-**Skill para o Claude + motor de composição generativa para VJs.** Você descreve o set, o espaço e a música; o Claude entrevista, define a direção de arte e entrega um gerador ao vivo com 5 composições em camadas, pronto para projetar, gravar ou exportar em PNG com alpha para o Resolume.
+**Skill para o Claude + motor de composição generativa para VJs.** Você digita `/vj`, descreve o set e anexa referências; o Claude analisa o briefing, as imagens e os vídeos, conversa com você, e cria do zero um sistema visual em camadas, aberto num gerador ao vivo pronto para projetar, gravar ou exportar em PNG com alpha para o Resolume. Sem presets, sem modelos: cada projeto nasce só do seu briefing.
 
 *Claude skill + generative composition engine for VJs. Describe the set, the space and the music; Claude interviews you, sets the art direction and hands you a live generator with 5 layered compositions, ready to project, record or export as alpha PNG sequences for Resolume. English summary below.*
 
@@ -20,20 +20,30 @@ Windows (PowerShell):
 git clone https://github.com/SEU-USUARIO/ai-vj-generator.git; cd ai-vj-generator; powershell -ExecutionPolicy Bypass -File install.ps1
 ```
 
-O instalador copia `skill/ai-vj-generator` para `~/.claude/skills/`. Reinicie o Claude Code e peça: *"quero visuais para meu set de techno, LED 5120×500, 132 BPM"*. Guia completo, incluindo claude.ai: [INSTALL.md](INSTALL.md).
+O instalador copia as 4 skills de `skill/` para `~/.claude/skills/`. Reinicie o Claude Code e digite: `/vj set de techno industrial, LED 5120×500, 132 BPM, anexei duas referências`. Guia completo, incluindo claude.ai: [INSTALL.md](INSTALL.md).
 
-**Sem o Claude:** abra `app/index.html` no navegador (ou rode `node scripts/serve.mjs` e acesse `http://localhost:5173`). O entrevistador embutido gera as 5 composições por regras; o botão STANDARD carrega o motor de camadas original.
+**Sem o Claude:** abra `app/index.html` no navegador (ou rode `node scripts/serve.mjs` e acesse `http://localhost:5173`). A interface **não inventa animações**: ela abre com "Aguardando briefing" e carrega o projeto que o Claude escreveu (ou um JSON colado). O botão STANDARD abre a biblioteca original de camadas.
 
 ## O que ele faz
 
 | | |
 |---|---|
-| **Entrevistador** | Perguntas progressivas, só as que mudam a solução: superfície e pixels, sensação, BPM e áudio, software de destino. O resto vira padrão declarado. |
+| **Comandos `/`** | `/vj <briefing>` conduz tudo do zero; `/vj-reference` só analisa anexos; `/vj-critique` avalia um projeto pronto e propõe mutações. |
+| **Entrevista no chat** | Perguntas em rodadas de até 4, só as que mudam a solução e ancoradas no que foi medido nos anexos. Só o técnico tem padrão; paleta, conceito e composições vêm do briefing. |
+| **Anexos analisados** | Imagens e vídeos viram medições (paleta em OKLab, peso visual, simetria, periodicidade, cortes, movimento de câmera) mais a leitura do Claude, e então um princípio, nunca uma cópia. Requer `pip install pillow numpy`; vídeo também precisa de ffmpeg. |
 | **Gramática visual** | O briefing vira 9 decisões: forma, movimento, ritmo, cor, densidade, profundidade, textura, transição, relação sonora. |
-| **5 composições** | Estrutura, fluxo, densidade, ritmo e transformação. Cada uma tem um gerador herói diferente e uma hipótese própria, com nomes vindos do briefing. |
+| **3 a 5 composições distintas** | Hipóteses derivadas do tema, cada uma com regra, princípio de animação, técnica e hierarquia próprios, e nomes tirados do briefing. Sem lista padrão. |
+| **Repertório** | História da arte, design suíço, cor, animação, tipografia cinética, arte generativa, padrões com receitas GLSL, artistas e estúdios, bibliotecas e licenças, em formato referência → princípio → parâmetro. |
+| **Validação antes de entregar** | `validate_project.py` pega parâmetro com erro de digitação, FPS inválido, erros de GLSL ES 1.00 e sinais de template (nomes genéricos, paleta pronta, exemplo copiado). |
 | **Camadas por composição** | Liga/desliga (teclas 0–9), solo, reordenar, duplicar, renomear, opacidade, blend, copiar e colar parâmetros, explosão 3D da pilha. |
 | **Parâmetros** | Slider + campo numérico em tudo: transform, aparência, movimento (velocidade, fase, divisão 1/1…1/16), áudio, gerador. |
 | **Camadas fixas** | SHADER (GLSL editável), IMAGEM, VÍDEO, FORMA e TEXTO (fonte importável, tracking, entrelinha, contorno, glow, animação). |
+| **Paredes e dobras** | `canvas.folds` divide o mapa em paredes (L, U, cubo). Guia vermelho, calha, geradores medidos a partir da dobra e aviso quando texto cruza a calha. |
+| **Camada de código** | Quando nenhum gerador expressa a ideia, a skill escreve o corpo de `draw(c, K)`: roda no relógio determinístico do motor, com kit de tipo em pixel-bloco, símbolos, glitch em bloco, máscaras de logo e variáveis que viram sliders. Filtro de segurança e autorização por projeto (não é uma caixa de areia). |
+| **Geradores de parede** | `pixeltext`, `symbols`, `hazard`, `blocks`, `logo` (fit, mosaico, meio-tom, fatiado, degraus, fragmento). |
+| **Branco α** | `palette.mode: white-alpha`: figura 100%, apoio 72%, campo 43%; tudo sai branco com opacidade e a cor se escolhe no Resolume. |
+| **Arquivos embutidos** | Logos, imagens e fontes viajam dentro do HTML e do JSON (`make-artifact --assets pasta`). `pasta/logos/` vira máscara branca com alpha. |
+| **QA headless** | `scripts/contact_sheet.mjs` abre o HTML num Chrome ou Edge sem janela, grava a folha de contato de cada composição (dobras marcadas) e imprime a validação. |
 | **Tempo** | BPM global com tap, loop em compassos inteiros, sempre seamless, modos loop / ping-pong / reverse / random / phase / audio / manual, pausa e scrub quadro a quadro. |
 | **Áudio** | Reatividade on/off; microfone ou arquivo; bass / mid / high / rms por camada, com suavização. |
 | **Canvas** | Qualquer proporção: 16:9, 9:16, 32:9, 5120×500 para paredes em L. A viewport se adapta, com safe area, grade, zoom, 100% e displays recortados. |
@@ -50,12 +60,16 @@ Cada camada é uma **função pura de (parâmetros, número do quadro)**: o rel�
 ```
 ai-vj-generator/
 ├── app/index.html               motor completo, um arquivo, sem build
-├── skill/ai-vj-generator/       a skill (autocontida)
-│   ├── SKILL.md
-│   ├── references/              entrevista, direção de arte, schema, saídas, entrega
-│   ├── scripts/                 make_artifact.py · make-artifact.mjs
-│   └── assets/                  engine.html (cópia do app) · examples/
-├── examples/                    projetos prontos (LED 5120×500, 1080p)
+├── skill/                       as skills (instaladas juntas)
+│   ├── ai-vj-generator/         a skill principal
+│   │   ├── SKILL.md
+│   │   ├── references/          fluxo, entrevista, anexos, direção de arte, repertório, schema, saídas, entrega
+│   │   ├── scripts/             analyze_image · analyze_video · validate_project · make_artifact · contact_sheet · assets
+│   │   └── assets/engine.html   cópia do app (a skill não carrega exemplos)
+│   ├── vj/                      comando /vj
+│   ├── vj-reference/            comando /vj-reference
+│   └── vj-critique/             comando /vj-critique
+├── examples/                    dois projetos só para mostrar o formato do arquivo
 ├── scripts/                     serve · build · sync-skill · check
 ├── docs/                        análise do prompt, apresentação, mapa de instalação
 ├── install.sh · install.ps1
@@ -90,7 +104,7 @@ Sem dependências de npm. A única biblioteca externa é o JSZip (cdnjs, com SRI
 - Controle por MIDI (Web MIDI) e OSC via bridge local
 - Export direto em WebCodecs (H.264 / VP9) quando o navegador suportar alpha
 - Mais geradores: reaction-diffusion, feedback, SDF 3D
-- Editor de timeline para sequenciar as 5 composições no set
+- Editor de timeline para sequenciar as composições no set
 
 ## English summary
 

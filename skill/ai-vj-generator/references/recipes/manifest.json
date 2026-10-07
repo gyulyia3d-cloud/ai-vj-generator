@@ -1,0 +1,556 @@
+{
+  "version": 1,
+  "note": "Vocabulary, not presets. Every recipe is a tested starting move: change the numbers, the palette roles and the audio mapping for the briefing at hand, and never ship one unchanged. Build a layer with: python scripts/recipes.py layer <id> --set key=value",
+  "recipes": [
+    {
+      "id": "superformula",
+      "kind": "code",
+      "file": "code/superformula.js",
+      "title": "Superformula contours",
+      "principle": "Gielis superformula r(t)=(|cos(mt/4)|^n2+|sin(mt/4)|^n3)^(-1/n1): one equation spans circles, stars, flowers, polygons, leaves",
+      "means": [
+        "growth and morphology",
+        "natural form made by one law",
+        "crystal, flower, star, cell",
+        "transformation between archetypes"
+      ],
+      "tier": "hero",
+      "loop": "closes: exponents move in whole sine cycles; m even 1 turn, m odd 2",
+      "audio": {
+        "bass": "exponent n1 and ring pressure (shape breathes)"
+      },
+      "cost": "low",
+      "wide": "centred hero; on strips use one per height-sized module (place several layers) or raise rings",
+      "vars": [
+        {
+          "k": "m",
+          "l": "Simetria (m)",
+          "t": "n",
+          "d": 6,
+          "min": 3,
+          "max": 12,
+          "step": 1
+        },
+        {
+          "k": "rings",
+          "l": "Anéis",
+          "t": "n",
+          "d": 14,
+          "min": 6,
+          "max": 30,
+          "step": 1
+        },
+        {
+          "k": "wob",
+          "l": "Deformação",
+          "t": "n",
+          "d": 0.6,
+          "min": 0,
+          "max": 1.2,
+          "step": 0.05
+        },
+        {
+          "k": "weight",
+          "l": "Traço",
+          "t": "n",
+          "d": 3,
+          "min": 1,
+          "max": 8,
+          "step": 0.5
+        }
+      ]
+    },
+    {
+      "id": "clifford",
+      "kind": "code",
+      "file": "code/clifford.js",
+      "title": "Clifford attractor cloud",
+      "principle": "strange attractor of the map x'=sin(ay)+c cos(ax), y'=sin(bx)+d cos(by); parameters travel a circle once per loop",
+      "means": [
+        "order inside chaos",
+        "smoke, nebula, nerve, dust",
+        "a system that never repeats yet stays itself"
+      ],
+      "tier": "hero or structure",
+      "loop": "closes: a,b,c,d on a circle, whole cycles",
+      "audio": {
+        "bass": "morph depth (the cloud swells and reshapes on the kick)"
+      },
+      "cost": "medium (about 30k points per copy)",
+      "wide": "`copies` repeats it across the width with phase offsets: the same law, a different state per module",
+      "vars": [
+        {
+          "k": "seeds",
+          "l": "Sementes",
+          "t": "n",
+          "d": 1200,
+          "min": 300,
+          "max": 3000,
+          "step": 50
+        },
+        {
+          "k": "copies",
+          "l": "Módulos",
+          "t": "n",
+          "d": 1,
+          "min": 1,
+          "max": 8,
+          "step": 1
+        },
+        {
+          "k": "size",
+          "l": "Escala",
+          "t": "n",
+          "d": 1,
+          "min": 0.5,
+          "max": 2,
+          "step": 0.05
+        },
+        {
+          "k": "morph",
+          "l": "Morfose",
+          "t": "n",
+          "d": 0.08,
+          "min": 0,
+          "max": 0.3,
+          "step": 0.01
+        }
+      ]
+    },
+    {
+      "id": "pendulum-wave",
+      "kind": "code",
+      "file": "code/pendulum-wave.js",
+      "title": "Pendulum wave",
+      "principle": "pendulum i oscillates base+floor(i*spread) whole cycles per loop: the row re-synchronises exactly at the seam and draws travelling waves, standing waves and moire between (side view)",
+      "means": [
+        "time made visible",
+        "synchrony and drift",
+        "ensemble, choir, crowd finding unison"
+      ],
+      "tier": "hero",
+      "loop": "closes by construction (integer cycles)",
+      "audio": {
+        "bass": "amplitude (the row swells on the kick)"
+      },
+      "cost": "very low",
+      "wide": "native to wide canvases: the row spans the width; raise count with the width",
+      "vars": [
+        {
+          "k": "count",
+          "l": "Pêndulos",
+          "t": "n",
+          "d": 72,
+          "min": 24,
+          "max": 160,
+          "step": 1
+        },
+        {
+          "k": "base",
+          "l": "Ciclos base",
+          "t": "n",
+          "d": 6,
+          "min": 3,
+          "max": 12,
+          "step": 1
+        },
+        {
+          "k": "spread",
+          "l": "Dispersão",
+          "t": "n",
+          "d": 0.5,
+          "min": 0.1,
+          "max": 1,
+          "step": 0.05
+        },
+        {
+          "k": "amp",
+          "l": "Amplitude",
+          "t": "n",
+          "d": 0.7,
+          "min": 0.2,
+          "max": 1,
+          "step": 0.05
+        }
+      ]
+    },
+    {
+      "id": "wave-interference",
+      "kind": "code",
+      "file": "code/wave-interference.js",
+      "title": "Wave interference dot field",
+      "principle": "superposition of circular waves from orbiting point sources: constructive interference swells the dots, destructive interference dims them",
+      "means": [
+        "fields, signals, sound made visible",
+        "meeting of two forces",
+        "ripples, sonar, radiation"
+      ],
+      "tier": "structure or ground",
+      "loop": "closes: sources orbit whole turns, wave advances 2 cycles per loop",
+      "audio": {
+        "bass": "dot size (energy of the field)"
+      },
+      "cost": "medium (cells x sources)",
+      "wide": "excellent on LED walls: the grid is the pixel language; set cell to a multiple of the LED pixel pitch",
+      "vars": [
+        {
+          "k": "cell",
+          "l": "Célula",
+          "t": "n",
+          "d": 30,
+          "min": 12,
+          "max": 80,
+          "step": 1
+        },
+        {
+          "k": "src",
+          "l": "Fontes",
+          "t": "n",
+          "d": 3,
+          "min": 2,
+          "max": 6,
+          "step": 1
+        },
+        {
+          "k": "wl",
+          "l": "Comprimento de onda",
+          "t": "n",
+          "d": 180,
+          "min": 60,
+          "max": 400,
+          "step": 5
+        }
+      ]
+    },
+    {
+      "id": "spirograph",
+      "kind": "code",
+      "file": "code/spirograph.js",
+      "title": "Spirograph family with a tracing head",
+      "principle": "hypotrochoid with R:r = p:q closes after q turns; a bright head traces each curve exactly once per loop and leaves a fading tail (stroke progress)",
+      "means": [
+        "drawing itself",
+        "gears, mechanism, craft",
+        "memory being written"
+      ],
+      "tier": "hero or instrument",
+      "loop": "closes: head = one revolution of the curve per loop, pen distance on a sine",
+      "audio": {
+        "bass": "pen distance (the figure opens on the kick)"
+      },
+      "cost": "medium",
+      "wide": "centred; repeat as several layers with different seeds for a strip",
+      "vars": [
+        {
+          "k": "curves",
+          "l": "Curvas",
+          "t": "n",
+          "d": 4,
+          "min": 1,
+          "max": 7,
+          "step": 1
+        },
+        {
+          "k": "pen",
+          "l": "Caneta",
+          "t": "n",
+          "d": 0.8,
+          "min": 0.3,
+          "max": 1.3,
+          "step": 0.05
+        },
+        {
+          "k": "tail",
+          "l": "Cauda",
+          "t": "n",
+          "d": 0.35,
+          "min": 0.05,
+          "max": 0.9,
+          "step": 0.05
+        }
+      ]
+    },
+    {
+      "id": "kepler",
+      "kind": "code",
+      "file": "code/kepler.js",
+      "title": "Kepler orbits",
+      "principle": "bodies on ellipses with the orbital period following Kepler's third law (inner fast, outer slow), solved in closed form from the mean anomaly",
+      "means": [
+        "cosmos, scale, gravity",
+        "cycles within cycles",
+        "a system governed by one law"
+      ],
+      "tier": "hero or structure",
+      "loop": "closes: whole orbits per loop, M = 2 pi n phase",
+      "audio": {
+        "bass": "the central body pulses"
+      },
+      "cost": "low",
+      "wide": "centred; on strips run two layers with different seeds, or set the centre by wall",
+      "vars": [
+        {
+          "k": "bodies",
+          "l": "Corpos",
+          "t": "n",
+          "d": 9,
+          "min": 3,
+          "max": 16,
+          "step": 1
+        },
+        {
+          "k": "ecc",
+          "l": "Excentricidade",
+          "t": "n",
+          "d": 0.55,
+          "min": 0,
+          "max": 0.85,
+          "step": 0.01
+        },
+        {
+          "k": "tail",
+          "l": "Cauda",
+          "t": "n",
+          "d": 0.35,
+          "min": 0.05,
+          "max": 1,
+          "step": 0.05
+        }
+      ]
+    },
+    {
+      "id": "stagger-grid",
+      "kind": "code",
+      "file": "code/stagger-grid.js",
+      "title": "Radial stagger grid",
+      "principle": "each cell pulses once per bar with a delay proportional to its distance from a seeded origin: one ripple crosses the wall (stagger from a point, ease on the delay)",
+      "means": [
+        "propagation",
+        "a signal crossing a body",
+        "impact and aftershock",
+        "a city waking up"
+      ],
+      "tier": "structure or instrument",
+      "loop": "closes: every cell is in the same small state at bar start and end",
+      "audio": {
+        "bass": "cell swell"
+      },
+      "cost": "low",
+      "wide": "the grid fills any aspect; set cell to a multiple of the LED pixel pitch",
+      "vars": [
+        {
+          "k": "cell",
+          "l": "Célula",
+          "t": "n",
+          "d": 40,
+          "min": 16,
+          "max": 120,
+          "step": 1
+        },
+        {
+          "k": "reach",
+          "l": "Alcance da onda",
+          "t": "n",
+          "d": 0.35,
+          "min": 0.1,
+          "max": 0.38,
+          "step": 0.01
+        },
+        {
+          "k": "curve",
+          "l": "Aceleração",
+          "t": "n",
+          "d": 1.3,
+          "min": 0.6,
+          "max": 2.5,
+          "step": 0.05
+        }
+      ],
+      "usage": "The ripple covers the whole wall, so over a busy hero (Chladni, quasicrystal) it reads as grey noise. Give the layer opacity 0.4 to 0.6, a cell several times the hero's line spacing, or run it alone as a structure tier under a sparse hero. Test with the hero on and off."
+    },
+    {
+      "id": "chladni",
+      "kind": "shader",
+      "file": "shader/chladni.glsl",
+      "title": "Chladni figures",
+      "principle": "nodal lines of a vibrating plate, f = cos(n pi x)cos(m pi y) - cos(m pi x)cos(n pi y); two mode pairs blended so the figure morphs",
+      "means": [
+        "sound made visible",
+        "resonance, vibration, cymatics",
+        "matter organising under frequency"
+      ],
+      "tier": "hero or structure",
+      "loop": "closes: the mode blend is a whole sine cycle",
+      "audio": {
+        "bass": "line width",
+        "mid": "mode morph",
+        "high": "sand grain density",
+        "hit": "flash"
+      },
+      "cost": "low",
+      "wide": "one plate per height-sized module, each with a different mode pair: natural for strips",
+      "p": {
+        "p1": 3,
+        "p2": 2,
+        "p3": 0.07,
+        "p4": 3
+      },
+      "ranges": {
+        "p1": [
+          2,
+          9
+        ],
+        "p2": [
+          1,
+          5
+        ],
+        "p3": [
+          0.02,
+          0.2
+        ],
+        "p4": [
+          1,
+          3
+        ]
+      }
+    },
+    {
+      "id": "quasicrystal",
+      "kind": "shader",
+      "file": "shader/quasicrystal.glsl",
+      "title": "Quasicrystal",
+      "principle": "n plane waves at equal angles interfere into an aperiodic pattern with n-fold symmetry and no translational repeat",
+      "means": [
+        "order without repetition",
+        "crystal, lattice, architecture of light",
+        "forbidden symmetry"
+      ],
+      "tier": "ground or structure",
+      "loop": "closes: each wave advances 1 or 2 whole cycles",
+      "audio": {
+        "bass": "threshold (islands swell)",
+        "mid": "frequency drift",
+        "high": "colour mix",
+        "hit": "flash"
+      },
+      "cost": "low",
+      "wide": "covers any aspect without stretching; frequency is in height units",
+      "p": {
+        "p1": 34,
+        "p2": 7,
+        "p3": 0.7,
+        "p4": 0.5
+      },
+      "ranges": {
+        "p1": [
+          12,
+          60
+        ],
+        "p2": [
+          5,
+          11
+        ],
+        "p3": [
+          0.4,
+          0.9
+        ],
+        "p4": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "id": "domain-coloring",
+      "kind": "shader",
+      "file": "shader/domain-coloring.glsl",
+      "title": "Domain colouring of a rational function",
+      "principle": "the plane is the complex plane; iso-lines of argument and modulus of f(z) converge on zeros and poles that orbit with the loop",
+      "means": [
+        "analysis, signal, abstraction",
+        "topology made visible",
+        "a map of invisible forces"
+      ],
+      "tier": "ground or hero",
+      "loop": "closes: zero and pole coefficients orbit on circles (1 and 2 turns)",
+      "audio": {
+        "bass": "zoom pulse",
+        "mid": "colour parity drift",
+        "high": "line softness",
+        "hit": "flash"
+      },
+      "cost": "low",
+      "wide": "no stretching; zoom p1 in height units",
+      "p": {
+        "p1": 1.7,
+        "p2": 6,
+        "p3": 2,
+        "p4": 0.02
+      },
+      "ranges": {
+        "p1": [
+          0.8,
+          3
+        ],
+        "p2": [
+          2,
+          12
+        ],
+        "p3": [
+          0.5,
+          4
+        ],
+        "p4": [
+          0,
+          0.2
+        ]
+      }
+    },
+    {
+      "id": "julia-orbit",
+      "kind": "shader",
+      "file": "shader/julia-orbit.glsl",
+      "title": "Julia set on an orbit",
+      "principle": "z <- z^2 + c with c on a circle; a full revolution morphs the set and returns exactly; smooth escape time drives outward bands",
+      "means": [
+        "infinite depth, recursion",
+        "biology at every scale",
+        "a world that keeps opening"
+      ],
+      "tier": "hero or ground",
+      "loop": "closes: c = r e^{i 2 pi phase}",
+      "audio": {
+        "bass": "radius of c (the set breathes)",
+        "mid": "colour drift",
+        "high": "colour mix",
+        "hit": "flash"
+      },
+      "cost": "medium (56 iterations per pixel; use res 0.5-0.7 on big canvases)",
+      "wide": "fills any aspect; zoom p1 in height units",
+      "p": {
+        "p1": 1.7,
+        "p2": 12,
+        "p3": 0.7885,
+        "p4": 0.2
+      },
+      "ranges": {
+        "p1": [
+          0.8,
+          3
+        ],
+        "p2": [
+          4,
+          30
+        ],
+        "p3": [
+          0.6,
+          0.85
+        ],
+        "p4": [
+          0,
+          1
+        ]
+      }
+    }
+  ]
+}

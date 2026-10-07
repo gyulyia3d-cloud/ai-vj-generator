@@ -5,12 +5,14 @@
 //   node scripts/build.mjs examples/tecno-led.json  → dist/<nome>.html (abre no BRIEFING do JSON)
 //   node scripts/build.mjs projeto.json --artifact  → versão sem <html>/<head>/<body>, pronta para publicar como Artifact
 //   node scripts/build.mjs projeto.json --out caminho/arquivo.html
+//   node scripts/build.mjs projeto.json --assets pasta   → embute imagens e fontes (pasta/logos/* viram máscara branca com alpha)
 //
 // Sem dependências. A skill usa este script; também dá para fazer a troca à mão:
 // substitua o marcador /*__PROJECT_JSON__*/ dentro de <script id="project"> pelo JSON.
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, join, resolve, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { collectAssets } from '../skill/ai-vj-generator/scripts/assets.mjs';
 
 const ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const args = process.argv.slice(2);
@@ -26,6 +28,8 @@ let out = html, name = 'ai-vj-generator';
 if (jsonPath) {
   const raw = await readFile(resolve(jsonPath), 'utf8');
   const project = JSON.parse(raw);
+  const ad = opt('--assets');
+  if (ad) { const { assets, bytes, warnings } = await collectAssets(resolve(ad)); project.assets = Object.assign({}, project.assets || {}, assets); console.log(`assets: ${Object.keys(assets).length} arquivo(s), ${(bytes / 1048576).toFixed(1)} MB`); warnings.forEach(w => console.warn('aviso: ' + w)); }
   if (!Array.isArray(project.compositions) || !project.compositions.length) throw new Error('JSON sem "compositions".');
   for (const c of project.compositions) if (!Array.isArray(c.layers)) throw new Error(`Composição "${c.name}" sem "layers".`);
   // impede que um "</script>" dentro de strings (ex.: GLSL ou texto) feche a tag

@@ -1,14 +1,14 @@
 # Output targets, transport and Resolume workflow
 
-Separate VISUAL GENERATION (the engine) from OUTPUT TRANSPORT (how pixels reach the surface). Never claim a transport the browser cannot do.
+Separate VISUAL GENERATION (the engine) from OUTPUT TRANSPORT (how pixels reach the surface). Never claim a transport the browser cannot do. The four labels and the full status table are in `capabilities.md`; how the surface itself shapes the design is in `surface-model.md`.
 
 ## Truth table
 
 | Destination | Status | How |
 |---|---|---|
 | Fullscreen / second monitor (HDMI, DisplayPort) | SUPPORTED | Output window or fullscreen viewport; the GPU carries the signal. |
-| PNG sequence with alpha, per composition or per layer | SUPPORTED | EXPORTAR tab → ZIP. Deterministic, frame-exact loop. |
-| WebM screen recording | SUPPORTED | GRAVAR. No alpha (browser codecs). Captures live audio reaction. |
+| PNG sequence with alpha, per composition or per layer | EXPORTABLE | EXPORTAR tab → ZIP. Deterministic, frame-exact loop. |
+| WebM screen recording | EXPORTABLE | GRAVAR. No alpha (browser codecs). Captures live audio reaction. |
 | Resolume, TouchDesigner, Notch, MadMapper | EXPORTABLE | PNG sequence → Alley DXV3 alpha / Movie File In TOP / sequence import. |
 | NDI | REQUIRES BRIDGE | Output window → OBS (window capture) → DistroAV (NDI) plugin → NDI source in Resolume. |
 | Spout (Windows) / Syphon (macOS) | REQUIRES BRIDGE | OBS + Spout2 / Syphon plugin, or TouchDesigner Web Render TOP loading the HTML → Spout/Syphon Out TOP. |
@@ -45,6 +45,10 @@ Define each output as a crop of the master canvas in `canvas.displays`. Each can
 5. Stack layers bottom (L0) to top, with the same blend modes as the project.
 6. Layer toggles become separate clips with "Camadas α": `PROJECT/LAYERS/01_NAME/L3_NAME/01_NAME_L3_000000.png`, one folder per layer that was on at export time. "Branco α (luma)" works on every layer, shaders included: luminance becomes alpha.
 7. File naming: `PROJECT/ALPHA/01_NAME/01_NAME_000000.png`; `PROJECT_DATA/project.json` reopens everything.
+
+## Walls with folds (L, U, cube)
+
+One render covers every wall: the pixel map is the concatenation of the planes. Declare the folds in `canvas.folds` (px) and the gutter in `canvas.gutter`; the contact sheet and the viewport mark them in red. In Resolume the clip is mapped once over the whole map. If the planes are different sizes, give the real pixel map of each and confirm where each plane starts.
 
 ## Performance
 
