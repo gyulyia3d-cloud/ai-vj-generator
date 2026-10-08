@@ -74,15 +74,20 @@ void main(){ vec2 p = isf_FragNormCoord - 0.5; float k = smoothstep(0.01, 0.0, a
     return JSON.stringify({ n: c.layers.length, name: c.layers[1] && c.layers[1].name, msg: AIVJ.isf.ui.msg }); })()`));
   check(out.n === 2 && out.name === 'MEU ANEL', 'arquivo .fs importado pela interface vira camada; filtro e arquivo quebrado não', JSON.stringify(out));
   check(out.msg && out.msg.bad && /1 de 3/.test(out.msg.text) && /filtro\.fs/.test(out.msg.text) && /quebrado\.fs/.test(out.msg.text), 'a mensagem diz quais arquivos falharam e por quê', out.msg && out.msg.text);
-  /* exportar: o .fs sai, tem phase e compila como ISF */
-  const ex = JSON.parse(await E(`(() => { const A = AIVJ, P = A.project; P.compositions[0].layers = [{ type: 'bg', name: 'F' }, { type: 'shader', name: 'ANEL', p: { preset: 'CÉLULAS' } }];
-    const r = A.isf.X.exportLayer(P, 0, 1, A.isf.helpers(), A.isf.shaderSrc); return JSON.stringify(r); })()`));
-  const m = ex.text.match(/^\/\*([\s\S]*?)\*\//), hdr = JSON.parse(m[1]);
-  check(hdr.INPUTS.some(i => i.NAME === 'phase') && /\.fs$/.test(ex.name), 'exportar gera .fs com a entrada phase', ex.name);
-  const decl = hdr.INPUTS.map(i => `uniform ${i.TYPE === 'color' ? 'vec4' : 'float'} ${i.NAME};`).join('\n') + '\nuniform vec2 RENDERSIZE; uniform float TIME;\n';
-  const glsl = 'precision highp float;\n' + decl + ex.text.slice(m[0].length);
-  const res = await E(`(() => { const gl = document.createElement('canvas').getContext('webgl'); const s = gl.createShader(gl.FRAGMENT_SHADER); gl.shaderSource(s, ${JSON.stringify(glsl)}); gl.compileShader(s); return gl.getShaderParameter(s, gl.COMPILE_STATUS) ? 'ok' : gl.getShaderInfoLog(s); })()`);
-  check(res === 'ok', 'o .fs exportado pelo navegador compila como ISF', res);
+  /* camada isf: um shader da biblioteca escolhido nos parâmetros, as 84 opções, compila e desenha */
+  const ly = JSON.parse(await E(`(async () => { const A = AIVJ, P = A.project; P.compositions[0].layers = [{ type: 'bg', name: 'F' }];
+    const ids = A.isf.LIB.map(x => x.id);
+    A.isf.add(ids[3]); const L = P.compositions[0].layers[1];
+    return JSON.stringify({ n: ids.length, type: L.type, lib: L.p.lib, ok: L.p.lib === ids[3], hasSrc: !!L.p.src }); })()`));
+  check(ly.n === 84 && ly.type === 'isf' && ly.ok && !ly.hasSrc, 'adicionar da biblioteca cria uma camada do tipo isf com o shader só em p.lib', JSON.stringify(ly));
+  const sweep = JSON.parse(await E(`(() => { const A = AIVJ, P = A.project, ids = A.isf.LIB.map(x => x.id), bad = [];
+    for (const id of ids) { P.compositions[0].layers = [{ type: 'bg', name: 'F' }, { type: 'isf', name: 'I', on: true, opacity: 1, blend: 'add', p: { lib: id } }]; A.GLERR.clear(); const d = A.renderFrame(0, 30, 0.5, true).data; if ([...A.GLERR.values()].length) bad.push(id); }
+    return JSON.stringify({ n: ids.length, bad }); })()`));
+  check(!sweep.bad.length, 'as ' + sweep.n + ' opções do parâmetro lib compilam e desenham como camada isf', sweep.bad.join(','));
+  /* no inspetor, o parâmetro lib lista as 84 opções */
+  const ui = JSON.parse(await E(`(() => { const A = AIVJ, P = A.project; P.compositions[0].layers = [{ type: 'bg', name: 'F' }]; A.isf.add(A.isf.LIB[0].id); A.state.sel = 1; document.querySelector('#tabs [data-tab="par"]').click();
+    const sel = document.querySelector('[data-pane="par"] .pc[data-k="lib"] select'); return JSON.stringify({ n: sel ? sel.options.length : 0, cur: sel ? sel.value : null, first: A.isf.LIB[0].id }); })()`));
+  check(ui.n === 84 && ui.cur === ui.first, 'o parâmetro lib da camada isf mostra as 84 opções no inspetor', JSON.stringify(ui));
 } catch (e) { bad('exceção: ' + (e.message || e)); }
 await page.close();
 console.log(fail ? `\n${fail} falha(s).` : '\naba ISF ok.');

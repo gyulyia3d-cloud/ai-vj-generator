@@ -44,10 +44,10 @@ try {
   const sc = evOk ? JSON.parse(await E(`JSON.stringify([...document.querySelectorAll('#gEvalOut .rcard .tag')].map(t => parseInt(t.textContent)))`)) : [];
   check(evOk && sc.every(n => n >= 60), `Avaliar devolve uma nota por composição (${sc.join(' / ')})`, JSON.stringify(sc));
 
-  // 4) superfície e fatias para o Resolume
+  // 4) superfície: preset e legibilidade
   await E(`document.querySelector('#tabs [data-tab="sur"]').click()`);
-  const s = JSON.parse(await E(`(() => { const p = AIVJ.surUI.plan(); return JSON.stringify({ n: p.placed ? p.placed.length : 0, err: p.error || null, screens: p.screens, xmlOk: !!p.xml && p.xml.includes('<InputSize name="0:1" width="4500" height="800"/>'), table: document.querySelectorAll('[data-pane="sur"] dl.kv dt').length }); })()`));
-  check(s.n === 2 && !s.err && s.screens === 1 && s.xmlOk && s.table >= 2, 'Superfície: 4500×800 vira 2 fatias (uma por parede) numa saída 3840×2160, com XML do Resolume', JSON.stringify(s));
+  const s = JSON.parse(await E(`(() => { const P = AIVJ.project; return JSON.stringify({ w: P.canvas.w, h: P.canvas.h, folds: P.canvas.folds, resolume: /Resolume|XML/.test(document.querySelector('[data-pane="sur"]').textContent) }); })()`));
+  check(s.w === 4500 && s.h === 800 && (s.folds || []).length === 1 && !s.resolume, 'Superfície: 4500×800 com uma dobra, sem fatias nem XML de mapping', JSON.stringify(s));
   const leg = await E(`document.getElementById('sLegGo') ? document.querySelector('[data-pane="sur"]').textContent.includes('Altura mínima de letra') : false`);
   check(leg, 'a legibilidade usa o passo e a distância do preset (3,9 mm, até 40 m)', 'sem painel de legibilidade');
 

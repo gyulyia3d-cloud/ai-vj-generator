@@ -1,6 +1,6 @@
 # Walls, code layers, white-alpha and assets
 
-Read this when the surface has folds, when the briefing needs an animation the generators cannot express, when everything will be rendered white and coloured in Resolume, or when the user sends logos and fonts.
+Read this when the surface has folds, when the briefing needs an animation the generators cannot express, when everything will be rendered white and coloured later, or when the user sends logos and fonts.
 
 ## 1. Walls and folds
 
@@ -21,7 +21,7 @@ Rules the engine enforces or warns about:
 
 ## 2. White-alpha
 
-`"palette": { "mode": "white-alpha" }` makes every colour a level of white, so the colour is chosen later in Resolume:
+`"palette": { "mode": "white-alpha" }` makes every colour a level of white, so the colour is chosen later in the software that receives the files:
 
 | Role | Palette key | Opacity | Use |
 |---|---|---|---|

@@ -43,24 +43,17 @@ D2 (testar o MP4 e o ISF na sua máquina) → B1/B4 (rápido, visível) → A1 e
 
 # Como usar os shaders ISF
 
-ISF é um shader GLSL com um cabeçalho JSON. Resolume, VDMX e MadMapper abrem `.fs` direto.
+ISF é um shader GLSL com um cabeçalho JSON. O motor usa a biblioteca como fonte de geradores e importa arquivos `.fs`; não exporta ISF.
 
-## No motor (aba ISF)
-1. **Biblioteca**: escolha um cartão e clique em **Adicionar à composição**. Os 11 "AIVJ" fecham o loop de verdade e reagem a graves, médios, agudos e golpes; os outros 73 têm autoria e licença no cartão (MIT ou CC0).
-2. **Importar arquivo .fs**: aceita gerador de um passe. Filtro (com imagem de entrada), multipasso e textura de áudio são recusados dizendo o motivo.
-3. **Exportar camada selecionada / todas**: baixa `.fs` com a entrada `phase`.
-
-## Levar para o Resolume
-1. Copie os `.fs` para `Documentos\Resolume Arena\ISF` e atualize a lista de fontes.
-2. Arraste o shader para uma camada.
-3. **Automatize `phase` de 0 a 1 durante o loop.** Sem isso o shader fica parado. `p1..p4` e as cores `c1, c2, cbg` viram controles; `bass mid high rms hit…` são números que você liga ao FFT.
-4. Use mistura Add ou Screen para luz sobre preto.
+## No motor
+1. **Camada ISF**: em Camadas, adicione uma camada do tipo **ISF** e escolha o shader no parâmetro **Shader ISF** (84 opções). P1 a P4 mexem nas quatro primeiras entradas do shader (de 0 a 1 na faixa da entrada; −1 mantém o padrão). Os 11 "AIVJ" fecham o loop de verdade e reagem a graves, médios, agudos e golpes; os outros 73 têm autoria e licença (MIT ou CC0).
+2. **Aba ISF**: lista os cartões com busca e filtro; **Adicionar à composição** cria a camada ISF já com o shader escolhido.
+3. **Importar arquivo .fs**: aceita gerador de um passe e cria uma camada de shader. Filtro (com imagem de entrada), multipasso e textura de áudio são recusados dizendo o motivo.
 
 ## Por linha de comando (opcional)
 ```bash
-python skill/ai-vj-generator/scripts/isf.py export meu-projeto.json --out isf-out
 python skill/ai-vj-generator/scripts/isf.py check  gerador.fs
 python skill/ai-vj-generator/scripts/isf.py import gerador.fs --project meu-projeto.json --comp 0 --bars 4 --bpm 124
 node skill/ai-vj-generator/scripts/isf_ui_check.mjs
 ```
-Detalhes e licenças: `skill/ai-vj-generator/references/isf-bridge.md`, `skill/ai-vj-generator/isf-library/README.md`.
+Detalhes e licenças: `skill/ai-vj-generator/references/isf-layer.md`, `skill/ai-vj-generator/isf-library/README.md`.

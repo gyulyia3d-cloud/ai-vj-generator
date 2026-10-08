@@ -3,7 +3,7 @@
 Todos terminam no mesmo lugar: um arquivo `*.aivj.json` (esquema `ai-vj-generator/2`) que o motor abre, mostra e exporta em PNG sequence ou MP4. Escolha pelo que você tem à mão.
 
 ## Caminho A: só o navegador, sem IA e sem terminal
-Abra `app/index.html` (Chrome ou Edge), clique em **Gerar sem IA**, preencha o briefing, escolha o preset da superfície e clique em **Gerar e abrir**. Avalie, ajuste, confira as fatias do Resolume na aba Superfície e exporte. Passo a passo: [GUIA-SEM-IA.md](GUIA-SEM-IA.md).
+Abra `app/index.html` (Chrome ou Edge), clique em **Gerar sem IA**, preencha o briefing, escolha o preset da superfície e clique em **Gerar e abrir**. Avalie, ajuste, confira a superfície e a legibilidade na aba Superfície e exporte. Passo a passo: [GUIA-SEM-IA.md](GUIA-SEM-IA.md).
 
 ## Caminho B: com qualquer IA (ChatGPT, Gemini, Claude, Codex, modelo local)
 1. Dê à IA o arquivo `skill/ai-vj-generator/portable/PROMPT.md`: cole como primeira mensagem, ou aponte a ferramenta para o `AGENTS.md`, `GEMINI.md` ou `CLAUDE.md` da raiz (todos apontam para ele). Detalhes por ferramenta: [AI-AGNOSTIC.md](AI-AGNOSTIC.md).
@@ -25,14 +25,14 @@ Abra `app/index.html` (Chrome ou Edge), clique em **Gerar sem IA**, preencha o b
 É um adaptador opcional: [../adapters/claude/INSTALL.md](../adapters/claude/INSTALL.md). Instala a skill e os comandos `/vj`, `/vj-reference`, `/vj-critique` e `/how-to-use`. O conteúdo é o mesmo do Caminho B.
 
 ## Renderizar
-- **Na interface**, aba **Exportar**: PNG sequence com alpha (composição, camadas ou uma camada) ou **MP4 (H.264)**. O loop tem compassos inteiros; no Resolume use BPM Sync no clipe.
+- **Na interface**, aba **Exportar**: PNG sequence com alpha (composição, camadas ou uma camada) ou **MP4 (H.264)**. Escolha o projeto completo ou uma região. O loop tem compassos inteiros, então a emenda é limpa.
 - **Pela linha de comando**, sem abrir a interface:
   ```bash
   node scripts/render.mjs meu.aivj.json --out saida --format mp4 --comp all
   node scripts/render.mjs meu.aivj.json --out saida --format png --alpha
   ```
   Nunca é gravação de tela: cada quadro é desenhado de forma determinística. Detalhes: `skill/ai-vj-generator/references/render-cli.md`.
-- **ISF para o Resolume**: aba **ISF** (biblioteca, importar, exportar). Detalhes em [GUIA-SEM-IA.md](GUIA-SEM-IA.md).
+- **ISF**: camada do tipo **ISF** com 84 shaders no parâmetro da camada; a aba **ISF** importa arquivos `.fs`. Detalhes em [GUIA-SEM-IA.md](GUIA-SEM-IA.md).
 
 ## Conferir a qualidade
 ```bash

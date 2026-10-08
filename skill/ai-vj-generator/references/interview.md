@@ -10,7 +10,7 @@ Ask once, early, in the same round as the surface questions, and say what each f
 
 - **Surface:** real resolution; if there are several planes, where the folds are (px) and what each wall is; viewing distance; LED pitch if relevant.
 - **Files:** reference images and videos (analyzed, never copied), fonts to use, logos or marks to show, any text that must appear. Logos and fonts are used only if the user supplies them.
-- **Colour:** their palette, or "propose one", or "all white, I colour it in Resolume" (palette.mode: white-alpha).
+- **Colour:** their palette, or "propose one", or "all white, I colour it later" (palette.mode: white-alpha).
 - **Sound:** BPM, whether it reacts to audio.
 
 If the user declines a point, record it as an assumption and move on.
@@ -22,7 +22,7 @@ The rounds follow these gates; stop as soon as the creative contract (`creative-
 - **A, production reality:** the archetype's Round 1 in `briefing/archetypes.md` (pixel map or metres + pitch or projector data, folds, viewing distances, performer and occluded zones, refresh and fps, alpha). Read the derived numbers back with `scripts/surface_calc.py`.
 - **B, artistic intent:** concept, tension, primary visual action, emotional state, what stays stable and what escalates, references and what attracts the user in them, what to avoid (`briefing/question-bank.md` §1).
 - **C, inputs and identity (only if relevant):** images, video, SVG, logos, fonts, exact text, audio, palette (`briefing/question-bank.md` §4).
-- **D, delivery (only if relevant):** live or offline, Resolume / OBS / TouchDesigner / projection / media server, secondary display, bridge needs, PNG sequence or recording.
+- **D, delivery (only if relevant):** PNG sequence (alpha or not) or MP4, full project or one region, fps, loop length.
 - **E, taste calibration (ask whenever the aesthetic is not already pinned down by good references):** see the section below. This gate is what lets the result land on the first try.
 - **F, music and performer:** genre, BPM or range, set structure, which instrument drives which role, who stands in front of the image (`briefing/question-bank.md` §2 and §3).
 - **G, risk and success:** flash limits, forbidden symbols, hardware, who judges the result and how (`briefing/question-bank.md` §5 and §6).
@@ -51,14 +51,14 @@ Aesthetic words are ambiguous ("dark", "clean", "futuristic", "organic"). Pin th
 10. **Audio relation.** Beat-locked pulse / bass-driven weight / full-spectrum shimmer / music-independent (shaders still react).
 11. **Narrative across the set.** Arc (arrive, build, rupture, release) / stations (equal clips) / loop one idea five ways.
 12. **Boundaries.** The three things that must never happen (e.g. "no cyan", "no particles", "nothing centred", "no text").
-13. **Software lineage.** Which look do you associate with the work: Hydra-style glitch/feedback, TouchDesigner instancing and noise, Cavalry-style geometric duplicators, Synesthesia shader worlds, Resolume-style loops, game/VFX particles, motion-graphics editorial? (Used to pick the vocabulary, never to copy.)
+13. **Software lineage.** Which look do you associate with the work: Hydra-style glitch/feedback, TouchDesigner instancing and noise, Cavalry-style geometric duplicators, Synesthesia shader worlds, game/VFX particles, motion-graphics editorial? (Used to pick the vocabulary, never to copy.)
 14. **Viewing situation.** Distance, ambient light, crowd, camera on stage (moiré), dwell time per clip.
 
 Use the answers to write the **art-direction statement** (concept + 5 constraints) before any code. If the user answers little, state which choices you made and why, in one line each.
 
 ## When to ask more
 
-Ask another round when: the references conflict; the surface is unusual (strip, dome, L); text or logos matter; the user complains about earlier output; or a key constraint (distance, pitch) is missing. Prefer *showing* over asking: after the first analysis, you may present 2–3 thumbnails-in-words of directions ("A: dense instrument panel in bone and steel; B: slow flow fields with one accent; C: strict grid with a travelling wave") and ask which to take.
+Ask another round when: the references conflict; the surface is unusual (strip, L); text or logos matter; the user complains about earlier output; or a key constraint (distance, pitch) is missing. Prefer *showing* over asking: after the first analysis, you may present 2–3 thumbnails-in-words of directions ("A: dense instrument panel in bone and steel; B: slow flow fields with one accent; C: strict grid with a travelling wave") and ask which to take.
 
 ## Defaults (technical only, state them as assumptions)
 

@@ -41,17 +41,16 @@ What to take:
 - **Connect distributions** into lines: draw segments between near neighbours (`d < R`).
 - **One value changes, the whole system responds**: expose a few meaningful parameters (`vars`) that cascade.
 
-## Resolume Arena and Wire: slices, FFT, OSC, ISF
+## Resolume Arena and Wire: vocabulary only
 
-Arena composes **clips on layers in a deck** with effects, **slices** and **Advanced Output** (input selection and output transformation), BPM sync, and OSC/MIDI control. Wire is the node editor: Input nodes (textures, FFT spectrum, OSC/MIDI, Spout/Syphon), General nodes, Output nodes, Slice In (slices as shapes), ISF shaders, Falloff, Frequency-to-pitch and Frequency-to-BPM nodes.
+These are performance and node-patching tools; the engine is neither. Take vocabulary and design habits, not features.
 
 What to take:
-- **Design for clips and slices**: each composition is a loopable clip with a clear BPM-friendly duration; layers export separately (alpha PNG per layer) so the VJ can recolour, retime and mix in Arena.
-- **White-alpha** content is recoloured in Arena; design in luminance.
-- **Slices follow the physical surface**; the input is the full canvas. Our `canvas.folds/displays` mirror that.
+- **Loopable clips**: each composition is a loop with a clear whole-bar duration; layers export separately (alpha PNG per layer) so another tool can recolour, retime and mix.
+- **White-alpha** content is recoloured later; design in luminance.
 - **FFT with falloff**: smooth fall, quick rise (our bus).
-- **ISF** (interactive shader format) = fragment shader + JSON controls; the closest to our `shader` layer with `uP` controls.
-- **OSC needs a bridge** from a browser (`capabilities.md`).
+- **ISF** (interactive shader format) = fragment shader + JSON controls; the closest to our `shader` layer with `uP` controls, and the format of the `isf` layer library (`isf-layer.md`).
+- Slices, Advanced Output, OSC, MIDI and Spout are NOT SUPPORTED (`capabilities.md`).
 
 ## Synesthesia: shaders with audio uniforms and a controls panel
 

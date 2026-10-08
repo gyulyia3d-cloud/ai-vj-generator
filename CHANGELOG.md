@@ -1,5 +1,15 @@
 # Changelog
 
+## Não lançado · Fase 0 do roadmap v11 (limpeza de escopo)
+
+O produto passa a ser um sistema generativo de animação: entra briefing e informação 2D de uma superfície, saem PNG sequence e MP4. Fora de escopo: performance, media server, mapping, geração de pixel map ou blueprint, MIDI, OSC, NDI, Spout, integrações com Resolume, TouchDesigner ou OBS, domo, DOOH.
+
+- **Removido:** XML de Advanced Output do Resolume, mapa .json e padrão de teste das fatias, download de pixel map CSV, tabela "Transporte de sinal", textos de Resolume/TouchDesigner/OBS no LEIAME do export, exportação de ISF (botão, `isf.py export`), `export_slices.py`, `bridge-obs-spout.md`, arquétipos de objeto, domo e DOOH.
+- **Novo:** camada `isf` (a biblioteca de 84 shaders escolhida no parâmetro `lib` da camada); export de PNG sequence e MP4 do **projeto completo ou de uma região** (display), com a região no nome dos arquivos e no manifesto.
+- **Capabilities:** quatro rótulos (`supported`, `exportable`, `inputOnly`, `notSupported`). `requiresBridge` e `conceptual` continuam abrindo, com aviso, lidos como `notSupported`. Arquétipos antigos (`object-mapping`, `immersive`, `dooh`) abrem com aviso.
+- **Roadmap v11** em `docs/ROADMAP.md` (o v10 foi para `docs/historico/ROADMAP-v10.md`). A decisão de não migrar para WebGL2 está revogada; a Fase 2 registra o ADR.
+- Auditoria em `docs/FASE-0-AUDITORIA.md`.
+
 ## 3.0.0 (08/10/2026) · Organização, compatível com qualquer IA
 
 - **Fonte única das instruções**: `skill/ai-vj-generator/portable/PROMPT.md` reescrito (v3.0) com todo o vocabulário atual (33 camadas, `fx`, `synth`, `blobs`, ISF, MP4, 16 transições, LFOs de atenção). `AGENTS.md`, `GEMINI.md` e `CLAUDE.md` na raiz são ponteiros curtos.

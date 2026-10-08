@@ -58,7 +58,7 @@ Load only what the project needs.
 | When | Read |
 |---|---|
 | Every new project | `references/briefing-flow.md`, `references/briefing/diagnosis.md`, `references/interview.md`, `references/creative-contract.md` |
-| The archetype is known (stage LED, facade, clip pack, DOOH, dome, …) | the matching section of `references/briefing/archetypes.md` |
+| The archetype is known (stage LED, facade, clip pack, installation, …) | the matching section of `references/briefing/archetypes.md` |
 | Concept, music, performer, risk or success questions are due | `references/briefing/question-bank.md` |
 | Attachments (images, videos, links) | `references/attachments.md`, then `scripts/analyze_image.py` / `analyze_video.py` |
 | Concept and art direction | `references/art-direction.md`, `references/repertoire/index.md` + 1–3 files it points to, `references/knowledge/semiotics-art-color-composition.md`, `references/design-laws.md` |
@@ -72,19 +72,18 @@ Load only what the project needs.
 | Shader building blocks: noise, SDF 2D/3D, raymarch, Oklab, dither, easing, LED emulation (`#include`, 20 modules) | `references/glsl-library.md` |
 | Writing shaders | `references/glsl-recipes.md` (tested recipes, Hydra/Synesthesia translation), `references/project-schema.md` (GLSL contract) |
 | Writing code layers (flow fields, particles, grids, springs, Euclidean rhythms) | `references/creative-coding-patterns.md` |
-| A reference names a tool, library or effect (Hydra, TouchDesigner, Cavalry, Wire, Synesthesia, oF, p5, Strudel) | `references/software-techniques.md`, `references/effects-glossary.md` |
-| Any aspect ratio other than 16:9; viewing distance; strips, towers, domes | `references/aspect-ratios.md` |
+| A reference names a tool, library or effect (Hydra, TouchDesigner, Cavalry, Synesthesia, oF, p5, Strudel) | `references/software-techniques.md`, `references/effects-glossary.md` |
+| Any aspect ratio other than 16:9; viewing distance; strips, towers | `references/aspect-ratios.md` |
 | Choosing SVG / Canvas / shader / 3D / code layer | `references/behavior-to-technique.md` |
 | LED, projection, mapping, folds, white-alpha, logos, fonts, code layer | `references/surface-model.md`, `references/walls-code-assets.md`, `references/output-targets.md` |
 | Deciding how much the music drives the picture (strategy none to full), band roles, section map, binding recipes | `references/audio-direction.md` |
 | The art bible (`meta.artBible`) written after the contract; how things move (motion profile, `layer.mod` spring); title + caption + data, reveal and text on a path (`typeset`); scoring a project before looking at it; picking a generator by family, surface and cost | `references/art-bible.md`, `references/motion-profiles.md`, `references/typography.md`, `references/evaluation.md` (`scripts/evaluate.mjs`), `references/families.md` (`scripts/families.py`) |
-| The Surface tab (presets, cuts, pixel map CSV/PNG, Resolume slices XML, legibility), the export manifest and parts, flash analysis and limiter, the browser Generate tab, kick/onset/flux sources | `references/surface-and-export.md`, `references/audio-bus.md` (onset section), `docs/GUIA-SEM-IA.md` |
+| The Surface tab (presets, cuts, imported regions, legibility), region export, the export manifest and parts, flash analysis and limiter, the browser Generate tab, kick/onset/flux sources | `references/surface-and-export.md`, `references/audio-bus.md` (onset section), `docs/GUIA-SEM-IA.md` |
 | A structured brief, the next questions to ask, or generating a project with no AI (rules, palette, tiers) | `scripts/brief_check.py`, `scripts/brief_to_project.py`, `schema/brief.schema.json` |
 | Working with another AI (ChatGPT, Gemini, Codex, local), or checking JSON structure without pip | `portable/PROMPT.md`, `scripts/schema_check.py`, `schema/project.schema.json` |
 | Audio, BPM, beat sync, integrated time, band transients, `layer.mod` modulation | `references/audio-bus.md` |
 | A still image with depth (2.5D parallax), a depth map, Gaussian splats or a point cloud (.ply) | `references/depth-and-splats.md`, `scripts/depth_estimate.py` |
-| Getting output into Resolume live (OBS + Spout2, URL parameters), cutting a long wall for the media server (Advanced Output XML, test pattern) | `references/bridge-obs-spout.md`, `scripts/export_slices.py` |
-| ISF: the 84-shader library in the ISF tab, importing/exporting `.fs` for Resolume/Wire/VDMX | `references/isf-bridge.md`, `isf-library/README.md`, `scripts/isf.py` |
+| ISF: the 84-shader library as the `isf` layer (menu in the layer parameters) and the ISF tab, importing `.fs` | `references/isf-layer.md`, `isf-library/README.md`, `scripts/isf.py` |
 | Rendering: MP4 (H.264) or PNG sequence, by the Export tab or `node scripts/render.mjs`, never by screen capture | `references/render-cli.md` |
 | Maths, physics or a named form (attractor, orbit, wave, fractal, knot, pendulum, Chladni, quasicrystal) | `references/math-forms.md`, then `python scripts/recipes.py list` / `layer <id>` (tested recipes in `references/recipes/`) |
 | Perception, hierarchy, comfort, flicker, aliasing, photosensitivity, hierarchy problems | `references/perception-and-gestalt.md` |

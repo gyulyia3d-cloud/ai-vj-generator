@@ -80,7 +80,7 @@ const GENAI = (() => {
   const QUIET = { 'GRADE SDF': [5, 1, 0.3, 0.06], FAIXAS: [8, 1, 0.35, 0.15], 'INTERFERÊNCIA': [6, 1, 0.25, 0.3], 'CÉLULAS': [4, 1, 0.25, 0.08], 'ANÉIS SDF': [6, 1, 0.2, 0.35], KALEIDO: [6, 2.5, 0.4, 0.3], 'CAMPO FBM': [1.6, 0.5, 0.7, 1.0], 'FLUXO WARP': [1.2, 0.8, 0.4, 1.0] };
   const INSTR = { low: ['rings', 'radar', 'scope'], high: ['bars', 'radial', 'heat'] };
   const ARC = ['ESTABLISH', 'BUILD', 'PEAK', 'RELEASE', 'TURN', 'CODA'], ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
-  const ARCH = { led: 'stage-led', projection: 'facade-mapping', mapping: 'object-mapping', multi: 'led-architecture', screen: 'clip-pack' };
+  const ARCH = { led: 'stage-led', projection: 'facade-mapping', mapping: 'installation', multi: 'led-architecture', screen: 'clip-pack' };
   const HERO_TARGET = { tunnel: 'size', lines: 'weight', shape: 'size', organism: 'breathe', flow: 'amp', typewall: 'fill' }, STRUCT_TARGET = { tunnel: 'size', lines: 'weight', shape: 'size' };
   const TARGET_DEFAULT = { size: 1, weight: 2, breathe: 0.5, amp: 0.12, fill: 0.82 };
   const AUDIO_LINE = { none: 'the picture ignores the music.', subtle: 'the music only breathes the ground.', structural: 'the music drives structure and scale, never every hit.', rhythmic: 'kick drives the hero, hats drive the structure, at most three reactive layers.', full: 'the music drives most layers; the instrument layer shows the signal.' };

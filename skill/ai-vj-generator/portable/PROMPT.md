@@ -20,7 +20,7 @@ One JSON file, schema `ai-vj-generator/2` (`skill/ai-vj-generator/schema/project
 Native pixels always: never assume 16:9. `canvas.w/h/fps` are the real pixel map; sizes inside generators are in 1080-units and scale on their own.
 
 ## Vocabulary menu (full list with usage: `references/vocabulary.md`)
-- **Ground:** `shader` presets or custom GLSL (`#include` 20 modules: noise, SDF, raymarch, colour, easing, filters, `references/glsl-library.md`); `synth` (a one-line chain compiled to a shader, `references/synth-chain.md`, e.g. `osc(18,1,0.6).kaleid(6).modulate(noise(3,1),0.1).tint()`); ISF generators (`skill/ai-vj-generator/isf-library`, 11 originals that close the loop plus MIT and CC0 ones, `references/isf-bridge.md`); recipes (`references/math-forms.md`); `flow`, `organism`.
+- **Ground:** `shader` presets or custom GLSL (`#include` 20 modules: noise, SDF, raymarch, colour, easing, filters, `references/glsl-library.md`); `synth` (a one-line chain compiled to a shader, `references/synth-chain.md`, e.g. `osc(18,1,0.6).kaleid(6).modulate(noise(3,1),0.1).tint()`); ISF generators (`skill/ai-vj-generator/isf-library`, 11 originals that close the loop plus MIT and CC0 ones, `references/isf-layer.md`); recipes (`references/math-forms.md`); `flow`, `organism`.
 - **Figure:** `shape`, `logo`, `typeset`, `typewall`, `pixeltext`, `model` (OBJ), `parallax`, `splat`, recipes `hilbert-curve`, `superformula`.
 - **Structure:** `structure`, `lines`, `tunnel`, `symbols`, `hazard`, `blocks`, `bitfield`, recipe `greeble-plate`.
 - **Information:** `instrument` (spectrum, scope, radar, rings, heat), `data`, `measure`, `hud`, `text`, `blobs` (finds regions in the image below by brightness, contrast, colour or luminance zone and marks them, `references/blob-layer.md`).

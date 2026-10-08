@@ -70,7 +70,7 @@ const MP4X = (() => {
 })();
 
 /* ---- integração com o motor: desenha cada quadro como o export PNG (camada por camada, mesmo blend e opacidade) e entrega ao codificador ---- */
-async function mp4Render({ ci = ST.ci, start = 0, end = -1, scale = 1, fps = null, bars = null, quality = 'mid', bitrate, onProgress, cancelled } = {}) {
+async function mp4Render({ ci = ST.ci, start = 0, end = -1, scale = 1, fps = null, bars = null, quality = 'mid', bitrate, onProgress, cancelled, region = -1 } = {}) {
   const bak = { fps: P.canvas.fps, bars: P.time.bars, live: ST.live };
   if (fps) P.canvas.fps = fps; if (bars) P.time.bars = bars;
   const f = P.canvas.fps, LF = loopFrames(), s = clamp(start, 0, LF - 1), e = end < 0 ? LF - 1 : clamp(end, s, LF - 1);
@@ -80,6 +80,7 @@ async function mp4Render({ ci = ST.ci, start = 0, end = -1, scale = 1, fps = nul
     await document.fonts.ready;
     const lay = document.createElement('canvas'); lay.width = w; lay.height = h; const lctx = lay.getContext('2d');
     const cmp = document.createElement('canvas'); cmp.width = w; cmp.height = h; const cctx = cmp.getContext('2d');
+    const rr = regionRect(region, scale, true), out = rr ? document.createElement('canvas') : cmp, octx = rr ? out.getContext('2d') : null; if (rr) { out.width = rr.w; out.height = rr.h; }
     const on = comp.layers.map((L, i) => i).filter(i => comp.layers[i].on), hasBg = on.some(i => comp.layers[i].type === 'bg');
     const getFrame = async i => {
       const n = s + i, F = frameAt(n, comp); await prepMedia(comp, F);
@@ -90,9 +91,10 @@ async function mp4Render({ ci = ST.ci, start = 0, end = -1, scale = 1, fps = nul
         cctx.globalAlpha = L.opacity; cctx.globalCompositeOperation = fxOp(L, (BLENDS[L.blend] || BLENDS.normal)[0]); cctx.drawImage(lay, 0, 0, w, h);
       }
       cctx.globalAlpha = 1; cctx.globalCompositeOperation = 'source-over';
+      if (rr) { octx.drawImage(cmp, rr.x, rr.y, rr.w, rr.h, 0, 0, rr.w, rr.h); return out; }
       return cmp;
     };
-    const r = await MP4X.encode({ w, h, fps: f, frames: e - s + 1, getFrame, quality, bitrate, onProgress, cancelled });
+    const r = await MP4X.encode({ w: rr ? rr.w : w, h: rr ? rr.h : h, fps: f, frames: e - s + 1, getFrame, quality, bitrate, onProgress, cancelled });
     return Object.assign(r, { fps: f, start: s, end: e, comp: comp.name, ci });
   } finally { P.canvas.fps = bak.fps; P.time.bars = bak.bars; ST.live = bak.live; RENDER_ALPHA = false; EXPORTING = false; ST.t0 = performance.now() - ST.n / P.canvas.fps * 1000; }
 }
@@ -102,9 +104,9 @@ async function exportMp4Run(info, bar) {
   CANCEL = false; bar.style.display = 'block'; const t0 = performance.now(), done = [];
   try {
     for (const ci of ciList) {
-      const r = await mp4Render({ ci, start: EXP.start, end: EXP.end, scale: EXP.scale, fps, bars, quality: EXP.mp4q || 'mid', cancelled: () => CANCEL,
+      const r = await mp4Render({ ci, start: EXP.start, end: EXP.end, scale: EXP.scale, fps, bars, quality: EXP.mp4q || 'mid', region: EXP.region, cancelled: () => CANCEL,
         onProgress: (i, n) => { bar.firstElementChild.style.width = ((done.length + i / n) / ciList.length * 100) + '%'; info.textContent = `MP4 · ${P.compositions[ci].name} · quadro ${i} de ${n}`; } });
-      const fn = `${safe(P.meta.name)}_${pad(ci + 1, 2)}_${safe(P.compositions[ci].name)}_${r.w}x${r.h}_${r.fps}fps.mp4`, res = await saveFile(fn, r.blob);
+      const fn = `${safe(P.meta.name)}_${pad(ci + 1, 2)}_${safe(P.compositions[ci].name)}_${r.w}x${r.h}_${r.fps}fps${EXP.region >= 0 && regionRect(EXP.region, 1, true) ? '_' + safe(regionRect(EXP.region, 1, true).name) : ''}.mp4`, res = await saveFile(fn, r.blob);
       if (res !== 'saved') { info.textContent = res === 'declined' ? 'Download recusado.' : 'Download falhou: ' + res; return; }
       done.push({ fn, mb: r.blob.size / 1048576, frames: r.frames, codec: r.codec });
     }

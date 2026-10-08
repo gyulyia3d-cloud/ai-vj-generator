@@ -122,21 +122,13 @@ Do not blindly port Hydra syntax; translate the system into the runtime's layer 
 Study:
 - pattern-based time
 - cycle structure
-- MIDI / OSC concepts
 - musical pattern thinking
 - event scheduling
 
 For this skill, Strudel is mainly a conceptual reference for temporal systems.
 
 ### Resolume Wire
-Study:
-- node-based abstraction
-- Slices
-- OSC
-- FFT
-- Syphon/Spout
-- ISF
-- routing
+Study only the vocabulary of node-based abstraction and ISF. Slices, OSC, Syphon/Spout and routing are outside the product scope.
 
 ### TouchDesigner
 Study:

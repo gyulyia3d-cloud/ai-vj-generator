@@ -57,6 +57,16 @@ try {
     check(m && m.canvas.w === 320 && m.canvas.fps === 30 && m.project.seed === 7 && m.project.bars === 1 && m.export.size.join() === '320,180', 'o manifesto registra canvas, fps, seed, compassos e tamanho', JSON.stringify(m && { c: m.canvas, p: m.project }));
     check(a && a.entries.some(n => /PROJECT_DATA\/project\.json$/.test(n)) && a.entries.some(n => /PREVIEW\//.test(n)), 'o ZIP leva project.json e a prévia', JSON.stringify(a && a.entries.filter(n => !n.endsWith('.png'))));
 
+    // A2) região: o display escolhido sai recortado, o resto do projeto não muda
+    await E(`AIVJ.project.canvas.displays = [{ x: 0, y: 0, w: 160, h: 180, name: 'ESQ' }, { x: 160, y: 0, w: 160, h: 180, name: 'DIR' }]; 0`);
+    const Rg = await run(`AIVJ.EXP.partMB = 0; AIVJ.EXP.flashLimit = false; AIVJ.EXP.region = 1`);
+    const rm = Rg.parts[0] && Rg.parts[0].manifest, rpng = Rg.parts[0] ? Rg.parts[0].entries.filter(n => /\/ALPHA\/.*\.png$/.test(n)) : [];
+    const dim = JSON.parse(await E(`(async () => { const files = await Promise.all(window.__dl); const z = await JSZip.loadAsync(files[0].buf); const n = Object.keys(z.files).find(k => /ALPHA\\/.*\\.png$/.test(k)); const u = await z.file(n).async('uint8array'); const dv = new DataView(u.buffer, u.byteOffset); return JSON.stringify([dv.getUint32(16), dv.getUint32(20)]); })()`));
+    check(rm && rm.export.region && rm.export.region.name === 'DIR' && rm.export.size.join() === '160,180' && dim.join() === '160,180' && rpng.length === frames && /DIR_/.test(rpng[0]), 'export por região: o display DIR sai com 160×180, nome da região nos arquivos e no manifesto, mesmos quadros do loop', JSON.stringify({ r: rm && rm.export.region, dim, n: rpng.length }));
+    await E(`AIVJ.EXP.region = -1; AIVJ.project.canvas.displays = []; 0`);
+    const Rf = await run(`AIVJ.EXP.partMB = 0; AIVJ.EXP.flashLimit = false`);
+    check(Rf.parts[0].manifest.export.region === 'full' && Rf.parts[0].manifest.export.size.join() === '320,180', 'sem região o manifesto diz full e o tamanho é o do projeto', JSON.stringify(Rf.parts[0].manifest.export));
+
     // B) divisão em partes
     const B = await run(`AIVJ.EXP.partMB = 0.02; AIVJ.EXP.flashLimit = false`);
     const names = B.parts.flatMap(p => p.entries.filter(n => n.endsWith('.png') && /\/ALPHA\//.test(n)));

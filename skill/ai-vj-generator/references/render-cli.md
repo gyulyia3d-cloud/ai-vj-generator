@@ -4,7 +4,7 @@ The engine never records the viewport. Every output is a **deterministic frame**
 
 | Output | Where | What it is |
 |---|---|---|
-| PNG sequence (alpha or RGB), per composition or per layer, ZIP in parts, manifest with SHA-256 | Export tab, `Renderizar e baixar ZIP` | the format that keeps alpha; Resolume's Alley turns it into DXV3/HAP |
+| PNG sequence (alpha or RGB), per composition or per layer, ZIP in parts, manifest with SHA-256 | Export tab, `Renderizar e baixar ZIP` | the format that keeps alpha; any software opens it, `ffmpeg` converts it |
 | **MP4 (H.264)** | Export tab, section `Vídeo MP4`, button `Renderizar e baixar MP4` | frame by frame, encoded with WebCodecs, no alpha |
 | MP4 or PNG by command line | `node scripts/render.mjs <project> --out <dir> --format mp4\|png` | headless Chrome/Edge, no interface |
 
@@ -26,7 +26,7 @@ Options: `--comp N|all`, `--scale 1`, `--fps 30`, `--bars N`, `--start`, `--end`
 ffmpeg -framerate 30 -i %06d.png -c:v prores_ks -profile:v 4444 -pix_fmt yuva444p10le saida.mov
 ffmpeg -framerate 30 -i %06d.png -c:v hap -format hap_alpha saida.mov
 ```
-DXV3 only through Resolume Alley (proprietary).
+DXV3 is proprietary and not produced here.
 
 ## What is checked
 `mp4_check.mjs` opens the file with `ffprobe`/`ffmpeg`: codec h264, size, frame count, frame rate, first frame not black and close to the PNG of the same frame, last frame different from the first (it animates), plus the box structure and the CLI.

@@ -11,9 +11,9 @@
 | Entender as instruções que a IA segue | [../skill/ai-vj-generator/portable/PROMPT.md](../skill/ai-vj-generator/portable/PROMPT.md) |
 | O que o motor já sabe fazer, por necessidade | `skill/ai-vj-generator/references/vocabulary.md` |
 | Camadas novas | `references/fx-layer.md`, `synth-chain.md`, `blob-layer.md` |
-| Shaders e ISF | `references/glsl-library.md`, `glsl-recipes.md`, `isf-bridge.md`, `isf-library/README.md` |
+| Shaders e ISF | `references/glsl-library.md`, `glsl-recipes.md`, `isf-layer.md`, `isf-library/README.md` |
 | Renderizar sem gravar a tela | `references/render-cli.md` |
-| Superfícies, fatias do Resolume, manifesto, flash | `references/surface-and-export.md`, `surface-model.md`, `aspect-ratios.md`, `output-engineering.md` |
+| Superfícies, regiões, manifesto, flash | `references/surface-and-export.md`, `surface-model.md`, `aspect-ratios.md`, `output-engineering.md` |
 | Áudio e movimento | `references/audio-direction.md`, `audio-bus.md`, `motion-profiles.md` |
 | Direção de arte e tensão | `references/tension-and-release.md`, `art-direction.md`, `craft-and-finish.md`, `art-bible.md` |
 | Briefing | `references/briefing/` (diagnóstico, arquétipos, banco de perguntas) |

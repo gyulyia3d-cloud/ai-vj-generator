@@ -20,7 +20,7 @@ Conventions: `→` marks what an answer changes. Numbers below are planning figu
 - Quem controla a luz? O LD lava a tela com luz de cena? (palette clash, black lift) → palette and contrast discipline.
 - Brilho: o técnico limita o branco (muitos processadores cortam branco puro à noite)? → primary near #F2F0EA instead of pure white.
 - Texto: o nome do artista aparece? Em quais momentos? Fonte ou logo fornecidos? → typography layer, exact strings.
-- Entrega: Resolume? Qual versão e codec (DXV3 ou HAP)? Alpha, camadas, ou "branco que eu coloro"? Saída em 60 Hz? → export mode.
+- Entrega: PNG sequence (com alpha, camadas ou "branco que eu coloro") ou MP4? Projeto completo ou uma região? 30 ou 60 fps? → export mode.
 - Segurança: há restrição de strobe? → ≤ 3 flashes per second.
 
 **Compute:** `led`, `aspect`, `legibility`, `loop`.
@@ -39,7 +39,7 @@ Conventions: `→` marks what an answer changes. Numbers below are planning figu
 1. *Endereçamento.* "É um painel de vídeo (recebe a imagem direto) ou pixels endereçados por Art-Net/sACN/DMX (cada tubo, barra ou fita tem N pixels)? Quantos pixels no total?" → native resolution (often tiny), whether to design in true pixels.
 2. *Geometria.* "Como estão dispostos: fitas paralelas, colunas, cubo, anel, malha irregular? Em que ordem os pixels percorrem (serpentina)? Alguma peça é girada ou espelhada?" → the 2D map the engine renders into; layout rotation per panel.
 3. *Resolução e leitura.* "Qual o espaçamento entre pixels e de que distância se vê? O que eles precisam mostrar: formas, texto, ou só luz e cor?" → pitch-to-distance rule, whether text is possible.
-4. *Entrega.* "Quem converte o vídeo em dados de pixel (Resolume, MadMapper, TouchDesigner, um controlador próprio) e que resolução ele espera?" → exact export size.
+4. *Entrega.* "Que resolução exata o arquivo precisa ter, e ele vai inteiro ou dividido em regiões?" → exact export size, regions.
 
 **Round 2:** gamma and brightness limit of the strip (cheap LED strips need a gamma near 2.2 to 2.5 to avoid washed mid-tones); power limit at full white; colour order and RGBW; maximum useful fps on the controller (a full DMX universe refreshes about 44 Hz).
 
@@ -51,7 +51,7 @@ Conventions: `→` marks what an answer changes. Numbers below are planning figu
 
 ---
 
-## C. Facade projection mapping
+## C. Facade (flat 2D surface)
 
 **Ask for:** a frontal photo (as perpendicular as possible, with one known measure in frame); elevation or CAD drawing; photos from the viewing spots at night; projector datasheet (lumens, native resolution, lens); the projector positions; the mapping software.
 
@@ -71,43 +71,27 @@ Conventions: `→` marks what an answer changes. Numbers below are planning figu
 
 ---
 
-## D. Object, set and sculpture mapping
+## D. (removed)
 
-**Ask for:** a 3D model or photogrammetry; per-face dimensions; the UV or face layout of the mapping tool; projector positions; viewpoints.
-
-**Round 1:** (1) "O objeto tem modelo 3D? Me mande, ou as dimensões de cada face." → face layers. (2) "Quantos projetores, onde estão, e de onde se vê?" → seams, shadows, viewpoint. (3) "O material é branco fosco, espelhado, tecido ou translúcido? Há partes móveis?" → brightness, kinetic updates. (4) "O mapeamento é por UV exportada ou projeção a partir de uma câmera virtual?" → how many islands to export.
-
-**Compute:** `aspect` per face, `projection` for light.
-
-**Design consequences:** one layer set per face or per island; edges and corners are the story (light that wraps a corner reads as 3D); keep features off seams; consistent texture scale across faces.
-
-**Traps:** a continuous image across faces that do not share a viewpoint; projecting dark detail onto a shiny material.
+Mapping onto objects and sculptures is outside the product scope (the engine renders 2D animation; the surface is input and constraint).
 
 ---
 
-## E. Immersive room, cave and dome
+## E. (removed)
 
-**Ask for:** a drawing with the planes (walls, floor, ceiling) and projector layout; the master canvas and how it is cut; the position of the audience.
-
-**Round 1:** (1) "Quais superfícies recebem imagem (paredes, piso, teto) e qual a resolução mestre?" → folds and canvas. (2) "O público está sentado, em pé ou circulando? Há um ponto central (sweet spot)?" → comfort, anamorphosis. (3) "Domo: é fisheye (master quadrado, ex. 4096²) ou mapeado em partes?" → polar thinking. (4) "Por quanto tempo uma pessoa fica dentro, e há som espacial?" → dwell time, pacing.
-
-**Compute:** `aspect`, `blend`.
-
-**Design consequences:** slow, large motion; avoid fast rotation of the horizon (vection discomfort); keep detail away from the dome rim and pole; the floor is the strongest sense of motion; compose each wall as a complete reading and let fields cross corners.
-
-**Traps:** strobing and fast global translation; high-frequency patterns across a curved seam; text on a dome.
+Immersive rooms and domes are outside the product scope.
 
 ---
 
-## F. VJ clip pack / Resolume deck for unknown venues
+## F. VJ clip pack for unknown venues
 
-**Ask for:** examples of earlier packs the user liked; the Resolume version; a typical venue's screen type.
+**Ask for:** examples of earlier packs the user liked; a typical venue's screen type.
 
 **Round 1**
 1. "Para onde vai: que tipos de local (clube com telão 16:9, palco com LED largo, projeção em parede) e preciso entregar mais de uma proporção?" → base format plus variants.
 2. "Gênero(s) e faixa de BPM? Os clips precisam funcionar com qualquer BPM ou são para uma faixa?" → loop grammar, tempo-independence (a 4-bar loop at 128 BPM drifts at 140).
 3. "Quantos clips, e qual a escada de energia (intro, build, pico, quebra, saída)? Cada clip deve funcionar sozinho ou ser misturado em camadas?" → standalone vs mixable (negative space, blend-friendly, white-alpha).
-4. "Como entregar: versão do Resolume, codec (DXV3 ou HAP), alpha, branco-alfa, nomes de pasta e se há logo ou assinatura?" → export, naming.
+4. "Como entregar: PNG sequence ou MP4, alpha, branco-alfa, nomes de pasta e se há logo ou assinatura?" → export, naming.
 
 **Compute:** `loop`, `aspect`.
 
@@ -117,21 +101,9 @@ Conventions: `→` marks what an answer changes. Numbers below are planning figu
 
 ---
 
-## G. DOOH and anamorphic billboards
+## G. (removed)
 
-**Ask for:** the screen's pixel map and photo; the street viewpoint(s); the content-slot rules of the operator.
-
-**Round 1**
-1. "Geometria da tela: plana, em quina (duas faces em ângulo), curva ou pilar? Resolução de cada face?" → folds, anamorphic mapping.
-2. "De onde a ilusão é vista (ponto principal, distância, altura do olho) e para quem passa a pé ou de carro?" → single-viewpoint perspective, dwell, legibility.
-3. "Qual o tempo do slot (6, 10, 15 s) e o que vem antes e depois no loop do operador?" → duration, start and end frames (a clean cut in and out), looping.
-4. "Marca, texto e logos obrigatórios? Regras do operador (brilho, vermelho piscando, sem som)?" → text safe time, no audio dependence.
-
-**Compute:** `aspect`, `legibility`, `loop`.
-
-**Design consequences:** the hero must read in the first 0.5 s; one strong silhouette and one motion idea; the illusion lives at the corner, so keep the object's shadow and contact line consistent with the real floor; silent by design; a seamless loop, because the operator repeats it.
-
-**Traps:** anamorphic art judged from the wrong viewpoint; slow builds that waste a 6-second slot; text that needs more reading time than the pass-by.
+DOOH and anamorphic billboards are outside the product scope.
 
 ---
 
@@ -139,7 +111,7 @@ Conventions: `→` marks what an answer changes. Numbers below are planning figu
 
 **Ask for:** camera model, shutter, frame rate and genlock; colour pipeline; the LED processor's refresh and scan mode; the camera tracking system.
 
-**Round 1:** (1) "Frame rate de entrega e se há genlock?" → 24 / 25 / 30 / 50 / 60 only; 29.97 and 59.94 are conformed on the server. (2) "Quem vê é a câmera ou a plateia, ou os dois?" → camera-first rules. (3) "Pipeline de cor (Rec.709, HDR, ACES) e brilho do LED?" → saturation, highlight clipping. (4) "O fundo é uma placa 2D ou há câmera trackeada com frustum?" → engine is 2D; tracked content is `REQUIRES BRIDGE`.
+**Round 1:** (1) "Frame rate de entrega e se há genlock?" → 24 / 25 / 30 / 50 / 60 only; 29.97 and 59.94 are conformed downstream. (2) "Quem vê é a câmera ou a plateia, ou os dois?" → camera-first rules. (3) "Pipeline de cor (Rec.709, HDR, ACES) e brilho do LED?" → saturation, highlight clipping. (4) "O fundo é uma placa 2D ou há câmera trackeada com frustum?" → engine is 2D; tracked content is `REQUIRES BRIDGE`.
 
 **Design consequences:** moiré and banding rule the look (soft gradients with dither, no fine regular patterns); no flicker below the camera's shutter beat; saturation with headroom.
 

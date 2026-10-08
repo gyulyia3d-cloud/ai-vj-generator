@@ -25,8 +25,8 @@ const UX = (() => {
     med: ['Imagens, vídeos, objetos 3D e fontes do projeto. Arraste arquivos para a vista.', 'Images, videos, 3D objects and fonts for the project. Drag files onto the view.'],
     aud: ['Conecte um arquivo, o microfone ou a fonte de teste. Sem fonte, os shaders usam as bandas sintéticas do BPM.', 'Connect a file, the microphone or the test source. With no source, shaders use the BPM synthetic bands.'],
     prj: ['Nome, canvas, dobras, tempo, loop e paleta do projeto.', 'Name, canvas, folds, time, loop and palette of the project.'],
-    sur: ['Preset da superfície, cortes, pixel map e fatias para o Resolume. Confira a legibilidade pelo passo e pela distância.', 'Surface preset, cuts, pixel map and slices for Resolume. Check legibility by pitch and distance.'],
-    isf: ['ISF: shaders que o Resolume abre. Use os da biblioteca como camadas, importe um .fs seu ou exporte os shaders do projeto.', 'ISF: shaders Resolume opens. Use the library ones as layers, import your own .fs or export the project shaders.'],
+    sur: ['Preset da superfície, cortes (dobras) e regiões importadas. Confira a legibilidade pelo passo e pela distância.', 'Surface preset, cuts (folds) and imported regions. Check legibility by pitch and distance.'],
+    isf: ['ISF: 84 geradores prontos. Adicione como camada (o shader se escolhe nos parâmetros da camada) ou importe um .fs seu.', 'ISF: 84 ready generators. Add one as a layer (the shader is chosen in the layer parameters) or import your own .fs.'],
     rec: ['Receitas testadas para adicionar como camada. São vocabulário: mude os números.', 'Tested recipes to add as a layer. They are vocabulary: change the numbers.'],
     spc: ['Ficha de produção e calculadoras de LED, projeção, blend e loop.', 'Production sheet and calculators for LED, projection, blend and loop.'],
     exp: ['Exporte a sequência PNG. Teste os flashes antes, divida em partes se o arquivo for grande. O manifesto vai junto.', 'Export the PNG sequence. Test flashes first, split into parts if the file is large. The manifest goes along.'],
@@ -57,7 +57,7 @@ const UX = (() => {
     ['#tabs [data-tab="lay"]', 'Camadas: ligue, desligue e reordene. Cada composição tem de 6 a 10, em camadas de fundo, herói, estrutura, instrumento, informação e acabamento.', 'Layers: toggle and reorder. Each composition has 6 to 10, as ground, hero, structure, instrument, information and finish.'],
     ['#tabs [data-tab="par"]', 'Parâmetros e modulação: digite números, ou ligue um parâmetro a kick, grave, onda do BPM ou LFO.', 'Parameters and modulation: type numbers, or tie a parameter to kick, bass, a BPM wave or an LFO.'],
     ['#tabs [data-tab="aud"]', 'Áudio: conecte um arquivo, o microfone ou a fonte de teste para ver a reação de verdade.', 'Audio: connect a file, the microphone or the test source to see the real reaction.'],
-    ['#tabs [data-tab="sur"]', 'Superfície: escolha o preset do seu LED ou tela, corte nas dobras e gere as fatias para o Resolume.', 'Surface: pick the preset for your LED or screen, cut at the folds and generate the slices for Resolume.'],
+    ['#tabs [data-tab="sur"]', 'Superfície: escolha o preset do seu LED ou tela, corte nas dobras e importe as regiões.', 'Surface: pick the preset for your LED or screen, cut at the folds and import the regions.'],
     ['#tabs [data-tab="exp"]', 'Exportar: teste os flashes, escolha alpha ou RGB e baixe a sequência PNG com o manifesto.', 'Export: test flashes, choose alpha or RGB and download the PNG sequence with the manifest.'],
   ];
   let tour = null;

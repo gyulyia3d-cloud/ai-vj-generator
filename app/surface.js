@@ -1,101 +1,7 @@
-/* Superfície (fase 3): presets de superfície, fatias para o Resolume (XML de Advanced Output), pixel map por CSV ou PNG e avisos de legibilidade.
-   O cálculo das fatias é a porta de skill/ai-vj-generator/scripts/export_slices.py (parity testada por scripts/surface_check.mjs: o XML sai idêntico).
+/* Superfície: entrada e restrição de composição. Lê regiões de um CSV ou de uma máscara PNG (só entrada: o motor não gera pixel map, mapping nem arquivos de saída) e avisa sobre legibilidade.
    Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html. */
 const SURFX = (() => {
-  const pyRound = GENAI.pyRound;
-  const PAL_TILE = [[230, 57, 70], [42, 157, 143], [244, 162, 97], [69, 123, 157], [168, 218, 220], [233, 196, 106], [131, 56, 236], [6, 214, 160]];
-
-  /* ---- fatias em colunas (o que o export_slices.py faz) ---- */
-  function pieces(W, folds, maxW) {
-    const cuts = [...new Set([0, W, ...folds.filter(f => f > 0 && f < W)])].sort((a, b) => a - b), out = [];
-    for (let i = 0; i + 1 < cuts.length; i++) {
-      const a = cuts[i], b = cuts[i + 1], n = Math.ceil((b - a) / maxW), step = Math.ceil((b - a) / n);
-      for (let x = a; x < b; x += step) out.push({ x, y: 0, w: Math.min(step, b - x) });
-    }
-    return out;
-  }
-  /* linha por linha; devolve [{screen, x, y, w, h, ox, oy}] ou { error } */
-  function pack(pcs, H, OW, OH) {
-    if (H > OH) return { error: `a altura do canvas (${H}) não cabe na altura da saída (${OH}): escolha uma saída mais alta ou gire o conteúdo` };
-    const res = []; let screen = 0, x = 0, y = 0;
-    for (const p of pcs) {
-      if (p.w > OW) return { error: `a fatia de ${p.w} px não cabe na largura da saída (${OW})` };
-      if (x + p.w > OW) { x = 0; y += H; }
-      if (y + H > OH) { screen++; x = 0; y = 0; }
-      res.push({ screen, x: p.x, y: 0, w: p.w, h: H, ox: x, oy: y }); x += p.w;
-    }
-    return res;
-  }
-  /* fatias retangulares quaisquer (pixel map): prateleiras da esquerda para a direita; a prateleira tem a altura do maior retângulo */
-  function packRects(rects, OW, OH) {
-    const res = []; let screen = 0, x = 0, y = 0, shelf = 0;
-    for (const r of rects) {
-      if (r.w > OW || r.h > OH) return { error: `o módulo ${r.name || ''} (${r.w}×${r.h}) não cabe na saída ${OW}×${OH}` };
-      if (x + r.w > OW) { x = 0; y += shelf; shelf = 0; }
-      if (y + r.h > OH) { screen++; x = 0; y = 0; shelf = 0; }
-      res.push({ screen, x: r.x, y: r.y, w: r.w, h: r.h, ox: x, oy: y, name: r.name }); x += r.w; shelf = Math.max(shelf, r.h);
-    }
-    return res;
-  }
-
-  /* ---- XML de Advanced Output do Resolume Arena (estrutura copiada de arquivos que o próprio Arena salva) ---- */
-  const v = (x, y, ind) => `${ind}<v x="${x}" y="${y}"/>\n`;
-  const rectPts = (x, y, w, h, ind) => v(x, y, ind) + v(x + w, y, ind) + v(x + w, y + h, ind) + v(x, y + h, ind);
-  const RANGE = (n, d, val, lo, hi, ind) => `${ind}<ParamRange name="${n}" default="${d}" value="${val}"><ValueRange name="defaultRange" min="${lo}" max="${hi}"/></ParamRange>\n`;
-  const sp = n => ' '.repeat(n);
-  function sliceXml(uid, name, W, H, p) {
-    const dx = p.ox - p.x, dy = p.oy - p.y, I = sp(24);
-    let s = `                    <Slice uniqueId="${uid}">\n`;
-    s += '                        <Params name="Common">\n' + `${I}<Param name="Name" default="Layer" value="${name}"/>\n` + `${I}<Param name="Enabled" default="1" value="1"/>\n                        </Params>\n`;
-    s += '                        <Params name="Input">\n' + `${I}<ParamChoice name="Input Source" default="0:1" value="0:1" storeChoices="0"/>\n${I}<Param name="Input Opacity" default="1" value="1"/>\n${I}<Param name="Input Bypass/Solo" default="1" value="1"/>\n${I}<Param name="SoftEdgeEnable" default="0" value="0"/>\n                        </Params>\n`;
-    s += '                        <Params name="Output">\n' + `${I}<Param name="Flip" default="0" value="0"/>\n`;
-    for (const n of ['Brightness', 'Contrast', 'Red', 'Green', 'Blue']) s += RANGE(n, 0, 0, -1, 1, I);
-    s += `${I}<Param name="Is Key" default="0" value="0"/>\n${I}<Param name="Black BG" default="0" value="0"/>\n`;
-    for (const n of ['BRed', 'BGreen', 'BBlue']) s += RANGE(n, 0, 0, 0, 0.4, I);
-    s += '                        </Params>\n';
-    s += '                        <InputRect orientation="0">\n' + rectPts(0, 0, W, H, sp(28)) + '                        </InputRect>\n';
-    s += '                        <OutputRect orientation="0">\n' + rectPts(dx, dy, W, H, sp(28)) + '                        </OutputRect>\n';
-    s += '                        <Warper>\n                            <Params name="Warper"><ParamChoice name="Point Mode" default="PM_LINEAR" value="PM_LINEAR" storeChoices="0"/></Params>\n';
-    s += '                            <BezierWarper controlWidth="4" controlHeight="4">\n                                <vertices>\n';
-    for (let j = 0; j < 4; j++) for (let i = 0; i < 4; i++) s += v(pyRound(dx + W * i / 3), pyRound(dy + H * j / 3), sp(36));
-    s += '                                </vertices>\n                            </BezierWarper>\n                            <Homography>\n                                <src>\n' + rectPts(0, 0, W, H, sp(36));
-    s += '                                </src>\n                                <dst>\n' + rectPts(dx, dy, W, H, sp(36)) + '                                </dst>\n                            </Homography>\n                        </Warper>\n';
-    s += '                        <SliceMask>\n                            <Params name="Input Mask">\n' + `${I}<Param name="Name" default="Mask" value="Mask"/>\n${I}<Param name="Enabled" default="1" value="1"/>\n${I}<Param name="Invert" default="1" value="1"/>\n                            </Params>\n`;
-    s += '                            <ShapeObject>\n                                <Params name="Shape">\n                                    <ParamChoice name="Point Mode" default="PM_LINEAR" value="PM_LINEAR" storeChoices="0"/>\n                                </Params>\n';
-    s += '                                <Rect orientation="0">\n' + rectPts(p.x, p.y, p.w, p.h, sp(36)) + '                                </Rect>\n';
-    s += '                                <Shape>\n                                    <Contour closed="1">\n                                        <points>\n' + v(p.x, p.y, sp(44)) + v(p.x, p.y + p.h, sp(44)) + v(p.x + p.w, p.y + p.h, sp(44)) + v(p.x + p.w, p.y, sp(44));
-    s += '                                        </points>\n                                        <segments>LLLL</segments>\n                                    </Contour>\n                                </Shape>\n                            </ShapeObject>\n                        </SliceMask>\n                    </Slice>\n';
-    return s;
-  }
-  function buildXml(name, W, H, OW, OH, placed) {
-    const screens = [...new Set(placed.map(p => p.screen))].sort((a, b) => a - b), ID = ' '.repeat(20);
-    let x = `<?xml version="1.0" encoding="utf-8"?>\n<XmlState name="${name}">\n    <versionInfo name="Resolume Arena" majorVersion="5" minorVersion="0" microVersion="0" revision="00000"/>\n`;
-    x += '    <ScreenSetup name="ScreenSetup">\n        <Params name="ScreenSetupParams"/>\n        <sizing>\n            <inputs>\n' + `                <InputSize name="0:1" width="${W}" height="${H}"/>\n            </inputs>\n        </sizing>\n        <screens>\n`;
-    let uid = 1000;
-    for (const sc of screens) {
-      x += `            <Screen name="Output #${sc + 1}" uniqueId="${14150 + sc}">\n                <Params name="Params">\n                    <Param name="Name" default="" value="Output #${sc + 1}"/>\n                    <Param name="Enabled" default="1" value="1"/>\n                    <Param name="Hidden" default="0" value="0"/>\n                </Params>\n`;
-      x += '                <Params name="Output">\n' + RANGE('Opacity', 1, 1, 0, 1, ID) + ['Brightness', 'Contrast', 'Red', 'Green', 'Blue'].map(n => RANGE(n, 0, 0, -1, 1, ID)).join('') + '                </Params>\n                <layers>\n';
-      placed.forEach((p, k) => { if (p.screen !== sc) return; uid += 1000; x += sliceXml(uid, `${name} ${String(k + 1).padStart(2, '0')}`, W, H, p); });
-      x += '                </layers>\n                <OutputDevice>\n' + `                    <OutputDeviceVirtual name="Virtual" deviceId="Virtual" idHash="0" width="${OW}" height="${OH}">\n                        <Params name="Params">\n`;
-      x += RANGE('Width', 1920, OW, 1, 32768, sp(28)) + RANGE('Height', 1080, OH, 1, 32768, sp(28)) + '                        </Params>\n                    </OutputDeviceVirtual>\n                </OutputDevice>\n            </Screen>\n';
-    }
-    x += '        </screens>\n        <SoftEdging>\n            <Params name="Soft Edge">\n';
-    x += RANGE('Gamma Red', 2, 2, 1, 3, sp(16)) + RANGE('Gamma Green', 2, 2, 1, 3, sp(16)) + RANGE('Gamma Blue', 2, 2, 1, 3, sp(16)) + RANGE('Gamma', 1, 1, 0, 1, sp(16)) + RANGE('Luminance', 0.5, 0.5, 0, 1, sp(16)) + RANGE('Power', 2, 2, 0.1, 7, sp(16));
-    return x + '            </Params>\n        </SoftEdging>\n    </ScreenSetup>\n</XmlState>\n';
-  }
-  const cleanName = n => String(n || 'project').replace(/[<>&"]/g, '');
-  /* plano completo: modo "columns" (dobras, igual ao Python) ou "rects" (um módulo do pixel map por fatia) */
-  function plan(canvas, opt) {
-    const W = canvas.w, H = canvas.h, [OW, OH] = opt.out, name = cleanName(opt.name);
-    let placed;
-    if (opt.mode === 'rects') placed = packRects(opt.rects || [], OW, OH); else placed = pack(pieces(W, canvas.folds || [], OW), H, OW, OH);
-    if (placed.error) return placed;
-    const map = { input: [W, H], output: [OW, OH], folds: canvas.folds || [], slices: placed.map((p, k) => ({ slice: k + 1, screen: p.screen + 1, input: { x: p.x, y: p.y, w: p.w, h: p.h }, output: { x: p.ox, y: p.oy } })) };
-    map.slices.forEach((s, k) => { if (placed[k].name) s.name = placed[k].name; });
-    return { placed, name, xml: buildXml(name, W, H, OW, OH, placed), map, screens: new Set(placed.map(p => p.screen)).size, usedPixels: placed.reduce((a, p) => a + p.w * p.h, 0) };
-  }
-
-  /* ---- pixel map: CSV de retângulos (nome,x,y,w,h) ou PNG máscara ---- */
+  /* ---- regiões de entrada: CSV de retângulos (nome,x,y,w,h) ou PNG máscara ---- */
   function parseCsv(text, W, H) {
     const rects = [], errs = []; let first = true;
     String(text).replace(/\r/g, '').split('\n').forEach((raw, ln) => {
@@ -147,5 +53,5 @@ const SURFX = (() => {
     }));
     return { limits: lg, warnings: warns };
   }
-  return { pieces, pack, packRects, buildXml, plan, parseCsv, maskToRects, rectsCsv, activePixels, legibility, cleanName, PAL_TILE };
+  return { parseCsv, maskToRects, activePixels, legibility };
 })();

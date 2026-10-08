@@ -87,15 +87,15 @@ When a briefing or a reference uses a term, find it here, say what it is in plai
 |---|---|
 | **Hydra** | live-coded chain of video-synth transforms with `a.fft` audio; see `software-techniques.md` |
 | **TouchDesigner (TOP/CHOP/SOP/DAT/COMP)** | operator networks for images, signals, geometry, data, containers |
-| **Resolume Arena / Avenue / Wire** | VJ media server; Wire = node patching; Slices, Advanced Output, BPM sync, FFT, OSC |
+| **Resolume Arena / Avenue / Wire** | VJ media server and node patcher; named only as a vocabulary reference, not a target |
 | **Synesthesia / SSF** | audio-reactive shader scenes with JSON controls and audio uniforms |
 | **Cavalry** | procedural 2D animation: behaviours, falloffs, duplicator, stagger |
 | **Notch, Unreal, Unity VFX** | real-time 3D engines; node or blueprint particle systems |
 | **After Effects / Blender / Cinema 4D / Houdini** | offline motion/3D; export frames or masks if a piece must come from there |
 | **ISF** | Interactive Shader Format: fragment shader plus JSON inputs |
-| **Spout / Syphon / NDI / SDI** | video transports (REQUIRES BRIDGE from a browser) |
-| **DXV / HAP / PNG sequence / WebM** | delivery codecs (Alley converts PNG sequences to DXV3 with alpha) |
-| **Pixel map / slice / canvas** | native pixel grid, output regions, the full composition space |
+| **Spout / Syphon / NDI / SDI** | video transports (NOT SUPPORTED by this engine) |
+| **DXV / HAP / PNG sequence / WebM** | delivery formats (the engine writes PNG sequences and MP4; `ffmpeg` converts) |
+| **Pixel map / region / canvas** | native pixel grid (an input description), output regions, the full composition space |
 | **Safe area / gutter / fold** | margins, no-text strips, physical corners |
 
 ## If the term is not here

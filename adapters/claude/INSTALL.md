@@ -17,7 +17,7 @@ git clone https://github.com/gyulyia3d-cloud/ai-vj-generator.git; cd ai-vj-gener
 
 O instalador copia para `~/.claude/skills/` (ou `$CLAUDE_SKILLS_DIR`) a skill `ai-vj-generator` e os comandos `vj`, `vj-reference`, `vj-critique` e `how-to-use`. Reinicie o Claude Code e digite, por exemplo:
 
-> /vj Set de techno industrial: LED 5120×500 em duas paredes em L, 132 BPM, vou levar pro Resolume com alpha. Anexei um print e um vídeo de referência.
+> /vj Set de techno industrial: LED 5120×500 em duas paredes em L, 132 BPM, preciso de PNG sequence com alpha. Anexei um print e um vídeo de referência.
 
 ## Atualizar
 `git pull` e rode o instalador de novo (ele substitui as pastas instaladas).

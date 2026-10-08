@@ -349,8 +349,10 @@ def check_capabilities(cap, out):
 
 
 SPEC_KEYS = ("archetype", "confirmed", "derived", "zones", "assumed", "show", "risks")
-SPEC_ARCHETYPES = ("stage-led", "led-architecture", "facade-mapping", "object-mapping", "immersive", "clip-pack",
-                   "dooh", "broadcast-xr", "installation", "corporate", "social")
+SPEC_ARCHETYPES = ("stage-led", "led-architecture", "facade-mapping", "clip-pack",
+                   "broadcast-xr", "installation", "corporate", "social")
+# archetypes removed from the product scope (3.1): old projects still open, with a warning
+LEGACY_ARCHETYPES = {"object-mapping": "object mapping", "immersive": "immersive room or dome", "dooh": "DOOH"}
 PHYSICAL_TARGETS = ("led", "projection", "mapping", "multi")
 
 
@@ -375,7 +377,9 @@ def check_spec(meta, cv, tm, out):
         w.append("meta.spec.archetype should name at least one of: " + ", ".join(SPEC_ARCHETYPES))
     else:
         for a in arch:
-            if a not in SPEC_ARCHETYPES:
+            if a in LEGACY_ARCHETYPES:
+                w.append(f"meta.spec.archetype '{a}' ({LEGACY_ARCHETYPES[a]}) is outside the product scope since 3.1; pick one of: {', '.join(SPEC_ARCHETYPES)}")
+            elif a not in SPEC_ARCHETYPES:
                 w.append(f"meta.spec.archetype '{a}' is not one of: {', '.join(SPEC_ARCHETYPES)}")
     conf = s.get("confirmed", {})
     if not isinstance(conf, dict):

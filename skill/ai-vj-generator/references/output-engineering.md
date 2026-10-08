@@ -1,14 +1,14 @@
-# Output engineering: from pixel map to light
+# Output engineering: from canvas to light
 
-How a finished composition becomes photons on a real surface, and what that changes in the design. `surface-model.md` describes the surface; `output-targets.md` lists destinations and the Resolume workflow; `capabilities.md` labels what a browser can send. This file is the physics and signal chain in between. Numbers come from `scripts/surface_calc.py`.
+How a finished composition becomes photons on a real surface, and what that changes in the design. `surface-model.md` describes the surface; `output-targets.md` lists what is delivered; `capabilities.md` labels what the engine does. This file is the physics and signal chain in between. Numbers come from `scripts/surface_calc.py`.
 
-Sources studied: the TouchDesigner output, blending and optimisation chapters, the PixelController matrix pipeline, and the OSCAR control-surface design (principles only; no code was taken, see `repo-analysis.md`).
+Sources studied: the TouchDesigner output, blending and optimisation chapters and the PixelController matrix pipeline (principles only; no code was taken, see `repo-analysis.md`).
 
 ## 1. One raster, one window
 
-A media server draws **one** raster that spans every physical output; per-output windows cost performance and invite tearing. Build the raster, then let each projector, LED port or display take its rectangle.
+The engine draws **one** raster that spans every region. Build the raster, then let each projector, LED port or display take its rectangle in whatever system receives the files.
 
-- The pixel map in `canvas.w × canvas.h` is the *content* raster. For several outputs, the media server (Resolume Advanced Output / slices, MadMapper, TouchDesigner, Watchout, disguise) cuts it into output rectangles; declare them in `canvas.displays`.
+- The pixel map in `canvas.w × canvas.h` is the *content* raster. For several outputs, declare the rectangles in `canvas.displays`; the Export tab renders each region as its own PNG sequence or MP4.
 - Rotating an output means rotating the *canvas* of that rectangle (flip / flop), not transforming the pixels inside it. A projector mounted portrait receives a rotated rectangle; design the content for the unrotated map and say how each rectangle is rotated in the delivery notes.
 - Mixed resolutions fit into a raster as a packing problem (e.g. four 1400×1050 outputs as a 2×2 grid of 2800×2100). State the packing in `PRODUCTION_SPEC.md`.
 - Colour-order, orientation and serpentine paths of LED strips belong to the controller; content is always upright, in a clean rectangular map.
@@ -52,7 +52,7 @@ Choose one of two workflows and write it in the spec:
 | Stage | What matters for the design |
 |---|---|
 | Content (sRGB-like) | stay in the gamut and brightness the room allows |
-| Media server | scales to the processor's input; never let it resample a 1:1 map |
+| Playback system | scales to the processor's input; never let it resample a 1:1 map |
 | Processor / controller | applies gamma, white point, brightness, per-module calibration |
 | Cabinet | refresh rate, grayscale depth, scan type |
 
@@ -66,16 +66,7 @@ Choose one of two workflows and write it in the spec:
 
 ## 5. Pixel-mapped fixtures and protocols
 
-For tubes, bars and strips that are addressed by network or DMX (`briefing/archetypes.md` §B), the video is only the *source*: a mapping tool samples it into pixel data.
-
-| Protocol | Notes |
-|---|---|
-| DMX512 | 512 slots per universe, about 250 kbit/s, a full frame refreshes at most ~44 Hz |
-| Art-Net | UDP port 6454, one universe per packet, 170 RGB pixels per universe (510 slots), unicast or broadcast |
-| sACN (E1.31) | multicast per universe with priorities, 512 slots plus start code |
-| TPM2 | serial or network pixel streaming used by simple controllers |
-
-`surface_calc.py pixelmap --px 2040 --fps 30` gives universes and wire bandwidth; split universes over several network ports when a gigabit link passes about 40% load. Output 30 fps unless the controller decouples network rate from LED refresh. A browser cannot send any of these: label `REQUIRES BRIDGE` and deliver video plus a mapping description.
+Out of scope: the engine delivers PNG sequences and MP4 and never addresses fixtures, DMX, Art-Net or sACN. Lines and strips are only a surface shape to compose for.
 
 ## 6. Performance and deployment
 
@@ -92,14 +83,9 @@ For delivery: a small hero asset modulated in a large canvas should be processed
 
 For our engine: `shader.p.res` 0.5 to 0.7 and at most one shader at `res` below 1 per composition on weak GPUs; `p.echo` multiplies a layer's cost by its copies; exports always render at full density.
 
-## 7. Control signals (concept, `REQUIRES BRIDGE`)
+## 7. Control signals
 
-The skill generates visuals; the show software is controlled elsewhere. Useful vocabulary for the delivery notes:
-
-- **OSC**: messages = an address path plus typed arguments, over UDP. Resolume exposes layers, clips, columns and parameters by address (see its OSC documentation); a control surface is a page of buttons and faders that sends them.
-- **MIDI**: notes, CC and program changes; the common VJ controllers map natively into Resolume.
-- A **control map** is the useful deliverable here: a table of the parameters a VJ is meant to play, with a suggested address or CC per parameter. The interface can export one (`ui-research.md`); sending it is a bridge.
-- Remote control surfaces published to phones and tablets are a good live-performance pattern; the safe default is that an assistant never operates the rig, it only reads and drafts.
+Out of scope: no OSC, MIDI or remote control. The engine does not operate show software.
 
 ## 8. Test cards: what to run first on site
 
@@ -119,7 +105,7 @@ Deliver it as a composition named for the project, or as a short PNG set, with t
 
 | Item | Label |
 |---|---|
-| Fullscreen output to a processor or projector over a normal display link | SUPPORTED |
-| Per-surface alpha layers, white-alpha, PNG sequences, test cards | EXPORTABLE |
-| Pixel-mapped Art-Net / sACN / DMX, NDI, Spout, Syphon, SDI, OSC | REQUIRES BRIDGE |
-| Live MIDI / OSC control from the interface | CONCEPTUAL |
+| Per-region and per-layer alpha, white-alpha, PNG sequences, MP4, test cards | EXPORTABLE |
+| Preview and fullscreen preview | SUPPORTED |
+| Pixel maps and blueprints as surface descriptions | INPUT / ANALYSIS ONLY |
+| Transmission protocols, control protocols, mapping files | NOT SUPPORTED |

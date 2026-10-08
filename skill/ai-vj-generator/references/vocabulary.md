@@ -8,7 +8,7 @@ Read this when the briefing is being answered, before choosing layers. It is a *
 | a slow field, organic | `shader` presets `CAMPO FBM` `FLUXO WARP` `CÉLULAS` |
 | geometric, measured | `shader` `GRADE SDF` `FAIXAS` `INTERFERÊNCIA` `ANÉIS SDF` `KALEIDO` |
 | edit the picture as one line | `synth` chain (`references/synth-chain.md`), e.g. `noise(4,1).twirl(6,0.7).kaleid(5).tint()` |
-| a ready generator from the ISF library | aba **ISF**, `isf-library/` (`references/isf-bridge.md`): 11 originals that close the loop (tunnel, plasma, voronoi, kaleido, lissajous, metaballs, aurora, LED ripples, moire, flow stripes, spiral) and 28 MIT + 45 CC0 third-party generators |
+| a ready generator from the ISF library | aba **ISF**, `isf-library/` (`references/isf-layer.md`): 11 originals that close the loop (tunnel, plasma, voronoi, kaleido, lissajous, metaballs, aurora, LED ripples, moire, flow stripes, spiral) and 28 MIT + 45 CC0 third-party generators |
 | equation-driven | recipes `superformula` `clifford` `pendulum-wave` `wave-interference` `spirograph` `kepler` `stagger-grid` `chladni` `quasicrystal` `domain-coloring` `julia-orbit` (`references/math-forms.md`) |
 | flow, particles | `flow`, `organism`; the `sim` layer is baked in a loop (CPU) |
 

@@ -418,7 +418,7 @@ input[type=range]{touch-action:pan-y}
 #foot{flex-wrap:wrap;gap:4px 14px}
 #foot .cred{display:flex;flex-wrap:wrap;gap:2px 0;justify-content:flex-end}
 .rcprev{image-rendering:auto}
-/* modo palco (?stage=1): só a imagem, para Fonte de Navegador do OBS, Resolume ou um segundo monitor; ?alpha=1 deixa o fundo transparente */
+/* modo preview limpo (?stage=1): só a imagem, para um segundo monitor ou captura de tela; ?alpha=1 deixa o fundo transparente */
 html.stagemode,html.stagemode body,html.stagemode #app,html.stagemode #vp,html.stagemode #fit{background:transparent!important}
 html.stagemode{cursor:none}
 html.stagemode #fit{box-shadow:none!important;outline:none!important}
@@ -2914,10 +2914,10 @@ const TARGETS = {
   screen: { n: 'Tela', recos: ['Use 16:9 do monitor ou a resolução nativa da tela.', 'Texto de interface a partir de 11 px lê bem a 1 m.'] },
   led: { n: 'LED', recos: ['Trabalhe na resolução física do painel (pixels do processador), não em 1920×1080 genérico.', 'Linhas abaixo de 2 px desaparecem ou geram moiré: use espessura ≥ 2× o pitch visual.', 'Desligue scanlines: o padrão do LED + scanline gera moiré.', 'Preto é desligado no LED: o preto trabalha como vazio, use-o.', 'Contraste alto e acentos chapados leem de longe; evite gradientes sutis.'] },
   projection: { n: 'Projeção', recos: ['O preto do projetor é cinza: evite fundos grandes em cinza escuro, prefira preto absoluto e formas claras.', 'Deixe 3–5% de margem para keystone e warp.', 'Detalhe fino se perde com a distância e o foco: aumente a escala do texto.'] },
-  mapping: { n: 'Mapping', recos: ['Exporte em alpha por camada para mascarar no software de mapping (Resolume Advanced Output, MadMapper).', 'Desenhe as máscaras da superfície como guias (Safe/Multi-display).', 'Evite movimento de câmera que contradiga a geometria real.'] },
-  multi: { n: 'Multi-display', recos: ['Defina cada display como um recorte do canvas total (aba Exportar → Displays).', 'Mantenha elementos críticos longe das emendas entre telas.'] },
-  software: { n: 'Software (Resolume, TD, OBS)', recos: ['Resolume: exporte PNG alpha e converta no Alley para DXV3 com alpha.', 'TouchDesigner: Movie File In TOP lê a sequência PNG direto; Web Render TOP abre este HTML ao vivo.', 'OBS: janela de saída como captura de janela; NDI/Spout exigem plugin.'] },
-  export: { n: 'Só exportação', recos: ['Feche o loop em compassos inteiros para o BPM sync do Resolume.', 'Prefira 30 ou 60 FPS para playback em mídia server.'] }
+  mapping: { n: 'Superfície irregular', recos: ['Exporte em alpha por camada ou por região para tratar cada parte da superfície separadamente.', 'Desenhe as máscaras da superfície como guias (Safe/Multi-display).', 'Evite movimento de câmera que contradiga a geometria real.'] },
+  multi: { n: 'Multi-display', recos: ['Defina cada região como um recorte do canvas total (aba Exportar → Regiões).', 'Mantenha elementos críticos longe das emendas entre telas.'] },
+  software: { n: 'Arquivo para outro software', recos: ['Exporte PNG com alpha: qualquer software abre a sequência.', 'MP4 (H.264) não guarda alpha.'] },
+  export: { n: 'Só exportação', recos: ['Feche o loop em compassos inteiros para a emenda ser limpa.', 'Prefira 30 ou 60 FPS.'] }
 };
 const PRESETS_RES = [['1920×1080 · Full HD 16:9', 1920, 1080], ['3840×2160 · 4K 16:9', 3840, 2160], ['1080×1920 · vertical 9:16', 1080, 1920], ['2160×1080 · 2:1', 2160, 1080], ['3840×1080 · 32:9', 3840, 1080], ['7680×2160 · 32:9 8K', 7680, 2160], ['5120×500 · paredes em L', 5120, 500], ['1080×1080 · 1:1', 1080, 1080], ['1080×1350 · 4:5', 1080, 1350], ['1280×720 · HD', 1280, 720]];
 function renderAudio() {
@@ -2969,7 +2969,7 @@ function renderProject() {
     <h2 class="sec">Seed</h2>
     <div class="row"><input type="number" id="pSeed" value="${P.seed}" step="1" aria-label="Seed"><button id="pSeedLock" aria-pressed="${!!P.seedLock}">${P.seedLock ? 'Travada' : 'Travar'}</button><button id="pSeedRnd" ${P.seedLock ? 'disabled' : ''}>Aleatória</button><button id="pSeedCopy">Copiar</button></div>
     <h2 class="sec">Paleta ${P.palette.mode === 'white-alpha' ? '<span class="lbl">BRANCO α · 100 / 72 / 43 %</span>' : ''}</h2>
-    <div class="row"><button id="pWhite" title="Tudo branco com opacidade: a cor se muda no Resolume">Branco α (colorir no Resolume)</button></div>
+    <div class="row"><button id="pWhite" title="Tudo branco com opacidade: a cor se muda no software de destino">Branco α (colorir depois)</button></div>
     <div class="row">${PKEYS.map(k => `<label class="row" style="margin:0"><input type="color" data-pal="${k}" value="${P.palette[k]}" aria-label="${PNAMES[k]}"><span class="lbl">${PNAMES[k]}</span></label>`).join('')}</div>
     <div class="row"><span class="lbl">Acento desta composição</span>${ACC.map((a, i) => `<button data-acc="${i}" title="${a.n}"><span style="display:inline-block;width:10px;height:10px;background:${a.h};vertical-align:-1px"></span></button>`).join('')}<button data-acc="-1">Herdar</button></div>
     <h2 class="sec">Performance</h2>
@@ -3043,13 +3043,14 @@ function validate(o) {
   if (!P.time.loop) add('WARNING', 'Loop desligado', 'A sequência não fecha: o último quadro não encaixa no primeiro.');
   if (!P.time.seamless) add('WARNING', 'Seamless desligado', 'Rotações e derivas não são arredondadas para ciclos inteiros: pode haver salto no fim do loop.');
   if (![24, 25, 30, 50, 60].includes(o.fps)) add('WARNING', 'FPS incomum', `${o.fps} FPS não é padrão de mídia server.`);
-  const fpb = o.fps * 60 / P.time.bpm; if (Math.abs(fpb - Math.round(fpb)) > 0.01) add('OPTIMIZATION', 'Beat fracionário', `A ${P.time.bpm} BPM e ${o.fps} FPS, um beat dura ${fpb.toFixed(3)} quadros. O loop fecha, mas o beat não cai exatamente num quadro. No Resolume use BPM Sync no clip.`);
+  const fpb = o.fps * 60 / P.time.bpm; if (Math.abs(fpb - Math.round(fpb)) > 0.01) add('OPTIMIZATION', 'Beat fracionário', `A ${P.time.bpm} BPM e ${o.fps} FPS, um beat dura ${fpb.toFixed(3)} quadros. O loop fecha, mas o beat não cai exatamente num quadro.`);
   if (P.audio.reactive && AUD.src) add('WARNING', 'Áudio no export', 'O export é determinístico: usa o pulso do BPM no lugar do áudio ao vivo. Para capturar a reação real, use GRAVAR.');
   o.comps.forEach(ci => {
     const comp = P.compositions[ci], nm = comp.name;
     comp.layers.forEach((L, i) => {
       if (!L.on) return; const p = pm(L);
       if ((L.type === 'image' || L.type === 'video' || L.type === 'model') && !MEDIA[p.media]) add('ERROR', `${nm} · L${i} mídia ausente`, p.media ? `"${p.media}" não está carregada neste navegador. Importe na aba Mídia.` : 'Camada ligada sem arquivo.');
+      if (L.type === 'isf') { try { const b = shaderBody({ src: isfLib(p.lib).src }); glProg(b); if (GL.err.get(b)) add('ERROR', `${nm} · L${i} ISF`, GL.err.get(b)); } catch (e) { add('ERROR', `${nm} · L${i} ISF`, e.message); } }
       if (L.type === 'synth') { try { const b = shaderBody({ src: synthSrc(p) }); glProg(b); if (GL.err.get(b)) add('ERROR', `${nm} · L${i} cadeia`, GL.err.get(b)); } catch (e) { add('ERROR', `${nm} · L${i} cadeia`, e.message); } }
       if (L.type === 'fx') { const b = fxBody(fxOf(p).src); glProg(b); if (GL.err.get(b)) add('ERROR', `${nm} · L${i} efeito`, GL.err.get(b)); }
       if (L.type === 'shader') { const b = shaderBody(p); glProg(b); if (GL.err.get(b)) add('ERROR', `${nm} · L${i} shader`, GL.err.get(b)); if (!glInit()) add('ERROR', 'WebGL', 'WebGL indisponível.'); }
@@ -3089,7 +3090,15 @@ async function saveFile(filename, blob) {
 }
 
 /* ---------- export PNG (alpha) ---------- */
-const EXP = { what: 'comp', alpha: true, luma: false, scale: 1, fps: null, bars: null, comps: 'current', start: 0, end: -1, prefix: '', layerSel: 0, partMB: 0, flashCheck: true, flashLimit: false, flashSwing: 0.08, mp4q: 'mid' };
+const EXP = { what: 'comp', region: -1, alpha: true, luma: false, scale: 1, fps: null, bars: null, comps: 'current', start: 0, end: -1, prefix: '', layerSel: 0, partMB: 0, flashCheck: true, flashLimit: false, flashSwing: 0.08, mp4q: 'mid' };
+/* região de render: -1 = projeto completo; n = o display n (recorte definido pelo usuário ou importado) em pixels já multiplicados pela escala. O render é o do projeto inteiro; o recorte só decide o que sai. */
+function regionRect(idx, scale, even) {
+  const d = idx != null && idx >= 0 ? (P.canvas.displays || [])[idx] : null; if (!d) return null;
+  const sc = v => Math.round(v * scale), W = sc(P.canvas.w), H = sc(P.canvas.h);
+  const x = clamp(sc(d.x), 0, W - 1), y = clamp(sc(d.y), 0, H - 1); let w = clamp(sc(d.w), 1, W - x), h = clamp(sc(d.h), 1, H - y);
+  if (even) { w = Math.max(2, w & ~1); h = Math.max(2, h & ~1); }
+  return { x, y, w, h, idx, name: d.name || 'D' + pad(idx + 1, 2) };
+}
 let CANCEL = false;
 function lumaKey(ctx, w, h) { const im = ctx.getImageData(0, 0, w, h), d = im.data; for (let i = 0; i < d.length; i += 4) { const a = d[i + 3]; if (!a) continue; const v = Math.max(d[i], d[i + 1], d[i + 2]); d[i + 3] = (v * a / 255) | 0; d[i] = d[i + 1] = d[i + 2] = 255; } ctx.putImageData(im, 0, 0); }
 async function prepMedia(comp, F) {
@@ -3124,10 +3133,13 @@ async function exportRun(info, bar) {
   const W = P.canvas.w, H = P.canvas.h, w = Math.round(W * EXP.scale), h = Math.round(H * EXP.scale);
   const lay = document.createElement('canvas'); lay.width = w; lay.height = h; const lctx = lay.getContext('2d', EXP.luma ? { willReadFrequently: true } : undefined); /* leitura de pixels só no luma; fora dele o canvas fica em GPU */
   const cmp = document.createElement('canvas'); cmp.width = w; cmp.height = h; const cctx = cmp.getContext('2d');
-  let zip = new JSZip(); const PROJ = safe(P.meta.name), tag = (EXP.prefix ? safe(EXP.prefix) + '_' : '');
+  const reg = regionRect(EXP.region, EXP.scale, false), crop = reg ? document.createElement('canvas') : null, kctx = crop ? crop.getContext('2d') : null;
+  if (crop) { crop.width = reg.w; crop.height = reg.h; }
+  const view = c => { if (!reg) return c; kctx.clearRect(0, 0, reg.w, reg.h); kctx.drawImage(c, reg.x, reg.y, reg.w, reg.h, 0, 0, reg.w, reg.h); return crop; };
+  let zip = new JSZip(); const PROJ = safe(P.meta.name), tag = (EXP.prefix ? safe(EXP.prefix) + '_' : '') + (reg ? safe(reg.name) + '_' : '');
   let files = 0, partBytes = 0, partFiles = 0; const parts = [];
-  const baseName = () => `${PROJ}_${EXP.comps === 'all' ? 'ALL' : pad(ST.ci + 1, 2) + '_' + safe(cur().name)}_${w}x${h}_${fps}fps${alpha ? '_ALPHA' : ''}${EXP.luma ? '_BRANCO' : ''}`;
-  const put = async (path, canvas) => { const b = await new Promise(r => canvas.toBlob(r, 'image/png')); zip.file(path, b); partBytes += b.size; partFiles++; files++; };
+  const baseName = () => `${PROJ}_${EXP.comps === 'all' ? 'ALL' : pad(ST.ci + 1, 2) + '_' + safe(cur().name)}_${reg ? reg.w : w}x${reg ? reg.h : h}_${fps}fps${reg ? '_' + safe(reg.name) : ''}${alpha ? '_ALPHA' : ''}${EXP.luma ? '_BRANCO' : ''}`;
+  const put = async (path, canvas) => { const b = await new Promise(r => view(canvas).toBlob(r, 'image/png')); zip.file(path, b); partBytes += b.size; partFiles++; files++; };
   /* divisão em partes: quando o ZIP em memória passa do limite, ele é gravado e recomeça; as partes têm pastas disjuntas (quadros diferentes) e se extraem juntas */
   const flushPart = async (last) => {
     info.textContent = `Compactando a parte ${parts.length + 1}…`;
@@ -3158,7 +3170,7 @@ async function exportRun(info, bar) {
         }
         if (gains[ci] && gains[ci][n] < 0.999) { cctx.globalCompositeOperation = 'source-atop'; cctx.globalAlpha = 1 - FLASH.srgbFactor(gains[ci][n]); cctx.fillStyle = '#000'; cctx.fillRect(0, 0, w, h); cctx.globalCompositeOperation = 'source-over'; cctx.globalAlpha = 1; }   // dimensiona só onde já há pixel: o alpha não muda
         if (!single) await put(`${PROJ}/${alpha ? 'ALPHA' : 'COMPOSITIONS'}/${cn}/${tag}${cn}_${pad(n, 6)}.png`, cmp);
-        if (n === start) { const pb = await new Promise(r => cmp.toBlob(r, 'image/png')); zip.file(`${PROJ}/PREVIEW/${cn}_frame0.png`, pb); }
+        if (n === start) { const pb = await new Promise(r => view(cmp).toBlob(r, 'image/png')); zip.file(`${PROJ}/PREVIEW/${cn}_frame0.png`, pb); }
         const k = (ciList.indexOf(ci) * (end - start + 1) + (n - start) + 1) / (ciList.length * (end - start + 1));
         bar.firstElementChild.style.width = (k * 90) + '%'; info.textContent = `Renderizando ${cn} · quadro ${n - start + 1} de ${end - start + 1} · ${files} PNG`;
         if (n % 2 === 0) await new Promise(r => setTimeout(r, 0));
@@ -3166,13 +3178,13 @@ async function exportRun(info, bar) {
       }
     }
     zip.file(`${PROJ}/PROJECT_DATA/project.json`, JSON.stringify(projectOut(), null, 2));
-    zip.file(`${PROJ}/PROJECT_DATA/LEIAME.txt`, readme(fps, bars, w, h, end - start + 1, alpha));
+    zip.file(`${PROJ}/PROJECT_DATA/LEIAME.txt`, readme(fps, bars, reg ? reg.w : w, reg ? reg.h : h, end - start + 1, alpha));
     /* manifesto: tudo que é preciso para reproduzir ou conferir o export (a última parte leva o manifesto, o project.json e o LEIAME) */
     const manifest = {
       schema: 'ai-vj-generator/export-manifest/1', engine: VERSION, createdAt: new Date().toISOString(),
       project: { name: P.meta.name, id: P.id || null, seed: P.seed, sha256: projHash, bpm: P.time.bpm, bars, loop: P.time.loop, seamless: P.time.seamless, loopFrames: LF },
       canvas: { w: W, h: H, fps, target: P.canvas.target, folds: P.canvas.folds || [] },
-      export: { mode: EXP.what, alpha, whiteAlpha: EXP.luma, scale: EXP.scale, size: [w, h], start, end, frames: end - start + 1, compositions: ciList.map(ci => P.compositions[ci].name), prefix: EXP.prefix || '', files, naming: `${PROJ}/${alpha ? 'ALPHA' : 'COMPOSITIONS'}/NN_COMPOSICAO/${tag}NN_COMPOSICAO_QUADRO6.png (quadro com 6 dígitos, começa em ${pad(start, 6)})`, partMB: EXP.partMB || 0 },
+      export: { mode: EXP.what, alpha, whiteAlpha: EXP.luma, scale: EXP.scale, size: reg ? [reg.w, reg.h] : [w, h], region: reg ? { name: reg.name, index: reg.idx, x: reg.x, y: reg.y, w: reg.w, h: reg.h, unit: 'px at export scale' } : 'full', start, end, frames: end - start + 1, compositions: ciList.map(ci => P.compositions[ci].name), prefix: EXP.prefix || '', files, naming: `${PROJ}/${alpha ? 'ALPHA' : 'COMPOSITIONS'}/NN_COMPOSICAO/${tag}NN_COMPOSICAO_QUADRO6.png (quadro com 6 dígitos, começa em ${pad(start, 6)})`, partMB: EXP.partMB || 0 },
       flash: { criterion: 'WCAG 2.3.1 general flash (luminância relativa média do quadro; flash vermelho saturado NÃO medido)', analyzed: doFlash, limiter: EXP.flashLimit, perComposition: flashInfo },
       parts: [],
     };
@@ -3195,10 +3207,7 @@ function readme(fps, bars, w, h, frames, alpha) {
     `Canvas ${w}x${h} · ${fps} FPS · ${P.time.bpm} BPM · ${bars} compassos · ${frames} quadros por composição · seed ${P.seed}`,
     `Saída: ${alpha ? 'PNG com alpha (fundo transparente)' : 'PNG RGB'}${EXP.luma ? ' · BRANCO α (luma → alpha, pinte no software)' : ''}`, '',
     'ESTRUTURA', 'COMPOSITIONS/ ou ALPHA/  composição completa por pasta', 'LAYERS/  uma pasta por camada (quando exportado por camada)', 'PREVIEW/  primeiro quadro de cada composição', 'PROJECT_DATA/  project.json reproduz tudo (abra no AI VJ Generator)', '',
-    'RESOLUME', '1. Abra o Alley (vem com o Resolume). Arraste a pasta da sequência.', `2. Codec DXV3, marque Alpha, ${fps} FPS. Converta para .mov.`,
-    `3. No clip: Transport > BPM Sync, ${bars * 4} beats. O último quadro encaixa no primeiro.`, '4. Camadas exportadas separadas: empilhe L0 embaixo, maior número em cima, com o mesmo blend do projeto.', EXP.luma ? '5. BRANCO α: aplique Colorize/Tint por camada no Resolume.' : '', '',
-    'TOUCHDESIGNER', 'Movie File In TOP > aponte para o primeiro PNG > Sequence. Ou Web Render TOP com o HTML do gerador ao vivo.', '',
-    'OBS / NDI / SPOUT', 'Este export é arquivo. Transmissão ao vivo exige bridge: janela de saída + OBS (captura de janela) + plugin NDI ou Spout.', '',
+    'USO', `Sequência de ${fps} FPS com ${bars * 4} batidas por loop: o último quadro encaixa no primeiro. Camadas exportadas separadas: empilhe L0 embaixo, maior número em cima, com o mesmo blend do projeto.`, EXP.luma ? 'BRANCO α: o RGB é branco e a luminância virou alpha; pinte por camada no software de destino.' : '', '',
     'GYULYIA.COM · @GYULYIA'].join('\r\n');
 }
 
@@ -3254,10 +3263,11 @@ function renderExport() {
   const v = validate({ scale: EXP.scale, fps, comps: ciList, alpha: EXP.what !== 'rgb', start: EXP.start, end, layers: EXP.what === 'layers', layerCount: comp.layers.filter(l => l.on).length });
   const w = Math.round(P.canvas.w * EXP.scale), h = Math.round(P.canvas.h * EXP.scale);
   el.innerHTML = `<h2 class="sec">Export PNG sequence</h2>
-    <p class="note">PNG com alpha dentro de um ZIP: é o formato que o navegador gera sem perder o canal alpha nem o quadro exato do loop. O navegador não codifica ProRes 4444 nem DXV3; a sequência entra no Alley (Resolume) e sai como DXV3 com alpha.</p>
+    <p class="note">PNG com alpha dentro de um ZIP: é o formato que o navegador gera sem perder o canal alpha nem o quadro exato do loop. O navegador não codifica ProRes 4444 nem DXV3; para esses formatos converta a sequência com o ffmpeg.</p>
     <div class="row"><span class="lbl">Modo</span>${[['comp', 'Composição α'], ['rgb', 'Composição RGB'], ['layers', 'Camadas α'], ['single', 'Uma camada']].map(([k, n]) => `<button data-ew="${k}" aria-pressed="${EXP.what === k}">${n}</button>`).join('')}</div>
     ${EXP.what === 'single' ? `<div class="row fill"><select id="eLay" aria-label="Camada">${comp.layers.map((L, i) => `<option value="${i}" ${i === EXP.layerSel ? 'selected' : ''}>L${i} · ${esc(L.name)}</option>`).join('')}</select></div>` : ''}
     <div class="row"><span class="lbl">Composições</span><button data-ec="current" aria-pressed="${EXP.comps === 'current'}">Ativa (${pad(ST.ci + 1, 2)})</button><button data-ec="all" aria-pressed="${EXP.comps === 'all'}">Todas (${P.compositions.length})</button></div>
+    <div class="row"><span class="lbl">Região</span><button data-er="-1" aria-pressed="${!regionRect(EXP.region, 1, false)}">Projeto completo</button>${(P.canvas.displays || []).map((d, i) => `<button data-er="${i}" aria-pressed="${EXP.region === i}" title="${d.w}×${d.h} em x ${d.x}, y ${d.y}">${esc(d.name || 'D' + pad(i + 1, 2))}</button>`).join('')}${(P.canvas.displays || []).length ? '' : '<span class="note">Sem regiões: crie na seção Regiões abaixo ou importe na aba Superfície.</span>'}</div>
     <div class="row"><span class="lbl">Resolução</span>${[0.25, 0.5, 1, 2].map(s => `<button data-es="${s}" aria-pressed="${EXP.scale === s}">${Math.round(P.canvas.w * s)}×${Math.round(P.canvas.h * s)}</button>`).join('')}</div>
     <div class="row"><span class="lbl">FPS</span>${[24, 25, 30, 50, 60].map(f => `<button data-ef="${f}" aria-pressed="${fps === f}">${f}</button>`).join('')}</div>
     <div class="row"><span class="lbl">Compassos</span>${[1, 2, 4, 8, 16].map(b => `<button data-eb="${b}" aria-pressed="${bars === b}">${b}</button>`).join('')}</div>
@@ -3282,22 +3292,16 @@ function renderExport() {
     <h2 class="sec">Gravar tela</h2>
     <p class="note">Rascunho: GRAVAR captura a composição ao vivo em WebM (inclui áudio-reatividade real), mas pode travar em composições pesadas e não carrega alpha. Para entregar, use o MP4 ou a sequência PNG acima.</p>
     <div class="row"><button id="rLoop" aria-pressed="${!!EXP.recLoop}">Parar após 1 loop</button><button id="rGo">${REC.r ? 'Parar gravação' : 'Gravar composição'}</button></div>
-    <h2 class="sec">Saída ao vivo</h2>
-    <div class="row"><button id="oOut">Abrir janela de saída</button><button id="oFs">Tela cheia da viewport</button></div>
-    <h2 class="sec">Displays <span class="lbl">recortes do canvas</span></h2>
+    <h2 class="sec">Preview</h2>
+    <div class="row"><button id="oOut">Abrir janela de preview</button><button id="oFs">Tela cheia da viewport</button></div>
+    <h2 class="sec">Regiões <span class="lbl">recortes do canvas</span></h2>
     <div id="dispList">${(P.canvas.displays || []).map((d, i) => `<div class="row" data-di="${i}"><span class="lbl">D${pad(i + 1, 2)}</span>${['x', 'y', 'w', 'h'].map(k => `<input type="number" data-dk="${k}" value="${d[k]}" aria-label="D${i + 1} ${k}" style="width:64px">`).join('')}<button data-dopen="${i}">Abrir</button><button data-ddel="${i}">×</button></div>`).join('')}</div>
-    <div class="row"><button id="dAdd">+ Display</button><button id="dSplit2">Dividir em 2</button><button id="dSplit3">Dividir em 3</button></div>
-    <h2 class="sec">Transporte de sinal</h2>
-    <table class="tbl"><tr><th>Destino</th><th>Status</th><th>Como</th></tr>
-      <tr><td>Tela cheia / 2º monitor (HDMI, DP)</td><td><span class="tag f">SUPORTADO</span></td><td>Janela de saída ou Tela cheia; a placa de vídeo leva o sinal.</td></tr>
-      <tr><td>PNG alpha · WebM · JSON</td><td><span class="tag f">SUPORTADO</span></td><td>Esta aba.</td></tr>
-      <tr><td>Resolume · TouchDesigner · Notch</td><td><span class="tag">EXPORTÁVEL</span></td><td>PNG → Alley DXV3 α; Movie File In TOP; importação de sequência.</td></tr>
-      <tr><td>NDI</td><td><span class="tag d">REQUER BRIDGE</span></td><td>Janela de saída → OBS (captura de janela) → plugin DistroAV/NDI → fonte NDI no Resolume.</td></tr>
-      <tr><td>Spout (Win) · Syphon (Mac)</td><td><span class="tag d">REQUER BRIDGE</span></td><td>OBS + plugin Spout2/Syphon, ou TouchDesigner Web Render TOP → Spout/Syphon Out.</td></tr>
-      <tr><td>SDI</td><td><span class="tag d">REQUER BRIDGE</span></td><td>Placa de captura/saída (Blackmagic, AJA) recebendo a saída de tela.</td></tr>
-      <tr><td>OSC · MIDI · WebSocket</td><td><span class="tag o">CONCEITUAL</span></td><td>Não implementado nesta versão. Roadmap no README.</td></tr></table>`;
+    <div class="row"><button id="dAdd">+ Região</button><button id="dSplit2">Dividir em 2</button><button id="dSplit3">Dividir em 3</button></div>
+    <h2 class="sec">Formatos de entrega</h2>
+    <p class="note">Entrega: PNG sequence (RGB ou RGBA, projeto completo, região ou camada) e MP4 H.264 (sem alpha). Os arquivos são comuns e abrem em qualquer software. O motor não faz transmissão, controle remoto nem mapping.</p>`;
   $$('[data-ew]', el).forEach(b => b.onclick = () => { EXP.what = b.dataset.ew; renderExport(); });
   $$('[data-ec]', el).forEach(b => b.onclick = () => { EXP.comps = b.dataset.ec; renderExport(); });
+  $$('[data-er]', el).forEach(b => b.onclick = () => { EXP.region = +b.dataset.er; renderExport(); });
   $$('[data-es]', el).forEach(b => b.onclick = () => { EXP.scale = +b.dataset.es; renderExport(); });
   $$('[data-ef]', el).forEach(b => b.onclick = () => { EXP.fps = +b.dataset.ef; EXP.end = -1; EXP.start = 0; renderExport(); });
   $$('[data-eb]', el).forEach(b => b.onclick = () => { EXP.bars = +b.dataset.eb; EXP.end = -1; EXP.start = 0; renderExport(); });
@@ -3452,7 +3456,7 @@ const SC = (() => {
     if (!FPS_OK.includes(a.fps)) out.warnings.push(`fps ${a.fps} não está em ${FPS_OK.join(', ')}: o motor só renderiza esses`);
     if (!BARS_OK.includes(a.bars)) out.warnings.push(`${a.bars} compassos não está em ${BARS_OK.join(', ')}`);
     Object.assign(out, { seconds: Math.round(sec * 1e4) / 1e4, frames_exact: r3(fr), frames_rounded: pyRound(fr), frame_error: r3(pyRound(fr) - fr), frames_per_beat: r3(a.fps * 60 / a.bpm), frames_per_bar: r3(a.fps * 240 / a.bpm) });
-    if (Math.abs(out.frame_error) > 0.02) out.warnings.push(`${a.bars} compassos a ${a.bpm} BPM / ${a.fps} fps dá ${fr.toFixed(3)} quadros: o loop fecha por fase e o BPM Sync do Resolume absorve a diferença; não mude fps nem compassos para caçar um inteiro`);
+    if (Math.abs(out.frame_error) > 0.02) out.warnings.push(`${a.bars} compassos a ${a.bpm} BPM / ${a.fps} fps dá ${fr.toFixed(3)} quadros: o loop fecha por fase; não mude fps nem compassos para caçar um inteiro`);
     out.integer_frame_options = []; for (const f of FPS_OK) for (const b of BARS_OK) { const q = 60 / a.bpm * 4 * b * f; if (Math.abs(q - Math.round(q)) < 0.01) out.integer_frame_options.push({ fps: f, bars: b, frames: Math.round(q), seconds: r3(60 / a.bpm * 4 * b) }); }
     if (a.refresh > 0) { if (a.refresh % a.fps === 0) out.refresh = `${a.refresh} Hz é múltiplo de ${a.fps} fps: cadência uniforme`; else { const ok = FPS_OK.filter(f => a.refresh % f === 0); out.refresh = `${a.refresh} Hz não é múltiplo de ${a.fps} fps: cadência irregular (judder). Fps que dividem ${a.refresh}: ${ok.join(', ') || 'nenhum'}`; out.warnings.push(out.refresh); } }
     return out;
@@ -3481,7 +3485,7 @@ const SC = (() => {
 })();
 
 /* ---------- ficha de produção: aba "Ficha" ---------- */
-const ARCHETYPES = [['stage-led', 'LED de palco'], ['led-architecture', 'LED arquitetural'], ['facade-mapping', 'Fachada'], ['object-mapping', 'Objeto'], ['immersive', 'Imersivo / domo'], ['clip-pack', 'Clip pack'], ['dooh', 'DOOH'], ['broadcast-xr', 'Broadcast / XR'], ['installation', 'Instalação'], ['corporate', 'Corporativo'], ['social', 'Social']];
+const ARCHETYPES = [['stage-led', 'LED de palco'], ['led-architecture', 'LED arquitetural'], ['facade-mapping', 'Fachada (superfície plana)'], ['clip-pack', 'Clip pack'], ['broadcast-xr', 'Broadcast / XR'], ['installation', 'Instalação'], ['corporate', 'Corporativo'], ['social', 'Social']];
 const SPC = { led: { pitch: 3.9, cabW: 500, cabH: 500, cols: 20, rows: 8, widthM: 0, heightM: 0, by: 'cab' }, proj: { w: 1920, h: 1080, throw: 1.5, dist: 12, lumens: 10000, ambient: 20, reflectance: 0.3 },
   blend: { w: 1920, h: 1080, n: 2, overlap: 256, axis: 'x' }, loop: { refresh: 60 }, leg: { pitch: 3.9, dist: 15 }, open: { led: true } };
 const KEYPT = { cabinet_px: 'px por gabinete', cabinets: 'gabinetes (col × lin)', cabinet_count: 'total de gabinetes', pixel_map: 'pixel map', total_pixels: 'pixels totais', size_m: 'tamanho (m)', area_m2: 'área (m²)',
@@ -4024,7 +4028,7 @@ const GENAI = (() => {
   const QUIET = { 'GRADE SDF': [5, 1, 0.3, 0.06], FAIXAS: [8, 1, 0.35, 0.15], 'INTERFERÊNCIA': [6, 1, 0.25, 0.3], 'CÉLULAS': [4, 1, 0.25, 0.08], 'ANÉIS SDF': [6, 1, 0.2, 0.35], KALEIDO: [6, 2.5, 0.4, 0.3], 'CAMPO FBM': [1.6, 0.5, 0.7, 1.0], 'FLUXO WARP': [1.2, 0.8, 0.4, 1.0] };
   const INSTR = { low: ['rings', 'radar', 'scope'], high: ['bars', 'radial', 'heat'] };
   const ARC = ['ESTABLISH', 'BUILD', 'PEAK', 'RELEASE', 'TURN', 'CODA'], ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
-  const ARCH = { led: 'stage-led', projection: 'facade-mapping', mapping: 'object-mapping', multi: 'led-architecture', screen: 'clip-pack' };
+  const ARCH = { led: 'stage-led', projection: 'facade-mapping', mapping: 'installation', multi: 'led-architecture', screen: 'clip-pack' };
   const HERO_TARGET = { tunnel: 'size', lines: 'weight', shape: 'size', organism: 'breathe', flow: 'amp', typewall: 'fill' }, STRUCT_TARGET = { tunnel: 'size', lines: 'weight', shape: 'size' };
   const TARGET_DEFAULT = { size: 1, weight: 2, breathe: 0.5, amp: 0.12, fill: 0.82 };
   const AUDIO_LINE = { none: 'the picture ignores the music.', subtle: 'the music only breathes the ground.', structural: 'the music drives structure and scale, never every hit.', rhythmic: 'kick drives the hero, hats drive the structure, at most three reactive layers.', full: 'the music drives most layers; the instrument layer shows the signal.' };
@@ -4344,7 +4348,7 @@ function renderPop() {
   const alpha = P.palette.mode === 'white-alpha', m = ST.palMode || (alpha ? 'alpha' : 'standard'), surf = ST.palSurf || surfaceOf();
   $$('#palModes [data-pm]').forEach(b => b.setAttribute('aria-pressed', b.dataset.pm === m));
   if (m === 'alpha') {
-    el.innerHTML = `<p class="note">Tudo branco com opacidade (100 / 72 / 43 %). Você colore no Resolume. Ideal para render com alfa.</p><div class="row">${swatch(PALS['BRANCO ALPHA'])}<button id="pmAlpha" aria-pressed="${alpha}">${alpha ? 'Branco α ativo' : 'Aplicar branco α'}</button></div>`;
+    el.innerHTML = `<p class="note">Tudo branco com opacidade (100 / 72 / 43 %). Você colore depois. Ideal para render com alfa.</p><div class="row">${swatch(PALS['BRANCO ALPHA'])}<button id="pmAlpha" aria-pressed="${alpha}">${alpha ? 'Branco α ativo' : 'Aplicar branco α'}</button></div>`;
     $('#pmAlpha').onclick = () => { ST.palMode = 'alpha'; setPalette(clone(PALS['BRANCO ALPHA']), 'Paleta branco α'); };
   } else if (m === 'standard') {
     const hue = ST.palHue ?? 250;
@@ -4382,7 +4386,7 @@ document.addEventListener('pointerdown', e => { const pop = $('#palPop'); if (!p
 addEventListener('keydown', e => { if (e.key === 'Escape') { if (!$('#palPop').hidden) setPop(false); if (!$('#howto').hidden) setHow(false); } });
 
 /* idioma: o texto da interface está em PT-BR; o EN é aplicado por um dicionário sobre o DOM */
-const EN = /*__I18N_START__*/{"Carregar briefing":"Load briefing","Desfazer":"Undo","Refazer":"Redo","Histórico":"History","Grade":"Grid","Quadro":"Frame","Solte imagem, vídeo ou fonte":"Drop image, video, font or 3D object","Pausa":"Pause","Degrau":"Step","Mostrar camadas":"Show layers","Áudio":"Audio","Cor":"Colour","Gravar":"Record","Tela limpa":"Clean screen","Cheia":"Full","Compor":"Compose","Camadas":"Layers","Parâm.":"Params","Texto":"Text","Mídia":"Media","Projeto":"Project","Ficha":"Sheet","Exportar":"Export","Guia":"Guide","Receitas":"Recipes","Composições":"Compositions","Ativar":"Activate","Duplicar":"Duplicate","Reset":"Reset","Remover":"Remove","+ Nova composição (duplica a ativa)":"+ New composition (duplicates the active one)","Resumo do projeto":"Project summary","Direção de arte":"Art direction","Reativo":"Reactive","Contrato criativo":"Creative contract","Conceito":"Concept","Efeito no público":"Effect on the audience","Intenção semiótica":"Semiotic intent","Linguagem visual":"Visual language","Forma":"Form","Material":"Material","Lógica de cor":"Colour logic","Lógica espacial":"Spatial logic","Movimento":"Motion","Arco temporal":"Time arc","Gramática do loop":"Loop grammar","Estratégia técnica":"Technical strategy","Atalhos proibidos":"Forbidden shortcuts","Fundo":"Background","Código · camada livre":"Code · free layer","Dados · logs e telemetria":"Data · logs and telemetry","Pós · scanline e glitch":"Post · scanline and glitch","Imagem":"Image","Vídeo":"Video","Objeto 3D":"3D object","OBJETO 3D":"3D OBJECT","Renomear":"Rename","Copiar parâmetros":"Copy parameters","Colar parâmetros":"Paste parameters","Copiar camada":"Copy layer","Colar camada":"Paste layer","Matéria · organismo":"Matter · organism","Estrutura · grade e réguas":"Structure · grid and rulers","Medição · rastreio":"Measure · tracking","Evento · wipe e palavra":"Event · wipe and word","Fluxo · partículas em campo":"Flow · particles in a field","Túnel · formas concêntricas":"Tunnel · concentric shapes","Parede tipográfica":"Type wall","Texto em pixel-bloco":"Block-pixel text","Matriz de símbolos":"Symbol matrix","Faixa de risco":"Hazard stripe","Glitch e strobe em bloco":"Block glitch and strobe","Logo em máscara":"Logo mask","Adicionar camada":"Add layer","Ligada":"On","Copiar":"Copy","Colar":"Paste","CÉLULAS":"CELLS","ANÉIS SDF":"SDF RINGS","INTERFERÊNCIA":"INTERFERENCE","Saída":"Output","Resolução interna":"Internal resolution","Primária":"Primary","Secundária":"Secondary","Acento":"Accent","Campo":"Field","Posição X":"Position X","Posição Y":"Position Y","Rotação °":"Rotation °","Âncora X":"Anchor X","Âncora Y":"Anchor Y","APARÊNCIA":"APPEARANCE","Brilho":"Brightness","Contraste":"Contrast","Saturação":"Saturation","Velocidade":"Speed","Fase":"Phase","Divisão BPM":"BPM division","Eco · cópias":"Echo · copies","ÁUDIO":"AUDIO","Resposta":"Response","Banda":"Band","camadas de texto desta composição":"text layers of this composition","Parâmetros do texto":"Text parameters","Desligada":"Off","Conteúdo":"Content","Fonte":"Font","Tamanho":"Size","Peso":"Weight","Entrelinha":"Line height","Alinhamento":"Alignment","Caixa alta":"All caps","Preencher":"Fill","Contorno":"Outline","Cor do contorno":"Outline colour","Sombra":"Shadow","Cor do glow":"Glow colour","Animação":"Animation","Importar mídia":"Import media","Biblioteca":"Library","Audioreatividade":"Audio reactivity","Microfone / entrada de linha":"Microphone / line in","Arquivo de áudio":"Audio file","Fonte de teste":"Test source","Parar fonte":"Stop source","Sensibilidade":"Sensitivity","Suavização":"Smoothing","Nome":"Name","Artista":"Artist","Predefinições…":"Presets…","1080×1920 · vertical 9:16":"1080×1920 · vertical 9:16","5120×500 · paredes em L":"5120×500 · L walls","Tela":"Screen","Projeção":"Projection","Mapping":"Mapping","Só exportação":"Export only","Paredes e dobras":"Walls and folds","Dobras (x em px)":"Folds (x in px)","Tempo e loop":"Time and loop","Compassos":"Bars","Modo":"Mode","Transição":"Transition","Travar":"Lock","Aleatória":"Random","Paleta":"Palette","Branco α (colorir no Resolume)":"White α (colour it in Resolume)","Acento desta composição":"Accent of this composition","Herdar":"Inherit","Cor perceptual":"Perceptual colour","Superfície":"Surface","Gerar esquema":"Generate scheme","Análogo":"Analogous","Complementar":"Complementary","Complementar dividido":"Split complementary","Tríade":"Triad","Tétrade":"Tetrad","Gerar":"Generate","Paleta confere":"Palette checks out","Contraste e regras da superfície em ordem.":"Contrast and surface rules are fine.","Densidade":"Density","Arquivo do projeto":"Project file","Importar no modo Briefing":"Import in Briefing mode","Ficha de produção":"Production sheet","Ficha e canvas conferem":"Sheet and canvas match","Arquétipo":"Archetype","LED de palco":"Stage LED","Fachada":"Facade","Objeto":"Object","Instalação":"Installation","Corporativo":"Corporate","Confirmado":"Confirmed","Derivado":"Derived","proporção":"ratio","Assumido":"Assumed","Confirmar":"Confirm","Zonas":"Zones","fração do canvas":"fraction of the canvas","Mostrar na viewport":"Show in the view","Desenhar na vista":"Draw in the view","Duração min":"Duration min","Riscos":"Risks","um por linha":"one per line","Calculadoras":"Calculators","LED: gabinetes e pitch → pixel map":"LED: cabinets and pitch → pixel map","Gab. A mm":"Cab. W mm","Gabinetes":"Cabinets","Metros":"Metres","Colunas":"Columns","Linhas":"Rows","gabinetes (col × lin)":"cabinets (col × row)","total de gabinetes":"total cabinets","área (m²)":"area (m²)","proporção (decimal)":"ratio (decimal)","família de formato":"format family","cabe numa saída UHD":"fits one UHD output","distância de visão (m)":"viewing distance (m)","Premissa":"Assumption","Aplicar ao canvas e à ficha":"Apply to canvas and sheet","Projeção: lúmens, distância, contraste":"Projection: lumens, distance, contrast","Lúmens":"Lumens","Refletância":"Reflectance","iluminância (lux)":"illuminance (lux)","luminância aparente (nits)":"apparent luminance (nits)","Blend de projetores: recortes e sobreposição":"Projector blend: crops and overlap","Projetores":"Projectors","sobreposição (px)":"overlap (px)","sobreposição (%)":"overlap (%)","conteúdo, raster cheio (px)":"content, full raster (px)","conteúdo visível (px)":"visible content (px)","descartar em cada borda externa (px)":"discard at each outer edge (px)","Atenção":"Warning","Loop: BPM, compassos, fps, taxa do display":"Loop: BPM, bars, fps, display rate","BPM, compassos e fps vêm da aba Projeto.":"BPM, bars and fps come from the Project tab.","duração (s)":"duration (s)","Legibilidade: pitch e distância":"Legibility: pitch and distance","distância (m)":"distance (m)","período do padrão":"pattern period","altura de letra mínima":"minimum letter height","altura de letra confortável":"comfortable letter height","traço mínimo (px)":"minimum stroke (px)","módulos da faixa":"strip modules","Composição α":"Composition α","Composição RGB":"Composition RGB","Uma camada":"One layer","Resolução":"Resolution","Quadros":"Frames","Prefixo":"Prefix","Validação técnica":"Technical validation","Renderizar e baixar ZIP":"Render and download ZIP","Cancelar":"Cancel","Folha de contato PNG":"PNG contact sheet","Gravar tela":"Record screen","Parar após 1 loop":"Stop after 1 loop","Gravar composição":"Record composition","Saída ao vivo":"Live output","Abrir janela de saída":"Open output window","Tela cheia da viewport":"Fullscreen view","recortes do canvas":"canvas crops","Dividir em 2":"Split in 2","Dividir em 3":"Split in 3","Transporte de sinal":"Signal transport","Destino":"Target","Como":"How","EXPORTÁVEL":"EXPORTABLE","Como funciona":"How it works","O que é":"What it is","Com o Claude":"With Claude","Atalhos":"Shortcuts","Espaço":"Space","tap tempo (o 1º toque alinha o downbeat)":"tap tempo (the 1st tap aligns the downbeat)","alinha o downbeat sem mudar o BPM":"aligns the downbeat without changing BPM","trocar composição":"switch composition","mostrar camadas (arraste para girar)":"show layers (drag to rotate)","áudio reativo":"reactive audio","desfazer qualquer alteração":"undo any change","Duplo clique no rótulo":"Double-click the label","volta o número ao padrão":"resets the number","← → no divisor":"← → on the divider","largura do menu (Home minimiza)":"menu width (Home minimises)","quadro anterior / próximo (pausado)":"previous / next frame (paused)","Regras de direção":"Direction rules","Um herói por compasso":"One hero per bar","Cor é evento":"Colour is an event","Interface em degrau, matéria em curva":"Interface in steps, matter in curves","Pense no espaço":"Think about the space","Áudio com parcimônia":"Use audio sparingly","Créditos: criado por Giulia Ribeiro · GYULYIA":"Credits: created by Giulia Ribeiro · GYULYIA","Paleta de cor":"Colour palette","Personalizada":"Custom","Não mostrar ao abrir":"Do not show on open","Entendi":"Got it","Aguardando briefing":"Waiting for a briefing","No chat do Claude, digite":"In Claude chat, type","e descreva o set.":"and describe the set.","Abrir o STANDARD (biblioteca original)":"Open STANDARD (original library)","Este projeto tem camadas de código.":"This project has code layers.","Autorizar e executar":"Authorise and run","Manter bloqueado":"Keep blocked","Animações STANDARD (motor de camadas original)":"STANDARD animations (original layer engine)","Alternar tema: escuro, claro ou do sistema":"Switch theme: dark, light or system","Alternar tema":"Switch theme","Como usar":"How to use","Diminuir zoom":"Zoom out","Aumentar zoom":"Zoom in","Posição no loop":"Position in the loop","Digite o número do quadro ou uma conta":"Type the frame number or a sum","Ir para o quadro":"Go to frame","Minimizar ou abrir o menu (G)":"Minimise or open the menu (G)","Minimizar o menu":"Minimise the menu","Abrir o menu":"Open the menu","Transporte":"Transport","Duplicar composição ativa":"Duplicate the active composition","Altura da vista, arraste ou use as setas":"View height, drag or use the arrows","Largura do menu, arraste ou use as setas":"Menu width, drag or use the arrows","Controles":"Controls","Tipo de camada":"Layer type","Restaurar":"Reset","Restaurar padrão":"Reset to default","Predefinição de canvas":"Canvas preset","Largura":"Width","Altura":"Height","Trocar W e H":"Swap W and H","Posição das dobras em pixels":"Fold positions in pixels","ex.: 2560 ou 1920, 3840":"e.g. 2560 or 1920, 3840","Largura da calha da dobra":"Fold gutter width","Compassos do loop":"Loop bars","Modo de loop":"Loop mode","Transição entre composições":"Transition between compositions","Duração da transição em beats":"Transition length in beats","Verde ácido":"Acid green","Azul elétrico":"Electric blue","Vermelho alarme":"Alarm red","Amarelo sinal":"Signal yellow","Osso":"Bone","Luminosidade 0 a 1":"Lightness 0 to 1","Croma 0 a 0,37":"Chroma 0 to 0.37","Matiz 0 a 360":"Hue 0 to 360","Matiz do conceito, 0 a 360":"Concept hue, 0 to 360","Relação de matizes":"Hue relation","Remover premissa":"Remove assumption","por quê":"why","Tipo de zona":"Zone type","Remover zona":"Remove zone","Eixo do blend":"Blend axis","Quadro inicial":"Start frame","Quadro final":"End frame","Prefixo dos arquivos":"File prefix","Fechar":"Close","Histórico de alterações":"Change history","Fechar histórico":"Close history","Todos":"All","Código":"Code","Ferramentas":"Tools","Adicionar composição de cartões de teste":"Add a test-card composition","CÓDIGO":"CODE","FERRAMENTA":"TOOL","Significa":"Means","Camada":"Layer","Custo":"Cost","Prévia":"Preview","Visualizar":"Preview","Passe o mouse para ver um quadro; clique para animar em baixa resolução":"Hover to see a frame; click to animate at low resolution","Adicionar à composição":"Add to composition","Buscar efeito":"Search effects","Buscar: onda, órbita, caos, som…":"Search: wave, orbit, chaos, sound…","Nenhum efeito com esse termo. Tente \"onda\", \"órbita\" ou \"caos\".":"No effect matches. Try \"wave\", \"orbit\" or \"chaos\".","Grão":"Grain","Troca do grão (quadros)":"Grain change (frames)","Pontos":"Points","Ponto":"Point","Giro":"Spin","Respiração":"Breathing","Inclinação X °":"Tilt X °","Inclinação Y °":"Tilt Y °","Pétalas":"Petals","Cor da varredura":"Sweep colour","Opacidade grade":"Grid opacity","Réguas":"Rulers","Anéis":"Rings","Espiral áurea":"Golden spiral","Ângulo áureo":"Golden angle","Desenho após evento":"Draw after event","Escala do texto":"Text scale","Cor do ângulo":"Angle colour","Alvos":"Targets","Rótulo do alvo":"Target label","Mostrar confiança":"Show confidence","Rede":"Network","Raios":"Rays","Cor do alvo":"Target colour","Linhas de log":"Log lines","Etiquetas":"Labels","Telemetria":"Telemetry","Cor do destaque":"Highlight colour","Título (vazio = nome do projeto)":"Title (empty = project name)","Subtítulo":"Subtitle","Linha de data":"Date line","Rodapé":"Footer","Rótulo da retícula":"Reticle label","Retícula":"Reticle","Contador de beat":"Beat counter","Cor do beat 1":"Beat 1 colour","A cada N compassos (0 = manual)":"Every N bars (0 = manual)","Duração (beats)":"Length (beats)","Linha de apoio ({ID} {CONF})":"Support line ({ID} {CONF})","Tamanho da palavra":"Word size","Cor do bloco":"Block colour","Cor do texto (auto = contraste)":"Text colour (auto = contrast)","Passo da scanline":"Scanline step","Vinheta":"Vignette","Prob. de glitch por beat":"Glitch probability per beat","Fatias":"Slices","Tremor de quadro":"Frame jitter","Cor da fatia":"Slice colour","Cor da fatia acento":"Accent slice colour","Direção":"Direction","Quantidade":"Amount","Espessura":"Thickness","Em degrau (por beat)":"Stepped (per beat)","Pulso na espessura":"Thickness pulse","Acento a cada N linhas":"Accent every N lines","Cor do acento":"Accent colour","Partículas":"Particles","Rastro":"Trail","Amplitude":"Amplitude","Escala do ruído":"Noise scale","Raio da órbita":"Orbit radius","Opacidade":"Opacity","Fração em acento":"Accent fraction","Perspectiva":"Perspective","Proporção":"Proportion","Torção":"Twist","Pulso":"Pulse","Anel acento no beat":"Accent ring on beat","Altura da letra":"Letter height","Troca no beat":"Change on beat","Traço do contorno":"Outline stroke","Separador":"Separator","Linha acento no beat":"Accent line on beat","Arquivo":"File","Encaixe":"Fit","Espelhar":"Mirror","Inverter vertical":"Flip vertical","Corte esq.":"Crop left","Corte dir.":"Crop right","Corte topo":"Crop top","Corte base":"Crop bottom","Colorir (none = original)":"Tint (none = original)","Início (s)":"Start (s)","Fim (s, 0 = final)":"End (s, 0 = end)","Reprodução":"Playback","Tamanho (%)":"Size (%)","Giro Y (voltas/loop)":"Spin Y (turns/loop)","Inclinação X (°)":"Tilt X (°)","Giro Z (°)":"Roll Z (°)","Espessura da linha":"Line width","Tamanho do ponto":"Point size","Densidade dos pontos":"Point density","Direção da luz (°)":"Light direction (°)","Luz ambiente":"Ambient light","Pulso no beat":"Pulse on beat","Cor da borda de luz":"Rim light colour","Tipo":"Type","Repetição":"Repetition","Distribuição":"Distribution","Espaçamento":"Spacing","Preenchimento":"Fill","Traço":"Stroke","Espessura do traço":"Stroke width","Raio do canto":"Corner radius","Alternar acento no beat":"Alternate accent on beat","Código (corpo de draw(c, K))":"Code (body of draw(c, K))","Parede":"Wall","Troca":"Change","Entrada":"Entry","Duração da entrada (beats)":"Entry length (beats)","Largura (fração da parede)":"Width (fraction of the wall)","Altura máxima (fração)":"Maximum height (fraction)","Posição vertical":"Vertical position","Salto de linhas (células)":"Line skip (cells)","Placa vazada":"Cut-out plate","Padrão":"Pattern","Símbolos (o O x s + k S .)":"Symbols (o O x s + k S .)","Célula":"Cell","Tamanho do símbolo":"Symbol size","Passo":"Step","Listra":"Stripe","Inclinação":"Tilt","Alcance (fração da parede)":"Reach (fraction of the wall)","Intensidade":"Intensity","Strobe de parede":"Wall strobe","Tom":"Tone","Variação":"Variation","Entre paredes":"Between walls","Mostrar":"Show","Esconder":"Hide","Importar JSON":"Import JSON","Abrir arquivo .json":"Open .json file","Salvar JSON":"Save JSON","Abrir JSON":"Open JSON","Copiar JSON":"Copy JSON","Biblioteca ":"Library ","Imagem ":"Image ","Usar":"Use","Logo → branco α":"Logo → white α","Menu ›":"Menu ›","‹ Menu":"‹ Menu","Vocabulário, não preset. Adicione uma camada, depois mude os números, a paleta e o áudio para o briefing. Todos fecham o loop.":"A vocabulary, not a preset. Add a layer, then change the numbers, palette and audio for the briefing. All of them close the loop.","Escolha no seletor ou digite RGB (0 a 255) e HEX.":"Pick with the selector or type RGB (0 to 255) and HEX.","Tudo branco com opacidade (100 / 72 / 43 %). Você colore no Resolume. Ideal para render com alfa.":"All white with opacity (100 / 72 / 43 %). You colour it in Resolume. Ideal for alpha renders.","Aplicar branco α":"Apply white α","Branco α ativo":"White α active","Restaurar paleta do briefing":"Restore the briefing palette","A paleta que o Claude gerou para este briefing.":"The palette Claude generated for this briefing.","Este projeto não tem paleta de briefing. Carregue um projeto gerado pelo /vj.":"This project has no briefing palette. Load a project generated by /vj.","Vermelho":"Red","Âmbar":"Amber","Amarelo":"Yellow","Verde":"Green","Ciano":"Cyan","Azul":"Blue","Magenta":"Magenta","Menu minimizado. G reabre.":"Menu minimised. G reopens it.","Escuro":"Dark","Claro":"Light","Sistema":"System","Compl. dividido":"Split compl.","Tipografia · hierarquia, revelação e caminho":"Typography · hierarchy, reveal and path","Título":"Title","Legenda":"Caption","Dados":"Data","Tamanho do título (px lógicos)":"Title size (logical px)","Razão entre níveis":"Ratio between levels","Distância entre níveis (em)":"Distance between levels (em)","Revelação":"Reveal","Entrada (fração do loop)":"Entrance (fraction of the loop)","Duração da entrada":"Entrance length","Duração da saída":"Exit length","Atraso entre níveis":"Delay between levels","Escalonamento entre glifos":"Stagger between glyphs","Caminho":"Path","Raio do círculo":"Circle radius","Amplitude da onda":"Wave amplitude","Ondas no comprimento (inteiro)":"Waves along the length","Ângulo da linha (°)":"Line angle (°)","Deriva ao longo do caminho (ciclos/loop)":"Drift along the path (cycles/loop)","Cor da legenda e dados":"Caption and data colour","Bíblia de arte":"Art bible","Tese":"Thesis","Dramaturgia":"Dramaturgy","Tipografia":"Typography","Banidos":"Banned","Perfil de movimento":"Motion profile","Cada projeto nasce de um briefing: conversado com o Claude, que analisa texto, imagens e vídeos, ou preenchido aqui mesmo, sem IA. Não há presets nem modelos pré-prontos: o sistema visual é escrito do zero para o seu briefing.":"Every project starts from a brief: talked through with Claude, which analyses text, images and videos, or filled in right here, with no AI. There are no presets or ready-made templates: the visual system is written from scratch for your brief.","Com o Claude: no chat, digite /vj e descreva o set. O projeto chega aqui montado.":"With Claude: in the chat, type /vj and describe the set. The project arrives here assembled.","Sem IA: clique em Gerar sem IA, preencha o briefing e escolha o preset da sua superfície.":"Without AI: click Generate without AI, fill in the brief and pick the preset for your surface.","Depois ajuste nas abas, avalie na aba Gerar e exporte as imagens na aba Exportar.":"Then adjust in the tabs, evaluate in the Generate tab and export the images in the Export tab.","Gerar sem IA":"Generate without AI"}/*__I18N_END__*/;
+const EN = /*__I18N_START__*/{"Carregar briefing":"Load briefing","Desfazer":"Undo","Refazer":"Redo","Histórico":"History","Grade":"Grid","Quadro":"Frame","Solte imagem, vídeo ou fonte":"Drop image, video, font or 3D object","Pausa":"Pause","Degrau":"Step","Mostrar camadas":"Show layers","Áudio":"Audio","Cor":"Colour","Gravar":"Record","Tela limpa":"Clean screen","Cheia":"Full","Compor":"Compose","Camadas":"Layers","Parâm.":"Params","Texto":"Text","Mídia":"Media","Projeto":"Project","Ficha":"Sheet","Exportar":"Export","Guia":"Guide","Receitas":"Recipes","Composições":"Compositions","Ativar":"Activate","Duplicar":"Duplicate","Reset":"Reset","Remover":"Remove","+ Nova composição (duplica a ativa)":"+ New composition (duplicates the active one)","Resumo do projeto":"Project summary","Direção de arte":"Art direction","Reativo":"Reactive","Contrato criativo":"Creative contract","Conceito":"Concept","Efeito no público":"Effect on the audience","Intenção semiótica":"Semiotic intent","Linguagem visual":"Visual language","Forma":"Form","Material":"Material","Lógica de cor":"Colour logic","Lógica espacial":"Spatial logic","Movimento":"Motion","Arco temporal":"Time arc","Gramática do loop":"Loop grammar","Estratégia técnica":"Technical strategy","Atalhos proibidos":"Forbidden shortcuts","Fundo":"Background","Código · camada livre":"Code · free layer","Dados · logs e telemetria":"Data · logs and telemetry","Pós · scanline e glitch":"Post · scanline and glitch","Imagem":"Image","Vídeo":"Video","Objeto 3D":"3D object","OBJETO 3D":"3D OBJECT","Renomear":"Rename","Copiar parâmetros":"Copy parameters","Colar parâmetros":"Paste parameters","Copiar camada":"Copy layer","Colar camada":"Paste layer","Matéria · organismo":"Matter · organism","Estrutura · grade e réguas":"Structure · grid and rulers","Medição · rastreio":"Measure · tracking","Evento · wipe e palavra":"Event · wipe and word","Fluxo · partículas em campo":"Flow · particles in a field","Túnel · formas concêntricas":"Tunnel · concentric shapes","Parede tipográfica":"Type wall","Texto em pixel-bloco":"Block-pixel text","Matriz de símbolos":"Symbol matrix","Faixa de risco":"Hazard stripe","Glitch e strobe em bloco":"Block glitch and strobe","Logo em máscara":"Logo mask","Adicionar camada":"Add layer","Ligada":"On","Copiar":"Copy","Colar":"Paste","CÉLULAS":"CELLS","ANÉIS SDF":"SDF RINGS","INTERFERÊNCIA":"INTERFERENCE","Saída":"Output","Resolução interna":"Internal resolution","Primária":"Primary","Secundária":"Secondary","Acento":"Accent","Campo":"Field","Posição X":"Position X","Posição Y":"Position Y","Rotação °":"Rotation °","Âncora X":"Anchor X","Âncora Y":"Anchor Y","APARÊNCIA":"APPEARANCE","Brilho":"Brightness","Contraste":"Contrast","Saturação":"Saturation","Velocidade":"Speed","Fase":"Phase","Divisão BPM":"BPM division","Eco · cópias":"Echo · copies","ÁUDIO":"AUDIO","Resposta":"Response","Banda":"Band","camadas de texto desta composição":"text layers of this composition","Parâmetros do texto":"Text parameters","Desligada":"Off","Conteúdo":"Content","Fonte":"Font","Tamanho":"Size","Peso":"Weight","Entrelinha":"Line height","Alinhamento":"Alignment","Caixa alta":"All caps","Preencher":"Fill","Contorno":"Outline","Cor do contorno":"Outline colour","Sombra":"Shadow","Cor do glow":"Glow colour","Animação":"Animation","Importar mídia":"Import media","Biblioteca":"Library","Audioreatividade":"Audio reactivity","Microfone / entrada de linha":"Microphone / line in","Arquivo de áudio":"Audio file","Fonte de teste":"Test source","Parar fonte":"Stop source","Sensibilidade":"Sensitivity","Suavização":"Smoothing","Nome":"Name","Artista":"Artist","Predefinições…":"Presets…","1080×1920 · vertical 9:16":"1080×1920 · vertical 9:16","5120×500 · paredes em L":"5120×500 · L walls","Tela":"Screen","Projeção":"Projection","Mapping":"Mapping","Só exportação":"Export only","Paredes e dobras":"Walls and folds","Dobras (x em px)":"Folds (x in px)","Tempo e loop":"Time and loop","Compassos":"Bars","Modo":"Mode","Transição":"Transition","Travar":"Lock","Aleatória":"Random","Paleta":"Palette","Branco α (colorir depois)":"White α (colour it later)","Acento desta composição":"Accent of this composition","Herdar":"Inherit","Cor perceptual":"Perceptual colour","Superfície":"Surface","Gerar esquema":"Generate scheme","Análogo":"Analogous","Complementar":"Complementary","Complementar dividido":"Split complementary","Tríade":"Triad","Tétrade":"Tetrad","Gerar":"Generate","Paleta confere":"Palette checks out","Contraste e regras da superfície em ordem.":"Contrast and surface rules are fine.","Densidade":"Density","Arquivo do projeto":"Project file","Importar no modo Briefing":"Import in Briefing mode","Ficha de produção":"Production sheet","Ficha e canvas conferem":"Sheet and canvas match","Arquétipo":"Archetype","LED de palco":"Stage LED","Fachada":"Facade","Objeto":"Object","Instalação":"Installation","Corporativo":"Corporate","Confirmado":"Confirmed","Derivado":"Derived","proporção":"ratio","Assumido":"Assumed","Confirmar":"Confirm","Zonas":"Zones","fração do canvas":"fraction of the canvas","Mostrar na viewport":"Show in the view","Desenhar na vista":"Draw in the view","Duração min":"Duration min","Riscos":"Risks","um por linha":"one per line","Calculadoras":"Calculators","LED: gabinetes e pitch → pixel map":"LED: cabinets and pitch → pixel map","Gab. A mm":"Cab. W mm","Gabinetes":"Cabinets","Metros":"Metres","Colunas":"Columns","Linhas":"Rows","gabinetes (col × lin)":"cabinets (col × row)","total de gabinetes":"total cabinets","área (m²)":"area (m²)","proporção (decimal)":"ratio (decimal)","família de formato":"format family","cabe numa saída UHD":"fits one UHD output","distância de visão (m)":"viewing distance (m)","Premissa":"Assumption","Aplicar ao canvas e à ficha":"Apply to canvas and sheet","Projeção: lúmens, distância, contraste":"Projection: lumens, distance, contrast","Lúmens":"Lumens","Refletância":"Reflectance","iluminância (lux)":"illuminance (lux)","luminância aparente (nits)":"apparent luminance (nits)","Blend de projetores: recortes e sobreposição":"Projector blend: crops and overlap","Projetores":"Projectors","sobreposição (px)":"overlap (px)","sobreposição (%)":"overlap (%)","conteúdo, raster cheio (px)":"content, full raster (px)","conteúdo visível (px)":"visible content (px)","descartar em cada borda externa (px)":"discard at each outer edge (px)","Atenção":"Warning","Loop: BPM, compassos, fps, taxa do display":"Loop: BPM, bars, fps, display rate","BPM, compassos e fps vêm da aba Projeto.":"BPM, bars and fps come from the Project tab.","duração (s)":"duration (s)","Legibilidade: pitch e distância":"Legibility: pitch and distance","distância (m)":"distance (m)","período do padrão":"pattern period","altura de letra mínima":"minimum letter height","altura de letra confortável":"comfortable letter height","traço mínimo (px)":"minimum stroke (px)","módulos da faixa":"strip modules","Composição α":"Composition α","Composição RGB":"Composition RGB","Uma camada":"One layer","Resolução":"Resolution","Quadros":"Frames","Prefixo":"Prefix","Validação técnica":"Technical validation","Renderizar e baixar ZIP":"Render and download ZIP","Cancelar":"Cancel","Folha de contato PNG":"PNG contact sheet","Gravar tela":"Record screen","Parar após 1 loop":"Stop after 1 loop","Gravar composição":"Record composition","Saída ao vivo":"Live output","Abrir janela de saída":"Open output window","Tela cheia da viewport":"Fullscreen view","recortes do canvas":"canvas crops","Dividir em 2":"Split in 2","Dividir em 3":"Split in 3","Transporte de sinal":"Signal transport","Destino":"Target","Como":"How","EXPORTÁVEL":"EXPORTABLE","Como funciona":"How it works","O que é":"What it is","Com o Claude":"With Claude","Atalhos":"Shortcuts","Espaço":"Space","tap tempo (o 1º toque alinha o downbeat)":"tap tempo (the 1st tap aligns the downbeat)","alinha o downbeat sem mudar o BPM":"aligns the downbeat without changing BPM","trocar composição":"switch composition","mostrar camadas (arraste para girar)":"show layers (drag to rotate)","áudio reativo":"reactive audio","desfazer qualquer alteração":"undo any change","Duplo clique no rótulo":"Double-click the label","volta o número ao padrão":"resets the number","← → no divisor":"← → on the divider","largura do menu (Home minimiza)":"menu width (Home minimises)","quadro anterior / próximo (pausado)":"previous / next frame (paused)","Regras de direção":"Direction rules","Um herói por compasso":"One hero per bar","Cor é evento":"Colour is an event","Interface em degrau, matéria em curva":"Interface in steps, matter in curves","Pense no espaço":"Think about the space","Áudio com parcimônia":"Use audio sparingly","Créditos: criado por Giulia Ribeiro · GYULYIA":"Credits: created by Giulia Ribeiro · GYULYIA","Paleta de cor":"Colour palette","Personalizada":"Custom","Não mostrar ao abrir":"Do not show on open","Entendi":"Got it","Aguardando briefing":"Waiting for a briefing","No chat do Claude, digite":"In Claude chat, type","e descreva o set.":"and describe the set.","Abrir o STANDARD (biblioteca original)":"Open STANDARD (original library)","Este projeto tem camadas de código.":"This project has code layers.","Autorizar e executar":"Authorise and run","Manter bloqueado":"Keep blocked","Animações STANDARD (motor de camadas original)":"STANDARD animations (original layer engine)","Alternar tema: escuro, claro ou do sistema":"Switch theme: dark, light or system","Alternar tema":"Switch theme","Como usar":"How to use","Diminuir zoom":"Zoom out","Aumentar zoom":"Zoom in","Posição no loop":"Position in the loop","Digite o número do quadro ou uma conta":"Type the frame number or a sum","Ir para o quadro":"Go to frame","Minimizar ou abrir o menu (G)":"Minimise or open the menu (G)","Minimizar o menu":"Minimise the menu","Abrir o menu":"Open the menu","Transporte":"Transport","Duplicar composição ativa":"Duplicate the active composition","Altura da vista, arraste ou use as setas":"View height, drag or use the arrows","Largura do menu, arraste ou use as setas":"Menu width, drag or use the arrows","Controles":"Controls","Tipo de camada":"Layer type","Restaurar":"Reset","Restaurar padrão":"Reset to default","Predefinição de canvas":"Canvas preset","Largura":"Width","Altura":"Height","Trocar W e H":"Swap W and H","Posição das dobras em pixels":"Fold positions in pixels","ex.: 2560 ou 1920, 3840":"e.g. 2560 or 1920, 3840","Largura da calha da dobra":"Fold gutter width","Compassos do loop":"Loop bars","Modo de loop":"Loop mode","Transição entre composições":"Transition between compositions","Duração da transição em beats":"Transition length in beats","Verde ácido":"Acid green","Azul elétrico":"Electric blue","Vermelho alarme":"Alarm red","Amarelo sinal":"Signal yellow","Osso":"Bone","Luminosidade 0 a 1":"Lightness 0 to 1","Croma 0 a 0,37":"Chroma 0 to 0.37","Matiz 0 a 360":"Hue 0 to 360","Matiz do conceito, 0 a 360":"Concept hue, 0 to 360","Relação de matizes":"Hue relation","Remover premissa":"Remove assumption","por quê":"why","Tipo de zona":"Zone type","Remover zona":"Remove zone","Eixo do blend":"Blend axis","Quadro inicial":"Start frame","Quadro final":"End frame","Prefixo dos arquivos":"File prefix","Fechar":"Close","Histórico de alterações":"Change history","Fechar histórico":"Close history","Todos":"All","Código":"Code","Ferramentas":"Tools","Adicionar composição de cartões de teste":"Add a test-card composition","CÓDIGO":"CODE","FERRAMENTA":"TOOL","Significa":"Means","Camada":"Layer","Custo":"Cost","Prévia":"Preview","Visualizar":"Preview","Passe o mouse para ver um quadro; clique para animar em baixa resolução":"Hover to see a frame; click to animate at low resolution","Adicionar à composição":"Add to composition","Buscar efeito":"Search effects","Buscar: onda, órbita, caos, som…":"Search: wave, orbit, chaos, sound…","Nenhum efeito com esse termo. Tente \"onda\", \"órbita\" ou \"caos\".":"No effect matches. Try \"wave\", \"orbit\" or \"chaos\".","Grão":"Grain","Troca do grão (quadros)":"Grain change (frames)","Pontos":"Points","Ponto":"Point","Giro":"Spin","Respiração":"Breathing","Inclinação X °":"Tilt X °","Inclinação Y °":"Tilt Y °","Pétalas":"Petals","Cor da varredura":"Sweep colour","Opacidade grade":"Grid opacity","Réguas":"Rulers","Anéis":"Rings","Espiral áurea":"Golden spiral","Ângulo áureo":"Golden angle","Desenho após evento":"Draw after event","Escala do texto":"Text scale","Cor do ângulo":"Angle colour","Alvos":"Targets","Rótulo do alvo":"Target label","Mostrar confiança":"Show confidence","Rede":"Network","Raios":"Rays","Cor do alvo":"Target colour","Linhas de log":"Log lines","Etiquetas":"Labels","Telemetria":"Telemetry","Cor do destaque":"Highlight colour","Título (vazio = nome do projeto)":"Title (empty = project name)","Subtítulo":"Subtitle","Linha de data":"Date line","Rodapé":"Footer","Rótulo da retícula":"Reticle label","Retícula":"Reticle","Contador de beat":"Beat counter","Cor do beat 1":"Beat 1 colour","A cada N compassos (0 = manual)":"Every N bars (0 = manual)","Duração (beats)":"Length (beats)","Linha de apoio ({ID} {CONF})":"Support line ({ID} {CONF})","Tamanho da palavra":"Word size","Cor do bloco":"Block colour","Cor do texto (auto = contraste)":"Text colour (auto = contrast)","Passo da scanline":"Scanline step","Vinheta":"Vignette","Prob. de glitch por beat":"Glitch probability per beat","Fatias":"Slices","Tremor de quadro":"Frame jitter","Cor da fatia":"Slice colour","Cor da fatia acento":"Accent slice colour","Direção":"Direction","Quantidade":"Amount","Espessura":"Thickness","Em degrau (por beat)":"Stepped (per beat)","Pulso na espessura":"Thickness pulse","Acento a cada N linhas":"Accent every N lines","Cor do acento":"Accent colour","Partículas":"Particles","Rastro":"Trail","Amplitude":"Amplitude","Escala do ruído":"Noise scale","Raio da órbita":"Orbit radius","Opacidade":"Opacity","Fração em acento":"Accent fraction","Perspectiva":"Perspective","Proporção":"Proportion","Torção":"Twist","Pulso":"Pulse","Anel acento no beat":"Accent ring on beat","Altura da letra":"Letter height","Troca no beat":"Change on beat","Traço do contorno":"Outline stroke","Separador":"Separator","Linha acento no beat":"Accent line on beat","Arquivo":"File","Encaixe":"Fit","Espelhar":"Mirror","Inverter vertical":"Flip vertical","Corte esq.":"Crop left","Corte dir.":"Crop right","Corte topo":"Crop top","Corte base":"Crop bottom","Colorir (none = original)":"Tint (none = original)","Início (s)":"Start (s)","Fim (s, 0 = final)":"End (s, 0 = end)","Reprodução":"Playback","Tamanho (%)":"Size (%)","Giro Y (voltas/loop)":"Spin Y (turns/loop)","Inclinação X (°)":"Tilt X (°)","Giro Z (°)":"Roll Z (°)","Espessura da linha":"Line width","Tamanho do ponto":"Point size","Densidade dos pontos":"Point density","Direção da luz (°)":"Light direction (°)","Luz ambiente":"Ambient light","Pulso no beat":"Pulse on beat","Cor da borda de luz":"Rim light colour","Tipo":"Type","Repetição":"Repetition","Distribuição":"Distribution","Espaçamento":"Spacing","Preenchimento":"Fill","Traço":"Stroke","Espessura do traço":"Stroke width","Raio do canto":"Corner radius","Alternar acento no beat":"Alternate accent on beat","Código (corpo de draw(c, K))":"Code (body of draw(c, K))","Parede":"Wall","Troca":"Change","Entrada":"Entry","Duração da entrada (beats)":"Entry length (beats)","Largura (fração da parede)":"Width (fraction of the wall)","Altura máxima (fração)":"Maximum height (fraction)","Posição vertical":"Vertical position","Salto de linhas (células)":"Line skip (cells)","Placa vazada":"Cut-out plate","Padrão":"Pattern","Símbolos (o O x s + k S .)":"Symbols (o O x s + k S .)","Célula":"Cell","Tamanho do símbolo":"Symbol size","Passo":"Step","Listra":"Stripe","Inclinação":"Tilt","Alcance (fração da parede)":"Reach (fraction of the wall)","Intensidade":"Intensity","Strobe de parede":"Wall strobe","Tom":"Tone","Variação":"Variation","Entre paredes":"Between walls","Mostrar":"Show","Esconder":"Hide","Importar JSON":"Import JSON","Abrir arquivo .json":"Open .json file","Salvar JSON":"Save JSON","Abrir JSON":"Open JSON","Copiar JSON":"Copy JSON","Biblioteca ":"Library ","Imagem ":"Image ","Usar":"Use","Logo → branco α":"Logo → white α","Menu ›":"Menu ›","‹ Menu":"‹ Menu","Vocabulário, não preset. Adicione uma camada, depois mude os números, a paleta e o áudio para o briefing. Todos fecham o loop.":"A vocabulary, not a preset. Add a layer, then change the numbers, palette and audio for the briefing. All of them close the loop.","Escolha no seletor ou digite RGB (0 a 255) e HEX.":"Pick with the selector or type RGB (0 to 255) and HEX.","Tudo branco com opacidade (100 / 72 / 43 %). Você colore depois. Ideal para render com alfa.":"All white with opacity (100 / 72 / 43 %). You colour it later. Ideal for alpha renders.","Aplicar branco α":"Apply white α","Branco α ativo":"White α active","Restaurar paleta do briefing":"Restore the briefing palette","A paleta que o Claude gerou para este briefing.":"The palette Claude generated for this briefing.","Este projeto não tem paleta de briefing. Carregue um projeto gerado pelo /vj.":"This project has no briefing palette. Load a project generated by /vj.","Vermelho":"Red","Âmbar":"Amber","Amarelo":"Yellow","Verde":"Green","Ciano":"Cyan","Azul":"Blue","Magenta":"Magenta","Menu minimizado. G reabre.":"Menu minimised. G reopens it.","Escuro":"Dark","Claro":"Light","Sistema":"System","Compl. dividido":"Split compl.","Tipografia · hierarquia, revelação e caminho":"Typography · hierarchy, reveal and path","Título":"Title","Legenda":"Caption","Dados":"Data","Tamanho do título (px lógicos)":"Title size (logical px)","Razão entre níveis":"Ratio between levels","Distância entre níveis (em)":"Distance between levels (em)","Revelação":"Reveal","Entrada (fração do loop)":"Entrance (fraction of the loop)","Duração da entrada":"Entrance length","Duração da saída":"Exit length","Atraso entre níveis":"Delay between levels","Escalonamento entre glifos":"Stagger between glyphs","Caminho":"Path","Raio do círculo":"Circle radius","Amplitude da onda":"Wave amplitude","Ondas no comprimento (inteiro)":"Waves along the length","Ângulo da linha (°)":"Line angle (°)","Deriva ao longo do caminho (ciclos/loop)":"Drift along the path (cycles/loop)","Cor da legenda e dados":"Caption and data colour","Bíblia de arte":"Art bible","Tese":"Thesis","Dramaturgia":"Dramaturgy","Tipografia":"Typography","Banidos":"Banned","Perfil de movimento":"Motion profile","Cada projeto nasce de um briefing: conversado com o Claude, que analisa texto, imagens e vídeos, ou preenchido aqui mesmo, sem IA. Não há presets nem modelos pré-prontos: o sistema visual é escrito do zero para o seu briefing.":"Every project starts from a brief: talked through with Claude, which analyses text, images and videos, or filled in right here, with no AI. There are no presets or ready-made templates: the visual system is written from scratch for your brief.","Com o Claude: no chat, digite /vj e descreva o set. O projeto chega aqui montado.":"With Claude: in the chat, type /vj and describe the set. The project arrives here assembled.","Sem IA: clique em Gerar sem IA, preencha o briefing e escolha o preset da sua superfície.":"Without AI: click Generate without AI, fill in the brief and pick the preset for your surface.","Depois ajuste nas abas, avalie na aba Gerar e exporte as imagens na aba Exportar.":"Then adjust in the tabs, evaluate in the Generate tab and export the images in the Export tab.","Gerar sem IA":"Generate without AI"}/*__I18N_END__*/;
 const EN_RULES = [[/^Esquemas gerados pela teoria das cores \(OKLCH\) a partir de um matiz, já ajustados para (.+)\.$/, m => 'Schemes generated by colour theory (OKLCH) from one hue, already tuned for ' + trText(m[1]) + '.'], [/^(\d+) testados$/, m => m[1] + ' tested'], [/^Tema (.+)$/, m => 'Theme ' + trText(m[1])], [/^Paleta (.+)$/, m => 'Palette ' + trText(m[1])], [/^(\d+) problemas?$/, m => m[1] + ' issue(s)'], [/^de (\d+)$/, m => 'of ' + m[1]], [/^Restaurar (.+)$/, m => 'Reset ' + trText(m[1])], [/^Ligar (.+)$/, m => 'Switch on ' + trText(m[1])],
   [/^Opacidade (.+)$/, m => 'Opacity ' + trText(m[1])], [/^Blend (.+)$/, m => 'Blend ' + trText(m[1])], [/^([LCh]) de (.+)$/, m => m[1] + ' of ' + trText(m[2])], [/^(.+) em hexadecimal$/, m => trText(m[1]) + ' in hex'],
   [/^(.+) hex$/, m => trText(m[1]) + ' hex'], [/^Nome da composição (\d+)$/, m => 'Composition name ' + m[1]], [/^Seletor de (.+)$/, m => 'Picker for ' + trText(m[1])], [/^(R|G|B) de (.+)$/, m => m[1] + ' of ' + trText(m[2])],
@@ -4611,104 +4615,10 @@ function genSaveBrief() {
 }
 /*__GENUI_END__*/
 /*__SURFX_START__*/
-/* Superfície (fase 3): presets de superfície, fatias para o Resolume (XML de Advanced Output), pixel map por CSV ou PNG e avisos de legibilidade.
-   O cálculo das fatias é a porta de skill/ai-vj-generator/scripts/export_slices.py (parity testada por scripts/surface_check.mjs: o XML sai idêntico).
+/* Superfície: entrada e restrição de composição. Lê regiões de um CSV ou de uma máscara PNG (só entrada: o motor não gera pixel map, mapping nem arquivos de saída) e avisa sobre legibilidade.
    Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html. */
 const SURFX = (() => {
-  const pyRound = GENAI.pyRound;
-  const PAL_TILE = [[230, 57, 70], [42, 157, 143], [244, 162, 97], [69, 123, 157], [168, 218, 220], [233, 196, 106], [131, 56, 236], [6, 214, 160]];
-
-  /* ---- fatias em colunas (o que o export_slices.py faz) ---- */
-  function pieces(W, folds, maxW) {
-    const cuts = [...new Set([0, W, ...folds.filter(f => f > 0 && f < W)])].sort((a, b) => a - b), out = [];
-    for (let i = 0; i + 1 < cuts.length; i++) {
-      const a = cuts[i], b = cuts[i + 1], n = Math.ceil((b - a) / maxW), step = Math.ceil((b - a) / n);
-      for (let x = a; x < b; x += step) out.push({ x, y: 0, w: Math.min(step, b - x) });
-    }
-    return out;
-  }
-  /* linha por linha; devolve [{screen, x, y, w, h, ox, oy}] ou { error } */
-  function pack(pcs, H, OW, OH) {
-    if (H > OH) return { error: `a altura do canvas (${H}) não cabe na altura da saída (${OH}): escolha uma saída mais alta ou gire o conteúdo` };
-    const res = []; let screen = 0, x = 0, y = 0;
-    for (const p of pcs) {
-      if (p.w > OW) return { error: `a fatia de ${p.w} px não cabe na largura da saída (${OW})` };
-      if (x + p.w > OW) { x = 0; y += H; }
-      if (y + H > OH) { screen++; x = 0; y = 0; }
-      res.push({ screen, x: p.x, y: 0, w: p.w, h: H, ox: x, oy: y }); x += p.w;
-    }
-    return res;
-  }
-  /* fatias retangulares quaisquer (pixel map): prateleiras da esquerda para a direita; a prateleira tem a altura do maior retângulo */
-  function packRects(rects, OW, OH) {
-    const res = []; let screen = 0, x = 0, y = 0, shelf = 0;
-    for (const r of rects) {
-      if (r.w > OW || r.h > OH) return { error: `o módulo ${r.name || ''} (${r.w}×${r.h}) não cabe na saída ${OW}×${OH}` };
-      if (x + r.w > OW) { x = 0; y += shelf; shelf = 0; }
-      if (y + r.h > OH) { screen++; x = 0; y = 0; shelf = 0; }
-      res.push({ screen, x: r.x, y: r.y, w: r.w, h: r.h, ox: x, oy: y, name: r.name }); x += r.w; shelf = Math.max(shelf, r.h);
-    }
-    return res;
-  }
-
-  /* ---- XML de Advanced Output do Resolume Arena (estrutura copiada de arquivos que o próprio Arena salva) ---- */
-  const v = (x, y, ind) => `${ind}<v x="${x}" y="${y}"/>\n`;
-  const rectPts = (x, y, w, h, ind) => v(x, y, ind) + v(x + w, y, ind) + v(x + w, y + h, ind) + v(x, y + h, ind);
-  const RANGE = (n, d, val, lo, hi, ind) => `${ind}<ParamRange name="${n}" default="${d}" value="${val}"><ValueRange name="defaultRange" min="${lo}" max="${hi}"/></ParamRange>\n`;
-  const sp = n => ' '.repeat(n);
-  function sliceXml(uid, name, W, H, p) {
-    const dx = p.ox - p.x, dy = p.oy - p.y, I = sp(24);
-    let s = `                    <Slice uniqueId="${uid}">\n`;
-    s += '                        <Params name="Common">\n' + `${I}<Param name="Name" default="Layer" value="${name}"/>\n` + `${I}<Param name="Enabled" default="1" value="1"/>\n                        </Params>\n`;
-    s += '                        <Params name="Input">\n' + `${I}<ParamChoice name="Input Source" default="0:1" value="0:1" storeChoices="0"/>\n${I}<Param name="Input Opacity" default="1" value="1"/>\n${I}<Param name="Input Bypass/Solo" default="1" value="1"/>\n${I}<Param name="SoftEdgeEnable" default="0" value="0"/>\n                        </Params>\n`;
-    s += '                        <Params name="Output">\n' + `${I}<Param name="Flip" default="0" value="0"/>\n`;
-    for (const n of ['Brightness', 'Contrast', 'Red', 'Green', 'Blue']) s += RANGE(n, 0, 0, -1, 1, I);
-    s += `${I}<Param name="Is Key" default="0" value="0"/>\n${I}<Param name="Black BG" default="0" value="0"/>\n`;
-    for (const n of ['BRed', 'BGreen', 'BBlue']) s += RANGE(n, 0, 0, 0, 0.4, I);
-    s += '                        </Params>\n';
-    s += '                        <InputRect orientation="0">\n' + rectPts(0, 0, W, H, sp(28)) + '                        </InputRect>\n';
-    s += '                        <OutputRect orientation="0">\n' + rectPts(dx, dy, W, H, sp(28)) + '                        </OutputRect>\n';
-    s += '                        <Warper>\n                            <Params name="Warper"><ParamChoice name="Point Mode" default="PM_LINEAR" value="PM_LINEAR" storeChoices="0"/></Params>\n';
-    s += '                            <BezierWarper controlWidth="4" controlHeight="4">\n                                <vertices>\n';
-    for (let j = 0; j < 4; j++) for (let i = 0; i < 4; i++) s += v(pyRound(dx + W * i / 3), pyRound(dy + H * j / 3), sp(36));
-    s += '                                </vertices>\n                            </BezierWarper>\n                            <Homography>\n                                <src>\n' + rectPts(0, 0, W, H, sp(36));
-    s += '                                </src>\n                                <dst>\n' + rectPts(dx, dy, W, H, sp(36)) + '                                </dst>\n                            </Homography>\n                        </Warper>\n';
-    s += '                        <SliceMask>\n                            <Params name="Input Mask">\n' + `${I}<Param name="Name" default="Mask" value="Mask"/>\n${I}<Param name="Enabled" default="1" value="1"/>\n${I}<Param name="Invert" default="1" value="1"/>\n                            </Params>\n`;
-    s += '                            <ShapeObject>\n                                <Params name="Shape">\n                                    <ParamChoice name="Point Mode" default="PM_LINEAR" value="PM_LINEAR" storeChoices="0"/>\n                                </Params>\n';
-    s += '                                <Rect orientation="0">\n' + rectPts(p.x, p.y, p.w, p.h, sp(36)) + '                                </Rect>\n';
-    s += '                                <Shape>\n                                    <Contour closed="1">\n                                        <points>\n' + v(p.x, p.y, sp(44)) + v(p.x, p.y + p.h, sp(44)) + v(p.x + p.w, p.y + p.h, sp(44)) + v(p.x + p.w, p.y, sp(44));
-    s += '                                        </points>\n                                        <segments>LLLL</segments>\n                                    </Contour>\n                                </Shape>\n                            </ShapeObject>\n                        </SliceMask>\n                    </Slice>\n';
-    return s;
-  }
-  function buildXml(name, W, H, OW, OH, placed) {
-    const screens = [...new Set(placed.map(p => p.screen))].sort((a, b) => a - b), ID = ' '.repeat(20);
-    let x = `<?xml version="1.0" encoding="utf-8"?>\n<XmlState name="${name}">\n    <versionInfo name="Resolume Arena" majorVersion="5" minorVersion="0" microVersion="0" revision="00000"/>\n`;
-    x += '    <ScreenSetup name="ScreenSetup">\n        <Params name="ScreenSetupParams"/>\n        <sizing>\n            <inputs>\n' + `                <InputSize name="0:1" width="${W}" height="${H}"/>\n            </inputs>\n        </sizing>\n        <screens>\n`;
-    let uid = 1000;
-    for (const sc of screens) {
-      x += `            <Screen name="Output #${sc + 1}" uniqueId="${14150 + sc}">\n                <Params name="Params">\n                    <Param name="Name" default="" value="Output #${sc + 1}"/>\n                    <Param name="Enabled" default="1" value="1"/>\n                    <Param name="Hidden" default="0" value="0"/>\n                </Params>\n`;
-      x += '                <Params name="Output">\n' + RANGE('Opacity', 1, 1, 0, 1, ID) + ['Brightness', 'Contrast', 'Red', 'Green', 'Blue'].map(n => RANGE(n, 0, 0, -1, 1, ID)).join('') + '                </Params>\n                <layers>\n';
-      placed.forEach((p, k) => { if (p.screen !== sc) return; uid += 1000; x += sliceXml(uid, `${name} ${String(k + 1).padStart(2, '0')}`, W, H, p); });
-      x += '                </layers>\n                <OutputDevice>\n' + `                    <OutputDeviceVirtual name="Virtual" deviceId="Virtual" idHash="0" width="${OW}" height="${OH}">\n                        <Params name="Params">\n`;
-      x += RANGE('Width', 1920, OW, 1, 32768, sp(28)) + RANGE('Height', 1080, OH, 1, 32768, sp(28)) + '                        </Params>\n                    </OutputDeviceVirtual>\n                </OutputDevice>\n            </Screen>\n';
-    }
-    x += '        </screens>\n        <SoftEdging>\n            <Params name="Soft Edge">\n';
-    x += RANGE('Gamma Red', 2, 2, 1, 3, sp(16)) + RANGE('Gamma Green', 2, 2, 1, 3, sp(16)) + RANGE('Gamma Blue', 2, 2, 1, 3, sp(16)) + RANGE('Gamma', 1, 1, 0, 1, sp(16)) + RANGE('Luminance', 0.5, 0.5, 0, 1, sp(16)) + RANGE('Power', 2, 2, 0.1, 7, sp(16));
-    return x + '            </Params>\n        </SoftEdging>\n    </ScreenSetup>\n</XmlState>\n';
-  }
-  const cleanName = n => String(n || 'project').replace(/[<>&"]/g, '');
-  /* plano completo: modo "columns" (dobras, igual ao Python) ou "rects" (um módulo do pixel map por fatia) */
-  function plan(canvas, opt) {
-    const W = canvas.w, H = canvas.h, [OW, OH] = opt.out, name = cleanName(opt.name);
-    let placed;
-    if (opt.mode === 'rects') placed = packRects(opt.rects || [], OW, OH); else placed = pack(pieces(W, canvas.folds || [], OW), H, OW, OH);
-    if (placed.error) return placed;
-    const map = { input: [W, H], output: [OW, OH], folds: canvas.folds || [], slices: placed.map((p, k) => ({ slice: k + 1, screen: p.screen + 1, input: { x: p.x, y: p.y, w: p.w, h: p.h }, output: { x: p.ox, y: p.oy } })) };
-    map.slices.forEach((s, k) => { if (placed[k].name) s.name = placed[k].name; });
-    return { placed, name, xml: buildXml(name, W, H, OW, OH, placed), map, screens: new Set(placed.map(p => p.screen)).size, usedPixels: placed.reduce((a, p) => a + p.w * p.h, 0) };
-  }
-
-  /* ---- pixel map: CSV de retângulos (nome,x,y,w,h) ou PNG máscara ---- */
+  /* ---- regiões de entrada: CSV de retângulos (nome,x,y,w,h) ou PNG máscara ---- */
   function parseCsv(text, W, H) {
     const rects = [], errs = []; let first = true;
     String(text).replace(/\r/g, '').split('\n').forEach((raw, ln) => {
@@ -4760,15 +4670,13 @@ const SURFX = (() => {
     }));
     return { limits: lg, warnings: warns };
   }
-  return { pieces, pack, packRects, buildXml, plan, parseCsv, maskToRects, rectsCsv, activePixels, legibility, cleanName, PAL_TILE };
+  return { parseCsv, maskToRects, activePixels, legibility };
 })();
 /*__SURFX_END__*/
 /*__SURFUI_START__*/
-/* Aba "Superfície" (fase 3): preset de superfície, cortes (dobras), fatias e XML para o Resolume, pixel map por CSV/PNG, legibilidade por passo e distância.
+/* Aba "Superfície": preset de superfície, cortes (dobras), regiões importadas de CSV/PNG (só entrada) e legibilidade por passo e distância. Não gera pixel map nem arquivos de mapping.
    Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html. Textos em PT e EN pela função T3 (definida em gen-ui.js). */
-const SUR = { out: '3840x2160', mode: 'columns', pitch: '', dist: '', msg: '', err: [], leg: null };
-const SUR_OUTS = ['1280x720', '1920x1080', '3840x2160', '4096x2160', '7680x4320'];
-function surOut() { const [w, h] = String(SUR.out).split('x').map(Number); return [w, h]; }
+const SUR = { pitch: '', dist: '', msg: '', err: [], leg: null };
 function surSpec() { return (P.meta.spec && P.meta.spec.confirmed) || {}; }
 function surApplyPreset(id) {
   const q = SURFACE_PRESETS.find(x => x.id === id); if (!q) return false;
@@ -4776,21 +4684,6 @@ function surApplyPreset(id) {
   P.meta.spec = P.meta.spec || { archetype: [], confirmed: {}, assumed: [] }; const cf = P.meta.spec.confirmed = P.meta.spec.confirmed || {};
   cf.pixelMap = [q.w, q.h]; if (q.pitchMm) cf.pitchMm = q.pitchMm; else delete cf.pitchMm; if (q.viewingDistanceM) cf.viewingDistanceM = q.viewingDistanceM.slice(); else delete cf.viewingDistanceM;
   commit(true, 'Superfície ' + id); refreshAll(); return true;
-}
-function surPlan() {
-  const o = surOut(), disp = P.canvas.displays || [];
-  return SURFX.plan(P.canvas, { name: P.meta.name, out: o, mode: SUR.mode === 'rects' && disp.length ? 'rects' : 'columns', rects: disp.map((d, i) => ({ name: d.name || 'M' + String(i + 1).padStart(2, '0'), x: d.x, y: d.y, w: d.w, h: d.h })) });
-}
-async function surPatternBlob(plan) {
-  const W = P.canvas.w, H = P.canvas.h, k = Math.min(1, 8192 / W, 8192 / H), cw = Math.max(1, Math.round(W * k)), ch = Math.max(1, Math.round(H * k)), cv = document.createElement('canvas'); cv.width = cw; cv.height = ch;
-  const c = cv.getContext('2d'); c.fillStyle = '#121212'; c.fillRect(0, 0, cw, ch);
-  plan.placed.forEach((p, i) => {
-    const col = SURFX.PAL_TILE[i % SURFX.PAL_TILE.length], x = p.x * k, y = p.y * k, w = p.w * k, h = p.h * k, t = Math.max(2, Math.round(4 * k));
-    for (let yy = 0; yy < h; yy += 40 * k) for (let xx = 0; xx < w; xx += 40 * k) { const odd = (Math.floor(xx / (40 * k)) + Math.floor(yy / (40 * k))) % 2; c.fillStyle = `rgb(${col.map(v => Math.round(v * (odd ? 0.55 : 0.7))).join(',')})`; c.fillRect(x + xx, y + yy, Math.min(40 * k, w - xx), Math.min(40 * k, h - yy)); }
-    c.fillStyle = '#fff'; c.fillRect(x, y, w, t); c.fillRect(x, y + h - t, w, t); c.fillRect(x, y, t, h); c.fillRect(x + w - t, y, t, h);
-    c.font = `800 ${Math.max(12, Math.min(h * 0.28, 160 * k + 20))}px sans-serif`; c.textBaseline = 'top'; c.fillStyle = '#fff'; c.fillText(String(i + 1), x + t * 3, y + t * 3);
-  });
-  return new Promise(r => cv.toBlob(r, 'image/png'));
 }
 function surLegHtml() {
   const cf = surSpec(), pitch = +(SUR.pitch || cf.pitchMm || 0), dist = +(SUR.dist || (cf.viewingDistanceM || [])[1] || 0);
@@ -4803,25 +4696,18 @@ function surLegHtml() {
     + (r.warnings.length ? `<ul class="val">${r.warnings.map(w => `<li class="WARNING">${esc(w)}</li>`).join('')}</ul>` : `<p class="note">${T3('Nenhum texto ou traço abaixo do mínimo legível neste projeto.', 'No text or stroke below the readable minimum in this project.')}</p>`);
 }
 function renderSurface() {
-  const el = pane('sur'); if (!el) return; const c = P.canvas, en = ST.lang === 'en', disp = c.displays || [], plan = surPlan();
+  const el = pane('sur'); if (!el) return; const c = P.canvas, en = ST.lang === 'en', disp = c.displays || [];
   const cur = (SURFACE_PRESETS.find(q => q.type === c.target && q.w === c.w && q.h === c.h) || { id: '' }).id;
   const folds = (c.folds || []).map(f => `<button data-sf="${f}" title="${esc(T3('Remover esta dobra', 'Remove this fold'))}">${f} ×</button>`).join('');
   el.innerHTML = `<h2 class="sec">${T3('Superfície', 'Surface')} <span class="lbl">${c.w}×${c.h} · ${esc(c.target)}</span></h2>
-    <p class="note">${T3('Escolha o preset da sua superfície, corte o canvas nas dobras, gere as fatias para o Resolume e confira a legibilidade. Tudo é calculado aqui, sem IA.', 'Pick the preset for your surface, cut the canvas at the folds, generate the slices for Resolume and check legibility. Everything is computed here, with no AI.')}</p>
+    <p class="note">${T3('Escolha o preset da sua superfície, corte o canvas nas dobras, importe as regiões que já existem e confira a legibilidade. A superfície é entrada e restrição de composição; o motor não gera pixel map nem arquivos de mapping.', 'Pick the preset for your surface, cut the canvas at the folds, import the regions that already exist and check legibility. The surface is input and a composition constraint; the engine does not generate pixel maps or mapping files.')}</p>
     <div class="row"><select id="sPre" aria-label="${T3('Preset de superfície', 'Surface preset')}"><option value="">${T3('Preset de superfície…', 'Surface preset…')}</option>${SURFACE_PRESETS.map(q => `<option value="${q.id}" ${q.id === cur ? 'selected' : ''}>${esc(en ? q.en : q.pt)}</option>`).join('')}</select></div>
     <h2 class="sec">${T3('Cortes (dobras)', 'Cuts (folds)')} <span class="lbl">${(c.folds || []).length + 1} ${T3('parede(s)', 'wall(s)')}</span></h2>
     <div class="row chips">${folds || `<span class="note">${T3('Sem cortes: uma parede só.', 'No cuts: a single wall.')}</span>`}</div>
     <div class="row"><span class="lbl">${T3('Cortar em x (px)', 'Cut at x (px)')}</span><input type="text" id="sCut" placeholder="2250" style="width:90px"><button id="sCutGo">${T3('Cortar', 'Cut')}</button><button id="sCutHalf">${T3('Ao meio', 'In half')}</button><button id="sCutClear" ${(c.folds || []).length ? '' : 'disabled'}>${T3('Limpar cortes', 'Clear cuts')}</button></div>
-    <h2 class="sec">${T3('Pixel map', 'Pixel map')} <span class="lbl">${disp.length} ${T3('módulo(s)', 'module(s)')}${disp.length ? ' · ' + (SURFX.activePixels(disp) / (c.w * c.h) * 100).toFixed(1) + '% ' + T3('do canvas', 'of the canvas') : ''}</span></h2>
-    <p class="note">${T3('Importe os módulos do seu LED ou telas: CSV (nome,x,y,largura,altura, em pixels do canvas) ou uma imagem PNG em que o que não é preto é pixel ativo (a imagem é esticada ao canvas). Os módulos aparecem na vista e viram fatias no XML.', 'Import your LED or screen modules: CSV (name,x,y,width,height, in canvas pixels) or a PNG image where anything not black is an active pixel (the image is stretched to the canvas). The modules show in the view and become slices in the XML.')}</p>
-    <div class="row"><label class="filebtn">${T3('Importar CSV ou PNG', 'Import CSV or PNG')}<input type="file" id="sMapFile" accept=".csv,.txt,image/png,.png"></label><button id="sMapCsv" ${disp.length ? '' : 'disabled'}>${T3('Baixar CSV', 'Download CSV')}</button><button id="sMapClear" ${disp.length ? '' : 'disabled'}>${T3('Limpar mapa', 'Clear map')}</button></div>
-    <h2 class="sec">${T3('Fatias para o Resolume', 'Slices for Resolume')} <span class="lbl">${plan.error ? '' : plan.placed.length + ' ' + T3('fatia(s)', 'slice(s)') + ' · ' + plan.screens + ' ' + T3('saída(s)', 'output(s)')}</span></h2>
-    <div class="row"><span class="lbl">${T3('Saída', 'Output')}</span><select id="sOut">${SUR_OUTS.map(o => `<option ${o === SUR.out ? 'selected' : ''}>${o}</option>`).join('')}</select>
-      <span class="lbl">${T3('Fatiar', 'Slice by')}</span><select id="sMode"><option value="columns" ${SUR.mode === 'columns' ? 'selected' : ''}>${T3('colunas entre as dobras', 'columns between the folds')}</option><option value="rects" ${SUR.mode === 'rects' ? 'selected' : ''} ${disp.length ? '' : 'disabled'}>${T3('um módulo do pixel map por fatia (experimental)', 'one pixel-map module per slice (experimental)')}</option></select></div>
-    ${plan.error ? `<ul class="val"><li class="ERROR">${esc(plan.error)}</li></ul>` : `<dl class="kv">${plan.map.slices.map(s => `<dt>${String(s.slice).padStart(2, '0')}${s.name ? ' ' + esc(s.name) : ''}</dt><dd>x ${s.input.x}..${s.input.x + s.input.w}${s.input.y || s.input.h !== c.h ? ' · y ' + s.input.y + '..' + (s.input.y + s.input.h) : ''} → ${T3('saída', 'output')} ${s.screen} (${s.output.x}, ${s.output.y})</dd>`).join('')}</dl>
-      <p class="note">${T3('Pixels', 'Pixels')}: ${c.w * c.h} ${T3('na entrada', 'in')} · ${plan.usedPixels} ${T3('nas fatias', 'in the slices')}.</p>`}
-    <div class="row"><button id="sXml" ${plan.error ? 'disabled' : ''}>${T3('Baixar XML do Resolume', 'Download Resolume XML')}</button><button id="sMapJson" ${plan.error ? 'disabled' : ''}>${T3('Baixar mapa (.json)', 'Download map (.json)')}</button><button id="sPat" ${plan.error ? 'disabled' : ''}>${T3('Baixar padrão de teste (.png)', 'Download test pattern (.png)')}</button></div>
-    <p class="note">${T3('No Resolume: Arquivo > Advanced Output > Carregar. Toque o padrão de teste: cada ladrilho tem de cair no seu lugar. As versões do Arena diferem: abra o XML uma vez, olhe as fatias e salve de novo pelo Arena. Rotação de 90° ainda não existe nesta aba. O modo "um módulo por fatia" generaliza o formato e ainda não foi conferido contra um arquivo salvo pelo Arena.', 'In Resolume: File > Advanced Output > Load. Play the test pattern: every tile must land in its place. Arena versions differ: open the XML once, look at the slices and re-save it from Arena. 90° rotation does not exist in this tab yet. The "one module per slice" mode generalises the format and has not been checked against a file saved by Arena.')}</p>
+    <h2 class="sec">${T3('Regiões importadas (entrada)', 'Imported regions (input)')} <span class="lbl">${disp.length} ${T3('módulo(s)', 'module(s)')}${disp.length ? ' · ' + (SURFX.activePixels(disp) / (c.w * c.h) * 100).toFixed(1) + '% ' + T3('do canvas', 'of the canvas') : ''}</span></h2>
+    <p class="note">${T3('Importe as regiões que já existem na sua superfície: CSV (nome,x,y,largura,altura, em pixels do canvas) ou uma imagem PNG em que o que não é preto é pixel ativo (a imagem é esticada ao canvas). As regiões aparecem na vista e podem ser renderizadas uma a uma na aba Exportar.', 'Import the regions that already exist on your surface: CSV (name,x,y,width,height, in canvas pixels) or a PNG image where anything not black is an active pixel (the image is stretched to the canvas). The regions show in the view and can be rendered one by one in the Export tab.')}</p>
+    <div class="row"><label class="filebtn">${T3('Importar CSV ou PNG', 'Import CSV or PNG')}<input type="file" id="sMapFile" accept=".csv,.txt,image/png,.png"></label><button id="sMapClear" ${disp.length ? '' : 'disabled'}>${T3('Limpar mapa', 'Clear map')}</button></div>
     <h2 class="sec">${T3('Legibilidade', 'Legibility')}</h2>${surLegHtml()}
     <div id="sMsg" class="note" role="status" aria-live="polite">${SUR.err.length ? '<b>' + T3('Atenção:', 'Warning:') + '</b><br>' + SUR.err.map(esc).join('<br>') : esc(SUR.msg)}</div>`;
   surBind(el);
@@ -4834,10 +4720,8 @@ function surBind(el) {
   on('sCutGo', 'click', () => { const x = Math.round(evalExpr(q('sCut').value)); if (!(x > 0 && x < c.w)) { SUR.err = [T3(`O corte precisa estar entre 1 e ${c.w - 1} px.`, `The cut must be between 1 and ${c.w - 1} px.`)]; renderSurface(); return; } SUR.err = []; setFolds([...(c.folds || []), x]); });
   on('sCutHalf', 'click', () => setFolds([...(c.folds || []), Math.round(c.w / 2)]));
   on('sCutClear', 'click', () => setFolds([]));
-  on('sOut', 'change', e => { SUR.out = e.target.value; renderSurface(); }); on('sMode', 'change', e => { SUR.mode = e.target.value; renderSurface(); });
   on('sLegGo', 'click', () => { SUR.pitch = q('sLegP').value; SUR.dist = q('sLegD').value; renderSurface(); });
-  on('sMapClear', 'click', () => { c.displays = []; commit(true, 'Pixel map'); drawOverlay(); SUR.mode = 'columns'; renderSurface(); });
-  on('sMapCsv', 'click', () => saveFile(safe(P.meta.name) + '.pixelmap.csv', new Blob([SURFX.rectsCsv(c.displays.map((d, i) => ({ name: d.name || 'M' + String(i + 1).padStart(2, '0'), x: d.x, y: d.y, w: d.w, h: d.h })))], { type: 'text/csv' })));
+  on('sMapClear', 'click', () => { c.displays = []; commit(true, 'Regiões'); drawOverlay(); renderSurface(); });
   on('sMapFile', 'change', async e => {
     const f = e.target.files[0]; if (!f) return; e.target.value = '';
     try {
@@ -4849,14 +4733,10 @@ function surBind(el) {
       } else res = SURFX.parseCsv(await f.text(), c.w, c.h);
       SUR.err = res.errs;
       if (!res.rects.length) { SUR.err.push(T3('Nenhum módulo válido no arquivo.', 'No valid module in the file.')); renderSurface(); return; }
-      c.displays = res.rects.map(r => ({ x: r.x, y: r.y, w: r.w, h: r.h, name: r.name })); commit(true, 'Pixel map'); drawOverlay();
+      c.displays = res.rects.map(r => ({ x: r.x, y: r.y, w: r.w, h: r.h, name: r.name })); commit(true, 'Regiões'); drawOverlay();
       SUR.msg = T3(`${res.rects.length} módulo(s) importado(s). Desfazer (Ctrl+Z) volta ao mapa anterior.`, `${res.rects.length} module(s) imported. Undo (Ctrl+Z) returns to the previous map.`); renderSurface();
     } catch (err) { SUR.err = [T3('Não consegui ler o arquivo: ', 'Could not read the file: ') + err.message]; renderSurface(); }
   });
-  const base = () => safe(P.meta.name);
-  on('sXml', 'click', () => { const p = surPlan(); if (!p.error) saveFile(base() + '.slices.xml', new Blob([p.xml], { type: 'application/xml' })); });
-  on('sMapJson', 'click', () => { const p = surPlan(); if (!p.error) saveFile(base() + '.map.json', new Blob([JSON.stringify(p.map, null, 2) + '\n'], { type: 'application/json' })); });
-  on('sPat', 'click', async () => { const p = surPlan(); if (!p.error) saveFile(base() + '.stageview.png', await surPatternBlob(p)); });
 }
 /*__SURFUI_END__*/
 /*__FLASH_START__*/
@@ -5064,8 +4944,8 @@ function modPanel(host, L) {
 }
 /*__MODUI_END__*/
 /*__ISFUI_START__*/
-/* Aba "ISF": biblioteca de geradores ISF (Resolume, VDMX, MadMapper), importar arquivo .fs, exportar as camadas de shader como .fs.
-   Porte do importador/exportador de skill/ai-vj-generator/scripts/isf.py (o teste isf_ui_check.mjs compara os dois na biblioteca inteira).
+/* Aba "ISF" e camada "isf": biblioteca de 84 geradores ISF escolhidos nos parâmetros da camada, e importação de arquivos .fs como camada de shader.
+   Porte do importador de skill/ai-vj-generator/scripts/isf.py (o teste isf_ui_check.mjs compara os dois na biblioteca inteira).
    Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html. A biblioteca (ISFLIB) é gerada por scripts/embed-isf.mjs. Textos pela função T3 (gen-ui.js). */
 const ISFX = (() => {
   const HEAD_RE = /^\/\*\s*(\{[\s\S]*?\})\s*\*\//;
@@ -5133,67 +5013,14 @@ const ISFX = (() => {
     return { layer, notes, mapped: floats.map((f, k) => ({ isf: f[0], to: 'p' + (k + 1), min: f[2].MIN, max: f[2].MAX, def: f[1] })) };
   }
 
-  /* exportar: camada de shader do projeto -> .fs (mesmo prelúdio de isf.py) */
-  const PRELUDE = seed => `// ISF prelude: maps the engine uniforms onto ISF inputs
-#define uRes RENDERSIZE
-#define uT TIME
-#define uPh phase
-#define uP vec4(p1,p2,p3,p4)
-#define uC1 c1.rgb
-#define uC2 c2.rgb
-#define uBg cbg.rgb
-#define uAlpha 1.0
-#define uSeed ${seed}
-#define uBpm (bpm/100.0)
-#define uBeat floor(phase*loopBeats)
-#define uBp fract(phase*loopBeats)
-#define uOnBeat exp(-uBp*8.0)
-#define uPulse exp(-uBp*5.0)
-#define uBass bass
-#define uMid mid
-#define uHigh high
-#define uRms rms
-#define uHit hit
-#define uMidHit midhit
-#define uHighHit highhit
-#define uPres pres
-#define uAud bass
-#define uBassT (phase*loopBars)
-#define uMidT (phase*loopBars)
-#define uHighT (phase*loopBars)
-#define uAudT (phase*loopBars)
-#define uBSin (0.5+0.5*sin(TAU*phase*loopBeats))
-#define uBSin2 (0.5+0.5*sin(0.5*TAU*phase*loopBeats))
-#define uBSin4 (0.5+0.5*sin(0.25*TAU*phase*loopBeats))
-#define uBTri (1.0-abs(2.0*fract(phase*loopBeats)-1.0))
-`;
-  const hexrgb = h => { h = String(h).replace(/^#/, ''); return [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16) / 255).concat([1]); };
-  function exportLayer(proj, ci, li, helpers, shaderSrc) {
-    const c = proj.compositions[ci], L = c.layers[li], p = L.p || {}, bpm = (proj.time || {}).bpm || 120, bars = (proj.time || {}).bars || 4, pal = proj.palette || {};
-    const sh = shaderSrc(L), vals = ['p1', 'p2', 'p3', 'p4'].map((k, i) => p[k] != null ? p[k] : sh.d[i]);
-    const f = (n, lab, d, lo, hi) => ({ NAME: n, LABEL: lab, TYPE: 'float', DEFAULT: d, MIN: lo, MAX: hi });
-    const col = (key, dflt) => { const v = p[key] != null ? p[key] : dflt; return /^#/.test(v) ? hexrgb(v) : pal[v] ? hexrgb(pal[v]) : [1, 1, 1, 1]; };
-    const inputs = [f('phase', 'Loop phase (0-1, automate)', 0, 0, 1), f('loopBars', 'Bars per loop', bars, 1, 64), f('bpm', 'BPM', bpm, 40, 240),
-      f('p1', 'P1', vals[0], -40, 40), f('p2', 'P2', vals[1], -40, 40), f('p3', 'P3', vals[2], -40, 40), f('p4', 'P4', vals[3], -40, 40),
-      { NAME: 'c1', LABEL: 'Colour 1', TYPE: 'color', DEFAULT: col('c1', 'primary') }, { NAME: 'c2', LABEL: 'Colour 2', TYPE: 'color', DEFAULT: col('c2', 'accent') },
-      { NAME: 'cbg', LABEL: 'Background', TYPE: 'color', DEFAULT: col('cbg', 'bg') }];
-    for (const n of ['bass', 'mid', 'high', 'rms', 'hit', 'midhit', 'highhit', 'pres']) inputs.push(f(n, 'Audio ' + n + ' (map from host audio)', 0, 0, 1.5));
-    const hdr = { DESCRIPTION: `${(proj.meta || {}).name || 'project'} / ${c.name || ci} / ${L.name || li}`, CREDIT: 'ai-vj-generator', ISFVSN: '2.0', CATEGORIES: ['Generator', 'Audio Reactive'], INPUTS: inputs };
-    const seed = (((proj.seed || 1) % 997) * 0.173).toFixed(3);
-    const text = '/*' + JSON.stringify(hdr, null, 2) + '*/\n#define TAU 6.28318530718\n' + PRELUDE(seed) + '#define loopBeats (loopBars*4.0)\n' + helpers.replace('#define TAU 6.28318530718\n', '') + '\n' + sh.src + '\n';
-    const name = (`${(proj.meta || {}).name || 'project'} ${c.name || ci} ${L.name || li}`).replace(/[^A-Za-z0-9._ -]+/g, '_').trim() + '.fs';
-    return { name, text };
-  }
-  return { parse, blockers, convert, exportLayer, fnum };
+  return { parse, blockers, convert, fnum };
 })();
 
 const ISFUI = { q: '', kind: 'todos', open: null, msg: null };
-function isfHelpers() { return GL_HEAD.split('\n').slice(2).join('\n'); }
-function isfShaderSrc(L) { const p = L.p || {}; if (p.src && p.src.trim()) return { src: p.src.trim(), d: [2.2, 0.7, 0.9, 1.4] }; const s = SHADERS[p.preset] || SHADERS['CAMPO FBM']; return { src: s.src.trim(), d: s.d }; }
 function isfInsert(layer, notes) {
   const comp = cur(), at = clamp(ST.sel + 1, 0, comp.layers.length); comp.layers.splice(at, 0, layer); ST.sel = at;
   buildStage(); refreshAll(); commit(false, 'ISF ' + layer.name);
-  const body = shaderBody(pm(layer)); glProg(body); const err = GL.err.get(body);
+  const body = shaderBody(layer.type === 'isf' ? { src: isfLib(layer.p.lib).src } : pm(layer)); glProg(body); const err = GL.err.get(body);
   ISFUI.msg = err ? { bad: true, text: T3('A camada entrou, mas o shader não compilou no WebGL1: ', 'The layer was added, but the shader did not compile in WebGL1: ') + err.split('\n')[0] }
     : { text: T3(`Camada "${layer.name.toLowerCase()}" adicionada. Ajuste em Parâm.`, `Layer "${layer.name.toLowerCase()}" added. Tune it in Params.`) + (notes.length ? ' ' + notes.join('; ') : '') };
   toast(ISFUI.msg.text, 2600); if (ST.tab === 'isf') renderIsf();
@@ -5201,7 +5028,7 @@ function isfInsert(layer, notes) {
 }
 function isfAddLib(id) {
   const it = ISFLIB.find(x => x.id === id); if (!it) return false;
-  try { const r = ISFX.convert(it.src, it.name, P.time.bars, P.time.bpm); r.layer.role = r.layer.role.replace('Imported ISF generator', 'ISF library (' + it.license + ')'); return isfInsert(r.layer, r.notes); }
+  try { isfLib(id); return isfInsert({ type: 'isf', name: it.name.toUpperCase().slice(0, 28), on: true, opacity: 1, blend: 'add', role: `ISF library (${it.license}). Credit: ${it.credit}.`, p: { lib: id } }, []); }
   catch (e) { ISFUI.msg = { bad: true, text: e.message }; if (ST.tab === 'isf') renderIsf(); return false; }
 }
 async function isfImportFiles(files) {
@@ -5214,27 +5041,17 @@ async function isfImportFiles(files) {
   ISFUI.msg = { bad: bad.length > 0, text: T3(`${out.length - bad.length} de ${out.length} arquivo(s) importado(s).`, `${out.length - bad.length} of ${out.length} file(s) imported.`) + bad.map(o => ` ${o.name}: ${o.why || T3('não compilou', 'did not compile')}.`).join('') };
   if (ST.tab === 'isf') renderIsf();
 }
-function isfExport(all) {
-  const layers = []; P.compositions.forEach((c, ci) => c.layers.forEach((L, li) => { if (L.type === 'shader' && (all || (ci === ST.ci && li === ST.sel))) layers.push([ci, li]); }));
-  if (!layers.length) { ISFUI.msg = { bad: true, text: all ? T3('O projeto não tem camada de shader.', 'The project has no shader layer.') : T3('Selecione uma camada de shader na aba Camadas.', 'Select a shader layer in the Layers tab.') }; return renderIsf(); }
-  const files = layers.map(([ci, li]) => ISFX.exportLayer(P, ci, li, isfHelpers(), isfShaderSrc));
-  files.forEach((f, i) => setTimeout(() => saveFile(f.name, new Blob([f.text], { type: 'text/plain' })), i * 250));
-  ISFUI.msg = { text: T3(`${files.length} arquivo(s) .fs. Copie para Documentos/Resolume Arena/ISF e automatize o parâmetro phase de 0 a 1 durante o loop (${P.time.bars} compassos).`, `${files.length} .fs file(s). Copy to Documents/Resolume Arena/ISF and automate the phase input from 0 to 1 over the loop (${P.time.bars} bars).`) };
-  renderIsf();
-}
 function renderIsf() {
   const el = pane('isf'); if (!el) return;
   const q = ISFUI.q.toLowerCase(), k = ISFUI.kind;
   const list = ISFLIB.filter(x => (k === 'todos' || x.origin === k) && (!q || (x.name + ' ' + x.credit + ' ' + x.description).toLowerCase().includes(q)));
   const chips = [['todos', T3('Todos', 'All')], ['original', T3('Originais do projeto', 'Project originals')], ['third-party', T3('De terceiros (MIT, CC0)', 'Third party (MIT, CC0)')]];
-  const sel = cur().layers[ST.sel], canOne = sel && sel.type === 'shader';
+  
   el.innerHTML = `<h2 class="sec">ISF <span class="lbl">${ISFLIB.length} ${T3('na biblioteca', 'in the library')}</span></h2>
-    <p class="note">${T3('ISF é o formato de shader que Resolume, VDMX e MadMapper abrem. Aqui você usa shaders ISF como camadas, importa os seus e leva os shaders do projeto para o Resolume.', 'ISF is the shader format Resolume, VDMX and MadMapper open. Use ISF shaders as layers here, import your own, and take the project shaders to Resolume.')}</p>
+    <p class="note">${T3('ISF é um formato de shader GLSL com cabeçalho JSON. Aqui você adiciona geradores da biblioteca como camadas (tipo ISF; o shader é escolhido nos parâmetros da camada) e importa os seus .fs.', 'ISF is a GLSL shader format with a JSON header. Add library generators as layers here (type ISF; the shader is chosen in the layer parameters) and import your own .fs.')}</p>
     ${ISFUI.msg ? `<div class="${ISFUI.msg.bad ? 'val' : 'note'}" role="status"><p class="${ISFUI.msg.bad ? 'ERROR' : ''}">${esc(ISFUI.msg.text)}</p></div>` : ''}
     <h2 class="sec">${T3('Importar arquivo .fs', 'Import .fs file')}</h2>
     <div class="row"><input type="file" id="isfFile" accept=".fs,.frag,.txt" multiple aria-label="${T3('Arquivo ISF', 'ISF file')}"><span class="lbl">${T3('Só geradores de um passe (sem imagem de entrada, sem áudio como textura).', 'Single-pass generators only (no input image, no audio texture).')}</span></div>
-    <h2 class="sec">${T3('Exportar para o Resolume', 'Export to Resolume')}</h2>
-    <div class="row"><button id="isfExpOne" ${canOne ? '' : 'disabled'} title="${T3('A camada de shader selecionada', 'The selected shader layer')}">${T3('Exportar camada selecionada (.fs)', 'Export selected layer (.fs)')}</button><button id="isfExpAll">${T3('Exportar todas as camadas de shader', 'Export all shader layers')}</button></div>
     <h2 class="sec">${T3('Biblioteca', 'Library')}</h2>
     <div class="row"><input type="search" id="isfQ" placeholder="${T3('Buscar: spiral, noise, laser…', 'Search: spiral, noise, laser…')}" value="${esc(ISFUI.q)}" aria-label="${T3('Buscar shader ISF', 'Search ISF shader')}" style="flex:1;min-width:120px"></div>
     <div class="row chips">${chips.map(([v, l]) => `<button data-isfk="${v}" aria-pressed="${k === v}">${l}</button>`).join('')}</div>
@@ -5244,11 +5061,28 @@ function renderIsf() {
       <dl class="kv"><dt>${T3('Autoria', 'Credit')}</dt><dd>${esc(x.credit)}</dd><dt>${T3('Licença', 'Licence')}</dt><dd>${esc(x.license)}</dd><dt>${T3('Origem', 'Source')}</dt><dd>${esc(x.source)}</dd></dl>
       <div class="row"><button data-isfadd="${esc(x.id)}">${T3('Adicionar à composição', 'Add to composition')}</button></div></article>`).join('') || `<p class="note">${T3('Nenhum shader com esse termo.', 'No shader matches.')}</p>`}`;
   $('#isfFile').onchange = e => { const f = [...e.target.files]; e.target.value = ''; if (f.length) isfImportFiles(f); };
-  $('#isfExpOne').onclick = () => isfExport(false); $('#isfExpAll').onclick = () => isfExport(true);
   $('#isfQ').oninput = e => { ISFUI.q = e.target.value; const pos = e.target.selectionStart; renderIsf(); const n = $('#isfQ'); n.focus(); n.setSelectionRange(pos, pos); };
   $$('[data-isfk]', el).forEach(b => b.onclick = () => { ISFUI.kind = b.dataset.isfk; renderIsf(); });
   $$('[data-isfadd]', el).forEach(b => b.onclick = () => isfAddLib(b.dataset.isfadd));
 }
+
+/* camada "isf": o shader da biblioteca é escolhido em lib; p1..p4 são as quatro primeiras entradas float do ISF, de 0 a 1 na faixa MIN..MAX da entrada (-1 = valor padrão do ISF).
+   A conversão depende só do ISF, dos compassos e do BPM, então o quadro continua função pura do projeto. */
+const ISF_CACHE = new Map();
+function isfLib(id) {
+  const it = ISFLIB.find(x => x.id === id) || ISFLIB[0], key = it.id + '|' + P.time.bars + '|' + P.time.bpm;
+  if (!ISF_CACHE.has(key)) { const r = ISFX.convert(it.src, it.name, P.time.bars, P.time.bpm); ISF_CACHE.set(key, { src: r.layer.p.src, mapped: r.mapped }); }
+  return ISF_CACHE.get(key);
+}
+reg('isf', 'ISF (biblioteca)', 'gen', [
+  S('lib', 'Shader ISF (' + ISFLIB.length + ' na biblioteca)', ISFLIB[0].id, ISFLIB.map(x => x.id)),
+  N('p1', 'P1 · 1ª entrada do ISF (−1 = padrão)', -1, -1, 1), N('p2', 'P2 · 2ª entrada (−1 = padrão)', -1, -1, 1), N('p3', 'P3 · 3ª entrada (−1 = padrão)', -1, -1, 1), N('p4', 'P4 · 4ª entrada (−1 = padrão)', -1, -1, 1),
+  S('alphaMode', 'Saída', 'opaque', ['alpha', 'opaque']), N('res', 'Resolução interna', 1, 0.25, 1), C('c1', 'Cor 1', 'primary'), C('c2', 'Cor 2', 'accent'), C('cbg', 'Fundo', 'bg'),
+], (c, R) => {
+  const lib = isfLib(R.p.lib), q = {};
+  lib.mapped.forEach((m, k) => { const f = R.p['p' + (k + 1)]; q['p' + (k + 1)] = f == null || f < 0 ? m.def : (m.min != null && m.max != null ? m.min + f * (m.max - m.min) : f); });
+  GEN.shader.draw(c, Object.assign({}, R, { p: Object.assign({}, R.p, q, { src: lib.src }) }));
+});
 /*__ISFUI_END__*/
 /*__MP4_START__*/
 /* Render em MP4 (H.264) quadro a quadro: WebCodecs codifica cada quadro que o motor desenhou, sem gravar a tela e sem WebM,
@@ -5323,7 +5157,7 @@ const MP4X = (() => {
 })();
 
 /* ---- integração com o motor: desenha cada quadro como o export PNG (camada por camada, mesmo blend e opacidade) e entrega ao codificador ---- */
-async function mp4Render({ ci = ST.ci, start = 0, end = -1, scale = 1, fps = null, bars = null, quality = 'mid', bitrate, onProgress, cancelled } = {}) {
+async function mp4Render({ ci = ST.ci, start = 0, end = -1, scale = 1, fps = null, bars = null, quality = 'mid', bitrate, onProgress, cancelled, region = -1 } = {}) {
   const bak = { fps: P.canvas.fps, bars: P.time.bars, live: ST.live };
   if (fps) P.canvas.fps = fps; if (bars) P.time.bars = bars;
   const f = P.canvas.fps, LF = loopFrames(), s = clamp(start, 0, LF - 1), e = end < 0 ? LF - 1 : clamp(end, s, LF - 1);
@@ -5333,6 +5167,7 @@ async function mp4Render({ ci = ST.ci, start = 0, end = -1, scale = 1, fps = nul
     await document.fonts.ready;
     const lay = document.createElement('canvas'); lay.width = w; lay.height = h; const lctx = lay.getContext('2d');
     const cmp = document.createElement('canvas'); cmp.width = w; cmp.height = h; const cctx = cmp.getContext('2d');
+    const rr = regionRect(region, scale, true), out = rr ? document.createElement('canvas') : cmp, octx = rr ? out.getContext('2d') : null; if (rr) { out.width = rr.w; out.height = rr.h; }
     const on = comp.layers.map((L, i) => i).filter(i => comp.layers[i].on), hasBg = on.some(i => comp.layers[i].type === 'bg');
     const getFrame = async i => {
       const n = s + i, F = frameAt(n, comp); await prepMedia(comp, F);
@@ -5343,9 +5178,10 @@ async function mp4Render({ ci = ST.ci, start = 0, end = -1, scale = 1, fps = nul
         cctx.globalAlpha = L.opacity; cctx.globalCompositeOperation = fxOp(L, (BLENDS[L.blend] || BLENDS.normal)[0]); cctx.drawImage(lay, 0, 0, w, h);
       }
       cctx.globalAlpha = 1; cctx.globalCompositeOperation = 'source-over';
+      if (rr) { octx.drawImage(cmp, rr.x, rr.y, rr.w, rr.h, 0, 0, rr.w, rr.h); return out; }
       return cmp;
     };
-    const r = await MP4X.encode({ w, h, fps: f, frames: e - s + 1, getFrame, quality, bitrate, onProgress, cancelled });
+    const r = await MP4X.encode({ w: rr ? rr.w : w, h: rr ? rr.h : h, fps: f, frames: e - s + 1, getFrame, quality, bitrate, onProgress, cancelled });
     return Object.assign(r, { fps: f, start: s, end: e, comp: comp.name, ci });
   } finally { P.canvas.fps = bak.fps; P.time.bars = bak.bars; ST.live = bak.live; RENDER_ALPHA = false; EXPORTING = false; ST.t0 = performance.now() - ST.n / P.canvas.fps * 1000; }
 }
@@ -5355,9 +5191,9 @@ async function exportMp4Run(info, bar) {
   CANCEL = false; bar.style.display = 'block'; const t0 = performance.now(), done = [];
   try {
     for (const ci of ciList) {
-      const r = await mp4Render({ ci, start: EXP.start, end: EXP.end, scale: EXP.scale, fps, bars, quality: EXP.mp4q || 'mid', cancelled: () => CANCEL,
+      const r = await mp4Render({ ci, start: EXP.start, end: EXP.end, scale: EXP.scale, fps, bars, quality: EXP.mp4q || 'mid', region: EXP.region, cancelled: () => CANCEL,
         onProgress: (i, n) => { bar.firstElementChild.style.width = ((done.length + i / n) / ciList.length * 100) + '%'; info.textContent = `MP4 · ${P.compositions[ci].name} · quadro ${i} de ${n}`; } });
-      const fn = `${safe(P.meta.name)}_${pad(ci + 1, 2)}_${safe(P.compositions[ci].name)}_${r.w}x${r.h}_${r.fps}fps.mp4`, res = await saveFile(fn, r.blob);
+      const fn = `${safe(P.meta.name)}_${pad(ci + 1, 2)}_${safe(P.compositions[ci].name)}_${r.w}x${r.h}_${r.fps}fps${EXP.region >= 0 && regionRect(EXP.region, 1, true) ? '_' + safe(regionRect(EXP.region, 1, true).name) : ''}.mp4`, res = await saveFile(fn, r.blob);
       if (res !== 'saved') { info.textContent = res === 'declined' ? 'Download recusado.' : 'Download falhou: ' + res; return; }
       done.push({ fn, mb: r.blob.size / 1048576, frames: r.frames, codec: r.codec });
     }
@@ -5758,8 +5594,8 @@ const UX = (() => {
     med: ['Imagens, vídeos, objetos 3D e fontes do projeto. Arraste arquivos para a vista.', 'Images, videos, 3D objects and fonts for the project. Drag files onto the view.'],
     aud: ['Conecte um arquivo, o microfone ou a fonte de teste. Sem fonte, os shaders usam as bandas sintéticas do BPM.', 'Connect a file, the microphone or the test source. With no source, shaders use the BPM synthetic bands.'],
     prj: ['Nome, canvas, dobras, tempo, loop e paleta do projeto.', 'Name, canvas, folds, time, loop and palette of the project.'],
-    sur: ['Preset da superfície, cortes, pixel map e fatias para o Resolume. Confira a legibilidade pelo passo e pela distância.', 'Surface preset, cuts, pixel map and slices for Resolume. Check legibility by pitch and distance.'],
-    isf: ['ISF: shaders que o Resolume abre. Use os da biblioteca como camadas, importe um .fs seu ou exporte os shaders do projeto.', 'ISF: shaders Resolume opens. Use the library ones as layers, import your own .fs or export the project shaders.'],
+    sur: ['Preset da superfície, cortes (dobras) e regiões importadas. Confira a legibilidade pelo passo e pela distância.', 'Surface preset, cuts (folds) and imported regions. Check legibility by pitch and distance.'],
+    isf: ['ISF: 84 geradores prontos. Adicione como camada (o shader se escolhe nos parâmetros da camada) ou importe um .fs seu.', 'ISF: 84 ready generators. Add one as a layer (the shader is chosen in the layer parameters) or import your own .fs.'],
     rec: ['Receitas testadas para adicionar como camada. São vocabulário: mude os números.', 'Tested recipes to add as a layer. They are vocabulary: change the numbers.'],
     spc: ['Ficha de produção e calculadoras de LED, projeção, blend e loop.', 'Production sheet and calculators for LED, projection, blend and loop.'],
     exp: ['Exporte a sequência PNG. Teste os flashes antes, divida em partes se o arquivo for grande. O manifesto vai junto.', 'Export the PNG sequence. Test flashes first, split into parts if the file is large. The manifest goes along.'],
@@ -5790,7 +5626,7 @@ const UX = (() => {
     ['#tabs [data-tab="lay"]', 'Camadas: ligue, desligue e reordene. Cada composição tem de 6 a 10, em camadas de fundo, herói, estrutura, instrumento, informação e acabamento.', 'Layers: toggle and reorder. Each composition has 6 to 10, as ground, hero, structure, instrument, information and finish.'],
     ['#tabs [data-tab="par"]', 'Parâmetros e modulação: digite números, ou ligue um parâmetro a kick, grave, onda do BPM ou LFO.', 'Parameters and modulation: type numbers, or tie a parameter to kick, bass, a BPM wave or an LFO.'],
     ['#tabs [data-tab="aud"]', 'Áudio: conecte um arquivo, o microfone ou a fonte de teste para ver a reação de verdade.', 'Audio: connect a file, the microphone or the test source to see the real reaction.'],
-    ['#tabs [data-tab="sur"]', 'Superfície: escolha o preset do seu LED ou tela, corte nas dobras e gere as fatias para o Resolume.', 'Surface: pick the preset for your LED or screen, cut at the folds and generate the slices for Resolume.'],
+    ['#tabs [data-tab="sur"]', 'Superfície: escolha o preset do seu LED ou tela, corte nas dobras e importe as regiões.', 'Surface: pick the preset for your LED or screen, cut at the folds and import the regions.'],
     ['#tabs [data-tab="exp"]', 'Exportar: teste os flashes, escolha alpha ou RGB e baixe a sequência PNG com o manifesto.', 'Export: test flashes, choose alpha or RGB and download the PNG sequence with the manifest.'],
   ];
   let tour = null;
@@ -6034,7 +5870,7 @@ function boot() {
   document.fonts && document.fonts.load('800 40px "Martian Mono"').catch(() => {});
   if (!embedded && !saved && !store.get('seenWiz', false)) openWiz();
   raf = requestAnimationFrame(tick);
-  window.AIVJ = { version: VERSION, get PAL() { return PAL; }, get RECIPES() { return RECIPES; }, addRecipe, addTestCards, recipeLayer, importFile, parseModel, setLang, setHow, undo, redo, evalExpr, applyTheme, layoutApply, setPanelOpen, setZoneDraw, get hist() { return ST.hist.length; }, get histLabels() { return ST.hl.slice(); }, surface: SC, specOf, applyCalc, renderSpec, specMarkdown, get project() { return P; }, get audio() { return AUD; }, pseudoAudio, synthTimes, applyMods, motionCurve, GENAI, EVALUATOR, flash: FLASH, ONSET, UX, fx: { FX, body: fxBody, op: fxOp }, synth: { SYN, src: synthSrc }, blobs: { X: BLOBX }, layerErrors: () => [...LAYER_ERR.values()], mp4: { X: MP4X, render: mp4Render, run: exportMp4Run }, isf: { X: ISFX, helpers: isfHelpers, shaderSrc: isfShaderSrc, LIB: ISFLIB, add: isfAddLib, files: isfImportFiles, exp: isfExport, ui: ISFUI, render: renderIsf }, modUI: { render: modPanel, params: modNumericParams, sources: MOD_SOURCES }, expRun: exportRun, EXP, surfx: SURFX, surUI: { state: SUR, plan: surPlan, pattern: surPatternBlob, applyPreset: surApplyPreset, render: renderSurface }, genUI: { get state() { return GU; }, toBrief: genToBrief, fromBrief: genFromBrief, go: genGo, evalNow: genEval, applyPreset: genApplyPreset, presets: SURFACE_PRESETS, render: renderGen }, evaluate: lang => EVALUATOR.run(lang), shaderResolve, GLIB, specBins, simBake, parsePly, get LAYERERR() { return LAYER_ERR; }, setSeed, bpmWaves, get GLERR() { return GL.err; }, layerFrame, pm, importJson, frameAt, validate: o => validate(o), GEN, loopFrames, contactSheet, layerAudit, allowCode, loadAssets, toLogo, projectOut, get state() { return ST; }, geom, lintCode, compileCode, setCi(i) { ST.ci = i; refreshAll(); },
+  window.AIVJ = { version: VERSION, get PAL() { return PAL; }, get RECIPES() { return RECIPES; }, addRecipe, addTestCards, recipeLayer, importFile, parseModel, setLang, setHow, undo, redo, evalExpr, applyTheme, layoutApply, setPanelOpen, setZoneDraw, get hist() { return ST.hist.length; }, get histLabels() { return ST.hl.slice(); }, surface: SC, specOf, applyCalc, renderSpec, specMarkdown, get project() { return P; }, get audio() { return AUD; }, pseudoAudio, synthTimes, applyMods, motionCurve, GENAI, EVALUATOR, flash: FLASH, ONSET, UX, fx: { FX, body: fxBody, op: fxOp }, synth: { SYN, src: synthSrc }, blobs: { X: BLOBX }, layerErrors: () => [...LAYER_ERR.values()], mp4: { X: MP4X, render: mp4Render, run: exportMp4Run }, isf: { X: ISFX, LIB: ISFLIB, lib: isfLib, add: isfAddLib, files: isfImportFiles, ui: ISFUI, render: renderIsf }, modUI: { render: modPanel, params: modNumericParams, sources: MOD_SOURCES }, expRun: exportRun, EXP, surfx: SURFX, region: regionRect, surUI: { state: SUR, applyPreset: surApplyPreset, render: renderSurface }, genUI: { get state() { return GU; }, toBrief: genToBrief, fromBrief: genFromBrief, go: genGo, evalNow: genEval, applyPreset: genApplyPreset, presets: SURFACE_PRESETS, render: renderGen }, evaluate: lang => EVALUATOR.run(lang), shaderResolve, GLIB, specBins, simBake, parsePly, get LAYERERR() { return LAYER_ERR; }, setSeed, bpmWaves, get GLERR() { return GL.err; }, layerFrame, pm, importJson, frameAt, validate: o => validate(o), GEN, loopFrames, contactSheet, layerAudit, allowCode, loadAssets, toLogo, projectOut, get state() { return ST; }, geom, lintCode, compileCode, setCi(i) { ST.ci = i; refreshAll(); },
     /* gancho de teste: renderiza a composição ci no quadro n, determinístico, sem tocar no preview */
     renderFrame(ci, n, scale = 0.25, alpha = false) {
       const comp = P.compositions[ci], W = P.canvas.w, H = P.canvas.h, w = Math.round(W * scale), h = Math.round(H * scale);

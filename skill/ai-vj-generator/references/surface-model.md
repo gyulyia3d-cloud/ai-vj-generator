@@ -23,7 +23,7 @@ The target surface is part of the composition, not a delivery note. Source compo
 | Safe area | `canvas.safe` | Fraction of the canvas kept free of content |
 | Slices / outputs | `canvas.displays` | Cropped output windows per display or slice |
 | Physical scale | `canvas.pitch` (mm), `canvas.dist` (m) | Drives legibility and moiré warnings |
-| Output transform | Resolume / MadMapper side | Declare it in the delivery notes; this engine renders the source space |
+| Output transform | outside this engine | Declare it in the delivery notes; this engine renders the source space |
 
 Levels of precision, from coarse to exact: **1** flat output map; **2** polygon / fold map; **3** 2.5D surface with a camera; **4** real 3D stage geometry. This engine implements 1 and 2. Levels 3–4 are a `code` layer with an explicit projection, or work in another tool. If the user only has a photo of the architecture, do not invent millimetre geometry: build an editable 2D approximation, mark uncertain regions, and say it is approximate.
 
@@ -47,7 +47,7 @@ A fold is a structural boundary, not just an edge.
 
 **Multi-screen.** Document source coordinates, slice coordinates, output coordinates, the transform and the crop / fit policy.
 
-**Resolume.** Validate dimensions, fps, alpha mode, codec or sequence format, loop length, performance and routing. Slices, Input Selection and Output Transformation are routing concepts, not reasons to hard-code a layout. For white-alpha content, colour it in the software.
+**Delivery files.** Validate dimensions, fps, alpha mode, sequence or video format, loop length and performance. Routing and output transformation happen outside this engine and are not reasons to hard-code a layout. For white-alpha content, colour it in the software that receives the files.
 
 ## The preview helps you see the surface
 

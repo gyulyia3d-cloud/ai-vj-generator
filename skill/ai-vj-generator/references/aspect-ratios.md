@@ -15,9 +15,8 @@ Never compose a 16:9 and stretch it. The same concept becomes a different compos
 | Wide | 21:9, 2:1 (2160×1080), 3840×1080 | cinematic, stage backdrops | horizontal travel, two or three focal points, panoramic structure |
 | Ultra-wide strip | 32:9 to 10:1 (7680×2160, 5120×500, 4500×800) | LED fascias, walls, ribbons | **tile or travel**: repeat modules, move waves across; do not scale one hero to fill |
 | Ultra-tall | 1:4 and taller | towers, columns | vertical cascade; text as stacked words |
-| L / U / cube surfaces | folds in a pixel map | architectural corners | walls answer each other; text per wall; lines cross folds |
+| L / U / cube surfaces | folds in the canvas | architectural corners | walls answer each other; text per wall; lines cross folds |
 | Multi-screen | triple-head, video walls | continuous or independent canvases | decide: one image across (continuity) or several images (rhythm) |
-| Dome / fisheye | 4096×4096 circular master | immersive | polar thinking; keep content out of the rim and the pole |
 
 ## 2. Rules by family
 
@@ -42,7 +41,6 @@ Never compose a 16:9 and stretch it. The same concept becomes a different compos
 
 **Multi-screen and video walls.** Decide the policy: **continuous** (one canvas across all displays, content may be cut by bezels; keep focal points away from seams) or **segmented** (each display is its own composition). Document the `displays` crops.
 
-**Dome.** Compose in polar coordinates around the zenith; avoid fine detail near the pole; keep horizon content low and large; use slow motion (vestibular comfort).
 
 ## 3. Scaling laws
 
@@ -57,7 +55,7 @@ Never compose a 16:9 and stretch it. The same concept becomes a different compos
 
 ## 4. Safe areas and edges
 
-- `canvas.safe` keeps content off the rim (default 5% of the short side). On LED walls with bezels, projection blending zones and dome rims, raise it.
+- `canvas.safe` keeps content off the rim (default 5% of the short side). On LED walls with bezels, and projection margins, raise it.
 - Never leave an element grazing an edge or a fold: cross it or clear it.
 - Keep type, logos and faces in the *content safe* region; let fields and ground bleed.
 
@@ -91,7 +89,6 @@ Build the **concept once**, then **recompose**, not rescale:
 | 21:9 / 2:1 | one of two or three | horizontal | left to right | large, short |
 | 10:1 strip | 1–3 modules | along the strip | by module | big only, outside folds |
 | L walls | one per wall, mirrored | across the fold | per wall | per wall, away from the fold |
-| Dome | around the zenith | radial / orbital | by radius | avoid |
 
 ## 9. Checks before delivery
 

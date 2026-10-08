@@ -26,10 +26,10 @@ O núcleo é **um texto**: [`skill/ai-vj-generator/portable/PROMPT.md`](skill/ai
 | **Camadas** | 33 tipos: campos de shader (GLSL), cadeias de uma linha (`synth`), geradores 2D (formas, linhas, túnel, instrumentos, dados, HUD), tipografia, imagem, vídeo, objeto 3D, parallax, nuvem de pontos, flow, receitas matemáticas, camada de código. |
 | **`fx`: efeitos sobre a pilha** | 22 efeitos que leem as camadas abaixo: CRT, VHS, halftone, hachura, dither, bordas, Kuwahara, painel de LED, vidro líquido, bloom, aberração, espelho, polar, glitch… |
 | **`blobs`** | acha regiões da imagem abaixo (brilho, contraste, cor, zona) e as marca com caixas, números e ligações. |
-| **ISF** | aba com 84 geradores (11 originais, MIT e CC0 com autoria), importar `.fs`, exportar camadas para o Resolume. |
+| **ISF** | camada do tipo ISF com 84 geradores (11 originais, MIT e CC0 com autoria) escolhidos nos parâmetros da camada; a aba ISF também importa arquivos `.fs`. |
 | **Áudio** | microfone, arquivo ou fonte de teste; bandas, golpes, kick e onset com histórico, andamento por Kalman; `layer.mod` liga qualquer número a qualquer fonte. Sem áudio, tudo reage ao BPM de forma determinística. |
 | **Movimento** | perfis de mola, 13 formas de LFO, 16 transições, easings Penner. |
-| **Superfície** | 12 presets de LED, telas e torres, dobras, pixel map CSV/PNG, fatias em XML do Resolume (Advanced Output) com padrão de teste, avisos de legibilidade. |
+| **Superfície** | 12 presets de LED, telas e torres, dobras, regiões importadas de CSV/PNG (só entrada), avisos de legibilidade; render do projeto completo ou de uma região. |
 | **Saída** | PNG sequence (alpha, RGB, branco-α, por camada, ZIP em partes, manifesto SHA-256), **MP4 H.264 quadro a quadro** (aba ou `node scripts/render.mjs`), segurança de flash (WCAG 2.3.1) com limitador. |
 | **Qualidade** | validador, avaliador estrutural com nota, folha de contato, teste de loop, censo de sementes, dezenas de áreas de teste em `node scripts/check.mjs`. |
 
@@ -74,7 +74,7 @@ Sem dependências de npm; a única biblioteca externa é o JSZip (cdnjs, com SRI
 
 ## English summary
 
-AI VJ Generator is an open-source, single-file browser engine for VJ content plus a plain-text instruction pack that any AI can follow (`skill/ai-vj-generator/portable/PROMPT.md`; or no AI at all through the in-browser **Gerar** tab). It produces one JSON project and renders deterministic loops: alpha PNG sequences, MP4 (H.264, frame by frame, no screen capture) and ISF shaders for Resolume and similar tools. Layers include GLSL fields, one-line `synth` chains, stack-reading `fx` effects and `blobs` detection, an 84-shader ISF library with credits and licences, audio-reactive modulation, surface presets with Resolume slice XML, and flash-safety tools. Start by opening `app/index.html`; see `docs/QUICKSTART.md`.
+AI VJ Generator is an open-source, single-file browser engine for generative animation plus a plain-text instruction pack that any AI can follow (`skill/ai-vj-generator/portable/PROMPT.md`; or no AI at all through the in-browser **Gerar** tab). It produces one JSON project and renders deterministic loops: alpha PNG sequences and MP4 (H.264, frame by frame, no screen capture), for the full project or one region. Layers include GLSL fields, one-line `synth` chains, stack-reading `fx` effects and `blobs` detection, an 84-shader ISF library with credits and licences, audio-reactive modulation, surface presets and imported regions, and flash-safety tools. It is not a performance tool, media server or mapping tool. Start by opening `app/index.html`; see `docs/QUICKSTART.md`.
 
 ## Créditos
 

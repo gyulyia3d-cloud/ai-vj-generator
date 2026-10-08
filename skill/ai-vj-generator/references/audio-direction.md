@@ -8,7 +8,7 @@ Audio is a design decision with a declared strength, a role for each band and bi
 |---|---|---|---|
 | `none` | 0 | contemplative rooms, silent installations, pieces that must not depend on music | motion keeps going (BPM waves, integrated time, loop phase); say why in `meta.contract.audioStrategyReason`; the validator drops the "shader must read audio" error |
 | `subtle` | 0.4 | ambient, lounge, background loops | accents are small; the picture breathes |
-| `structural` | 0.7 | corporate, DOOH, cinematic | sections (build, drop) shape the picture, hits do not shake it |
+| `structural` | 0.7 | corporate, cinematic | sections (build, drop) shape the picture, hits do not shake it |
 | `rhythmic` | 1.0 (default) | clubs, concerts, VJ clips | beat-locked accents, integrated travel |
 | `full` | 1.3 | festivals, drops, strobing-style sets | keep inside flash limits (≤ 3 flashes per second) |
 

@@ -187,20 +187,18 @@ Use whole-bar loop lengths.
 
 ---
 
-# 52. TRANSPORT
+# 52. SCOPE OF DELIVERY
 
-Transport claims must use:
+Capability claims must use:
 
 ```text
 SUPPORTED
 EXPORTABLE
-REQUIRES BRIDGE
-CONCEPTUAL
+INPUT / ANALYSIS ONLY
+NOT SUPPORTED
 ```
 
-NDI, Spout, Syphon and SDI require appropriate native bridges/software when the browser renderer does not directly support them.
-
-Never claim unsupported direct transport.
+Delivery is PNG sequence and MP4. NDI, Spout, Syphon, SDI, OSC and MIDI are NOT SUPPORTED. Never claim them.
 
 ---
 
@@ -224,14 +222,14 @@ For projection:
 - black levels
 - contrast
 - environmental light
-- mapping
+- irregular edges
 - edge behavior
 
-For Resolume:
+For any destination file:
 
 - dimensions
 - FPS
-- alpha
+- alpha (PNG sequence only)
 - loop
 - performance
 - routing

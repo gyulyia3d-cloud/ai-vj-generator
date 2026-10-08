@@ -39,8 +39,6 @@ Feito: **painel de ficha de produção**, **calculadora de superfície**, **zona
 
 | Feature | From | What it does |
 |---|---|---|
-| **Clip launcher** | clip-launcher UIs | compositions as clips in a grid, bar-quantised switching, columns per energy rung, exits (black, hold, panic) always visible |
-| **Control map export** | OSC control-surface editors | table of playable parameters with a suggested OSC address and MIDI CC, as JSON, CSV and a short markdown for the operator; sending stays a bridge (`output-engineering.md` §7) |
 | **Output windows** | live-coding environments | visuals-only popup, view-only mode (editor hidden), exhibit mode (no links), kiosk URL for installations |
 | **Live code panel** | live-coding editors | for `code` layers: soft recompile on demand, flash of the evaluated lines, snippet library from the recipes, error line numbers, autosave and a periodic backup export |
 
@@ -57,6 +55,6 @@ Feito: **painel de ficha de produção**, **calculadora de superfície**, **zona
 
 - The engine is one HTML file (about 245 KB); changes go through `assets/engine.html` and are verified with `scripts/contact_sheet.mjs` (QA mode) and by opening the page in a browser. Keep the QA mode working.
 - New panels read from the project JSON (`meta.spec`, `meta.contract`); nothing is stored only in the interface (`creative-contract.md`: the JSON is the source of truth).
-- Honest labels: anything that sends OSC, MIDI, NDI, Spout or Syphon is `REQUIRES BRIDGE` or `CONCEPTUAL` (`capabilities.md`).
+- Honest labels: OSC, MIDI, NDI, Spout and Syphon are NOT SUPPORTED (`capabilities.md`); do not design panels that send them.
 - Accessibility and layout: keyboard operable, readable at phone width, 16 px gutters, light and dark themes.
 - One feature at a time, each verified in the browser before the next.

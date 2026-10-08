@@ -1,5 +1,5 @@
-/* Aba "ISF": biblioteca de geradores ISF (Resolume, VDMX, MadMapper), importar arquivo .fs, exportar as camadas de shader como .fs.
-   Porte do importador/exportador de skill/ai-vj-generator/scripts/isf.py (o teste isf_ui_check.mjs compara os dois na biblioteca inteira).
+/* Aba "ISF" e camada "isf": biblioteca de 84 geradores ISF escolhidos nos parâmetros da camada, e importação de arquivos .fs como camada de shader.
+   Porte do importador de skill/ai-vj-generator/scripts/isf.py (o teste isf_ui_check.mjs compara os dois na biblioteca inteira).
    Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html. A biblioteca (ISFLIB) é gerada por scripts/embed-isf.mjs. Textos pela função T3 (gen-ui.js). */
 const ISFX = (() => {
   const HEAD_RE = /^\/\*\s*(\{[\s\S]*?\})\s*\*\//;
@@ -67,67 +67,14 @@ const ISFX = (() => {
     return { layer, notes, mapped: floats.map((f, k) => ({ isf: f[0], to: 'p' + (k + 1), min: f[2].MIN, max: f[2].MAX, def: f[1] })) };
   }
 
-  /* exportar: camada de shader do projeto -> .fs (mesmo prelúdio de isf.py) */
-  const PRELUDE = seed => `// ISF prelude: maps the engine uniforms onto ISF inputs
-#define uRes RENDERSIZE
-#define uT TIME
-#define uPh phase
-#define uP vec4(p1,p2,p3,p4)
-#define uC1 c1.rgb
-#define uC2 c2.rgb
-#define uBg cbg.rgb
-#define uAlpha 1.0
-#define uSeed ${seed}
-#define uBpm (bpm/100.0)
-#define uBeat floor(phase*loopBeats)
-#define uBp fract(phase*loopBeats)
-#define uOnBeat exp(-uBp*8.0)
-#define uPulse exp(-uBp*5.0)
-#define uBass bass
-#define uMid mid
-#define uHigh high
-#define uRms rms
-#define uHit hit
-#define uMidHit midhit
-#define uHighHit highhit
-#define uPres pres
-#define uAud bass
-#define uBassT (phase*loopBars)
-#define uMidT (phase*loopBars)
-#define uHighT (phase*loopBars)
-#define uAudT (phase*loopBars)
-#define uBSin (0.5+0.5*sin(TAU*phase*loopBeats))
-#define uBSin2 (0.5+0.5*sin(0.5*TAU*phase*loopBeats))
-#define uBSin4 (0.5+0.5*sin(0.25*TAU*phase*loopBeats))
-#define uBTri (1.0-abs(2.0*fract(phase*loopBeats)-1.0))
-`;
-  const hexrgb = h => { h = String(h).replace(/^#/, ''); return [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16) / 255).concat([1]); };
-  function exportLayer(proj, ci, li, helpers, shaderSrc) {
-    const c = proj.compositions[ci], L = c.layers[li], p = L.p || {}, bpm = (proj.time || {}).bpm || 120, bars = (proj.time || {}).bars || 4, pal = proj.palette || {};
-    const sh = shaderSrc(L), vals = ['p1', 'p2', 'p3', 'p4'].map((k, i) => p[k] != null ? p[k] : sh.d[i]);
-    const f = (n, lab, d, lo, hi) => ({ NAME: n, LABEL: lab, TYPE: 'float', DEFAULT: d, MIN: lo, MAX: hi });
-    const col = (key, dflt) => { const v = p[key] != null ? p[key] : dflt; return /^#/.test(v) ? hexrgb(v) : pal[v] ? hexrgb(pal[v]) : [1, 1, 1, 1]; };
-    const inputs = [f('phase', 'Loop phase (0-1, automate)', 0, 0, 1), f('loopBars', 'Bars per loop', bars, 1, 64), f('bpm', 'BPM', bpm, 40, 240),
-      f('p1', 'P1', vals[0], -40, 40), f('p2', 'P2', vals[1], -40, 40), f('p3', 'P3', vals[2], -40, 40), f('p4', 'P4', vals[3], -40, 40),
-      { NAME: 'c1', LABEL: 'Colour 1', TYPE: 'color', DEFAULT: col('c1', 'primary') }, { NAME: 'c2', LABEL: 'Colour 2', TYPE: 'color', DEFAULT: col('c2', 'accent') },
-      { NAME: 'cbg', LABEL: 'Background', TYPE: 'color', DEFAULT: col('cbg', 'bg') }];
-    for (const n of ['bass', 'mid', 'high', 'rms', 'hit', 'midhit', 'highhit', 'pres']) inputs.push(f(n, 'Audio ' + n + ' (map from host audio)', 0, 0, 1.5));
-    const hdr = { DESCRIPTION: `${(proj.meta || {}).name || 'project'} / ${c.name || ci} / ${L.name || li}`, CREDIT: 'ai-vj-generator', ISFVSN: '2.0', CATEGORIES: ['Generator', 'Audio Reactive'], INPUTS: inputs };
-    const seed = (((proj.seed || 1) % 997) * 0.173).toFixed(3);
-    const text = '/*' + JSON.stringify(hdr, null, 2) + '*/\n#define TAU 6.28318530718\n' + PRELUDE(seed) + '#define loopBeats (loopBars*4.0)\n' + helpers.replace('#define TAU 6.28318530718\n', '') + '\n' + sh.src + '\n';
-    const name = (`${(proj.meta || {}).name || 'project'} ${c.name || ci} ${L.name || li}`).replace(/[^A-Za-z0-9._ -]+/g, '_').trim() + '.fs';
-    return { name, text };
-  }
-  return { parse, blockers, convert, exportLayer, fnum };
+  return { parse, blockers, convert, fnum };
 })();
 
 const ISFUI = { q: '', kind: 'todos', open: null, msg: null };
-function isfHelpers() { return GL_HEAD.split('\n').slice(2).join('\n'); }
-function isfShaderSrc(L) { const p = L.p || {}; if (p.src && p.src.trim()) return { src: p.src.trim(), d: [2.2, 0.7, 0.9, 1.4] }; const s = SHADERS[p.preset] || SHADERS['CAMPO FBM']; return { src: s.src.trim(), d: s.d }; }
 function isfInsert(layer, notes) {
   const comp = cur(), at = clamp(ST.sel + 1, 0, comp.layers.length); comp.layers.splice(at, 0, layer); ST.sel = at;
   buildStage(); refreshAll(); commit(false, 'ISF ' + layer.name);
-  const body = shaderBody(pm(layer)); glProg(body); const err = GL.err.get(body);
+  const body = shaderBody(layer.type === 'isf' ? { src: isfLib(layer.p.lib).src } : pm(layer)); glProg(body); const err = GL.err.get(body);
   ISFUI.msg = err ? { bad: true, text: T3('A camada entrou, mas o shader não compilou no WebGL1: ', 'The layer was added, but the shader did not compile in WebGL1: ') + err.split('\n')[0] }
     : { text: T3(`Camada "${layer.name.toLowerCase()}" adicionada. Ajuste em Parâm.`, `Layer "${layer.name.toLowerCase()}" added. Tune it in Params.`) + (notes.length ? ' ' + notes.join('; ') : '') };
   toast(ISFUI.msg.text, 2600); if (ST.tab === 'isf') renderIsf();
@@ -135,7 +82,7 @@ function isfInsert(layer, notes) {
 }
 function isfAddLib(id) {
   const it = ISFLIB.find(x => x.id === id); if (!it) return false;
-  try { const r = ISFX.convert(it.src, it.name, P.time.bars, P.time.bpm); r.layer.role = r.layer.role.replace('Imported ISF generator', 'ISF library (' + it.license + ')'); return isfInsert(r.layer, r.notes); }
+  try { isfLib(id); return isfInsert({ type: 'isf', name: it.name.toUpperCase().slice(0, 28), on: true, opacity: 1, blend: 'add', role: `ISF library (${it.license}). Credit: ${it.credit}.`, p: { lib: id } }, []); }
   catch (e) { ISFUI.msg = { bad: true, text: e.message }; if (ST.tab === 'isf') renderIsf(); return false; }
 }
 async function isfImportFiles(files) {
@@ -148,27 +95,17 @@ async function isfImportFiles(files) {
   ISFUI.msg = { bad: bad.length > 0, text: T3(`${out.length - bad.length} de ${out.length} arquivo(s) importado(s).`, `${out.length - bad.length} of ${out.length} file(s) imported.`) + bad.map(o => ` ${o.name}: ${o.why || T3('não compilou', 'did not compile')}.`).join('') };
   if (ST.tab === 'isf') renderIsf();
 }
-function isfExport(all) {
-  const layers = []; P.compositions.forEach((c, ci) => c.layers.forEach((L, li) => { if (L.type === 'shader' && (all || (ci === ST.ci && li === ST.sel))) layers.push([ci, li]); }));
-  if (!layers.length) { ISFUI.msg = { bad: true, text: all ? T3('O projeto não tem camada de shader.', 'The project has no shader layer.') : T3('Selecione uma camada de shader na aba Camadas.', 'Select a shader layer in the Layers tab.') }; return renderIsf(); }
-  const files = layers.map(([ci, li]) => ISFX.exportLayer(P, ci, li, isfHelpers(), isfShaderSrc));
-  files.forEach((f, i) => setTimeout(() => saveFile(f.name, new Blob([f.text], { type: 'text/plain' })), i * 250));
-  ISFUI.msg = { text: T3(`${files.length} arquivo(s) .fs. Copie para Documentos/Resolume Arena/ISF e automatize o parâmetro phase de 0 a 1 durante o loop (${P.time.bars} compassos).`, `${files.length} .fs file(s). Copy to Documents/Resolume Arena/ISF and automate the phase input from 0 to 1 over the loop (${P.time.bars} bars).`) };
-  renderIsf();
-}
 function renderIsf() {
   const el = pane('isf'); if (!el) return;
   const q = ISFUI.q.toLowerCase(), k = ISFUI.kind;
   const list = ISFLIB.filter(x => (k === 'todos' || x.origin === k) && (!q || (x.name + ' ' + x.credit + ' ' + x.description).toLowerCase().includes(q)));
   const chips = [['todos', T3('Todos', 'All')], ['original', T3('Originais do projeto', 'Project originals')], ['third-party', T3('De terceiros (MIT, CC0)', 'Third party (MIT, CC0)')]];
-  const sel = cur().layers[ST.sel], canOne = sel && sel.type === 'shader';
+  
   el.innerHTML = `<h2 class="sec">ISF <span class="lbl">${ISFLIB.length} ${T3('na biblioteca', 'in the library')}</span></h2>
-    <p class="note">${T3('ISF é o formato de shader que Resolume, VDMX e MadMapper abrem. Aqui você usa shaders ISF como camadas, importa os seus e leva os shaders do projeto para o Resolume.', 'ISF is the shader format Resolume, VDMX and MadMapper open. Use ISF shaders as layers here, import your own, and take the project shaders to Resolume.')}</p>
+    <p class="note">${T3('ISF é um formato de shader GLSL com cabeçalho JSON. Aqui você adiciona geradores da biblioteca como camadas (tipo ISF; o shader é escolhido nos parâmetros da camada) e importa os seus .fs.', 'ISF is a GLSL shader format with a JSON header. Add library generators as layers here (type ISF; the shader is chosen in the layer parameters) and import your own .fs.')}</p>
     ${ISFUI.msg ? `<div class="${ISFUI.msg.bad ? 'val' : 'note'}" role="status"><p class="${ISFUI.msg.bad ? 'ERROR' : ''}">${esc(ISFUI.msg.text)}</p></div>` : ''}
     <h2 class="sec">${T3('Importar arquivo .fs', 'Import .fs file')}</h2>
     <div class="row"><input type="file" id="isfFile" accept=".fs,.frag,.txt" multiple aria-label="${T3('Arquivo ISF', 'ISF file')}"><span class="lbl">${T3('Só geradores de um passe (sem imagem de entrada, sem áudio como textura).', 'Single-pass generators only (no input image, no audio texture).')}</span></div>
-    <h2 class="sec">${T3('Exportar para o Resolume', 'Export to Resolume')}</h2>
-    <div class="row"><button id="isfExpOne" ${canOne ? '' : 'disabled'} title="${T3('A camada de shader selecionada', 'The selected shader layer')}">${T3('Exportar camada selecionada (.fs)', 'Export selected layer (.fs)')}</button><button id="isfExpAll">${T3('Exportar todas as camadas de shader', 'Export all shader layers')}</button></div>
     <h2 class="sec">${T3('Biblioteca', 'Library')}</h2>
     <div class="row"><input type="search" id="isfQ" placeholder="${T3('Buscar: spiral, noise, laser…', 'Search: spiral, noise, laser…')}" value="${esc(ISFUI.q)}" aria-label="${T3('Buscar shader ISF', 'Search ISF shader')}" style="flex:1;min-width:120px"></div>
     <div class="row chips">${chips.map(([v, l]) => `<button data-isfk="${v}" aria-pressed="${k === v}">${l}</button>`).join('')}</div>
@@ -178,8 +115,25 @@ function renderIsf() {
       <dl class="kv"><dt>${T3('Autoria', 'Credit')}</dt><dd>${esc(x.credit)}</dd><dt>${T3('Licença', 'Licence')}</dt><dd>${esc(x.license)}</dd><dt>${T3('Origem', 'Source')}</dt><dd>${esc(x.source)}</dd></dl>
       <div class="row"><button data-isfadd="${esc(x.id)}">${T3('Adicionar à composição', 'Add to composition')}</button></div></article>`).join('') || `<p class="note">${T3('Nenhum shader com esse termo.', 'No shader matches.')}</p>`}`;
   $('#isfFile').onchange = e => { const f = [...e.target.files]; e.target.value = ''; if (f.length) isfImportFiles(f); };
-  $('#isfExpOne').onclick = () => isfExport(false); $('#isfExpAll').onclick = () => isfExport(true);
   $('#isfQ').oninput = e => { ISFUI.q = e.target.value; const pos = e.target.selectionStart; renderIsf(); const n = $('#isfQ'); n.focus(); n.setSelectionRange(pos, pos); };
   $$('[data-isfk]', el).forEach(b => b.onclick = () => { ISFUI.kind = b.dataset.isfk; renderIsf(); });
   $$('[data-isfadd]', el).forEach(b => b.onclick = () => isfAddLib(b.dataset.isfadd));
 }
+
+/* camada "isf": o shader da biblioteca é escolhido em lib; p1..p4 são as quatro primeiras entradas float do ISF, de 0 a 1 na faixa MIN..MAX da entrada (-1 = valor padrão do ISF).
+   A conversão depende só do ISF, dos compassos e do BPM, então o quadro continua função pura do projeto. */
+const ISF_CACHE = new Map();
+function isfLib(id) {
+  const it = ISFLIB.find(x => x.id === id) || ISFLIB[0], key = it.id + '|' + P.time.bars + '|' + P.time.bpm;
+  if (!ISF_CACHE.has(key)) { const r = ISFX.convert(it.src, it.name, P.time.bars, P.time.bpm); ISF_CACHE.set(key, { src: r.layer.p.src, mapped: r.mapped }); }
+  return ISF_CACHE.get(key);
+}
+reg('isf', 'ISF (biblioteca)', 'gen', [
+  S('lib', 'Shader ISF (' + ISFLIB.length + ' na biblioteca)', ISFLIB[0].id, ISFLIB.map(x => x.id)),
+  N('p1', 'P1 · 1ª entrada do ISF (−1 = padrão)', -1, -1, 1), N('p2', 'P2 · 2ª entrada (−1 = padrão)', -1, -1, 1), N('p3', 'P3 · 3ª entrada (−1 = padrão)', -1, -1, 1), N('p4', 'P4 · 4ª entrada (−1 = padrão)', -1, -1, 1),
+  S('alphaMode', 'Saída', 'opaque', ['alpha', 'opaque']), N('res', 'Resolução interna', 1, 0.25, 1), C('c1', 'Cor 1', 'primary'), C('c2', 'Cor 2', 'accent'), C('cbg', 'Fundo', 'bg'),
+], (c, R) => {
+  const lib = isfLib(R.p.lib), q = {};
+  lib.mapped.forEach((m, k) => { const f = R.p['p' + (k + 1)]; q['p' + (k + 1)] = f == null || f < 0 ? m.def : (m.min != null && m.max != null ? m.min + f * (m.max - m.min) : f); });
+  GEN.shader.draw(c, Object.assign({}, R, { p: Object.assign({}, R.p, q, { src: lib.src }) }));
+});

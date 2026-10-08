@@ -28,12 +28,12 @@ Status per field: **CRITICAL** (a wrong guess means rebuilding the project), **S
 | Time | display refresh and delivery fps | CRITICAL when not 30 / 60 Hz |
 | | loop (whole bars), or one long non-looping cycle, or a cue timeline | CRITICAL |
 | | BPM (fixed / range / none) and whether the music is available | SHAPING |
-| Delivery | where it plays (Resolume, TouchDesigner, MadMapper, OBS, a media server, a player) and what it sends | CRITICAL |
+| Delivery | which files are needed (PNG sequence or MP4, alpha, full project or regions), resolution and fps | CRITICAL |
 | | alpha, white-alpha, per-layer export, codec | CRITICAL when mapping |
 | Meaning | concept or theme, the occasion, the audience, what must be felt | SHAPING |
 | | story of the place / artist / event; the one image people should remember | SHAPING |
 | | text, logos, fonts that must appear (exact strings, supplied files) | CRITICAL if present |
-| | palette, brand, "colour it in Resolume" | SHAPING |
+| | palette, brand, "colour it later" | SHAPING |
 | Taste | density, order, dimension, energy, texture, hierarchy, boundaries (`interview.md` Gate E) | SHAPING |
 | Risk | photosensitivity (flash rate), cultural or legal limits, brand rules, hardware limits | CRITICAL |
 | Success | how the result will be judged (the room, a photo, a client, a camera) | SHAPING |
@@ -48,11 +48,8 @@ Name one or more **archetypes**. Signals come from words, attachments and the su
 |---|---|---|
 | Stage LED wall | palco, festival, show, backdrop, telão, painel de LED, pitch P2.6…P4.8, "atrás do DJ" | `archetypes.md` §A |
 | LED architecture and pixel-mapped fixtures | ribbon, fita, tubo, coluna, cubo, barra de pixel, matriz pequena, Art-Net, tira, fachada de LED | §B |
-| Facade projection mapping | fachada, prédio, mapping, projeção em edifício, janelas, projetores | §C |
-| Object / stage-set / sculpture mapping | cenografia, escultura, objeto, caixa, cenário 3D, UV | §D |
-| Immersive room, cave, dome | sala imersiva, domo, planetário, cave, 360, piso + paredes | §E |
-| VJ clip pack / Resolume deck | pack, clips, loops para sets, "para tocar em várias festas", deck | §F |
-| DOOH / anamorphic billboard | painel de rua, outdoor, LED de esquina, 3D anamórfico, mídia exterior | §G |
+| Facade (flat 2D surface) | fachada, prédio, mapping, projeção em edifício, janelas, projetores | §C |
+| VJ clip pack | pack, clips, loops para sets, "para tocar em várias festas", deck | §F |
 | Broadcast / XR / virtual production | câmera, LED volume, XR, transmissão, genlock, TV | §H |
 | Installation / gallery / always-on | galeria, instalação, museu, exposição, ficar ligado dias | §I |
 | Corporate / launch / fashion show | lançamento, evento corporativo, desfile, marca, keynote | §J |
@@ -103,7 +100,7 @@ Contradictions are the cheapest source of wrong projects. Check these before the
 | Duration vs format | a 90-minute set from a 4-bar loop; a 6-second ad slot from a 4-minute story |
 | Colour vs surface | coloured bricks multiply every colour; glass swallows light |
 | Strobe vs venue | flash content near residences, or for a photosensitive audience, against the 3-flashes-per-second ceiling |
-| Delivery vs engine | requests for NDI, Spout, OSC or live interactivity are `REQUIRES BRIDGE` or `CONCEPTUAL` (`capabilities.md`) |
+| Delivery vs engine | requests for NDI, Spout, OSC, MIDI, mapping files or live interactivity are `NOT SUPPORTED` (`capabilities.md`): say so and offer the PNG sequence or MP4 |
 
 ## 5. The readback (before the creative contract)
 

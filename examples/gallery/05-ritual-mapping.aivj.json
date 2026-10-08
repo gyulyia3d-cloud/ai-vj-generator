@@ -47,7 +47,7 @@
     },
     "spec": {
       "archetype": [
-        "object-mapping"
+        "installation"
       ],
       "confirmed": {
         "pixelMap": [

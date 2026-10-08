@@ -58,8 +58,8 @@ LOOP          seamless on · mode
 COMPOSITIONS  01 NAME — hypothesis …
 LAYERS        primary per composition
 RENDERING     technique per composition and why (behavior to technique)
-OUTPUT        transport + status from the truth table (SUPPORTED / EXPORTABLE / REQUIRES BRIDGE / CONCEPTUAL)
-EXPORT        recommended export mode and Resolume steps
+OUTPUT        delivery files + status from capabilities.md (SUPPORTED / EXPORTABLE / INPUT / NOT SUPPORTED)
+EXPORT        recommended export mode (full project or region, PNG sequence or MP4)
 SCORES        per composition, from quality-gates.md, with the weakest dimension named
 LIMITS        what was not verified (shaders not compiled, compositions not seen) and known limitations
 ```

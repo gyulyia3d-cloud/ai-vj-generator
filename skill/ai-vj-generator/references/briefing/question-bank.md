@@ -53,7 +53,7 @@ Ask when the project reacts to sound or is built to a tempo.
 |---|---|
 | "Quais textos precisam aparecer, escritos exatamente como? Em que momentos?" | the type layer and its timing; never improvised words |
 | "Há logo, fonte ou imagem para usar? Mande os arquivos; sem eles eu não invento substituto." | assets; legal and brand safety |
-| "Há cores obrigatórias ou proibidas, e a peça é 'branca para eu colorir no Resolume'?" | palette, white-alpha |
+| "Há cores obrigatórias ou proibidas, e a peça é 'branca para eu colorir depois'?" | palette, white-alpha |
 | "Quem é o público e que cultura visual ele já tem (clube, festival, corporativo, arte)?" | density, references, taste |
 
 ## 5. Risk and constraints
@@ -62,7 +62,7 @@ Ask when the project reacts to sound or is built to a tempo.
 |---|---|
 | "Há público sensível a flash (fotossensibilidade)? O local tem regras de strobe?" | the 3-flashes-per-second ceiling, luminance changes, red flashes avoided |
 | "Há símbolos religiosos, políticos, de marcas ou de pessoas que devem ser evitados, ou obrigatórios?" | forbidden forms, review |
-| "Qual a máquina que vai tocar (GPU, memória) e quantas camadas o Resolume aguenta?" | resolution, shader load, layer count |
+| "Qual a máquina que vai tocar (GPU, memória) e quantas camadas ela aguenta?" | resolution, shader load, layer count |
 | "Há prazo, rodadas de aprovação, ou um formato de entrega fixo?" | delivery plan, versions |
 | "O que *nunca* pode acontecer?" (three items) | forbidden shortcuts in the contract |
 

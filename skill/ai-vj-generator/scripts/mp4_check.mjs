@@ -39,6 +39,9 @@ try {
   const buf = readFileSync(file), boxes = []; for (let o = 0; o + 8 <= buf.length;) { const sz = buf.readUInt32BE(o), t = buf.toString('latin1', o + 4, o + 8); boxes.push(t); if (sz < 8) break; o += sz; }
   check(boxes.join(',') === 'ftyp,moov,mdat', 'estrutura: ftyp, moov (índice no início), mdat', boxes.join(','));
   check(r.frames === N && r.w === 640 && r.h === 360 && r.bytes > 2000, `render devolveu ${r.frames} quadros ${r.w}x${r.h}, ${r.bytes} bytes`, JSON.stringify({ f: r.frames, w: r.w, h: r.h, b: r.bytes }));
+  const rg = JSON.parse(await E(`(async () => { AIVJ.project.canvas.displays = [{ x: 0, y: 0, w: 320, h: 360, name: 'ESQ' }, { x: 320, y: 0, w: 320, h: 360, name: 'DIR' }];
+    const r = await AIVJ.mp4.render({ ci: 0, start: 0, end: 3, scale: 1, quality: 'mid', region: 1 }); AIVJ.project.canvas.displays = []; return JSON.stringify({ w: r.w, h: r.h, frames: r.frames }); })()`));
+  check(rg.w === 320 && rg.h === 360 && rg.frames === 4, 'MP4 por região: o display DIR sai como vídeo de 320×360 com os mesmos quadros pedidos', JSON.stringify(rg));
   const stsz = buf.indexOf('stsz'), n = buf.readUInt32BE(stsz + 12); check(n === N, 'a tabela de amostras tem ' + N + ' entradas', String(n));
   if (has('ffprobe') && has('ffmpeg')) {
     const pr = JSON.parse(execFileSync('ffprobe', ['-v', 'error', '-count_frames', '-select_streams', 'v:0', '-show_entries', 'stream=codec_name,width,height,nb_read_frames,avg_frame_rate,pix_fmt', '-of', 'json', file], { encoding: 'utf8' })).streams[0];

@@ -12,7 +12,7 @@ Two tools: **gates** that must pass in order while building, and a **100-point s
 5b. **Craft.** 6–10 visible layers per composition in tiers; every layer named for its job with a `role`; one coordinate system and module; opacity, weight and scale ladders; accent under 5% of the frame; step vs smooth clocks assigned; information quantised; events on bar boundaries (`craft-and-finish.md`).
 6. **Set diversity.** The compositions differ in concept expression, topology, spatial behavior, motion, temporal structure and implementation.
 7. **Anti-slop.** No generic noise wallpaper, glow as the main idea, default centre composition, uniform particle field, audio-reactive everything, random typography, identical easing everywhere, excessive post effects.
-7b. **Perception and safety.** Far read survives the squint and greyscale tests; no flash above 3 per second over a large field, no red strobe, no global rotation on a room or dome; no repeating pattern with `v ≥ P/4` px per frame; no period near 2 pixels on LED (`perception-and-gestalt.md` §7).
+7b. **Perception and safety.** Far read survives the squint and greyscale tests; no flash above 3 per second over a large field, no red strobe, no global rotation on a room; no repeating pattern with `v ≥ P/4` px per frame; no period near 2 pixels on LED (`perception-and-gestalt.md` §7).
 8. **Authorship.** Does it answer this brief? Does it feel designed rather than sampled? Is there a recognizable authored logic? Would a working VJ use it?
 
 ## Score (per composition, 100 points)
@@ -37,7 +37,7 @@ Score each dimension as a fraction of its weight, with one line of evidence (a f
 - wrong resolution; broken alpha; a loop that does not close when looping is required
 - a copied or traced reference; five variations of one generator
 - no visual inspection
-- an unsupported transport claim (OSC, NDI, Spout, Syphon, SDI shown as native)
+- a claim outside the product scope (OSC, MIDI, NDI, Spout, Syphon, SDI, mapping files or integrations shown as features)
 - non-deterministic output (`Math.random`, clocks, kept state)
 - fewer than 5 visible layers besides background and finish, or layers left with default names (`SHADER`, `FORMA`, `TEXTO`)
 - a shader that ignores `uBass/uMid/uHigh/uRms/uHit/uAud`, or a shader layer with audio response 0

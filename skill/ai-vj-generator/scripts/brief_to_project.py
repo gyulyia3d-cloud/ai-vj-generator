@@ -68,7 +68,7 @@ QUIET = {"GRADE SDF": [5, 1, 0.3, 0.06], "FAIXAS": [8, 1, 0.35, 0.15], "INTERFER
 INSTR = {"low": ["rings", "radar", "scope"], "high": ["bars", "radial", "heat"]}
 ARC = ["ESTABLISH", "BUILD", "PEAK", "RELEASE", "TURN", "CODA"]
 ROMAN = ["I", "II", "III", "IV", "V", "VI"]
-ARCH = {"led": "stage-led", "projection": "facade-mapping", "mapping": "object-mapping", "multi": "led-architecture", "screen": "clip-pack"}
+ARCH = {"led": "stage-led", "projection": "facade-mapping", "mapping": "installation", "multi": "led-architecture", "screen": "clip-pack"}
 # parameter the motion profile plays on, per generator (all numeric, default > 0, so a 'mul' modulation scales them)
 HERO_TARGET = {"tunnel": "size", "lines": "weight", "shape": "size", "organism": "breathe", "flow": "amp", "typewall": "fill"}
 STRUCT_TARGET = {"tunnel": "size", "lines": "weight", "shape": "size"}
