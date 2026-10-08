@@ -159,6 +159,17 @@ def parse_isf(text):
     return h, body
 
 
+def reserved_names():
+    """Names the engine already declares (hash, noise, fbm, uPulse...): an ISF that declares the same name gets isf_<name>."""
+    m = re.search(r"const GL_HEAD = `(.*?)`;", engine_text(), re.S)
+    head = m.group(1) if m else ""
+    out = set()
+    for u in re.finditer(r"uniform\s+\w+\s+([\w,\s]+);", head):
+        out.update(n.strip() for n in u.group(1).split(","))
+    out.update(re.findall(r"^\s*(?:float|vec\d|mat\d|int|bool)\s+(\w+)\s*\(", head, re.M))
+    return out
+
+
 def blockers(h, body):
     why = []
     if h.get("PASSES"):
@@ -188,9 +199,19 @@ def cmd_import(a):
         sys.exit("cannot import: " + "; ".join(why))
     secs = a.bars * 4 * 60.0 / a.bpm
     decl, setv, floats, colors, notes = [], [], [], [], []
+    # inputs with the engine's own names (the ones `export` writes) are wired to the engine, not to p1..p4
+    named = {"phase": "uPh", "loopBars": f"{float(a.bars)}", "bpm": f"{float(a.bpm)}", "bass": "uBass", "mid": "uMid", "high": "uHigh", "rms": "uRms",
+             "hit": "uHit", "midhit": "uMidHit", "highhit": "uHighHit", "pres": "uPres"}
+    named_col = {"c1": "uC1", "c2": "uC2", "cbg": "uBg"}
+    res = reserved_names()
     for i in h.get("INPUTS", []):
-        n, ty, d = i["NAME"], i.get("TYPE"), i.get("DEFAULT")
-        if ty == "float":
+        n0, ty, d = i["NAME"], i.get("TYPE"), i.get("DEFAULT")
+        n = "isf_" + n0 if n0 in res else n0
+        if ty == "float" and n0 in named:
+            decl.append(f"float {n};"); setv.append(f"{n}={named[n0]};")
+        elif ty == "color" and n0 in named_col:
+            decl.append(f"vec4 {n};"); setv.append(f"{n}=vec4({named_col[n0]},1.0);")
+        elif ty == "float":
             if len(floats) < 4:
                 floats.append((n, 0.0 if d is None else float(d), i)); decl.append(f"float {n};"); setv.append(f"{n}=uP.{'xyzw'[len(floats) - 1]};")
             else:
@@ -216,6 +237,9 @@ def cmd_import(a):
         r"\bFRAMEINDEX\b": f"int(floor(uPh*{secs * 30:.3f}))", r"\bPASSINDEX\b": "0", r"\b(isf|vv)_FragNormCoord\b": "(gl_FragCoord.xy/uRes)",
     }
     body = re.sub(r"^[ \t]*#define[ \t]+TAU\b.*$", "", body, flags=re.M)
+    body = re.sub(r"^[ \t]*(?:const\s+)?float\s+TAU\s*=[^;]*;", "", body, flags=re.M)
+    if res:
+        body = re.sub(r"\b(" + "|".join(sorted(res)) + r")\b", r"isf_\1", body)
     for k, v in sub.items():
         body = re.sub(k, v, body)
     body, nmain = re.subn(r"\bvoid\s+main\s*\(\s*(?:void)?\s*\)", "void isfMain()", body, count=1)

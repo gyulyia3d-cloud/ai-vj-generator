@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.6.0 (08/10/2026) · Aba ISF: biblioteca, importar e exportar shaders para o Resolume
+
+- **Aba ISF** (`app/isf-ui.js`): biblioteca de 84 geradores com miniatura, busca e filtro (11 originais do projeto, 28 MIT de repositórios abertos, 45 CC0 do glslop.com); botão **Importar arquivo .fs** (vários de uma vez, com o motivo de cada recusa); **Exportar camada selecionada / todas** como `.fs` com a entrada `phase`. Cada camada guarda autoria e licença no `role`.
+- **Importador mais robusto** (navegador e `isf.py`, idênticos): entradas com os nomes do motor (`phase bass mid high hit c1 c2 cbg…`) ligam direto ao motor, não a p1..p4; nomes que o motor já declara (`hash noise fbm uPulse…`) viram `isf_<nome>` em vez de quebrar a compilação; `float TAU = …` deixa de colidir.
+- **11 shaders ISF originais** (`isf-library/original`): túnel, plasma, voronoi, caleidoscópio, lissajous, metabolas, aurora, matriz de LED, moiré, faixas, espiral. Dependem só de `phase`: o loop fecha (medido) e funcionam no Resolume sem mudanças.
+- **Proveniência**: `isf-library/README.md` lista fontes, licenças e o que foi excluído (e por quê); `scripts/curate_isf.py`, `fetch-glslop.mjs` e `isf-thumbs.mjs` refazem tudo.
+- **Teste novo** `isf_ui_check.mjs`: os 84 compilam em WebGL1, originais desenham e fecham o loop, o importador JS dá o mesmo shader que o Python nos 84, importar/exportar pela interface. Corrigidos dois defeitos de teste/ambiente: SwiftShader só em CI (forçado, mudava as notas na máquina com GPU) e a espera do histórico no teste de desfazer da modulação.
+
 ## 2.5.0 (08/10/2026) · Fase 3 do roadmap v9: áudio, superfícies, export e UI, e revisão da fase 2
 
 **Aceite:** `skill/ai-vj-generator/scripts/phase3_acceptance.mjs` percorre, num navegador limpo e só pela interface, o caminho de quem não tem o Claude: Gerar sem IA, briefing da parede 4500×800, avaliar, fatias do Resolume, kick ligado a um parâmetro, teste de flash, export de uma amostra e conferência do ZIP. Guia em `docs/GUIA-SEM-IA.md`.

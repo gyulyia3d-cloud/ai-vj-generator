@@ -190,6 +190,8 @@ try {
 }
 try { execFileSync(process.execPath, [join(ROOT, 'scripts', 'embed-modules.mjs'), '--check'], { stdio: 'pipe' }); ok('módulos do navegador (gerador, avaliador, abas, flash, áudio, UX) embutidos no motor em dia'); }
 catch (e) { bad('embed-modules: ' + String(e.stderr || e.stdout).trim().slice(0, 160)); }
+try { execFileSync(process.execPath, [join(ROOT, 'scripts', 'embed-isf.mjs'), '--check'], { stdio: 'pipe' }); ok('biblioteca ISF embutida no motor em dia'); }
+catch (e) { bad('embed-isf: ' + String(e.stderr || e.stdout).trim().slice(0, 160)); }
 try { execFileSync(process.execPath, [join(ROOT, 'scripts', 'embed-glsl-lib.mjs'), '--check'], { stdio: 'pipe' }); ok('biblioteca GLSL embutida no motor em dia'); }
 catch (e) { bad('GLSL embed: ' + String(e.stderr || e.stdout).trim().slice(0, 160)); }
 // V7: vocabulário de áudio estendido, layer.mod e ponte ISF
@@ -197,7 +199,7 @@ const NL = String.fromCharCode(10);
 for (const [f, label] of [['v7_check.mjs', 'áudio V7 (tempo integrado fecha o loop) e layer.mod'], ['isf_check.mjs', 'ponte ISF (exportar, importar, compilar)'], ['lib_check.mjs', 'biblioteca GLSL (#include) compila e desenha'], ['generator_check.mjs', 'gerador sem IA (12 climas), brief, esquema e estratégia de áudio'],
   ['motion_check.mjs', 'fase 2: perfis de movimento (curva Python = curva do motor) e bíblia de arte na interface'], ['typeset_check.mjs', 'fase 2: tipografia (hierarquia, revelação, caminho; o loop fecha)'], ['evaluate_check.mjs', 'fase 2: avaliador estrutural reprova os defeitos fabricados'],
   ['genai_check.mjs', 'fase 3: gerador do navegador = gerador Python (12 climas, galeria, casos de borda)'], ['gen_ui_check.mjs', 'fase 3: aba Gerar (formulário, preset 4500×800, avaliar, idioma)'], ['surface_check.mjs', 'fase 3: Superfície (XML idêntico ao Python, pixel map CSV/PNG, cortes, legibilidade)'],
-  ['export_check.mjs', 'fase 3: export (manifesto, SHA-256, partes) e segurança de flash (análise e limitador medidos nos PNG)'], ['audio_check.mjs', 'fase 3: detector de kick/onset com histórico e fontes novas no layer.mod'], ['mod_ui_check.mjs', 'fase 3: editor de modulação e curva de perfil de movimento'], ['ux_check.mjs', 'fase 3: modo Criativo/Avançado, ajuda por aba, atalhos e tour'],
+  ['export_check.mjs', 'fase 3: export (manifesto, SHA-256, partes) e segurança de flash (análise e limitador medidos nos PNG)'], ['audio_check.mjs', 'fase 3: detector de kick/onset com histórico e fontes novas no layer.mod'], ['isf_ui_check.mjs', 'aba ISF: 84 shaders compilam, originais fecham o loop, importador do navegador = isf.py, importar e exportar .fs'], ['mod_ui_check.mjs', 'fase 3: editor de modulação e curva de perfil de movimento'], ['ux_check.mjs', 'fase 3: modo Criativo/Avançado, ajuda por aba, atalhos e tour'],
   ['phase3_acceptance.mjs', 'fase 3 (aceite): do motor limpo ao ZIP da parede 4500×800, só pela interface']]) {
   try { execFileSync(process.execPath, [join(SKILL, 'scripts', f)], { stdio: 'pipe' }); ok(label); }
   catch (e) { e.status === 3 ? console.log(`  --   ${f} pulado (sem navegador)`) : bad(`${f}: ` + String(e.stdout).split(NL).filter(l => /ERRO/.test(l)).slice(0, 4).join(' | ')); }

@@ -1,0 +1,1127 @@
+{
+ "version": 1,
+ "count": 84,
+ "items": [
+  {
+   "id": "aivj-aurora",
+   "name": "AIVJ Aurora",
+   "file": "original/aurora.fs",
+   "origin": "original",
+   "credit": "ai-vj-generator (original)",
+   "license": "MIT",
+   "source": "este repositório",
+   "description": "Curtains of value noise walking on a circle of the loop phase (seamless).",
+   "categories": [
+    "Generator",
+    "Audio Reactive"
+   ]
+  },
+  {
+   "id": "aivj-flow-stripes",
+   "name": "AIVJ Flow Stripes",
+   "file": "original/flow-stripes.fs",
+   "origin": "original",
+   "credit": "ai-vj-generator (original)",
+   "license": "MIT",
+   "source": "este repositório",
+   "description": "Domain-warped stripes that flow and return to the start after one loop.",
+   "categories": [
+    "Generator",
+    "Audio Reactive"
+   ]
+  },
+  {
+   "id": "aivj-kaleido-bloom",
+   "name": "AIVJ Kaleido Bloom",
+   "file": "original/kaleido-bloom.fs",
+   "origin": "original",
+   "credit": "ai-vj-generator (original)",
+   "license": "MIT",
+   "source": "este repositório",
+   "description": "Mirror-folded petals that breathe; whole rotation turns per loop.",
+   "categories": [
+    "Generator",
+    "Audio Reactive"
+   ]
+  },
+  {
+   "id": "aivj-led-ripples",
+   "name": "AIVJ Led Ripples",
+   "file": "original/led-ripples.fs",
+   "origin": "original",
+   "credit": "ai-vj-generator (original)",
+   "license": "MIT",
+   "source": "este repositório",
+   "description": "Dot matrix lit by rings that radiate from the centre; made for LED walls.",
+   "categories": [
+    "Generator",
+    "Audio Reactive"
+   ]
+  },
+  {
+   "id": "aivj-lissajous",
+   "name": "AIVJ Lissajous",
+   "file": "original/lissajous.fs",
+   "origin": "original",
+   "credit": "ai-vj-generator (original)",
+   "license": "MIT",
+   "source": "este repositório",
+   "description": "A few glowing Lissajous curves; the phase offset sweeps one full cycle per loop.",
+   "categories": [
+    "Generator",
+    "Audio Reactive"
+   ]
+  },
+  {
+   "id": "aivj-metaballs",
+   "name": "AIVJ Metaballs",
+   "file": "original/metaballs.fs",
+   "origin": "original",
+   "credit": "ai-vj-generator (original)",
+   "license": "MIT",
+   "source": "este repositório",
+   "description": "Six orbiting blobs drawn as iso-contours; orbits are whole loops.",
+   "categories": [
+    "Generator",
+    "Audio Reactive"
+   ]
+  },
+  {
+   "id": "aivj-moire-rings",
+   "name": "AIVJ Moire Rings",
+   "file": "original/moire-rings.fs",
+   "origin": "original",
+   "credit": "ai-vj-generator (original)",
+   "license": "MIT",
+   "source": "este repositório",
+   "description": "Two ring systems whose centres drift on circles; the interference is the picture.",
+   "categories": [
+    "Generator",
+    "Audio Reactive"
+   ]
+  },
+  {
+   "id": "aivj-plasma",
+   "name": "AIVJ Plasma",
+   "file": "original/plasma.fs",
+   "origin": "original",
+   "credit": "ai-vj-generator (original)",
+   "license": "MIT",
+   "source": "este repositório",
+   "description": "Sum of sines with integer harmonics of the loop phase: closes exactly.",
+   "categories": [
+    "Generator",
+    "Audio Reactive"
+   ]
+  },
+  {
+   "id": "aivj-spiral-arms",
+   "name": "AIVJ Spiral Arms",
+   "file": "original/spiral-arms.fs",
+   "origin": "original",
+   "credit": "ai-vj-generator (original)",
+   "license": "MIT",
+   "source": "este repositório",
+   "description": "Logarithmic spiral arms rotating a whole turn per loop.",
+   "categories": [
+    "Generator",
+    "Audio Reactive"
+   ]
+  },
+  {
+   "id": "aivj-tunnel",
+   "name": "AIVJ Tunnel",
+   "file": "original/tunnel.fs",
+   "origin": "original",
+   "credit": "ai-vj-generator (original)",
+   "license": "MIT",
+   "source": "este repositório",
+   "description": "Polar tunnel of rings and spokes; the loop closes after `cycles` ring steps.",
+   "categories": [
+    "Generator",
+    "Audio Reactive"
+   ]
+  },
+  {
+   "id": "aivj-voronoi-glow",
+   "name": "AIVJ Voronoi Glow",
+   "file": "original/voronoi-glow.fs",
+   "origin": "original",
+   "credit": "ai-vj-generator (original)",
+   "license": "MIT",
+   "source": "este repositório",
+   "description": "Cells whose seeds orbit on circles of the loop phase; glowing edges.",
+   "categories": [
+    "Generator",
+    "Audio Reactive"
+   ]
+  },
+  {
+   "id": "glslop-fag6vheo",
+   "name": "acid melt",
+   "file": "third-party/glslop-fag6vheo.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/fag6vheo",
+   "description": "acid melt — iterative warp",
+   "categories": [
+    "generator"
+   ]
+  },
+  {
+   "id": "glslop-8exkb82g",
+   "name": "Aurora Fold",
+   "file": "third-party/glslop-8exkb82g.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/8exkb82g",
+   "description": "Aurora Fold — a folded, flowing field of light. Domain-warped sinusoids run through a kaleidoscopic fold and a soft aurora palette. CC0.",
+   "categories": [
+    "generator",
+    "abstract"
+   ]
+  },
+  {
+   "id": "basic-shape",
+   "name": "Basic Shape",
+   "file": "third-party/basic-shape.fs",
+   "origin": "third-party",
+   "credit": "VIDVOX",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Basic Shape.fs)",
+   "description": "",
+   "categories": [
+    "Geometry"
+   ]
+  },
+  {
+   "id": "glslop-z1g8ubji",
+   "name": "Blue Marble V2",
+   "file": "third-party/glslop-z1g8ubji.fs",
+   "origin": "third-party",
+   "credit": "croze (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/z1g8ubji",
+   "description": "A fork of Blue Marble",
+   "categories": [
+    "planet",
+    "space",
+    "procedural",
+    "atmosphere",
+    "3d"
+   ]
+  },
+  {
+   "id": "glslop-ss9fq5hc",
+   "name": "Caldera",
+   "file": "third-party/glslop-ss9fq5hc.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/ss9fq5hc",
+   "description": "Cooling crust — dark basalt plates drifting apart over molten cracks that glow from within, like a lava lake skinning over.",
+   "categories": []
+  },
+  {
+   "id": "glslop-gstbkfmm",
+   "name": "Can't Find My Way Out",
+   "file": "third-party/glslop-gstbkfmm.fs",
+   "origin": "third-party",
+   "credit": "ksin (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/gstbkfmm",
+   "description": "Infinite neon fractal maze flythrough: a solid universe with corridors carved at three nested scales so every wall is itself a smaller maze. The camera threads ",
+   "categories": [
+    "generator",
+    "abstract",
+    "3d"
+   ]
+  },
+  {
+   "id": "glslop-1n4jvrks",
+   "name": "Cathedral of the Last Photon",
+   "file": "third-party/glslop-1n4jvrks.fs",
+   "origin": "third-party",
+   "credit": "dron008 (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/1n4jvrks",
+   "description": "An endless impossible cathedral where two crystal processions dance through flowing gyroid light",
+   "categories": [
+    "generator",
+    "3d",
+    "raymarch",
+    "abstract"
+   ]
+  },
+  {
+   "id": "glslop-p1g720kj",
+   "name": "caustic drift",
+   "file": "third-party/glslop-p1g720kj.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/p1g720kj",
+   "description": "Domain-warped plasma with flowing interference ridges — seamless loop via circular time orbits (all motion on integer multiples of 2*PI*phase).",
+   "categories": []
+  },
+  {
+   "id": "checkerboard",
+   "name": "Checkerboard",
+   "file": "third-party/checkerboard.fs",
+   "origin": "third-party",
+   "credit": "VIDVOX",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Checkerboard.fs)",
+   "description": "",
+   "categories": [
+    "Pattern",
+    "Color"
+   ]
+  },
+  {
+   "id": "glslop-v20y1z59",
+   "name": "Cold Light",
+   "file": "third-party/glslop-v20y1z59.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/v20y1z59",
+   "description": "Frozen sea — a calm raymarched water plane rippling under a pale ice sky, a single cold sun glinting on the swell.",
+   "categories": []
+  },
+  {
+   "id": "color-scales",
+   "name": "Color Scales",
+   "file": "third-party/color-scales.fs",
+   "origin": "third-party",
+   "credit": "VIDVOX",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Color Scales.fs)",
+   "description": "",
+   "categories": [
+    "Color"
+   ]
+  },
+  {
+   "id": "color-schemes",
+   "name": "Color Schemes",
+   "file": "third-party/color-schemes.fs",
+   "origin": "third-party",
+   "credit": "VIDVOX",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Color Schemes.fs)",
+   "description": "Creates variations on a base color using a given algorithm.",
+   "categories": [
+    "Color"
+   ]
+  },
+  {
+   "id": "glslop-wyaddnv4",
+   "name": "Coral Bloom",
+   "file": "third-party/glslop-wyaddnv4.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/wyaddnv4",
+   "description": "Coral bloom — Turing-pattern labyrinth rendered as fleshy 3D relief, slowly growing in sunset tones.",
+   "categories": []
+  },
+  {
+   "id": "corner-colors",
+   "name": "Corner Colors",
+   "file": "third-party/corner-colors.fs",
+   "origin": "third-party",
+   "credit": "VIDVOX",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Corner Colors.fs)",
+   "description": "Generates a gradient that fades between four different colors.",
+   "categories": [
+    "Color"
+   ]
+  },
+  {
+   "id": "glslop-wa99dhz1",
+   "name": "Cymatic amethyst: hex crystal cluster with Chladni nodal lines and labyrinth ridges etched across violet facets, gold sa",
+   "file": "third-party/glslop-wa99dhz1.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/wa99dhz1",
+   "description": "Cymatic amethyst: hex crystal cluster with Chladni nodal lines and labyrinth ridges etched across violet facets, gold sand gathering on nodes, cyan glow where r",
+   "categories": [
+    "generative"
+   ]
+  },
+  {
+   "id": "glslop-e1ia0jhn",
+   "name": "Derelict",
+   "file": "third-party/glslop-e1ia0jhn.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/e1ia0jhn",
+   "description": "Burning Ship — a slow breathing dive into the angular masts of the burning-ship fractal, glowing like wreckage adrift in space.",
+   "categories": []
+  },
+  {
+   "id": "glslop-pgjpt0qh",
+   "name": "Ebru",
+   "file": "third-party/glslop-pgjpt0qh.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/pgjpt0qh",
+   "description": "Marbled endpaper — golden ebru veins raked and combed through a slow flow, the way ink swirls on water.",
+   "categories": []
+  },
+  {
+   "id": "glslop-i266l2xn",
+   "name": "eyesore",
+   "file": "third-party/glslop-i266l2xn.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/i266l2xn",
+   "description": "eyesore — do not look directly",
+   "categories": [
+    "generator"
+   ]
+  },
+  {
+   "id": "glslop-0gyvybtr",
+   "name": "Glass square-tube tunnel",
+   "file": "third-party/glslop-0gyvybtr.fs",
+   "origin": "third-party",
+   "credit": "ogcraig (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/0gyvybtr",
+   "description": "Glass square-tube tunnel v5 — Lattice Edition",
+   "categories": [
+    "generator"
+   ]
+  },
+  {
+   "id": "glslop-axsuxv9l",
+   "name": "Golden Cathedral",
+   "file": "third-party/glslop-axsuxv9l.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/axsuxv9l",
+   "description": "Golden Cathedral — a living phyllotaxis seed-head. Thousands of florets on a golden-angle lattice, packed into domed stained-glass Voronoi cells with luminous s",
+   "categories": [
+    "generative",
+    "geometry",
+    "abstract"
+   ]
+  },
+  {
+   "id": "graph-paper",
+   "name": "Graph Paper",
+   "file": "third-party/graph-paper.fs",
+   "origin": "third-party",
+   "credit": "VIDVOX",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Graph Paper.fs)",
+   "description": "Draws basic graph paper pattern",
+   "categories": [
+    "Pattern",
+    "Color"
+   ]
+  },
+  {
+   "id": "grid-warp",
+   "name": "Grid Warp",
+   "file": "third-party/grid-warp.fs",
+   "origin": "third-party",
+   "credit": "VIDVOX",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Grid Warp.fs)",
+   "description": "",
+   "categories": [
+    "Geometry"
+   ]
+  },
+  {
+   "id": "heart",
+   "name": "Heart",
+   "file": "third-party/heart.fs",
+   "origin": "third-party",
+   "credit": "VIDVOX",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Heart.fs)",
+   "description": "",
+   "categories": [
+    "Geometry"
+   ]
+  },
+  {
+   "id": "glslop-jx54ed2e",
+   "name": "Interference",
+   "file": "third-party/glslop-jx54ed2e.fs",
+   "origin": "third-party",
+   "credit": "ksin (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/jx54ed2e",
+   "description": "A ripple tank, solved rather than drawn. A row of point sources sits on a plane, each emitting circular waves in step, and every pixel sums the field they all a",
+   "categories": [
+    "generator",
+    "optics",
+    "interference",
+    "diffraction",
+    "wave",
+    "spectral",
+    "physics",
+    "2d"
+   ]
+  },
+  {
+   "id": "lasercircle",
+   "name": "LaserCircle",
+   "file": "third-party/lasercircle.fs",
+   "origin": "third-party",
+   "credit": "Cornelius // ProjectileObjects",
+   "license": "MIT",
+   "source": "https://github.com/ProjectileObjects/MiscISFShaders (LaserCircle.fs)",
+   "description": "Draws a circular line with a rainbow gradient, adjustable size, position, and rotation.",
+   "categories": [
+    "Generator"
+   ]
+  },
+  {
+   "id": "linear-gradient",
+   "name": "Linear Gradient",
+   "file": "third-party/linear-gradient.fs",
+   "origin": "third-party",
+   "credit": "Carter Rosenberg",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Linear Gradient.fs)",
+   "description": "",
+   "categories": [
+    "Color"
+   ]
+  },
+  {
+   "id": "lines",
+   "name": "Lines",
+   "file": "third-party/lines.fs",
+   "origin": "third-party",
+   "credit": "VIDVOX",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Lines.fs)",
+   "description": "",
+   "categories": [
+    "Geometry"
+   ]
+  },
+  {
+   "id": "glslop-8tj0av90",
+   "name": "liquid glass",
+   "file": "third-party/glslop-8tj0av90.fs",
+   "origin": "third-party",
+   "credit": "ogcraig (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/8tj0av90",
+   "description": "Clean Liquid Flow Noise",
+   "categories": [
+    "generator"
+   ]
+  },
+  {
+   "id": "glslop-dbvlcck0",
+   "name": "Lodestone",
+   "file": "third-party/glslop-dbvlcck0.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/dbvlcck0",
+   "description": "Needle field — a grid of tiny compass needles swinging into alignment with a drifting interference flow, like iron filings breathing.",
+   "categories": []
+  },
+  {
+   "id": "glslop-vdstz3q9",
+   "name": "Mesmer",
+   "file": "third-party/glslop-vdstz3q9.fs",
+   "origin": "third-party",
+   "credit": "ksin (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/vdstz3q9",
+   "description": "A black-and-white op-art engine built to be stared at. Everything is computed in log-polar space, where a straight line becomes a logarithmic spiral and simply ",
+   "categories": [
+    "generator",
+    "op-art",
+    "black-and-white",
+    "hypnotic",
+    "spiral",
+    "moire",
+    "2d"
+   ]
+  },
+  {
+   "id": "glslop-bv18y46g",
+   "name": "Moire Eye",
+   "file": "third-party/glslop-bv18y46g.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/bv18y46g",
+   "description": "Moire Eye - two counter-rotating radial line fans beat against a breathing dot lattice around a movable focal point. Crisp duotone op-art interference, seamless",
+   "categories": [
+    "op-art",
+    "moire",
+    "geometric"
+   ]
+  },
+  {
+   "id": "glslop-frpyk0si",
+   "name": "Neon Iris",
+   "file": "third-party/glslop-frpyk0si.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/frpyk0si",
+   "description": "Moiré lens — interfering radial gratings seen through a warping glass bulge, beating in neon.",
+   "categories": []
+  },
+  {
+   "id": "glslop-o87o51n0",
+   "name": "Neon Liquid",
+   "file": "third-party/glslop-o87o51n0.fs",
+   "origin": "third-party",
+   "credit": "ogcraig (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/o87o51n0",
+   "description": "Neon Liquid Water",
+   "categories": [
+    "Generator"
+   ]
+  },
+  {
+   "id": "glslop-f8wa24p5",
+   "name": "neon plasma flow",
+   "file": "third-party/glslop-f8wa24p5.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/f8wa24p5",
+   "description": "neon plasma flow — drifting sine interference in candy colors",
+   "categories": [
+    "plasma",
+    "neon",
+    "abstract"
+   ]
+  },
+  {
+   "id": "glslop-9f5exvja",
+   "name": "Neon Rain",
+   "file": "third-party/glslop-9f5exvja.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/9f5exvja",
+   "description": "Neon rain — overlapping ripple wavefronts interfering on a dark wet surface, crests catching magenta and cyan light.",
+   "categories": []
+  },
+  {
+   "id": "glslop-ftemur23",
+   "name": "Nested Orbit Reliquary — Instrument Edition",
+   "file": "third-party/glslop-ftemur23.fs",
+   "origin": "third-party",
+   "credit": "lightbrush (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/ftemur23",
+   "description": "Clean-room GLSL engine lowering of canonical Superflow-inspired Nested Orbit: a 121-torus ternary hierarchy held inside an authored eye-reliquary cage. Canonica",
+   "categories": []
+  },
+  {
+   "id": "glslop-aax6rr68",
+   "name": "Nocturnal Reliquary Tide — a dark animated rose-orb where nested gyroid shells, stained-glass symmetry, and a drifting v",
+   "file": "third-party/glslop-aax6rr68.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/aax6rr68",
+   "description": "Nocturnal Reliquary Tide — a dark animated rose-orb where nested gyroid shells, stained-glass symmetry, and a drifting vesica tunnel interlace in deep teal, vio",
+   "categories": [
+    "generative"
+   ]
+  },
+  {
+   "id": "noise",
+   "name": "Noise",
+   "file": "third-party/noise.fs",
+   "origin": "third-party",
+   "credit": "VIDVOX",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Noise.fs)",
+   "description": "",
+   "categories": [
+    "Noise"
+   ]
+  },
+  {
+   "id": "glslop-wd6pdyhp",
+   "name": "number matrix",
+   "file": "third-party/glslop-wd6pdyhp.fs",
+   "origin": "third-party",
+   "credit": "ogcraig (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/wd6pdyhp",
+   "description": "Rainbow Matrix Falling Characters",
+   "categories": [
+    "generator"
+   ]
+  },
+  {
+   "id": "glslop-xfka82ty",
+   "name": "OilSpillage",
+   "file": "third-party/glslop-xfka82ty.fs",
+   "origin": "third-party",
+   "credit": "joohnjack (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/xfka82ty",
+   "description": "Viscous Oil & Deep Currents",
+   "categories": [
+    "generator"
+   ]
+  },
+  {
+   "id": "glslop-07m1ixly",
+   "name": "Orbiting Prism Cluster",
+   "file": "third-party/glslop-07m1ixly.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/07m1ixly",
+   "description": "A cluster of smooth-blended glass gems orbiting a dark nucleus, shaded with thin-film iridescence: hue is driven by the view-normal grazing angle (fresnel), not",
+   "categories": [
+    "raymarching",
+    "sdf",
+    "csg",
+    "iridescent",
+    "thin-film",
+    "seamless-loop"
+   ]
+  },
+  {
+   "id": "glslop-upa8xyrl",
+   "name": "Plasma Storm",
+   "file": "third-party/glslop-upa8xyrl.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/upa8xyrl",
+   "description": "Neon nebula: domain-warped fractal-noise plasma that flows and curls as glowing electric gas, hot filament cores over deep space. The warp orbits a circle so it",
+   "categories": [
+    "plasma",
+    "nebula",
+    "neon",
+    "noise"
+   ]
+  },
+  {
+   "id": "glslop-mfupgrz0",
+   "name": "Plasma Weave",
+   "file": "third-party/glslop-mfupgrz0.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/mfupgrz0",
+   "description": "Volumetric plasma torus: a raymarched emissive ring of twisted filaments, lit by glow x transmittance so it reads as real fog rather than see-through foam. Hue ",
+   "categories": [
+    "volumetric",
+    "raymarch",
+    "plasma",
+    "torus",
+    "loop"
+   ]
+  },
+  {
+   "id": "poly-star",
+   "name": "Poly Star",
+   "file": "third-party/poly-star.fs",
+   "origin": "third-party",
+   "credit": "VIDVOX",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Poly Star.fs)",
+   "description": "",
+   "categories": [
+    "Geometry"
+   ]
+  },
+  {
+   "id": "glslop-ww0xjfld",
+   "name": "Procedural Matrix Digital Rain",
+   "file": "third-party/glslop-ww0xjfld.fs",
+   "origin": "third-party",
+   "credit": "ogcraig (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/ww0xjfld",
+   "description": "Procedural Matrix Digital Rain",
+   "categories": [
+    "Generator"
+   ]
+  },
+  {
+   "id": "glslop-28djpvdl",
+   "name": "Procedural Matrix Digital Rain (falling)",
+   "file": "third-party/glslop-28djpvdl.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/28djpvdl",
+   "description": "Procedural Matrix Digital Rain — trails now stream up behind the falling heads, and the fade drops out the bottom instead of the top.",
+   "categories": [
+    "Generator"
+   ]
+  },
+  {
+   "id": "glslop-0bqz3125",
+   "name": "Quasicrystal",
+   "file": "third-party/glslop-0bqz3125.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/0bqz3125",
+   "description": "Quasicrystal — plane waves summed across symmetric axes into an aperiodic n-fold tiling, slowly phasing through jewel light.",
+   "categories": []
+  },
+  {
+   "id": "radial-gradient",
+   "name": "Radial Gradient",
+   "file": "third-party/radial-gradient.fs",
+   "origin": "third-party",
+   "credit": "Carter Rosenberg",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Radial Gradient.fs)",
+   "description": "",
+   "categories": [
+    "Color"
+   ]
+  },
+  {
+   "id": "random-checkerboard",
+   "name": "Random Checkerboard",
+   "file": "third-party/random-checkerboard.fs",
+   "origin": "third-party",
+   "credit": "VIDVOX",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Random Checkerboard.fs)",
+   "description": "Creates a checkerboard pattern with randomized colors",
+   "categories": [
+    "Pattern",
+    "Color"
+   ]
+  },
+  {
+   "id": "random-lines",
+   "name": "Random Lines",
+   "file": "third-party/random-lines.fs",
+   "origin": "third-party",
+   "credit": "VIDVOX",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Random Lines.fs)",
+   "description": "",
+   "categories": [
+    "Geometry"
+   ]
+  },
+  {
+   "id": "random-shape",
+   "name": "Random Shape",
+   "file": "third-party/random-shape.fs",
+   "origin": "third-party",
+   "credit": "VIDVOX",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Random Shape.fs)",
+   "description": "",
+   "categories": [
+    "Geometry"
+   ]
+  },
+  {
+   "id": "random-stripes",
+   "name": "Random Stripes",
+   "file": "third-party/random-stripes.fs",
+   "origin": "third-party",
+   "credit": "VIDVOX",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Random Stripes.fs)",
+   "description": "Creates a stripe pattern with randomized colors",
+   "categories": [
+    "Pattern",
+    "Color"
+   ]
+  },
+  {
+   "id": "glslop-d4xde501",
+   "name": "Reagent",
+   "file": "third-party/glslop-d4xde501.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/d4xde501",
+   "description": "Chemical clock — Belousov-Zhabotinsky spiral and target waves spreading from pacemakers and annihilating where they collide.",
+   "categories": []
+  },
+  {
+   "id": "glslop-2w3zjsxb",
+   "name": "Reliquary",
+   "file": "third-party/glslop-2w3zjsxb.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/2w3zjsxb",
+   "description": "Reliquary — a slowly tumbling orb of nested lace shells, each one a perforated gyroid membrane cut into a concentric sphere. The layers are translucent, so you ",
+   "categories": [
+    "generative",
+    "3d",
+    "raymarch",
+    "abstract"
+   ]
+  },
+  {
+   "id": "ridgelines",
+   "name": "Ridgelines",
+   "file": "third-party/ridgelines.fs",
+   "origin": "third-party",
+   "credit": "VIDVOX (simplex by Ashima Arts / Stefan Gustavson)",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Ridgelines.fs)",
+   "description": "Ridged multifractal noise — turns simplex noise's smooth zero-crossings into sharp ridgelines.",
+   "categories": [
+    "Generator",
+    "Noise"
+   ]
+  },
+  {
+   "id": "glslop-tk46kqe3",
+   "name": "Sashiko",
+   "file": "third-party/glslop-tk46kqe3.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/tk46kqe3",
+   "description": "Hitomezashi — Japanese sashiko stitching whose row/column parity spontaneously knits spirals and rectangles, lit as electric-ice circuitry.",
+   "categories": []
+  },
+  {
+   "id": "glslop-exf681g5",
+   "name": "Seahorse Valley",
+   "file": "third-party/glslop-exf681g5.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/exf681g5",
+   "description": "Seahorse valley — a slow meditative breath into a Mandelbrot spiral, its filaments traced in glowing neon.",
+   "categories": []
+  },
+  {
+   "id": "glslop-2kpxgx5t",
+   "name": "signal seance",
+   "file": "third-party/glslop-2kpxgx5t.fs",
+   "origin": "third-party",
+   "credit": "akx (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/2kpxgx5t",
+   "description": "Signal Seance — a hallucinating broadcast: melting neon plasma-tech dreamscape torn apart by datamosh blocks, RGB channel rips, sync-roll dropouts and scanline ",
+   "categories": [
+    "generator",
+    "glitch",
+    "psychedelic"
+   ]
+  },
+  {
+   "id": "simplex-noise",
+   "name": "Simplex Noise",
+   "file": "third-party/simplex-noise.fs",
+   "origin": "third-party",
+   "credit": "VIDVOX (simplex by Ashima Arts / Stefan Gustavson)",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Simplex Noise.fs)",
+   "description": "2D simplex noise generator with fractal-Brownian-motion octave summation.",
+   "categories": [
+    "Generator",
+    "Noise"
+   ]
+  },
+  {
+   "id": "sine-warp-gradient",
+   "name": "Sine Warp Gradient",
+   "file": "third-party/sine-warp-gradient.fs",
+   "origin": "third-party",
+   "credit": "VIDVOX",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Sine Warp Gradient.fs)",
+   "description": "",
+   "categories": [
+    "Color"
+   ]
+  },
+  {
+   "id": "glslop-kxldgnkx",
+   "name": "Singularity Rain",
+   "file": "third-party/glslop-kxldgnkx.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/kxldgnkx",
+   "description": "Digital rain in log-polar space: glyph columns spiral inward toward an event horizon, shearing into light as they are crushed past the resolution limit. shear b",
+   "categories": [
+    "Generator"
+   ]
+  },
+  {
+   "id": "glslop-2dzicbq0",
+   "name": "smithed shader",
+   "file": "third-party/glslop-2dzicbq0.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/2dzicbq0",
+   "description": "Rippling aurora nebula with flowing color bands",
+   "categories": []
+  },
+  {
+   "id": "glslop-s402l4y4",
+   "name": "Spectral liquid matrix rain with orbiting catalysts and flowing glyphs",
+   "file": "third-party/glslop-s402l4y4.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/s402l4y4",
+   "description": "Spectral liquid matrix rain with orbiting catalysts and flowing glyphs",
+   "categories": [
+    "generative"
+   ]
+  },
+  {
+   "id": "spiral",
+   "name": "Spiral",
+   "file": "third-party/spiral.fs",
+   "origin": "third-party",
+   "credit": "VIDVOX",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Spiral.fs)",
+   "description": "",
+   "categories": [
+    "Geometry"
+   ]
+  },
+  {
+   "id": "star",
+   "name": "Star",
+   "file": "third-party/star.fs",
+   "origin": "third-party",
+   "credit": "VIDVOX",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Star.fs)",
+   "description": "",
+   "categories": [
+    "Geometry"
+   ]
+  },
+  {
+   "id": "stripes",
+   "name": "Stripes",
+   "file": "third-party/stripes.fs",
+   "origin": "third-party",
+   "credit": "VIDVOX",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Stripes.fs)",
+   "description": "",
+   "categories": [
+    "Geometry"
+   ]
+  },
+  {
+   "id": "glslop-1922hufu",
+   "name": "Sunseed",
+   "file": "third-party/glslop-1922hufu.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/1922hufu",
+   "description": "Golden orb — a Fibonacci sphere of glowing dots, slowly turning so its lattice shimmers with moiré.",
+   "categories": []
+  },
+  {
+   "id": "triangle",
+   "name": "Triangle",
+   "file": "third-party/triangle.fs",
+   "origin": "third-party",
+   "credit": "Carter Rosenberg",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Triangle.fs)",
+   "description": "",
+   "categories": [
+    "Geometry"
+   ]
+  },
+  {
+   "id": "glslop-buultwak",
+   "name": "Trinity",
+   "file": "third-party/glslop-buultwak.fs",
+   "origin": "third-party",
+   "credit": "ufffd (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/buultwak",
+   "description": "Newton's basins — the fractal frontier where Newton's method on z^3-1 can't decide which root it falls to, writhing in electric neon.",
+   "categories": []
+  },
+  {
+   "id": "truchet-tile",
+   "name": "Truchet Tile",
+   "file": "third-party/truchet-tile.fs",
+   "origin": "third-party",
+   "credit": "pjkarlik",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Truchet Tile.fs)",
+   "description": "Creates a Truchet Tile pattern",
+   "categories": [
+    "Geometry"
+   ]
+  },
+  {
+   "id": "glslop-5sa9tm7i",
+   "name": "Vesica Tunnel",
+   "file": "third-party/glslop-5sa9tm7i.fs",
+   "origin": "third-party",
+   "credit": "lightbrush (glslop.com)",
+   "license": "CC0-1.0",
+   "source": "https://glslop.com/api/v1/shaders/5sa9tm7i",
+   "description": "Flower-of-life circle lattice breathing through a log-polar tunnel, phase-iridescent linework on void. Seamless loop.",
+   "categories": []
+  },
+  {
+   "id": "vu-meter",
+   "name": "VU Meter",
+   "file": "third-party/vu-meter.fs",
+   "origin": "third-party",
+   "credit": "VIDVOX",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/VU Meter.fs)",
+   "description": "",
+   "categories": [
+    "Geometry"
+   ]
+  },
+  {
+   "id": "worley-cells",
+   "name": "Worley Cells",
+   "file": "third-party/worley-cells.fs",
+   "origin": "third-party",
+   "credit": "VIDVOX",
+   "license": "MIT",
+   "source": "https://github.com/Vidvox/ISF-Files (ISF/Worley Cells.fs)",
+   "description": "Worley/Voronoi cellular noise generator.",
+   "categories": [
+    "Generator",
+    "Geometry",
+    "Noise"
+   ]
+  }
+ ]
+}

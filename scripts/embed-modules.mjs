@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const html = path.join(root, 'app', 'index.html');
-const MODULES = [['GENAI', 'genai.js'], ['EVAL', 'evaluate.js'], ['GENUI', 'gen-ui.js'], ['SURFX', 'surface.js'], ['SURFUI', 'surface-ui.js'], ['FLASH', 'flash.js'], ['ONSET', 'onset.js'], ['MODUI', 'mod-ui.js'], ['UX', 'ux.js']];
+const MODULES = [['GENAI', 'genai.js'], ['EVAL', 'evaluate.js'], ['GENUI', 'gen-ui.js'], ['SURFX', 'surface.js'], ['SURFUI', 'surface-ui.js'], ['FLASH', 'flash.js'], ['ONSET', 'onset.js'], ['MODUI', 'mod-ui.js'], ['ISFUI', 'isf-ui.js'], ['UX', 'ux.js']];
 let t = fs.readFileSync(html, 'utf8');
 const crlf = t.includes('\r\n'); if (crlf) t = t.replace(/\r\n/g, '\n');
 let next = t;
