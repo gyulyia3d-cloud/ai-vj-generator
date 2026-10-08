@@ -1,6 +1,6 @@
-# Do GitHub ao PNG, sem IA e sem terminal
+# Do GitHub ao PNG ou MP4, sem IA e sem terminal
 
-Este é o caminho da pessoa que baixou o repositório e não usa o Claude. Você só precisa de um navegador moderno (Chrome, Edge ou Firefox). O exemplo é uma parede de LED de 4500×800 com uma dobra no meio, o caso do aceite da fase 3; troque pelos números da sua superfície.
+Este é o caminho da pessoa que baixou o repositório e não usa nenhuma IA. Você só precisa de um navegador moderno (Chrome, Edge ou Firefox). O exemplo é uma parede de LED de 4500×800 com uma dobra no meio, o caso do aceite da fase 3; troque pelos números da sua superfície.
 
 ## 1. Abrir
 
@@ -50,6 +50,11 @@ O mesmo briefing sempre dá o mesmo projeto, e é idêntico ao que o `brief_to_p
 3. **Dividir em partes**: para sequências grandes, o ZIP é gravado a cada 250 MB, 500 MB, 1 GB ou 2 GB (`..._p01.zip`, `_p02`…). Extraia todas na mesma pasta; só a última leva o manifesto.
 4. **Renderizar e baixar ZIP**. O ZIP traz `ALPHA/NN_COMPOSICAO/NN_COMPOSICAO_000000.png`, a primeira imagem de prévia, `PROJECT_DATA/project.json`, o LEIAME e o `MANIFEST.json` (versão do motor, SHA-256 do projeto, canvas, fps, compassos, quadros, arquivos, partes e o resultado do teste de flash).
 
-## O que não existe (ainda)
+## 7. MP4, efeitos, cadeias e ISF
+- **MP4 (H.264)**, na aba Exportar, seção **Vídeo MP4**: gerado quadro a quadro, sem gravar a tela; usa a composição, a resolução, o FPS, os compassos e o intervalo de quadros escolhidos acima. Não guarda alpha (para transparência, PNG). Se o navegador recusar o tamanho, reduza a resolução. Pela linha de comando: `node scripts/render.mjs projeto.aivj.json --out saida --format mp4`.
+- **Camadas novas** (aba Camadas, "Adicionar"): **Efeito sobre as camadas abaixo** (`fx`: CRT, VHS, halftone, painel de LED, vidro, bloom…), **Cadeia** (`synth`: uma linha vira shader) e **Manchas** (`blobs`: acha e marca regiões da imagem abaixo). Efeitos e manchas só enxergam o que está embaixo deles na pilha: coloque-os acima do que devem mudar.
+- **Aba ISF**: biblioteca de 84 shaders (cada cartão mostra autoria e licença), **Importar arquivo .fs**, **Exportar** para o Resolume. No Resolume, copie os `.fs` para `Documentos\Resolume Arena\ISF`, arraste para uma camada e **automatize `phase` de 0 a 1 durante o loop**.
+- O botão **Gravar** (WebM ao vivo da viewport) é só rascunho: pode travar em composições pesadas. Para entregar, MP4 ou PNG.
 
-Arrastar as fatias na vista (hoje se corta por número), rotação de 90° nas fatias, WebM no export, exportar sequência por camada com o limitador de flash (só as composições são limitadas), e teste com áudio de verdade num navegador real (o detector é testado com espectros sintéticos e com um analisador simulado). Ver `ROADMAP.md`.
+## O que não existe (ainda)
+Arrastar as fatias na vista (hoje se corta por número), rotação de 90° nas fatias, limitador de flash por camada, efeitos com memória entre quadros (trilhas, slit-scan), identidade de manchas entre quadros e MIDI/OSC. A lista, em blocos pequenos, está em [PROXIMOS-PASSOS.md](PROXIMOS-PASSOS.md).

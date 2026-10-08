@@ -8,3 +8,5 @@ Thumbs.db
 .first-run
 __pycache__/
 *.pyc
+
+.claude/

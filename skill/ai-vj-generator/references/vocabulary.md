@@ -49,5 +49,5 @@ PNG sequence (alpha or RGB, layers, ZIP in parts, manifest) and **MP4 H.264** re
 ## How to use this at briefing time
 1. After the contract, list for each composition: ground / figure / structure / information / finish, naming the entry from this menu (not "some noise").
 2. Say in the contract **why** each one serves the concept (traceability rule).
-3. Check the cost: a composition at 4500x800 can afford roughly one heavy shader + one `fx` + the 2D layers at 30 fps on a laptop GPU (numbers in `docs/RELATORIO-V9-githubs3.md`).
+3. Check the cost: a composition at 4500x800 can afford roughly one heavy shader + one `fx` + the 2D layers at 30 fps on a laptop GPU (numbers in `docs/historico/RELATORIO-V9-githubs3.md`).
 4. If an entry is missing, say so and write it (recipe, `synth` chain or `fx` pass) instead of faking it.

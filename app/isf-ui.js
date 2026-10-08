@@ -173,7 +173,7 @@ function renderIsf() {
     <div class="row"><input type="search" id="isfQ" placeholder="${T3('Buscar: spiral, noise, laser…', 'Search: spiral, noise, laser…')}" value="${esc(ISFUI.q)}" aria-label="${T3('Buscar shader ISF', 'Search ISF shader')}" style="flex:1;min-width:120px"></div>
     <div class="row chips">${chips.map(([v, l]) => `<button data-isfk="${v}" aria-pressed="${k === v}">${l}</button>`).join('')}</div>
     ${list.map(x => `<article class="rcard" data-isf="${esc(x.id)}"><header><b>${esc(x.name)}</b><span class="tag ${x.origin === 'original' ? 'd' : 'f'}">${x.origin === 'original' ? 'AIVJ' : esc(x.license)}</span></header>
-      ${x.thumb ? `<img class="rcprev" src="${x.thumb}" alt="" width="160" style="display:block;max-width:100%;height:auto;border-radius:4px">` : ''}
+      ${x.thumb ? `<img class="rcprev" src="${x.thumb}" alt="" width="128" style="display:block;max-width:100%;height:auto;border-radius:4px">` : ''}
       <p>${esc(x.description || '')}</p>
       <dl class="kv"><dt>${T3('Autoria', 'Credit')}</dt><dd>${esc(x.credit)}</dd><dt>${T3('Licença', 'Licence')}</dt><dd>${esc(x.license)}</dd><dt>${T3('Origem', 'Source')}</dt><dd>${esc(x.source)}</dd></dl>
       <div class="row"><button data-isfadd="${esc(x.id)}">${T3('Adicionar à composição', 'Add to composition')}</button></div></article>`).join('') || `<p class="note">${T3('Nenhum shader com esse termo.', 'No shader matches.')}</p>`}`;

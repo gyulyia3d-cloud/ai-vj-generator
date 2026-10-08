@@ -1,49 +1,27 @@
-# Compatibilidade com qualquer IA (e com nenhuma)
+# Compatível com qualquer IA (ou nenhuma)
 
-*English summary: the engine never talks to an AI. Any model (or a person, or a web form) produces a JSON file that follows a published schema; the engine and the Python/Node scripts validate and render it. The AI is a replaceable layer.*
+O projeto não depende de uma IA específica. O que a IA faz é **conduzir o briefing e escrever um arquivo JSON**; quem desenha, anima, mede e exporta é o motor (`app/index.html`). Sem IA, a aba **Gerar** faz o mesmo caminho por regras.
 
 ## O contrato
+Entrada: um briefing (`skill/ai-vj-generator/schema/brief.schema.json`). Saída: um projeto (`schema/project.schema.json`, versão `ai-vj-generator/2`). Qualquer ferramenta que escreva JSON válido nesse esquema funciona; o validador (`scripts/validate_project.py`) diz o que corrigir, em texto simples.
 
-```text
- brief (JSON)  ──►  project (JSON, ai-vj-generator/2)  ──►  engine (HTML)  ──►  PNG sequence / video
- quem preenche:     quem escreve:                          quem renderiza:
- pessoa, formulário, IA ou                                 o motor; determinístico
- IA                 brief_to_project.py (sem IA)
-```
-
-| Peça | Arquivo | Para que serve |
-|---|---|---|
-| Esquema do brief | `skill/ai-vj-generator/schema/brief.schema.json` | o que perguntar e em que formato |
-| Esquema do projeto | `skill/ai-vj-generator/schema/project.schema.json` | forma do JSON que o motor lê |
-| Regras profundas | `scripts/validate_project.py` | parâmetros, GLSL, áudio, contrato, superfície, ofício |
-| Validador sem dependências | `scripts/schema_check.py` | confere o esquema sem `pip install` |
-| Perguntas | `scripts/brief_check.py` | nota 0-100 e as próximas 4 perguntas |
-| Geração sem IA | `scripts/brief_to_project.py` | brief → projeto válido |
-| Instruções portáteis | `portable/PROMPT.md` | o que qualquer IA precisa saber, em um arquivo |
-
-## Como ligar cada ferramenta
-
+## Como cada ferramenta carrega as instruções
 | Ferramenta | Como |
 |---|---|
-| **Claude Code** | `install.sh`/`install.ps1` copia a skill; `/vj`, `/vj-reference`, `/vj-critique` |
-| **Codex / agentes que leem `AGENTS.md`** | abra o repositório; o `AGENTS.md` da raiz aponta para `PROMPT.md` e lista os comandos |
-| **Gemini CLI** | copie o `AGENTS.md` como `GEMINI.md` (mesmo conteúdo) |
-| **ChatGPT / Gemini / Claude no navegador** | cole `PROMPT.md` na primeira mensagem; peça o brief; cole de volta o JSON gerado e rode `schema_check.py` e `validate_project.py` na sua máquina |
-| **Modelo local (Ollama, LM Studio)** | igual ao anterior; modelos pequenos funcionam melhor partindo do projeto gerado por `brief_to_project.py` e pedindo só edições |
-| **Nenhuma IA** | caminho C do `QUICKSTART.md` |
+| ChatGPT, Gemini (app), Claude (chat), Mistral, qualquer chat | cole `skill/ai-vj-generator/portable/PROMPT.md` como primeira mensagem; anexe `schema/project.schema.json` e `references/project-schema.md` se o chat aceitar arquivos |
+| Custom GPT, Gem, Project | use o `PROMPT.md` como instrução do sistema e suba `references/` como conhecimento |
+| Codex, Cursor, Windsurf, Aider e outros agentes de código | leem o `AGENTS.md` da raiz, que aponta para o `PROMPT.md` |
+| Gemini CLI | lê o `GEMINI.md` da raiz |
+| Claude Code | lê o `CLAUDE.md` da raiz, ou instale os comandos `/vj` (`adapters/claude/INSTALL.md`) |
+| Modelos locais (Ollama, LM Studio) | `PROMPT.md` como mensagem de sistema; modelos pequenos costumam errar o esquema: gere com a aba **Gerar** e peça a eles só ajustes |
+| Nenhuma IA | aba **Gerar** do motor, ou `brief_to_project.py` (Caminho A e C do [QUICKSTART](QUICKSTART.md)) |
 
-## Regras que mantêm tudo compatível
+## O que muda com ou sem ferramentas
+- **Com acesso a arquivos e terminal:** a IA roda `brief_check.py`, `palette.py`, `validate_project.py`, `contact_sheet.mjs` e `render.mjs`, olha as imagens e corrige.
+- **Só chat:** ela escreve o JSON e a checklist do fim do `PROMPT.md`; diz com honestidade que não renderizou; você abre o JSON no motor e confere.
 
-1. **A IA nunca está no loop de render.** Ela cria ou altera o JSON; o motor executa.
-2. **O JSON é a única fonte da verdade.** O HTML é só visualizador e controlador.
-3. **Tudo é validável por script**, sem rede e sem serviço externo.
-4. **Cada IA recebe o mesmo `PROMPT.md`**, então os resultados são comparáveis (útil para testar modelos).
-5. **Exceções são declaradas** (`audio.strategy`, `layerBudget`), não implícitas.
-6. **Privacidade:** nada do que você anexa é enviado a lugar nenhum pelo motor; o que vai para a IA é o que você cola nela.
+## Regras que valem para todas
+Determinismo (sem `Math.random` nem relógio), loops que fecham em compassos inteiros, todo shader lê áudio (a menos que o contrato declare `audio.strategy: none` com motivo), referências viram princípios e nunca cópias, nada de shader sem licença, e nunca afirmar que viu um render que não viu. Estão no `PROMPT.md` e são testadas em `node scripts/check.mjs`.
 
-## Medir uma IA nova (10 minutos)
-
-1. Dê o `PROMPT.md` e o brief `examples/briefs/led-wall.brief.json` em texto.
-2. Peça o projeto JSON. Rode `schema_check.py` e `validate_project.py`.
-3. Abra no motor, gere a folha de contato e olhe.
-Critérios: 0 erros no validador; contrato específico (não genérico); hierarquia (um herói, um respiro); loop fecha; você aprova o que vê.
+## Para quem mantém o repositório
+O texto-fonte é **um só**: `skill/ai-vj-generator/portable/PROMPT.md`. `AGENTS.md`, `GEMINI.md` e `CLAUDE.md` são ponteiros curtos; os comandos do Claude ficam em `adapters/claude/skills/` e não são necessários para as outras ferramentas. A skill completa (`SKILL.md` e `references/`) é Markdown comum: qualquer IA pode lê-la por demanda.

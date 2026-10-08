@@ -2,7 +2,7 @@
 // Verificações rápidas antes de commit/release: node scripts/check.mjs
 // 1. sintaxe do JS do motor  2. skill/assets/engine.html idêntico a app/index.html
 // 3. exemplos com forma válida e só tipos de camada conhecidos  4. frontmatter da skill
-import { readFile, writeFile, readdir } from 'node:fs/promises';
+import { readFile, writeFile, readdir, rm } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
@@ -49,12 +49,25 @@ for (const dir of [join(ROOT, 'examples'), join(SKILL, 'assets', 'examples')]) {
 // cada briefing começa do zero: o motor não gera nada sozinho e a skill não carrega exemplos
 !/composeFromBrief|EXAMPLE_BRIEF/.test(html) ? ok('motor sem geração própria (sem composeFromBrief/EXEMPLO)') : bad('o motor ainda tem geração por regras ou exemplo embutido');
 try { await readdir(join(SKILL, 'assets', 'examples')); bad('skill/assets/examples existe: a skill não deve carregar exemplos'); } catch { ok('skill sem exemplos prontos'); }
-for (const d of (await readdir(join(ROOT, 'skill'), { withFileTypes: true })).filter(e => e.isDirectory())) {
-  try {
-    const t = await readFile(join(ROOT, 'skill', d.name, 'SKILL.md'), 'utf8');
-    const f = t.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] || '';
-    f.includes('name: ' + d.name) && /description:\s*\S/.test(f) ? ok(`skill "${d.name}" com frontmatter`) : bad(`skill "${d.name}": frontmatter incompleto`);
-  } catch { bad(`skill/${d.name}/SKILL.md ausente`); }
+for (const base of [join(ROOT, 'skill'), join(ROOT, 'adapters', 'claude', 'skills')]) {
+  for (const d of (await readdir(base, { withFileTypes: true })).filter(e => e.isDirectory())) {
+    try {
+      const t = await readFile(join(base, d.name, 'SKILL.md'), 'utf8');
+      const f = t.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] || '';
+      f.includes('name: ' + d.name) && /description:\s*\S/.test(f) ? ok(`skill "${d.name}" com frontmatter`) : bad(`skill "${d.name}": frontmatter incompleto`);
+    } catch { bad(`${d.name}/SKILL.md ausente`); }
+  }
+}
+/* instruções para qualquer IA: a fonte é uma só e os ponteiros da raiz apontam para ela */
+{
+  const prompt = await readFile(join(SKILL, 'portable', 'PROMPT.md'), 'utf8');
+  prompt.includes('Hard rules') && prompt.includes('references/vocabulary.md') ? ok('PROMPT.md portátil com regras e vocabulário') : bad('PROMPT.md portátil incompleto');
+  for (const f of ['AGENTS.md', 'GEMINI.md', 'CLAUDE.md']) { const t = await readFile(join(ROOT, f), 'utf8'); t.includes('portable/PROMPT.md') ? ok(f + ' aponta para o PROMPT.md') : bad(f + ' não aponta para skill/ai-vj-generator/portable/PROMPT.md'); }
+  /* o instalador do Claude acha o repositório pela raiz e instala a skill principal e os 4 comandos */
+  const tmpSk = join(tmpdir(), 'aivj-skills-' + process.pid);
+  try { execFileSync('sh', [join(ROOT, 'adapters', 'claude', 'install.sh')], { stdio: 'pipe', env: { ...process.env, CLAUDE_SKILLS_DIR: tmpSk } }); const got = (await readdir(tmpSk)).sort().join(','); got === 'ai-vj-generator,how-to-use,vj,vj-critique,vj-reference' ? ok('instalador do Claude instala a skill e os 4 comandos') : bad('instalador do Claude instalou: ' + got); }
+  catch (e) { process.platform === 'win32' && /ENOENT/.test(String(e.message)) ? ok('instalador do Claude: pulado (sem sh no PATH)') : bad('instalador do Claude falhou: ' + String(e.stderr || e.message).slice(0, 160)); }
+  finally { await rm(tmpSk, { recursive: true, force: true }).catch(() => {}); }
 }
 for (const f of ['briefing-flow.md', 'attachments.md', 'interview.md', 'repertoire/index.md']) {
   try { await readFile(join(SKILL, 'references', f), 'utf8'); ok('referência ' + f); } catch { bad('referência ausente: ' + f); }

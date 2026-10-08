@@ -1,124 +1,82 @@
 # AI VJ Generator
 
-**Skill para o Claude + motor de composição generativa para VJs.** Você digita `/vj`, descreve o set e anexa referências; o Claude analisa o briefing, as imagens e os vídeos, conversa com você, e cria do zero um sistema visual em camadas, aberto num gerador ao vivo pronto para projetar, gravar ou exportar em PNG com alpha para o Resolume. Cada projeto nasce do seu briefing; a demonstração mostra a biblioteca original.
+**Motor de composição generativa para VJs, com instruções que qualquer IA entende (ou nenhuma).** Você descreve o set (espaço, música, clima) para uma IA, preenche um briefing no navegador, ou usa o gerador sem IA. O resultado é **um arquivo JSON** que o motor abre, mostra ao vivo e exporta em **PNG sequence (com alpha), MP4 (H.264) ou shaders ISF** para o Resolume, TouchDesigner, MadMapper e outros. Mesmo projeto + mesma semente = mesmos quadros, e todo loop fecha.
 
-*Claude skill + generative composition engine for VJs. Describe the set, the space and the music; Claude interviews you, sets the art direction and hands you a live generator with 5 layered compositions, ready to project, record or export as alpha PNG sequences for Resolume. English summary below.*
+*Generative composition engine for VJs, with instructions any AI can follow (or none at all). Describe the venue, the music and the mood to an AI, fill a brief in the browser, or use the AI-free generator; get one JSON file the engine opens, previews and exports as alpha PNG sequences, MP4 or ISF shaders. English summary at the end.*
 
-![Como instalar — mapa mental](docs/install-mindmap.svg)
+**Demonstração online:** <https://gyulyia3d-cloud.github.io/ai-vj-generator/> · **Documentação:** [docs/README.md](docs/README.md) · **Começo rápido:** [docs/QUICKSTART.md](docs/QUICKSTART.md) · **O que falta:** [docs/PROXIMOS-PASSOS.md](docs/PROXIMOS-PASSOS.md)
 
-**Demonstração online:** <https://gyulyia3d-cloud.github.io/ai-vj-generator/> (abre o motor no navegador; ver `.github/workflows/pages.yml`).
+## Comece em 1 minuto (sem instalar nada)
 
-**Documentação:** [docs/README.md](docs/README.md) · começo rápido (com Claude, outra IA ou sem IA): [docs/QUICKSTART.md](docs/QUICKSTART.md) · roadmap: [docs/ROADMAP.md](docs/ROADMAP.md)
+1. Baixe o repositório (**Code → Download ZIP**) e descompacte.
+2. Dê dois cliques em `app/index.html` (Chrome ou Edge).
+3. Clique em **Gerar sem IA**, preencha o briefing, escolha o preset da sua superfície (por exemplo "Parede LED em L · 4500×800") e **Gerar e abrir**.
+4. Ajuste, avalie, exporte na aba **Exportar** (PNG sequence ou MP4).
 
-## Instalação em um comando
+Passo a passo ilustrado em texto: [docs/GUIA-SEM-IA.md](docs/GUIA-SEM-IA.md). Para microfone e janela de saída o navegador exige `http://`: `node scripts/serve.mjs` e abra `http://localhost:5173`.
 
-macOS / Linux:
+## Use com a IA que você já tem
 
-```bash
-git clone https://github.com/gyulyia3d-cloud/ai-vj-generator.git && cd ai-vj-generator && sh install.sh
-```
+O núcleo é **um texto**: [`skill/ai-vj-generator/portable/PROMPT.md`](skill/ai-vj-generator/portable/PROMPT.md). Cole como primeira mensagem (ChatGPT, Gemini, Claude, um modelo local) ou aponte a ferramenta para o `AGENTS.md` (Codex, Cursor e outros), `GEMINI.md` ou `CLAUDE.md` da raiz, que apontam para ele. A IA conduz o briefing, escreve o projeto JSON, e você o abre no motor. Detalhes por ferramenta: [adapters/README.md](adapters/README.md) e [docs/AI-AGNOSTIC.md](docs/AI-AGNOSTIC.md). Quem usa o Claude Code pode instalar a skill com comandos `/vj`: [adapters/claude/INSTALL.md](adapters/claude/INSTALL.md).
 
-Windows (PowerShell):
-
-```powershell
-git clone https://github.com/gyulyia3d-cloud/ai-vj-generator.git; cd ai-vj-generator; powershell -ExecutionPolicy Bypass -File install.ps1
-```
-
-O instalador copia as 4 skills de `skill/` para `~/.claude/skills/`. Reinicie o Claude Code e digite: `/vj set de techno industrial, LED 5120×500, 132 BPM, anexei duas referências`. Guia completo, incluindo claude.ai: [INSTALL.md](INSTALL.md).
-
-**Sem o Claude:** abra `app/index.html` no navegador (ou rode `node scripts/serve.mjs` e acesse `http://localhost:5173`). A interface abre em "Aguardando briefing": carregue um projeto (do Claude, de outra IA, ou gerado sem IA pelo [caminho C](docs/QUICKSTART.md)) ou clique em **Abrir demonstração (sem IA)** para ver a biblioteca original de camadas funcionando.
-
-## O que ele faz
+## O que o motor sabe fazer
 
 | | |
 |---|---|
-| **Comandos `/`** | `/vj <briefing>` conduz tudo do zero; `/vj-reference` só analisa anexos; `/vj-critique` avalia um projeto pronto e propõe mutações; `/how-to-use` explica tudo (EN e PT-BR) e roda sozinho no primeiro uso. |
-| **Entrevista no chat** | Perguntas em rodadas de até 4, só as que mudam a solução e ancoradas no que foi medido nos anexos. Só o técnico tem padrão; paleta, conceito e composições vêm do briefing. |
-| **Anexos analisados** | Imagens e vídeos viram medições (paleta em OKLab, peso visual, simetria, periodicidade, cortes, movimento de câmera) mais a leitura do Claude, e então um princípio, nunca uma cópia. Requer `pip install pillow numpy`; vídeo também precisa de ffmpeg. |
-| **Gramática visual** | O briefing vira 9 decisões: forma, movimento, ritmo, cor, densidade, profundidade, textura, transição, relação sonora. |
-| **3 a 5 composições distintas** | Hipóteses derivadas do tema, cada uma com regra, princípio de animação, técnica e hierarquia próprios, e nomes tirados do briefing. Sem lista padrão. |
-| **Repertório** | História da arte, design suíço, cor, animação, tipografia cinética, arte generativa, padrões com receitas GLSL, artistas e estúdios, bibliotecas e licenças, em formato referência → princípio → parâmetro. |
-| **Validação antes de entregar** | `validate_project.py` pega parâmetro com erro de digitação, FPS inválido, erros de GLSL ES 1.00 e sinais de template (nomes genéricos, paleta pronta, exemplo copiado). |
-| **Camadas por composição** | Liga/desliga (teclas 0–9), solo, reordenar, duplicar, renomear, opacidade, blend, copiar e colar parâmetros, explosão 3D da pilha. |
-| **Parâmetros** | Slider + campo numérico em tudo: transform, aparência, movimento (velocidade, fase, divisão 1/1…1/16), áudio, gerador. |
-| **Camadas fixas** | SHADER (GLSL editável), IMAGEM, VÍDEO, FORMA e TEXTO (fonte importável, tracking, entrelinha, contorno, glow, animação). |
-| **Paredes e dobras** | `canvas.folds` divide o mapa em paredes (L, U, cubo). Guia vermelho, calha, geradores medidos a partir da dobra e aviso quando texto cruza a calha. |
-| **Camada de código** | Quando nenhum gerador expressa a ideia, a skill escreve o corpo de `draw(c, K)`: roda no relógio determinístico do motor, com kit de tipo em pixel-bloco, símbolos, glitch em bloco, máscaras de logo e variáveis que viram sliders. Filtro de segurança e autorização por projeto (não é uma caixa de areia). |
-| **Geradores de parede** | `pixeltext`, `symbols`, `hazard`, `blocks`, `logo` (fit, mosaico, meio-tom, fatiado, degraus, fragmento). |
-| **Branco α** | `palette.mode: white-alpha`: figura 100%, apoio 72%, campo 43%; tudo sai branco com opacidade e a cor se escolhe no Resolume. |
-| **Arquivos embutidos** | Logos, imagens e fontes viajam dentro do HTML e do JSON (`make-artifact --assets pasta`). `pasta/logos/` vira máscara branca com alpha. |
-| **QA headless** | `scripts/contact_sheet.mjs` abre o HTML num Chrome ou Edge sem janela, grava a folha de contato de cada composição (dobras marcadas) e imprime a validação. |
-| **Tempo** | BPM global com tap, loop em compassos inteiros, sempre seamless, modos loop / ping-pong / reverse / random / phase / audio / manual, pausa e scrub quadro a quadro. |
-| **Áudio** | Reatividade on/off; microfone ou arquivo; bass / mid / high / rms por camada, com suavização. |
-| **Canvas** | Qualquer proporção: 16:9, 9:16, 32:9, 5120×500 para paredes em L. A viewport se adapta, com safe area, grade, zoom, 100% e displays recortados. |
-| **Export** | PNG sequence com alpha (composição, por camada ou uma camada), branco α para colorir no software, **MP4 H.264 quadro a quadro** (aba Exportar ou `node scripts/render.mjs`, sem gravar a tela), janela de saída para o 2º monitor, project.json reproduzível. O botão Gravar (WebM ao vivo) é só rascunho. |
-| **Efeitos sobre a pilha (`fx`)** | 22 efeitos que leem as camadas abaixo: CRT, VHS, halftone, dither, bordas, pintura, painel de LED, vidro líquido, bloom, glitch, espelho… (`references/fx-layer.md`). |
-| **Cadeia (`synth`)** | uma linha vira shader: `osc(18,1,0.6).kaleid(6).modulate(noise(3,1),0.1).tint()` (`references/synth-chain.md`). |
-| **ISF** | aba ISF: 84 geradores (11 originais, MIT e CC0 com autoria), importar `.fs`, exportar camadas para o Resolume. |
-| **STANDARD** | O motor de camadas original (organismo em filotaxia, estrutura áurea, medição, dados, HUD, evento, pós), portado para relógio por quadros. |
-| **Validação** | ERROR / WARNING / OPTIMIZATION antes de exportar: mídia ausente, shader quebrado, loop que não fecha, moiré em LED, canvas grande demais. |
+| **Camadas** | 33 tipos: campos de shader (GLSL), cadeias de uma linha (`synth`), geradores 2D (formas, linhas, túnel, instrumentos, dados, HUD), tipografia, imagem, vídeo, objeto 3D, parallax, nuvem de pontos, flow, receitas matemáticas, camada de código. |
+| **`fx`: efeitos sobre a pilha** | 22 efeitos que leem as camadas abaixo: CRT, VHS, halftone, hachura, dither, bordas, Kuwahara, painel de LED, vidro líquido, bloom, aberração, espelho, polar, glitch… |
+| **`blobs`** | acha regiões da imagem abaixo (brilho, contraste, cor, zona) e as marca com caixas, números e ligações. |
+| **ISF** | aba com 84 geradores (11 originais, MIT e CC0 com autoria), importar `.fs`, exportar camadas para o Resolume. |
+| **Áudio** | microfone, arquivo ou fonte de teste; bandas, golpes, kick e onset com histórico, andamento por Kalman; `layer.mod` liga qualquer número a qualquer fonte. Sem áudio, tudo reage ao BPM de forma determinística. |
+| **Movimento** | perfis de mola, 13 formas de LFO, 16 transições, easings Penner. |
+| **Superfície** | 12 presets de LED, telas e torres, dobras, pixel map CSV/PNG, fatias em XML do Resolume (Advanced Output) com padrão de teste, avisos de legibilidade. |
+| **Saída** | PNG sequence (alpha, RGB, branco-α, por camada, ZIP em partes, manifesto SHA-256), **MP4 H.264 quadro a quadro** (aba ou `node scripts/render.mjs`), segurança de flash (WCAG 2.3.1) com limitador. |
+| **Qualidade** | validador, avaliador estrutural com nota, folha de contato, teste de loop, censo de sementes, dezenas de áreas de teste em `node scripts/check.mjs`. |
 
-## Engenharia criativa, em uma frase
+## Princípio de engenharia
 
-Cada camada é uma **função pura de (parâmetros, número do quadro)**: o relógio conta quadros, não milissegundos, e toda aleatoriedade sai de um hash com seed. Por isso o mesmo código desenha o preview, o PNG e a gravação, o último quadro encaixa no primeiro, e um `project.json` reproduz a peça inteira em qualquer máquina.
-
-## Estrutura
-
-```
-ai-vj-generator/
-├── app/index.html               motor completo, um arquivo, sem build
-├── skill/                       as skills (instaladas juntas)
-│   ├── ai-vj-generator/         a skill principal
-│   │   ├── SKILL.md
-│   │   ├── references/          fluxo, entrevista, anexos, direção de arte, repertório, schema, saídas, entrega
-│   │   ├── scripts/             analyze_image · analyze_video · validate_project · make_artifact · contact_sheet · assets
-│   │   └── assets/engine.html   cópia do app (a skill não carrega exemplos)
-│   ├── vj/                      comando /vj
-│   ├── vj-reference/            comando /vj-reference
-│   └── vj-critique/             comando /vj-critique
-├── examples/                    dois projetos só para mostrar o formato do arquivo
-├── scripts/                     serve · build · sync-skill · check
-├── docs/                        análise do prompt, apresentação, mapa de instalação
-├── install.sh · install.ps1
-└── INSTALL.md · CHANGELOG.md · CONTRIBUTING.md · LICENSE
-```
+Cada camada é uma **função pura de (parâmetros, número do quadro)**: o relógio conta quadros, não milissegundos, e toda aleatoriedade sai de um hash com semente. Por isso o mesmo código desenha o preview, o PNG e o MP4, o último quadro encaixa no primeiro, e um render pode ser repetido e comparado. Nunca há gravação de tela.
 
 ## Transporte de sinal, sem promessa falsa
 
-| Destino | Status |
+| Destino | Estado |
 |---|---|
-| Tela cheia, 2º monitor (HDMI, DisplayPort) | Suportado |
-| PNG alpha, WebM, JSON | Suportado |
-| Resolume, TouchDesigner, Notch, MadMapper | Exportável (PNG → Alley DXV3 α, Movie File In TOP) |
-| NDI | Requer bridge: janela de saída → OBS → plugin DistroAV |
-| Spout / Syphon | Requer bridge: OBS + plugin, ou TouchDesigner Web Render TOP |
-| SDI | Requer bridge: placa Blackmagic / AJA |
-| OSC, MIDI, WebSocket | Conceitual (roadmap) |
+| Tela cheia e segundo monitor | Suportado |
+| PNG sequence com alpha, MP4, JSON, ISF | Suportado |
+| Resolume, TouchDesigner, Notch, MadMapper | Exportável (PNG ou MP4, ISF, XML de saída) |
+| NDI, Spout, Syphon, SDI | Requer ponte (OBS + plugin, ou placa de captura): documentado, não nativo |
+| OSC, MIDI | Planejado (Fase 5) |
+
+## Estrutura do repositório
+
+```text
+app/                    motor: index.html (um arquivo) + módulos (fx, synth, blobs, isf-ui, mp4, …)
+skill/ai-vj-generator/  conteúdo para qualquer IA: portable/PROMPT.md, SKILL.md (roteador), references/,
+                        scripts/ (validador, geradores, testes), schema/, isf-library/, assets/engine.html
+adapters/               como cada ferramenta carrega as instruções (README.md); claude/ tem o instalador
+examples/               briefs, galeria de 8 projetos e 24 composições com notas
+scripts/                serve · build · render · bench · check · embed-* · sync-skill
+docs/                   guias e roadmap; historico/ guarda os relatórios antigos
+AGENTS.md · GEMINI.md · CLAUDE.md   ponteiros para o PROMPT.md, na raiz para as ferramentas acharem
+```
 
 ## Desenvolvimento
 
 ```bash
-node scripts/serve.mjs          # servidor local em http://localhost:5173
-node scripts/sync-skill.mjs     # depois de editar app/index.html
-node scripts/check.mjs          # sintaxe, sincronia da skill, exemplos, frontmatter
-node scripts/build.mjs examples/noite-filotaxia-1080p.json   # HTML com projeto embutido em dist/
+node scripts/serve.mjs                               # http://localhost:5173
+node scripts/embed-modules.mjs && node scripts/build.mjs && node scripts/sync-skill.mjs   # depois de editar app/
+node scripts/check.mjs                               # tudo; precisa terminar em "Tudo certo."
+node scripts/render.mjs projeto.aivj.json --out saida --format mp4
+node scripts/bench.mjs projeto.aivj.json             # custo por camada
 ```
-
-Sem dependências de npm. A única biblioteca externa é o JSZip (cdnjs, com SRI), carregado só para o export.
-
-## Roadmap
-
-- Controle por MIDI (Web MIDI) e OSC via bridge local
-- Export direto em WebCodecs (H.264 / VP9) quando o navegador suportar alpha
-- Mais geradores: reaction-diffusion, feedback, SDF 3D
-- Editor de timeline para sequenciar as composições no set
+Sem dependências de npm; a única biblioteca externa é o JSZip (cdnjs, com SRI), usada só no ZIP de PNG. Regras do repositório: [AGENTS.md](AGENTS.md) e [CONTRIBUTING.md](CONTRIBUTING.md). Histórico: [CHANGELOG.md](CHANGELOG.md).
 
 ## English summary
 
-AI VJ Generator is an open-source Claude skill plus a single-file browser engine. The skill interviews you about the venue (LED, projection, mapping, multi-screen), the mood and the music, then writes a PROJECT JSON: a visual grammar and five compositions, each with its own hero generator and independent layers. The engine renders it live with per-layer parameters (slider and numeric input), BPM sync, optional audio reactivity, an exploded 3D layer view, and frame-exact seamless loops. Export alpha PNG sequences (per composition or per layer) for Resolume via Alley/DXV3, record WebM, or open output windows. NDI, Spout and Syphon are documented as bridge workflows, never faked. Install with `sh install.sh` (or `install.ps1` on Windows) and ask Claude for visuals.
+AI VJ Generator is an open-source, single-file browser engine for VJ content plus a plain-text instruction pack that any AI can follow (`skill/ai-vj-generator/portable/PROMPT.md`; or no AI at all through the in-browser **Gerar** tab). It produces one JSON project and renders deterministic loops: alpha PNG sequences, MP4 (H.264, frame by frame, no screen capture) and ISF shaders for Resolume and similar tools. Layers include GLSL fields, one-line `synth` chains, stack-reading `fx` effects and `blobs` detection, an 84-shader ISF library with credits and licences, audio-reactive modulation, surface presets with Resolume slice XML, and flash-safety tools. Start by opening `app/index.html`; see `docs/QUICKSTART.md`.
 
 ## Créditos
 
-Criado por **GYULYIA** — Giulia Ribeiro, artista de visuais em tempo real, São Paulo. Design system GYULYIA (monocromático, Martian Mono). A linguagem do modo STANDARD estuda o Graphic Realism; todos os glifos, códigos e pictogramas são originais.
+Criado por **GYULYIA** (Giulia Ribeiro), artista de visuais em tempo real, São Paulo. Design system GYULYIA (monocromático, Martian Mono). A linguagem do modo STANDARD estuda o Graphic Realism; glifos, códigos e pictogramas são originais. Shaders ISF de terceiros mantêm autoria e licença (`skill/ai-vj-generator/isf-library/README.md`).
 
 [gyulyia.com](https://gyulyia.com) · [@gyulyia](https://instagram.com/gyulyia) · Licença [MIT](LICENSE)

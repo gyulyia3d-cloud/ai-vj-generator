@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.0.0 (08/10/2026) · Organização, compatível com qualquer IA
+
+- **Fonte única das instruções**: `skill/ai-vj-generator/portable/PROMPT.md` reescrito (v3.0) com todo o vocabulário atual (33 camadas, `fx`, `synth`, `blobs`, ISF, MP4, 16 transições, LFOs de atenção). `AGENTS.md`, `GEMINI.md` e `CLAUDE.md` na raiz são ponteiros curtos.
+- **`adapters/`**: o que era específico do Claude Code saiu da raiz e do `skill/`: instaladores (`install.sh`, `install.ps1`, agora acham o repositório pela raiz), `INSTALL.md` e os comandos `/vj`, `/vj-reference`, `/vj-critique`, `/how-to-use` em `adapters/claude/`. `adapters/README.md` diz como cada ferramenta carrega as instruções.
+- **Documentação regenerada**: `README.md`, `docs/README.md`, `QUICKSTART.md`, `AI-AGNOSTIC.md`, `GUIA-SEM-IA.md` (MP4, camadas novas, ISF), `ROADMAP.md`, `PROXIMOS-PASSOS.md`, `CONTRIBUTING.md`, `AGENTS.md`, `docs/RELEASE-3.0.0.md`. Os relatórios antigos (V7, V8, V9, análises, apresentação) foram para `docs/historico/`.
+- **Menos peso**: miniaturas da biblioteca ISF em WebP 128×72 (de 1315 KB para 1254 KB no motor); `.claude/` fora do versionamento.
+- Os projetos `ai-vj-generator/2` continuam abrindo sem mudança. Quem usa o Claude Code roda `sh adapters/claude/install.sh` (ou o `.ps1`).
+
 ## 2.8.0 (08/10/2026) · Camada blobs
 
 - **Camada `blobs`** (`app/blobs.js`): acha regiões na imagem das camadas abaixo por brilho, contraste, cor (matiz alvo) ou zona de luminância, numera por área e desenha caixas, cruz, valores e ligações. Determinística, fecha o loop (`blobs_check.mjs`). Sem identidade entre quadros: isso pede o `fx` com histórico.

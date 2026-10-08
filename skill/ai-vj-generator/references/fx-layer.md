@@ -10,7 +10,7 @@ A shader layer draws from nothing. An `fx` layer takes everything painted **belo
 ## Rules
 - **Order is meaning.** The effect only sees layers underneath. Put it above the layers it must change and below the ones it must leave alone (type and data usually stay above).
 - With `opacity` 1 and `blend` `normal` the effect **replaces** the image below (the result already contains it). With less opacity it mixes with it. `mix` blends the effect with its own input, which is the usual way to dial it down.
-- One or two per composition. Two heavy passes at 4500x800 cost frames; measure with `node scripts/bench.mjs` (the cost table is in `docs/RELATORIO-V9-githubs3.md`).
+- One or two per composition. Two heavy passes at 4500x800 cost frames; measure with `node scripts/bench.mjs` (the cost table is in `docs/historico/RELATORIO-V9-githubs3.md`).
 - The loop closes: time enters only through the loop phase (`uPh`) and integer steps per loop. `fx_check.mjs` proves each preset closes the loop, changes the image, returns the input at `mix` 0 and does not flip the texture.
 - Alpha is preserved, so an `fx` works in alpha exports too (a CRT turns the transparent border black on purpose: for alpha pieces prefer PIXELATE, DITHER, GRADE E VINHETA, BLOOM, ABERRAÇÃO CROMÁTICA).
 - On LED walls: prefer `PAINEL DE LED`, `DITHER`, `GRADE E VINHETA`, `MAPA DE GRADIENTE`; avoid `CRT`, `VHS` and anything finer than the pixel pitch (it aliases).

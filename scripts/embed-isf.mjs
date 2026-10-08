@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Embute a biblioteca ISF (skill/ai-vj-generator/isf-library: manifest.json + .fs + thumbs/*.jpg) em app/index.html entre /*__ISFLIB_START__*/ e /*__ISFLIB_END__*/.
+// Embute a biblioteca ISF (skill/ai-vj-generator/isf-library: manifest.json + .fs + thumbs/*.webp) em app/index.html entre /*__ISFLIB_START__*/ e /*__ISFLIB_END__*/.
 // Uso: node scripts/embed-isf.mjs [--check]
 import fs from 'node:fs';
 import path from 'node:path';
@@ -12,8 +12,8 @@ const man = JSON.parse(fs.readFileSync(path.join(dir, 'manifest.json'), 'utf8'))
 const items = man.items.map(it => {
   const o = { id: it.id, name: it.name, origin: it.origin, credit: it.credit, license: it.license, source: it.source, description: it.description,
     src: fs.readFileSync(path.join(dir, it.file), 'utf8').replace(/\r\n/g, '\n') };
-  const th = path.join(dir, 'thumbs', it.id + '.jpg');
-  if (fs.existsSync(th)) o.thumb = 'data:image/jpeg;base64,' + fs.readFileSync(th).toString('base64');
+  const th = path.join(dir, 'thumbs', it.id + '.webp');
+  if (fs.existsSync(th)) o.thumb = 'data:image/webp;base64,' + fs.readFileSync(th).toString('base64');
   return o;
 });
 const body = JSON.stringify(items).split('</').join('<\\/');

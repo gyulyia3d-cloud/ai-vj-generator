@@ -1,6 +1,6 @@
-# Roadmap oficial (v9)
+# Roadmap oficial (v10, motor 3.0.0)
 
-Este é o roadmap em vigor. Ele substitui as ordens de prioridade de `RELATORIO-V8-roadmap.md` e consolida `RELATORIO-V7-githubs2.md`, o relatório do ChatGPT (`gpt-relatorio-v7`), o Deep Research e o "Resumo Executivo" (PDF). Os quatro documentos externos são lidos como **fonte de ideias**, não como plano: dois deles assumem equipes e orçamentos de empresa.
+Este é o roadmap em vigor. Ele substitui as ordens de prioridade de `historico/RELATORIO-V8-roadmap.md` e consolida `historico/RELATORIO-V7-githubs2.md` e `historico/RELATORIO-V9-githubs3.md`, o relatório do ChatGPT (`gpt-relatorio-v7`), o Deep Research e o "Resumo Executivo" (PDF). Os quatro documentos externos são lidos como **fonte de ideias**, não como plano: dois deles assumem equipes e orçamentos de empresa.
 
 **Premissas (decididas pela autora, 07/10/2026)**
 - Projeto **open source, autodidata, feito por uma pessoa**: estrutura clara e documentação boa valem tanto quanto features.
@@ -12,10 +12,10 @@ Este é o roadmap em vigor. Ele substitui as ordens de prioridade de `RELATORIO-
 
 | Fase | Foco | Estado |
 |---|---|---|
-| **1** | Documentação, neutralidade de IA, briefing estruturado, direção de áudio e geração sem IA | **feita nesta versão** (itens abaixo) |
+| **1** | Documentação, neutralidade de IA, briefing estruturado, direção de áudio e geração sem IA | **feita**; neutralidade de ferramenta reforçada na 3.0 (`adapters/`, ponteiros na raiz) |
 | **2** | Nível artístico: composições bonitas, harmônicas e profissionais | **feita (2.4.0)**; falta o seu olhar na galeria (Gate 2) |
 | **3** | Audioreatividade estruturada, superfícies e aspect ratios, export PNG, UI/UX | **feita (2.5.0)**; faltam itens listados abaixo |
-| **4** | Otimizar render e processamento (compositor GPU, motor modular) | depois |
+| **4** | Render, processamento e memória entre quadros | **parcial**: camada `fx` (textura de entrada), MP4 e render por CLI feitos; decisão medida de **não** trocar o motor para WebGL2 agora (`historico/RELATORIO-V9-githubs3.md` §5). Falta `fx` com histórico, render paralelo e motor modular |
 | **5** | Integrações: MIDI, OSC, NDI (via OBS), MCP/Resolume, pixel maps, blueprints planos | depois |
 | **6** | Adiado sem data: anamorfismo, domo, 3D de evento, visão ao vivo, runtime | só com demanda real |
 

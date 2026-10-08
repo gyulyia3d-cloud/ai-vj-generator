@@ -32,4 +32,4 @@ DXV3 only through Resolume Alley (proprietary).
 `mp4_check.mjs` opens the file with `ffprobe`/`ffmpeg`: codec h264, size, frame count, frame rate, first frame not black and close to the PNG of the same frame, last frame different from the first (it animates), plus the box structure and the CLI.
 
 ## Cost model (why the render is fast)
-`node scripts/bench.mjs project.aivj.json` measures ms per frame by layer type on the export path. In the reference run most of the frame time is the encoder, not the layers; see `docs/RELATORIO-V9-githubs3.md`, section "Motor GPU / WebGL2".
+`node scripts/bench.mjs project.aivj.json` measures ms per frame by layer type on the export path. In the reference run most of the frame time is the encoder, not the layers; see `docs/historico/RELATORIO-V9-githubs3.md`, section "Motor GPU / WebGL2".
