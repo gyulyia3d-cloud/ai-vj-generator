@@ -1,0 +1,747 @@
+{
+ "version": 1,
+ "note": "Families group the engine's generators, recipes and GLSL modules by what they do in a composition. `python scripts/families.py check` proves the manifest matches the engine. Cost classes come from `node scripts/layer_cost.mjs --write` (ms per frame above an empty frame, 1920x1080 at half resolution, software rendering on the author's machine; low < 8, medium < 20, high >= 20). Items that need media, run your own code or are not a layer say `unmeasured`. Absolute numbers depend on the machine, the order does not. Everything here is the project's own code; ideas from other projects are concepts only (repo-analysis.md).",
+ "families": {
+  "ground": "the quiet matter everything else is read against",
+  "figure": "the single dominant thing a composition is about",
+  "structure": "grid, rhythm and texture that measure the figure",
+  "information": "type, instruments and data: what the viewer reads",
+  "finish": "the last pass: vignette, scanlines, dither, LED emulation",
+  "math": "equation-driven forms and recipes",
+  "noise": "GLSL noise toolbox",
+  "form": "GLSL distance fields, raymarching and spatial helpers",
+  "colour": "GLSL colour spaces and tone mapping",
+  "motion": "GLSL easing"
+ },
+ "generators": {
+  "bg": {
+   "family": "ground",
+   "role": "flat colour of the piece",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "low",
+   "maturity": "stable",
+   "note": "The quiet reference; grain only on screens, never on LED."
+  },
+  "shader": {
+   "family": "ground",
+   "role": "GLSL field: slow matter or a hero field",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "high",
+   "maturity": "stable",
+   "note": "Every shader reads the audio bus; keep fills low when it is a ground."
+  },
+  "sim": {
+   "family": "ground",
+   "role": "reaction-diffusion or ink, baked in a loop",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "high",
+   "maturity": "stable",
+   "note": "The first frame bakes the loop (about 1.4 s measured in headless software rendering; cached after that); raise `threshold` so it leaves empty space."
+  },
+  "flow": {
+   "family": "ground",
+   "role": "particles in a field",
+   "surfaces": [
+    "screen",
+    "projection",
+    "mapping"
+   ],
+   "cost": "medium",
+   "maturity": "stable",
+   "note": "Needs width of 2 or more to survive distance."
+  },
+  "organism": {
+   "family": "figure",
+   "role": "point-cloud form with spin and breath",
+   "surfaces": [
+    "screen",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "medium",
+   "maturity": "stable",
+   "note": "Dot of 2 or more; fine dust vanishes at distance."
+  },
+  "tunnel": {
+   "family": "figure",
+   "role": "concentric forms with perspective",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "medium",
+   "maturity": "stable",
+   "note": "The default hero for a wall; heavy stroke on LED."
+  },
+  "shape": {
+   "family": "figure",
+   "role": "single or repeated primitive",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "low",
+   "maturity": "stable",
+   "note": "The cleanest way to make one dominant figure."
+  },
+  "lines": {
+   "family": "figure",
+   "role": "stripe field, stepped or smooth",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "low",
+   "maturity": "stable",
+   "note": "Cover under 10% of the frame as a hero, or nothing is left to breathe."
+  },
+  "typewall": {
+   "family": "figure",
+   "role": "words as a wall",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "medium",
+   "maturity": "stable",
+   "note": "Exact words only."
+  },
+  "pixeltext": {
+   "family": "figure",
+   "role": "wall-aware pixel type",
+   "surfaces": [
+    "led",
+    "multi"
+   ],
+   "cost": "medium",
+   "maturity": "stable",
+   "note": "Respects fold gutters."
+  },
+  "symbols": {
+   "family": "figure",
+   "role": "wall-aware symbols",
+   "surfaces": [
+    "led",
+    "multi"
+   ],
+   "cost": "medium",
+   "maturity": "stable",
+   "note": "Respects fold gutters."
+  },
+  "hazard": {
+   "family": "figure",
+   "role": "hazard stripes and warning forms",
+   "surfaces": [
+    "led",
+    "multi"
+   ],
+   "cost": "low",
+   "maturity": "stable",
+   "note": "Respects fold gutters."
+  },
+  "blocks": {
+   "family": "figure",
+   "role": "large block glitch",
+   "surfaces": [
+    "led",
+    "multi"
+   ],
+   "cost": "low",
+   "maturity": "stable",
+   "note": "Respects fold gutters."
+  },
+  "logo": {
+   "family": "figure",
+   "role": "white mask of a supplied logo",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Needs an asset in `assets/logos/`."
+  },
+  "model": {
+   "family": "figure",
+   "role": "3D object (.obj .glb .stl)",
+   "surfaces": [
+    "screen",
+    "projection",
+    "mapping"
+   ],
+   "cost": "unmeasured",
+   "maturity": "beta",
+   "note": "Rasterised on canvas 2D; shader, wireframe or points."
+  },
+  "splat": {
+   "family": "figure",
+   "role": "Gaussian splat or point cloud (.ply)",
+   "surfaces": [
+    "screen",
+    "projection"
+   ],
+   "cost": "unmeasured",
+   "maturity": "beta",
+   "note": "Isotropic approximation; keep under 15000 points live."
+  },
+  "parallax": {
+   "family": "figure",
+   "role": "depth-banded still (2.5D)",
+   "surfaces": [
+    "screen",
+    "projection"
+   ],
+   "cost": "unmeasured",
+   "maturity": "beta",
+   "note": "The model-based depth path was never tested here; a depth map you supply is fine."
+  },
+  "image": {
+   "family": "figure",
+   "role": "still image",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Import in the Media tab."
+  },
+  "video": {
+   "family": "figure",
+   "role": "video clip",
+   "surfaces": [
+    "screen",
+    "projection",
+    "mapping"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Import in the Media tab."
+  },
+  "structure": {
+   "family": "structure",
+   "role": "grid and rulers",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "low",
+   "maturity": "stable",
+   "note": "The measure the eye reads the hero against."
+  },
+  "bitfield": {
+   "family": "structure",
+   "role": "bitwise cell field",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "medium",
+   "maturity": "stable",
+   "note": "Fills about half the frame by nature: use at 10-20% opacity as texture, never as the hero."
+  },
+  "measure": {
+   "family": "information",
+   "role": "tracking and measurement overlay",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "low",
+   "maturity": "stable",
+   "note": "Reads as data, not as image."
+  },
+  "instrument": {
+   "family": "information",
+   "role": "spectrum, scope, radar, rings tied to the real signal",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "low",
+   "maturity": "stable",
+   "note": "Cause and effect: shows what drives the picture."
+  },
+  "data": {
+   "family": "information",
+   "role": "logs and telemetry",
+   "surfaces": [
+    "screen",
+    "led"
+   ],
+   "cost": "low",
+   "maturity": "stable",
+   "note": "Small, calm, always in the same place."
+  },
+  "hud": {
+   "family": "information",
+   "role": "frame, title and clock",
+   "surfaces": [
+    "screen",
+    "led"
+   ],
+   "cost": "medium",
+   "maturity": "stable",
+   "note": "Tells the viewer the system is alive."
+  },
+  "event": {
+   "family": "information",
+   "role": "one-off marks on hits",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "low",
+   "maturity": "stable",
+   "note": "Use once per composition."
+  },
+  "text": {
+   "family": "information",
+   "role": "free text",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "medium",
+   "maturity": "stable",
+   "note": "Prefer `typeset` when there is more than one level."
+  },
+  "typeset": {
+   "family": "information",
+   "role": "title, caption and data as one hierarchy; reveal by glyph or word; text on a path",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "medium",
+   "maturity": "stable",
+   "note": "Hidden at both ends of the loop, so it closes."
+  },
+  "post": {
+   "family": "finish",
+   "role": "vignette, scanlines, glitch",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "low",
+   "maturity": "stable",
+   "note": "Scanlines only on screens."
+  },
+  "code": {
+   "family": "math",
+   "role": "custom drawing code with the kit K",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Not a sandbox: lint plus per-project authorisation."
+  }
+ },
+ "recipes": {
+  "superformula": {
+   "family": "math",
+   "role": "Superformula contours",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Tested starting move; change numbers, palette roles and audio mapping."
+  },
+  "clifford": {
+   "family": "math",
+   "role": "Clifford attractor cloud",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Tested starting move; change numbers, palette roles and audio mapping."
+  },
+  "pendulum-wave": {
+   "family": "math",
+   "role": "Pendulum wave",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Tested starting move; change numbers, palette roles and audio mapping."
+  },
+  "wave-interference": {
+   "family": "math",
+   "role": "Wave interference dot field",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Tested starting move; change numbers, palette roles and audio mapping."
+  },
+  "spirograph": {
+   "family": "math",
+   "role": "Spirograph family with a tracing head",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Tested starting move; change numbers, palette roles and audio mapping."
+  },
+  "kepler": {
+   "family": "math",
+   "role": "Kepler orbits",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Tested starting move; change numbers, palette roles and audio mapping."
+  },
+  "stagger-grid": {
+   "family": "math",
+   "role": "Radial stagger grid",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Tested starting move; change numbers, palette roles and audio mapping."
+  },
+  "chladni": {
+   "family": "math",
+   "role": "Chladni figures",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Tested starting move; change numbers, palette roles and audio mapping."
+  },
+  "quasicrystal": {
+   "family": "math",
+   "role": "Quasicrystal",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Tested starting move; change numbers, palette roles and audio mapping."
+  },
+  "domain-coloring": {
+   "family": "math",
+   "role": "Domain colouring of a rational function",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Tested starting move; change numbers, palette roles and audio mapping."
+  },
+  "julia-orbit": {
+   "family": "math",
+   "role": "Julia set on an orbit",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Tested starting move; change numbers, palette roles and audio mapping."
+  },
+  "testcard": {
+   "family": "math",
+   "role": "Test cards for the site",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Tested starting move; change numbers, palette roles and audio mapping."
+  }
+ },
+ "glslModules": {
+  "hash": {
+   "family": "noise",
+   "role": "GLSL module (#include hash)",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Written from scratch for this project."
+  },
+  "noise.simplex": {
+   "family": "noise",
+   "role": "GLSL module (#include noise.simplex)",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Written from scratch for this project."
+  },
+  "noise.cell": {
+   "family": "noise",
+   "role": "GLSL module (#include noise.cell)",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Written from scratch for this project."
+  },
+  "sdf2d": {
+   "family": "form",
+   "role": "GLSL module (#include sdf2d)",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Written from scratch for this project."
+  },
+  "sdf3d": {
+   "family": "form",
+   "role": "GLSL module (#include sdf3d)",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Written from scratch for this project."
+  },
+  "raymarch": {
+   "family": "form",
+   "role": "GLSL module (#include raymarch)",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Written from scratch for this project."
+  },
+  "color": {
+   "family": "colour",
+   "role": "GLSL module (#include color)",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Written from scratch for this project."
+  },
+  "dither": {
+   "family": "finish",
+   "role": "GLSL module (#include dither)",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Written from scratch for this project."
+  },
+  "space": {
+   "family": "form",
+   "role": "GLSL module (#include space)",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Written from scratch for this project."
+  },
+  "easing": {
+   "family": "motion",
+   "role": "GLSL module (#include easing)",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Written from scratch for this project."
+  },
+  "post": {
+   "family": "finish",
+   "role": "GLSL module (#include post)",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Written from scratch for this project."
+  },
+  "led": {
+   "family": "finish",
+   "role": "GLSL module (#include led)",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Written from scratch for this project."
+  }
+ }
+}

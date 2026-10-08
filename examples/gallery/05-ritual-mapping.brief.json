@@ -1,0 +1,24 @@
+{
+  "name": "Brasa",
+  "lang": "pt",
+  "concept": "Anéis de brasa em volta de um objeto no palco, como um ritual que se acende e se apaga.",
+  "mood": [
+    "ritual"
+  ],
+  "energy": 0.5,
+  "density": "balanced",
+  "surface": {
+    "type": "mapping",
+    "w": 1920,
+    "h": 1080,
+    "fps": 30
+  },
+  "time": {
+    "bpm": 84,
+    "bars": 8
+  },
+  "audio": {
+    "strategy": "structural"
+  },
+  "compositions": 3
+}

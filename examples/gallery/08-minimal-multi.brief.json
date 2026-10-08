@@ -1,0 +1,30 @@
+{
+  "name": "Vão",
+  "lang": "en",
+  "concept": "Um círculo e quatro linhas em três telas lado a lado; o silêncio entre as telas faz parte da peça.",
+  "mood": [
+    "minimal"
+  ],
+  "energy": 0.2,
+  "density": "sparse",
+  "surface": {
+    "type": "multi",
+    "w": 5760,
+    "h": 1080,
+    "fps": 30,
+    "pitchMm": 2.5,
+    "folds": [
+      1920,
+      3840
+    ]
+  },
+  "time": {
+    "bpm": 70,
+    "bars": 4
+  },
+  "audio": {
+    "strategy": "none",
+    "reason": "The piece is deliberately silent: the picture must not depend on the music."
+  },
+  "compositions": 3
+}

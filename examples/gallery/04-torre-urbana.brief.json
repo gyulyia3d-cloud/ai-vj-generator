@@ -1,0 +1,33 @@
+{
+  "name": "Sirene",
+  "lang": "en",
+  "concept": "Faixas e palavras gritadas em uma torre estreita de LED, como sinal de rua à noite.",
+  "mood": [
+    "urban",
+    "aggressive"
+  ],
+  "energy": 0.85,
+  "density": "dense",
+  "surface": {
+    "type": "led",
+    "w": 540,
+    "h": 1920,
+    "fps": 30,
+    "pitchMm": 6
+  },
+  "time": {
+    "bpm": 140,
+    "bars": 4
+  },
+  "audio": {
+    "strategy": "full"
+  },
+  "compositions": 3,
+  "text": {
+    "words": [
+      "SIRENE",
+      "AGORA",
+      "SAI"
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "Falha Geral",
+  "lang": "en",
+  "concept": "Uma parede grande quebrando em blocos magenta, falhas que reorganizam a imagem no tempo da bateria.",
+  "mood": [
+    "glitch",
+    "retro"
+  ],
+  "energy": 0.9,
+  "density": "dense",
+  "surface": {
+    "type": "led",
+    "w": 4500,
+    "h": 2160,
+    "fps": 30,
+    "pitchMm": 3.9,
+    "viewingDistanceM": [
+      10,
+      50
+    ]
+  },
+  "time": {
+    "bpm": 150,
+    "bars": 2
+  },
+  "audio": {
+    "strategy": "full"
+  },
+  "compositions": 3
+}

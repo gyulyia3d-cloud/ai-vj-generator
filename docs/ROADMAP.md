@@ -13,8 +13,8 @@ Este é o roadmap em vigor. Ele substitui as ordens de prioridade de `RELATORIO-
 | Fase | Foco | Estado |
 |---|---|---|
 | **1** | Documentação, neutralidade de IA, briefing estruturado, direção de áudio e geração sem IA | **feita nesta versão** (itens abaixo) |
-| **2** | Nível artístico: composições bonitas, harmônicas e profissionais | próxima |
-| **3** | Audioreatividade estruturada, superfícies e aspect ratios, export PNG, UI/UX | depois |
+| **2** | Nível artístico: composições bonitas, harmônicas e profissionais | **feita (2.4.0)**; falta o seu olhar na galeria (Gate 2) |
+| **3** | Audioreatividade estruturada, superfícies e aspect ratios, export PNG, UI/UX | **feita (2.5.0)**; faltam itens listados abaixo |
 | **4** | Otimizar render e processamento (compositor GPU, motor modular) | depois |
 | **5** | Integrações: MIDI, OSC, NDI (via OBS), MCP/Resolume, pixel maps, blueprints planos | depois |
 | **6** | Adiado sem data: anamorfismo, domo, 3D de evento, visão ao vivo, runtime | só com demanda real |
@@ -31,7 +31,7 @@ Este é o roadmap em vigor. Ele substitui as ordens de prioridade de `RELATORIO-
 | Docs de entrada | `docs/README.md`, `QUICKSTART.md`, `AI-AGNOSTIC.md`, este roadmap |
 | Testes | `generator_check.mjs` (12 climas validam, abrem, desenham, fecham o loop) |
 
-### Fase 2 — Nível artístico (próxima, ≈ 18 dias focados)
+### Fase 2 — Nível artístico (feita em 2.4.0; o aceite por nota passou, o aceite pelo olhar é seu)
 Objetivo: o que sai do `/vj` e do gerador sem IA deve parecer trabalho de estúdio.
 1. **Galeria de referência** (3 df): 8 briefs curados (clima × superfície) com renders, PNGs e a nota de cada um. Serve de teste visual e de vitrine do repositório.
 2. **Bíblia de arte** (2 df): `meta.artBible` gerada na etapa de contrato (tese, linguagem de material, espaço, movimento, dramaturgia, cor, tipografia, áudio, banidos) e mostrada na interface.
@@ -39,9 +39,10 @@ Objetivo: o que sai do `/vj` e do gerador sem IA deve parecer trabalho de estúd
 4. **Avaliador estrutural** (5 df): nota por hierarquia, contraste, densidade, respiro, coerência de movimento, arco temporal e repetição, calculada de renders (`contact_sheet`, `seed_census`, `layerAudit`), com texto em linguagem natural.
 5. **Biblioteca por famílias** (3 df): receitas, geradores e módulos GLSL agrupados em famílias com manifesto (superfícies adequadas, custo, licença, maturidade).
 6. **Tipografia** (2 df): hierarquia (título, legenda, dados), tipo em caminho e reveal por glifo.
-**Aceite:** 8 composições da galeria passam no avaliador com nota ≥ 75 e você as aprova ao olhar.
+**Aceite:** 8 composições da galeria passam no avaliador com nota ≥ 75 e você as aprova ao olhar. **Estado:** as 24 composições (8 briefs x 3) tiram de 77 a 100; falta a aprovação visual (`examples/gallery/README.md`). Ressalva: o gerador foi ajustado até a galeria passar, então a prova de que o avaliador funciona são os controles negativos de `evaluate_check.mjs`.
 
-### Fase 3 — Áudio, superfícies, export e UI (≈ 24 df)
+### Fase 3 — Áudio, superfícies, export e UI (feita em 2.5.0)
+**Estado (08/10/2026).** Feito e testado: UI de modulação (`layer.mod` sem JSON, curva de perfil de movimento), detector de onset e kick com histórico (fluxo espectral, limiar adaptativo, refratário, BPM do kick) e fontes `kick onset flux`; presets de superfície, cortes, pixel map por CSV e PNG, fatias do Resolume no navegador (XML idêntico ao do Python), avisos de legibilidade; manifesto de export com SHA-256, divisão em partes, nomes previsíveis; limitador e análise de flash (WCAG 2.3.1 geral); aba **Gerar sem IA** (porta do gerador, paridade comprovada), modo Criativo/Avançado, ajuda por aba, atalhos (`?`) e tour. **Aceite:** `phase3_acceptance.mjs` percorre o caminho de quem não tem o Claude e passa. **Não feito:** arrastar fatias na vista, rotação de 90°, WebM no export, limitador por camada, flash vermelho e área do flash na análise, teste do detector com microfone ou arquivo reais (só espectros sintéticos e um analisador simulado), reatores por faixa com painel de espectro desenhado (há as fontes e a escolha de banda, não o desenho).
 1. **UI de modulação** (3 df) e reatores por faixa de espectro; fluxo espectral (onset) e detector de kick com histórico (3 df).
 2. **Superfícies planas e segmentadas** (6 df): presets de superfície e aspect ratio na interface (LED, ultrawide, vertical, torre, fita, multi-tela), pixel maps por CSV/PNG, fatias com UI (arrastar, cortar, rodar 90°), exporta XML de Advanced Output (já existe em script), avisos de legibilidade por pitch e distância.
 3. **Export** (4 df): PNG sequence alpha/colorido por composição ou por camada, nomes e pastas previsíveis, ZIP em partes grandes, manifesto de export (fps, bars, seed, hash do projeto), WebM como bônus.

@@ -1,0 +1,133 @@
+{
+  "lang": "pt",
+  "loopFrames": 320,
+  "set": 87,
+  "weights": {
+    "hierarchy": 20,
+    "contrast": 15,
+    "density": 10,
+    "breathing": 15,
+    "motion": 15,
+    "arc": 15,
+    "repetition": 10
+  },
+  "compositions": [
+    {
+      "index": 0,
+      "name": "COSMIC I",
+      "total": 88,
+      "score": {
+        "hierarchy": 83,
+        "contrast": 59,
+        "density": 80,
+        "breathing": 100,
+        "motion": 100,
+        "arc": 100,
+        "repetition": 100
+      },
+      "raw": {
+        "declaredDensity": "sparse",
+        "dominance": 0.177923126449515,
+        "p99": 0.5025270581245422,
+        "coverage": 0.3303795331790123,
+        "quiet": 0.6018518518518519,
+        "motion": 0.042841710776693354,
+        "dead": 0,
+        "seamJump": false,
+        "arcRange": 1.0522279854897882,
+        "arcPeak": 0.375,
+        "strongLayers": 1,
+        "layers": 13,
+        "maxCorrelation": 0.7523161400490979,
+        "similarTo": 2
+      },
+      "notes": {
+        "hierarchy": "um herói claro sobre um elenco de apoio calmo",
+        "contrast": "nada se separa o bastante do fundo: aumente o herói, escureça o campo de fundo ou clareie a figura",
+        "density": "a quantidade de desenho está adequada",
+        "breathing": "há espaço vazio para a figura respirar",
+        "motion": "há movimento contínuo e a emenda do loop está limpa",
+        "arc": "a energia sobe e desce ao longo do loop",
+        "repetition": "esta composição é claramente diferente das outras"
+      }
+    },
+    {
+      "index": 1,
+      "name": "COSMIC II",
+      "total": 89,
+      "score": {
+        "hierarchy": 52,
+        "contrast": 93,
+        "density": 100,
+        "breathing": 100,
+        "motion": 100,
+        "arc": 100,
+        "repetition": 100
+      },
+      "raw": {
+        "declaredDensity": "sparse",
+        "dominance": 0.13426365440171373,
+        "p99": 0.6285019516944885,
+        "coverage": 0.12590020576131686,
+        "quiet": 0.7424768518518517,
+        "motion": 0.039680896281462395,
+        "dead": 0,
+        "seamJump": false,
+        "arcRange": 0.8723687390584463,
+        "arcPeak": 0.25,
+        "strongLayers": 1,
+        "layers": 12,
+        "maxCorrelation": 0.30984735320026063,
+        "similarTo": 0
+      },
+      "notes": {
+        "hierarchy": "o olho tem vários centros disputando, ou nenhum: aumente o herói e baixe a opacidade do resto",
+        "contrast": "a figura mais clara se lê bem contra o fundo",
+        "density": "a quantidade de desenho está adequada",
+        "breathing": "há espaço vazio para a figura respirar",
+        "motion": "há movimento contínuo e a emenda do loop está limpa",
+        "arc": "a energia sobe e desce ao longo do loop",
+        "repetition": "esta composição é claramente diferente das outras"
+      }
+    },
+    {
+      "index": 2,
+      "name": "COSMIC III",
+      "total": 85,
+      "score": {
+        "hierarchy": 63,
+        "contrast": 53,
+        "density": 94,
+        "breathing": 100,
+        "motion": 100,
+        "arc": 100,
+        "repetition": 100
+      },
+      "raw": {
+        "declaredDensity": "sparse",
+        "dominance": 0.1500503298270187,
+        "p99": 0.48320233821868896,
+        "coverage": 0.276023582175926,
+        "quiet": 0.6805555555555557,
+        "motion": 0.030692625020910733,
+        "dead": 0,
+        "seamJump": false,
+        "arcRange": 0.8492489319325531,
+        "arcPeak": 0.375,
+        "strongLayers": 1,
+        "layers": 13,
+        "maxCorrelation": 0.7523161400490979,
+        "similarTo": 0
+      },
+      "notes": {
+        "hierarchy": "um herói claro sobre um elenco de apoio calmo",
+        "contrast": "nada se separa o bastante do fundo: aumente o herói, escureça o campo de fundo ou clareie a figura",
+        "density": "a quantidade de desenho está adequada",
+        "breathing": "há espaço vazio para a figura respirar",
+        "motion": "há movimento contínuo e a emenda do loop está limpa",
+        "arc": "a energia sobe e desce ao longo do loop",
+        "repetition": "esta composição é claramente diferente das outras"
+      }
+    }
+  ]
+}

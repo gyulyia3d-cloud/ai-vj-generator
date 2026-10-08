@@ -14,6 +14,7 @@ One JSON file, schema `ai-vj-generator/2` (`schema/project.schema.json`; field l
 4. **One world, 3-5 compositions** that share palette and material logic but differ in topology, density and main action.
 5. **6-10 named layers per composition**, in tiers: ground, hero, structure, instrument, information, event, finish. One dominant figure, one quiet zone. Exceptions are declared in the contract (`layerBudget`).
 6. **Audio is a strategy, not a sprinkle.** Set `audio.strategy`. Bands have roles: bass = mass, mid = body, high = detail, hit = accent, integrated time (`uBassT`) = travel. At most 3 non-shader layers react; use `layer.mod` for bindings (`references/audio-direction.md`).
+6b. **Write the art bible** (`meta.artBible`: thesis, material, space, motion, dramaturgy, color, typography, audio, banned) right after the contract, and give the hero a motion profile (`layer.mod` with `shape: "spring"`; numbers from `scripts/motion_profiles.py`). Text with more than one level is a `typeset` layer.
 7. **Native pixels.** Never assume 16:9. `canvas.w/h/fps` are the real pixel map; sizes inside generators are in 1080-units and scale automatically.
 8. **Check, look, fix.** With tools: `python scripts/validate_project.py p.json` (0 errors), then render and LOOK (`node scripts/contact_sheet.mjs`). Without tools: re-read the checklist below and say honestly that you could not render.
 

@@ -3,6 +3,7 @@
 | Quero… | Leia |
 |---|---|
 | Começar agora (com Claude, outra IA ou sem IA) | [QUICKSTART.md](QUICKSTART.md) |
+| Ir do GitHub ao PNG **sem IA e sem terminal** (parede 4500×800 passo a passo) | [GUIA-SEM-IA.md](GUIA-SEM-IA.md) |
 | Usar com ChatGPT, Gemini, Codex ou modelo local | [AI-AGNOSTIC.md](AI-AGNOSTIC.md) |
 | Saber o que vem a seguir e por quê | [ROADMAP.md](ROADMAP.md) |
 | Entender a skill (o roteador e o mapa de leitura) | `../skill/ai-vj-generator/SKILL.md` |
@@ -12,6 +13,8 @@
 | Shaders | `references/glsl-library.md`, `glsl-recipes.md`, `isf-bridge.md` |
 | Superfícies, aspect ratios, LED | `references/surface-model.md`, `aspect-ratios.md`, `output-engineering.md`, `bridge-obs-spout.md` |
 | Briefing | `references/briefing/` (diagnóstico, arquétipos, banco de perguntas) |
+| Superfície, fatias do Resolume, manifesto de export, segurança de flash | `references/surface-and-export.md` |
+| Perfis de movimento, bíblia de arte, avaliador, tipografia, famílias | `references/motion-profiles.md`, `art-bible.md`, `evaluation.md`, `typography.md`, `families.md` |
 | Qualidade e testes | `references/quality-gates.md`, `../scripts/check.mjs` |
 | Histórico de decisões | [RELATORIO-V7-githubs2.md](RELATORIO-V7-githubs2.md), [RELATORIO-V8-roadmap.md](RELATORIO-V8-roadmap.md), `../CHANGELOG.md` |
 

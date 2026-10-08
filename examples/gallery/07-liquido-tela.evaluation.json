@@ -1,0 +1,133 @@
+{
+  "lang": "pt",
+  "loopFrames": 738,
+  "set": 91,
+  "weights": {
+    "hierarchy": 20,
+    "contrast": 15,
+    "density": 10,
+    "breathing": 15,
+    "motion": 15,
+    "arc": 15,
+    "repetition": 10
+  },
+  "compositions": [
+    {
+      "index": 0,
+      "name": "LIQUID I",
+      "total": 90,
+      "score": {
+        "hierarchy": 65,
+        "contrast": 100,
+        "density": 92,
+        "breathing": 100,
+        "motion": 100,
+        "arc": 85,
+        "repetition": 100
+      },
+      "raw": {
+        "declaredDensity": "sparse",
+        "dominance": 0.15318410812344196,
+        "p99": 0.6973819732666016,
+        "coverage": 0.025347222222222215,
+        "quiet": 0.9655671296296298,
+        "motion": 0.01666035682073645,
+        "dead": 0,
+        "seamJump": false,
+        "arcRange": 0.8026120266819953,
+        "arcPeak": 0,
+        "strongLayers": 2,
+        "layers": 12,
+        "maxCorrelation": 0.36992064106173994,
+        "similarTo": 2
+      },
+      "notes": {
+        "hierarchy": "um herói claro sobre um elenco de apoio calmo",
+        "contrast": "a figura mais clara se lê bem contra o fundo",
+        "density": "a quantidade de desenho está adequada",
+        "breathing": "há espaço vazio para a figura respirar",
+        "motion": "há movimento contínuo e a emenda do loop está limpa",
+        "arc": "a energia sobe e desce ao longo do loop",
+        "repetition": "esta composição é claramente diferente das outras"
+      }
+    },
+    {
+      "index": 1,
+      "name": "CALM II",
+      "total": 92,
+      "score": {
+        "hierarchy": 100,
+        "contrast": 100,
+        "density": 100,
+        "breathing": 100,
+        "motion": 100,
+        "arc": 85,
+        "repetition": 41
+      },
+      "raw": {
+        "declaredDensity": "sparse",
+        "dominance": 0.3471525356628628,
+        "p99": 0.7107301950454712,
+        "coverage": 0.04582818930041152,
+        "quiet": 0.9375,
+        "motion": 0.0127800508196439,
+        "dead": 0,
+        "seamJump": false,
+        "arcRange": 0.7668926830874911,
+        "arcPeak": 0,
+        "strongLayers": 2,
+        "layers": 12,
+        "maxCorrelation": 0.9529133237142191,
+        "similarTo": 2
+      },
+      "notes": {
+        "hierarchy": "um herói claro sobre um elenco de apoio calmo",
+        "contrast": "a figura mais clara se lê bem contra o fundo",
+        "density": "a quantidade de desenho está adequada",
+        "breathing": "há espaço vazio para a figura respirar",
+        "motion": "há movimento contínuo e a emenda do loop está limpa",
+        "arc": "a energia sobe e desce ao longo do loop",
+        "repetition": "esta composição parece a composição 3 do mesmo set: mude topologia, gerador do herói ou comportamento espacial"
+      }
+    },
+    {
+      "index": 2,
+      "name": "LIQUID III",
+      "total": 92,
+      "score": {
+        "hierarchy": 100,
+        "contrast": 100,
+        "density": 96,
+        "breathing": 100,
+        "motion": 100,
+        "arc": 85,
+        "repetition": 41
+      },
+      "raw": {
+        "declaredDensity": "sparse",
+        "dominance": 0.26850393712516996,
+        "p99": 0.7314549088478088,
+        "coverage": 0.2655889917695473,
+        "quiet": 0.808449074074074,
+        "motion": 0.03262241433901102,
+        "dead": 0,
+        "seamJump": false,
+        "arcRange": 0.2533833524930284,
+        "arcPeak": 0,
+        "strongLayers": 2,
+        "layers": 12,
+        "maxCorrelation": 0.9529133237142191,
+        "similarTo": 1
+      },
+      "notes": {
+        "hierarchy": "um herói claro sobre um elenco de apoio calmo",
+        "contrast": "a figura mais clara se lê bem contra o fundo",
+        "density": "a quantidade de desenho está adequada",
+        "breathing": "há espaço vazio para a figura respirar",
+        "motion": "há movimento contínuo e a emenda do loop está limpa",
+        "arc": "a energia sobe e desce ao longo do loop",
+        "repetition": "esta composição parece a composição 2 do mesmo set: mude topologia, gerador do herói ou comportamento espacial"
+      }
+    }
+  ]
+}

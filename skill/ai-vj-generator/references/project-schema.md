@@ -30,7 +30,7 @@ Write only what differs from defaults. The engine normalizes the file: missing f
 
 ## Schema 2 (V4) in one paragraph
 
-`ai-vj-generator/2` is `/1` plus four optional blocks the engine ignores for rendering and the skill uses for rigor: `meta.spec` (the production spec from the brief diagnosis: confirmed and derived surface facts, performer and occluded zones, assumptions, show context and risks; shape in `briefing/diagnosis.md` §6; the validator checks it against `canvas`), `meta.contract` (the creative contract, shown in the PROJETO tab; fields in `creative-contract.md`), `layer.role` (one sentence: why the layer exists, traced to the contract) and a top-level `capabilities` object (honest transport labels; see `capabilities.md`). Schema `/1` files still load and validate. Everything else below is unchanged.
+`ai-vj-generator/2` is `/1` plus five optional blocks (the fifth, `meta.artBible`, is below) the engine ignores for rendering and the skill uses for rigor: `meta.spec` (the production spec from the brief diagnosis: confirmed and derived surface facts, performer and occluded zones, assumptions, show context and risks; shape in `briefing/diagnosis.md` §6; the validator checks it against `canvas`), `meta.contract` (the creative contract, shown in the PROJETO tab; fields in `creative-contract.md`), `layer.role` (one sentence: why the layer exists, traced to the contract) and a top-level `capabilities` object (honest transport labels; see `capabilities.md`). Schema `/1` files still load and validate. Everything else below is unchanged.
 
 | Field | Values |
 |---|---|
@@ -142,6 +142,15 @@ Loop length is rounded to whole frames: `round(60 / bpm × 4 × bars × fps)`. A
 
 Parameters, the kit `K` for `code` and the rules for walls, white-alpha and assets are in `walls-code-assets.md`. All use `wall` (`all`, `0`, `1`, …), colour keys including `field`, and the common parameters below. `logo` takes `media`, `media2`…`media4` (file names present in `assets`).
 
+### `typeset` — title, caption and data as one hierarchy (phase 2)
+`title` `caption` `data` (empty levels are dropped) · `font` `size` 150 (title, logical px) `scale` 0.4 (ratio between levels) `weight` 800 `tracking` 0.04 `gapY` 0.5 `upper` true · `cx` `cy` 0.5 `align` · `reveal` `glyph` (`word`, `none`) `inAt` 0.08 `inLen` 0.18 `outLen` 0.16 `cascade` 0.07 `stagger` 0.8 · `path` `none` (`circle`, `wave`, `line`) `radius` `amp` `waves` `angle` `drift` (whole turns) · `pulse` 0.03 · `color` `subColor` `hot`. Hidden at both ends of the loop. See `typography.md`.
+
+### `meta.artBible` — the look rules (phase 2)
+Object of nine strings (`thesis material space motion dramaturgy color typography audio banned`) plus optional `motionProfile` (`energy elasticity anticipation continuity rhythm`, each 0..1) and `density` (`sparse|balanced|dense`, read by the evaluator). Warnings only. See `art-bible.md`.
+
+### `layer.mod` shape `spring` (phase 2)
+`{ "k": "size", "src": "lfo", "shape": "spring", "cycles": 8, "zeta": 0.3, "wn": 12.5, "ta": 0.07, "depth": 0.15, "steps": 0, "min": 1, "max": 1.35, "mode": "mul" }`. The curve is not clamped to 0..1 (the wind-up dips below 0, the ring below and above). See `motion-profiles.md`.
+
 ### `instrument` — information instruments tied to the signal (V7, briefing)
 `kind` `bars` (`radial` `scope` `radar` `rings` `heat`) · `n` 48 elements · `size` 0.4 (fraction of the short side; for `bars`/`scope`/`heat` the half-width as fraction of W) · `cx` `cy` 0.5 · `weight` 3 · `gap` 0.3 · `mirror` false · `color` · `hot`. Live audio shows the real spectrum/waveform; without a source it shows the BPM-locked synthetic bands, so it always agrees with what drives the image (cause and effect, `tension-and-release.md` §8). `radar` completes whole turns per loop; `rings` shows bass/mid/high/rms as arcs.
 
@@ -150,7 +159,7 @@ Parameters, the kit `K` for `code` and the rules for walls, white-alpha and asse
 
 ### `sim` — baked simulation with state (V7, briefing)
 `kind` `reaction` (Gray-Scott reaction-diffusion: labyrinths, spots, coral) or `ink` (dye carried by a loop-periodic flow field; marbled ink, not full Navier-Stokes) · `res` 160 cells across (32–400; the grid height follows the canvas aspect) · `feed` 0.037 `kill` 0.06 (reaction: ~0.037/0.06 labyrinth, ~0.03/0.062 spots, ~0.055/0.062 dots) · `speed` 2 (simulation sub-steps) · `drops` 8 (injections per loop, locked to the beat grid) · `flow` 1 `dissipate` 0.998 (ink) · `threshold` 0.25 · `soft` 0.25 · `smooth` true · `color` `hot` (hot = the dense core).
-How it closes the loop: it warms up one loop, records two, and cross-fades them (`out[f] = (1-f/LF)·S[LF+f] + (f/LF)·S[f]`), so the last frame continues into the first and any frame is a pure function of project + seed + frame (scroll and export agree). Cost: one bake of ~0.6 s at 160 cells (cached; changes to the parameters, seed, bars, fps or canvas aspect re-bake). It does not read live audio (the injections follow the beat grid; hits only add a small brightness lift). Use `layer.mod` on `threshold`/`soft` for music-driven look.
+How it closes the loop: it warms up one loop, records two, and cross-fades them (`out[f] = (1-f/LF)·S[LF+f] + (f/LF)·S[f]`), so the last frame continues into the first and any frame is a pure function of project + seed + frame (scroll and export agree). Cost: one bake at 160 cells (~0.6 s on a GPU machine, ~1.4 s measured in headless software rendering; cached; changes to the parameters, seed, bars, fps or canvas aspect re-bake). It does not read live audio (the injections follow the beat grid; hits only add a small brightness lift). Use `layer.mod` on `threshold`/`soft` for music-driven look.
 
 ### `parallax` — depth-banded still (V7)
 `media` (image) · `mediad` (depth map, white = near; empty = luminance) · `bands` 14 · `orbit` `sway` (`circle` `dolly`) · `amp` 0.03 (fraction of W) · `cycles` 1 (whole sways per loop) · `zoom` 0.04 · `hitPush` 0.01 · `invertDepth` false · `fit` `cover`. See `depth-and-splats.md`.

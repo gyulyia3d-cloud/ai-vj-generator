@@ -1,0 +1,24 @@
+{
+  "name": "Poço Cósmico",
+  "lang": "pt",
+  "concept": "Uma queda lenta por um poço de estrelas em uma tela vertical; vertigem suave, sem pressa.",
+  "mood": [
+    "cosmic"
+  ],
+  "energy": 0.4,
+  "density": "sparse",
+  "surface": {
+    "type": "screen",
+    "w": 1080,
+    "h": 1920,
+    "fps": 30
+  },
+  "time": {
+    "bpm": 90,
+    "bars": 4
+  },
+  "audio": {
+    "strategy": "subtle"
+  },
+  "compositions": 3
+}

@@ -1,0 +1,133 @@
+{
+  "lang": "en",
+  "loopFrames": 206,
+  "set": 88,
+  "weights": {
+    "hierarchy": 20,
+    "contrast": 15,
+    "density": 10,
+    "breathing": 15,
+    "motion": 15,
+    "arc": 15,
+    "repetition": 10
+  },
+  "compositions": [
+    {
+      "index": 0,
+      "name": "URBAN I",
+      "total": 86,
+      "score": {
+        "hierarchy": 78,
+        "contrast": 100,
+        "density": 100,
+        "breathing": 100,
+        "motion": 51,
+        "arc": 85,
+        "repetition": 100
+      },
+      "raw": {
+        "declaredDensity": "dense",
+        "dominance": 0.17055691862723096,
+        "p99": 0.9015741348266602,
+        "coverage": 0.33847334747942387,
+        "quiet": 0.464988425925926,
+        "motion": 0.1987304935652913,
+        "dead": 0,
+        "seamJump": false,
+        "arcRange": 1.2409742107949813,
+        "arcPeak": 0,
+        "strongLayers": 2,
+        "layers": 13,
+        "maxCorrelation": 0.39411818300070683,
+        "similarTo": 2
+      },
+      "notes": {
+        "hierarchy": "one clear hero over a quiet supporting cast",
+        "contrast": "the brightest figure reads strongly against the ground",
+        "density": "the amount of drawing is about right",
+        "breathing": "there is empty space for the figure to breathe",
+        "motion": "the picture changes too much from frame to frame: lower energy or slow the fastest layer",
+        "arc": "the energy rises and falls over the loop",
+        "repetition": "this composition is clearly different from the others"
+      }
+    },
+    {
+      "index": 1,
+      "name": "AGGRESSIVE II",
+      "total": 88,
+      "score": {
+        "hierarchy": 69,
+        "contrast": 62,
+        "density": 100,
+        "breathing": 98,
+        "motion": 100,
+        "arc": 100,
+        "repetition": 100
+      },
+      "raw": {
+        "declaredDensity": "dense",
+        "dominance": 0.15807541084670523,
+        "p99": 0.5101591944694519,
+        "coverage": 0.3138081114969136,
+        "quiet": 0.5295138888888887,
+        "motion": 0.09911858145126572,
+        "dead": 0,
+        "seamJump": false,
+        "arcRange": 1.3107400686084247,
+        "arcPeak": 0.6666666666666666,
+        "strongLayers": 2,
+        "layers": 12,
+        "maxCorrelation": 0.8986013579089289,
+        "similarTo": 2
+      },
+      "notes": {
+        "hierarchy": "one clear hero over a quiet supporting cast",
+        "contrast": "the brightest figure reads strongly against the ground",
+        "density": "the amount of drawing is about right",
+        "breathing": "there is empty space for the figure to breathe",
+        "motion": "movement is present, continuous and the loop seam is clean",
+        "arc": "the energy rises and falls over the loop",
+        "repetition": "this composition is clearly different from the others"
+      }
+    },
+    {
+      "index": 2,
+      "name": "URBAN III",
+      "total": 90,
+      "score": {
+        "hierarchy": 77,
+        "contrast": 85,
+        "density": 100,
+        "breathing": 80,
+        "motion": 100,
+        "arc": 100,
+        "repetition": 100
+      },
+      "raw": {
+        "declaredDensity": "dense",
+        "dominance": 0.16964389669782678,
+        "p99": 0.5888219475746155,
+        "coverage": 0.27365551858281895,
+        "quiet": 0.6142939814814815,
+        "motion": 0.10258831918799677,
+        "dead": 0,
+        "seamJump": false,
+        "arcRange": 1.704574261699176,
+        "arcPeak": 0.6666666666666666,
+        "strongLayers": 2,
+        "layers": 13,
+        "maxCorrelation": 0.8986013579089289,
+        "similarTo": 1
+      },
+      "notes": {
+        "hierarchy": "one clear hero over a quiet supporting cast",
+        "contrast": "the brightest figure reads strongly against the ground",
+        "density": "the amount of drawing is about right",
+        "breathing": "there is empty space for the figure to breathe",
+        "motion": "movement is present, continuous and the loop seam is clean",
+        "arc": "the energy rises and falls over the loop",
+        "repetition": "this composition is clearly different from the others"
+      }
+    }
+  ]
+}

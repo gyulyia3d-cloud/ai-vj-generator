@@ -1,0 +1,133 @@
+{
+  "lang": "pt",
+  "loopFrames": 686,
+  "set": 94,
+  "weights": {
+    "hierarchy": 20,
+    "contrast": 15,
+    "density": 10,
+    "breathing": 15,
+    "motion": 15,
+    "arc": 15,
+    "repetition": 10
+  },
+  "compositions": [
+    {
+      "index": 0,
+      "name": "RITUAL I",
+      "total": 90,
+      "score": {
+        "hierarchy": 65,
+        "contrast": 100,
+        "density": 100,
+        "breathing": 100,
+        "motion": 93,
+        "arc": 85,
+        "repetition": 100
+      },
+      "raw": {
+        "declaredDensity": "balanced",
+        "dominance": 0.15309680822950203,
+        "p99": 0.8951262831687927,
+        "coverage": 0.1628009259259259,
+        "quiet": 0.4728009259259259,
+        "motion": 0.13202257651778634,
+        "dead": 0,
+        "seamJump": false,
+        "arcRange": 0.6581403057379199,
+        "arcPeak": 0,
+        "strongLayers": 2,
+        "layers": 12,
+        "maxCorrelation": 0.5667807453649576,
+        "similarTo": 2
+      },
+      "notes": {
+        "hierarchy": "um herói claro sobre um elenco de apoio calmo",
+        "contrast": "a figura mais clara se lê bem contra o fundo",
+        "density": "a quantidade de desenho está adequada",
+        "breathing": "há espaço vazio para a figura respirar",
+        "motion": "há movimento contínuo e a emenda do loop está limpa",
+        "arc": "a energia sobe e desce ao longo do loop",
+        "repetition": "esta composição é claramente diferente das outras"
+      }
+    },
+    {
+      "index": 1,
+      "name": "RITUAL II",
+      "total": 100,
+      "score": {
+        "hierarchy": 100,
+        "contrast": 100,
+        "density": 100,
+        "breathing": 100,
+        "motion": 100,
+        "arc": 100,
+        "repetition": 100
+      },
+      "raw": {
+        "declaredDensity": "balanced",
+        "dominance": 0.2630611660792548,
+        "p99": 0.7962376475334167,
+        "coverage": 0.3268171296296296,
+        "quiet": 0.6174768518518516,
+        "motion": 0.05538237575030697,
+        "dead": 0,
+        "seamJump": false,
+        "arcRange": 0.9804043401420944,
+        "arcPeak": 0.875,
+        "strongLayers": 2,
+        "layers": 12,
+        "maxCorrelation": 0.4654145065367965,
+        "similarTo": 2
+      },
+      "notes": {
+        "hierarchy": "um herói claro sobre um elenco de apoio calmo",
+        "contrast": "a figura mais clara se lê bem contra o fundo",
+        "density": "a quantidade de desenho está adequada",
+        "breathing": "há espaço vazio para a figura respirar",
+        "motion": "há movimento contínuo e a emenda do loop está limpa",
+        "arc": "a energia sobe e desce ao longo do loop",
+        "repetition": "esta composição é claramente diferente das outras"
+      }
+    },
+    {
+      "index": 2,
+      "name": "RITUAL III",
+      "total": 91,
+      "score": {
+        "hierarchy": 95,
+        "contrast": 100,
+        "density": 100,
+        "breathing": 62,
+        "motion": 100,
+        "arc": 85,
+        "repetition": 100
+      },
+      "raw": {
+        "declaredDensity": "balanced",
+        "dominance": 0.19863628693221452,
+        "p99": 0.7797333598136902,
+        "coverage": 0.16190586419753086,
+        "quiet": 0.7841435185185185,
+        "motion": 0.03008903539186049,
+        "dead": 0,
+        "seamJump": false,
+        "arcRange": 1.5069802977431475,
+        "arcPeak": 0,
+        "strongLayers": 2,
+        "layers": 12,
+        "maxCorrelation": 0.5667807453649576,
+        "similarTo": 0
+      },
+      "notes": {
+        "hierarchy": "um herói claro sobre um elenco de apoio calmo",
+        "contrast": "a figura mais clara se lê bem contra o fundo",
+        "density": "a quantidade de desenho está adequada",
+        "breathing": "há espaço vazio para a figura respirar",
+        "motion": "há movimento contínuo e a emenda do loop está limpa",
+        "arc": "a energia sobe e desce ao longo do loop",
+        "repetition": "esta composição é claramente diferente das outras"
+      }
+    }
+  ]
+}

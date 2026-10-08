@@ -1,4 +1,4 @@
-# Quickstart: três caminhos
+# Quickstart: quatro caminhos
 
 Todos terminam no mesmo lugar: um arquivo `*.aivj.json` (esquema `ai-vj-generator/2`) que o motor abre, mostra e exporta em PNG sequence.
 
@@ -20,7 +20,11 @@ Todos terminam no mesmo lugar: um arquivo `*.aivj.json` (esquema `ai-vj-generato
    ```
 4. Abra `app/index.html`, importe o JSON, ou gere o HTML autocontido: `node skill/ai-vj-generator/scripts/make-artifact.mjs meu.aivj.json --out meu.html`.
 
-## Caminho C: sem IA
+## Caminho D: sem IA e sem terminal (só o navegador)
+
+Abra `app/index.html`, clique em **Gerar sem IA**, preencha o briefing, escolha o preset da superfície e clique em **Gerar e abrir**. Avalie, ajuste, confira as fatias do Resolume na aba Superfície, teste os flashes e exporte na aba Exportar. Passo a passo completo: [GUIA-SEM-IA.md](GUIA-SEM-IA.md).
+
+## Caminho C: sem IA, pela linha de comando
 
 1. Copie `examples/briefs/led-wall.brief.json`, edite (nome, conceito, 1 a 3 climas, superfície, BPM).
 2. Confira e veja o que falta:

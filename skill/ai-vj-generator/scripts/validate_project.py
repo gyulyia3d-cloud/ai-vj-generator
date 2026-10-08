@@ -227,7 +227,7 @@ def check_param(reg_def, key, val, where, out):
 
 SCHEMAS = ("ai-vj-generator/1", "ai-vj-generator/2")
 AUDIO_UNIFORMS = re.compile(r"\b(uBass|uMid|uHigh|uRms|uHit|uAud|uMidHit|uHighHit|uBassT|uMidT|uHighT|uAudT|uPres|uOnBeat|uBSin|uBSin2|uBSin4|uBTri)\b")
-MOD_SRC = {"bass", "mid", "high", "rms", "hit", "mhit", "hhit", "pres", "onbeat", "bsin", "bsin2", "bsin4", "btri", "lfo"}
+MOD_SRC = {"bass", "mid", "high", "rms", "hit", "mhit", "hhit", "pres", "kick", "onset", "flux", "onbeat", "bsin", "bsin2", "bsin4", "btri", "lfo"}
 MOD_FREE = {"lfo", "onbeat", "bsin", "bsin2", "bsin4", "btri"}
 DEFAULT_LAYER_NAMES = {"SHADER", "FORMA", "TEXTO", "IMAGEM", "VÍDEO", "VIDEO", "FUNDO", "LAYER", "CAMADA", "SHAPE", "TEXT", "IMAGE"}
 CONTRACT_KEYS = ("concept", "audienceEffect", "semioticIntent", "visualLanguage", "formLanguage", "materialLanguage",
@@ -239,6 +239,60 @@ LOOP_GRAMMARS = ("cyclic", "morphological", "continuous", "event", "evolutionary
 # transports a browser cannot do on its own (capabilities.md): only 'requiresBridge' may list them
 BRIDGE_ONLY = {"osc", "ndi", "spout", "syphon", "sdi"}
 NOT_IMPLEMENTED = {"midi", "websocket", "mp4", "hap"}
+
+
+ART_BIBLE_KEYS = ("thesis", "material", "space", "motion", "dramaturgy", "color", "typography", "audio", "banned")
+ART_BIBLE_OPTIONAL = ("motionProfile", "density")
+MOTION_AXES = ("energy", "elasticity", "anticipation", "continuity", "rhythm")
+
+
+def check_art_bible(meta, out):
+    """Phase 2: the one-page art bible (references/art-bible.md) and the motion profile that executes its 'motion' line."""
+    e, w = out["errors"], out["warnings"]
+    b = meta.get("artBible")
+    if b is None:
+        w.append("no meta.artBible: write the art bible (thesis, material, space, motion, dramaturgy, color, typography, audio, banned) from the contract (references/art-bible.md)")
+        return
+    if not isinstance(b, dict):
+        e.append("meta.artBible must be an object")
+        return
+    for k in b:
+        if k not in ART_BIBLE_KEYS + ART_BIBLE_OPTIONAL:
+            w.append(f"meta.artBible.{k}: unknown field (known: {', '.join(ART_BIBLE_KEYS + ART_BIBLE_OPTIONAL)})")
+    for k in ART_BIBLE_KEYS:
+        v = b.get(k)
+        if not isinstance(v, str) or not v.strip():
+            w.append(f"meta.artBible.{k} is empty")
+        elif len(v.strip().split()) < 3:
+            w.append(f"meta.artBible.{k}: '{v.strip()}' is too thin; say what and why in a sentence")
+    if b.get("density") is not None and b["density"] not in ("sparse", "balanced", "dense"):
+        e.append("meta.artBible.density: must be sparse, balanced or dense")
+    mp = b.get("motionProfile")
+    if mp is not None:
+        if not isinstance(mp, dict):
+            e.append("meta.artBible.motionProfile must be an object")
+        else:
+            for ax in MOTION_AXES:
+                v = mp.get(ax)
+                if not isinstance(v, (int, float)) or isinstance(v, bool) or not (0 <= v <= 1):
+                    e.append(f"meta.artBible.motionProfile.{ax}: must be a number 0..1")
+
+
+def check_typeset(L, where, out):
+    """typeset reveals title, caption and data in a cascade that must finish before the exit starts, or the text is never fully on screen."""
+    w, p = out["warnings"], L.get("p") or {}
+    lv = sum(1 for k in ("title", "caption", "data") if str(p.get(k, "TÍTULO" if k == "title" else "")).strip())
+    if lv == 0:
+        w.append(f"{where}: typeset has no text (title, caption and data are all empty)")
+        return
+    if p.get("reveal", "glyph") == "none":
+        return
+    t_in, t_len, t_out, cas = (p.get(k, d) for k, d in (("inAt", 0.08), ("inLen", 0.18), ("outLen", 0.16), ("cascade", 0.07)))
+    last_full = t_in + cas * (lv - 1) + t_len
+    if last_full > 1 - t_out:
+        w.append(f"{where}: the last level is fully on only at {last_full:.2f} of the loop but the exit starts at {1 - t_out:.2f}; lower inAt, inLen or cascade, or shorten outLen")
+    if p.get("path") == "circle" and p.get("drift") not in (None, 0) and float(p["drift"]) != int(p["drift"]):
+        w.append(f"{where}: drift must be a whole number of turns per loop, or the loop does not close (the engine rounds it)")
 
 
 def check_contract(meta, out):
@@ -409,6 +463,7 @@ def validate(path, extra_assets=()):
     v2 = schema == "ai-vj-generator/2"
     if v2:
         check_contract(P.get("meta", {}), out)
+        check_art_bible(P.get("meta", {}), out)
         check_capabilities(P.get("capabilities"), out)
     cv, tm = P.get("canvas", {}), P.get("time", {})
     if v2:
@@ -527,6 +582,17 @@ def validate(path, extra_assets=()):
                             e.append(f"{mw}.mode: must be set, add or mul")
                         if m.get("src") == "lfo" and not float(m.get("cycles", 1)).is_integer():
                             e.append(f"{mw}.cycles: must be a whole number or the loop does not close")
+                        if m.get("shape", "sin") not in ("sin", "tri", "saw", "spring"):
+                            e.append(f"{mw}.shape: must be sin, tri, saw or spring")
+                        if m.get("shape") == "spring":
+                            if m.get("src") != "lfo":
+                                e.append(f"{mw}: shape spring needs src lfo")
+                            for fk, lo, hi in (("zeta", 0.05, 3), ("wn", 1, 60), ("ta", 0, 0.4), ("depth", 0, 1), ("steps", 0, 128)):
+                                fv = m.get(fk)
+                                if fv is not None and (not isinstance(fv, (int, float)) or not (lo <= fv <= hi)):
+                                    e.append(f"{mw}.{fk}: must be a number in {lo}..{hi}")
+                        if m.get("k") not in lp and t != "shader":
+                            w.append(f"{mw}.k: {m.get('k')!r} is not set in p; the modulation starts from the default value")
                         if m.get("src") not in MOD_FREE and L.get("on", True) and t != "shader":
                             w.append(f"{mw}: audio-driven modulation counts toward the 3 reactive layers per composition")
             if L.get("on", True) and t != "shader" and isinstance(lp.get("audio"), (int, float)) and lp["audio"] > 0:
@@ -540,6 +606,8 @@ def validate(path, extra_assets=()):
             allowed.update(reg[t])
             if t == "code":
                 check_code(L, lw, out)
+            if t == "typeset" and L.get("on", True):
+                check_typeset(L, lw, out)
             for k, v in (L.get("p") or {}).items():
                 if t == "code" and (k == "src" or k.startswith("v_")):
                     continue

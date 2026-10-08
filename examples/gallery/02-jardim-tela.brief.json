@@ -1,0 +1,25 @@
+{
+  "name": "Jardim de Luz",
+  "lang": "pt",
+  "concept": "Um organismo de luz que cresce devagar e respira com a música; o público deve sentir cuidado e espanto.",
+  "mood": [
+    "organic",
+    "calm"
+  ],
+  "energy": 0.35,
+  "density": "balanced",
+  "surface": {
+    "type": "screen",
+    "w": 1920,
+    "h": 1080,
+    "fps": 30
+  },
+  "time": {
+    "bpm": 96,
+    "bars": 8
+  },
+  "audio": {
+    "strategy": "structural"
+  },
+  "compositions": 3
+}

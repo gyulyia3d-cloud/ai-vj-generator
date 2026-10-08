@@ -1,0 +1,546 @@
+{
+  "schema": "ai-vj-generator/2",
+  "id": "poço-cósmico",
+  "seed": 214092,
+  "meta": {
+    "name": "POÇO CÓSMICO",
+    "lang": "pt",
+    "brief": "Uma queda lenta por um poço de estrelas em uma tela vertical; vertigem suave, sem pressa.",
+    "contract": {
+      "concept": "Uma queda lenta por um poço de estrelas em uma tela vertical; vertigem suave, sem pressa.",
+      "audienceEffect": "O público deve sentir Uma queda lenta por um poço de estrelas em uma tela vertical; vertigem suave, sem pressa.",
+      "semioticIntent": "Mood cosmic: Uma queda lenta por um poço de estrelas em uma tela vertical; vertigem suave, sem pressa.",
+      "visualLanguage": "Generator tiers from the mood table (cosmic); one dominant figure per composition over a quiet ground.",
+      "formLanguage": "Forms follow the hero generator of each composition; the structure layer keeps one module and one grid.",
+      "materialLanguage": "Light on a dark ground: additive matter, no fake materials.",
+      "colorLogic": "split scheme, OKLCH hue 290 (deep violet and a cold accent); one accent used for events only.",
+      "spatialLogic": "Canvas 1080x1920 (screen); the hero sits on the focal zone, structure on the grid, information at the edge.",
+      "motionLanguage": "Profile: smooth, eased; springy (zeta 0.648, 7% overshoot); with a wind-up dip before each hit; 4 move(s) per loop of 4 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py).",
+      "typographyLanguage": "Uppercase, one family; text only when the brief supplies exact words.",
+      "temporalArc": "Each composition: establish, evolve, peak, release over 4 bars; the set follows establish, build, peak.",
+      "loopGrammar": "cyclic: the loop closes on whole bars and every layer moves in whole cycles",
+      "technicalStrategy": "Generated without AI by brief_to_project.py from the structured brief; native pixels, deterministic seed, engine generators only.",
+      "forbiddenShortcuts": "Do not stretch 16:9 across another aspect; no unseeded randomness; no effect without a reason in the contract.",
+      "focalEvent": "One dominant figure per composition; everything else supports or releases it.",
+      "releaseZone": "The ground field and the empty third of the frame; no layer fills it.",
+      "banned": "shockwave rings on every hit; particle bursts; neon glow everywhere",
+      "tension": "balanced"
+    },
+    "artBible": {
+      "thesis": "Uma queda lenta por um poço de estrelas em uma tela vertical; vertigem suave, sem pressa.",
+      "material": "Light on a dark ground (cosmic); additive matter, no fake materials, no gradients that pretend to be objects.",
+      "space": "Read at arm's length: fine detail allowed, the hero on the focal third, information at the edge.",
+      "motion": "Profile: smooth, eased; springy (zeta 0.648, 7% overshoot); with a wind-up dip before each hit; 4 move(s) per loop of 4 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py).",
+      "dramaturgy": "Each composition: establish, evolve, peak, release over 4 bars; the set follows establish, build, peak. Tension: balanced; one dominant figure per composition; the ground field is the release.",
+      "color": "split scheme, OKLCH hue 290 (deep violet and a cold accent); one accent used for events only.",
+      "typography": "No text unless the brief supplies exact words; if added: uppercase, one family, three sizes at most.",
+      "audio": "Strategy subtle: the music only breathes the ground.",
+      "banned": "shockwave rings on every hit; particle bursts; neon glow everywhere",
+      "motionProfile": {
+        "energy": 0.4,
+        "elasticity": 0.4,
+        "anticipation": 0.3,
+        "continuity": 1.0,
+        "rhythm": 0.1
+      },
+      "density": "sparse"
+    },
+    "spec": {
+      "archetype": [
+        "clip-pack"
+      ],
+      "confirmed": {
+        "pixelMap": [
+          1080,
+          1920
+        ]
+      },
+      "assumed": [
+        {
+          "field": "surface",
+          "why": "generated from the brief without AI; the facts are the brief's own",
+          "risk": "confirm the pixel map and distances with the venue before delivery"
+        }
+      ]
+    }
+  },
+  "canvas": {
+    "w": 1080,
+    "h": 1920,
+    "fps": 30,
+    "target": "screen"
+  },
+  "time": {
+    "bpm": 90,
+    "bars": 4,
+    "loop": true,
+    "seamless": true,
+    "mode": "loop",
+    "transition": "fade"
+  },
+  "audio": {
+    "reactive": true,
+    "sens": 1,
+    "smooth": 0.7,
+    "strategy": "subtle"
+  },
+  "palette": {
+    "bg": "#06050B",
+    "primary": "#E7E6F5",
+    "secondary": "#778E71",
+    "accent": "#D59800"
+  },
+  "compositions": [
+    {
+      "name": "COSMIC I",
+      "hypothesis": "ESTABLISH: Uma queda lenta por um poço de estrelas em uma tela vertical; vertigem suave, sem pressa.",
+      "motion": "smooth",
+      "layers": [
+        {
+          "type": "bg",
+          "name": "FUNDO",
+          "on": true,
+          "opacity": 1,
+          "blend": "normal",
+          "role": "ground colour of the piece; the quiet reference everything else is read against",
+          "p": {
+            "grain": 0.4
+          }
+        },
+        {
+          "type": "shader",
+          "name": "CAMPO COSMIC I",
+          "on": true,
+          "opacity": 0.3,
+          "blend": "normal",
+          "role": "ground field: slow matter that gives the figure something to cut against",
+          "p": {
+            "preset": "KALEIDO",
+            "p1": 6,
+            "p2": 2.5,
+            "p3": 0.4,
+            "p4": 0.3,
+            "c1": "secondary",
+            "c2": "secondary",
+            "res": 1,
+            "alphaMode": "alpha"
+          }
+        },
+        {
+          "type": "shader",
+          "name": "ATMOSFERA I",
+          "on": true,
+          "opacity": 0.12,
+          "blend": "add",
+          "role": "atmosphere: a second, fainter field in the accent that adds depth without competing with the hero",
+          "p": {
+            "preset": "CAMPO FBM",
+            "p1": 1.6,
+            "p2": 0.5,
+            "p3": 0.7,
+            "p4": 1.0,
+            "c1": "accent",
+            "c2": "accent",
+            "res": 0.5,
+            "alphaMode": "alpha"
+          }
+        },
+        {
+          "type": "organism",
+          "name": "HERÓI COSMIC I",
+          "on": true,
+          "opacity": 1,
+          "blend": "normal",
+          "role": "hero: the single dominant figure of this composition (the focal event)",
+          "p": {
+            "size": 1.3,
+            "points": 2160,
+            "dot": 2.2,
+            "audio": 0.61,
+            "band": "bass",
+            "breathe": 0.5
+          },
+          "mod": [
+            {
+              "k": "breathe",
+              "src": "lfo",
+              "shape": "spring",
+              "cycles": 4,
+              "zeta": 0.648,
+              "wn": 11.4,
+              "min": 1.0,
+              "max": 1.3,
+              "mode": "mul",
+              "ta": 0.042,
+              "depth": 0.09
+            }
+          ]
+        },
+        {
+          "type": "tunnel",
+          "name": "ESTRUTURA I",
+          "on": true,
+          "opacity": 0.3,
+          "blend": "normal",
+          "role": "structure: the grid or rhythm the eye measures the hero against",
+          "p": {
+            "shape": "circle",
+            "count": 10,
+            "cycles": 1,
+            "audio": 0.5,
+            "band": "high",
+            "size": 1
+          },
+          "mod": [
+            {
+              "k": "size",
+              "src": "lfo",
+              "shape": "spring",
+              "cycles": 4,
+              "zeta": 0.824,
+              "wn": 10.08,
+              "min": 1.0,
+              "max": 1.15,
+              "mode": "mul"
+            }
+          ]
+        },
+        {
+          "type": "instrument",
+          "name": "INSTRUMENTO I",
+          "on": true,
+          "opacity": 0.8,
+          "blend": "normal",
+          "role": "instrument: shows the real signal that drives the picture (cause and effect)",
+          "p": {
+            "kind": "rings",
+            "size": 0.28,
+            "cx": 0.5,
+            "cy": 0.5,
+            "n": 36,
+            "weight": 3
+          }
+        },
+        {
+          "type": "hud",
+          "name": "INFORMAÇÃO I",
+          "on": true,
+          "opacity": 0.8,
+          "blend": "normal",
+          "role": "information: small, calm, always the same place; it tells the viewer the system is alive",
+          "p": {
+            "title": "POÇO CÓSMICO"
+          }
+        },
+        {
+          "type": "post",
+          "name": "ACABAMENTO",
+          "on": true,
+          "opacity": 1,
+          "blend": "normal",
+          "role": "finish: vignette and a touch of tension; scanlines only where the surface is a screen",
+          "p": {
+            "scan": 0.2,
+            "vig": 0.35,
+            "prob": 0.22
+          }
+        }
+      ]
+    },
+    {
+      "name": "COSMIC II",
+      "hypothesis": "BUILD: Uma queda lenta por um poço de estrelas em uma tela vertical; vertigem suave, sem pressa.",
+      "motion": "smooth",
+      "layers": [
+        {
+          "type": "bg",
+          "name": "FUNDO",
+          "on": true,
+          "opacity": 1,
+          "blend": "normal",
+          "role": "ground colour of the piece; the quiet reference everything else is read against",
+          "p": {
+            "grain": 0.4
+          }
+        },
+        {
+          "type": "shader",
+          "name": "CAMPO COSMIC II",
+          "on": true,
+          "opacity": 0.3,
+          "blend": "normal",
+          "role": "ground field: slow matter that gives the figure something to cut against",
+          "p": {
+            "preset": "CAMPO FBM",
+            "p1": 1.6,
+            "p2": 0.5,
+            "p3": 0.7,
+            "p4": 1.0,
+            "c1": "secondary",
+            "c2": "secondary",
+            "res": 1,
+            "alphaMode": "alpha"
+          }
+        },
+        {
+          "type": "shader",
+          "name": "ATMOSFERA II",
+          "on": true,
+          "opacity": 0.12,
+          "blend": "add",
+          "role": "atmosphere: a second, fainter field in the accent that adds depth without competing with the hero",
+          "p": {
+            "preset": "ANÉIS SDF",
+            "p1": 6,
+            "p2": 1,
+            "p3": 0.2,
+            "p4": 0.35,
+            "c1": "accent",
+            "c2": "accent",
+            "res": 0.5,
+            "alphaMode": "alpha"
+          }
+        },
+        {
+          "type": "sim",
+          "name": "HERÓI COSMIC II",
+          "on": true,
+          "opacity": 1,
+          "blend": "normal",
+          "role": "hero: the single dominant figure of this composition (the focal event)",
+          "p": {
+            "kind": "ink",
+            "dissipate": 0.998,
+            "threshold": 0.5,
+            "soft": 0.15
+          }
+        },
+        {
+          "type": "shape",
+          "name": "ESTRUTURA II",
+          "on": true,
+          "opacity": 0.3,
+          "blend": "normal",
+          "role": "structure: the grid or rhythm the eye measures the hero against",
+          "p": {
+            "kind": "circle",
+            "layout": "radial",
+            "count": 24,
+            "size": 14,
+            "spread": 380
+          },
+          "mod": [
+            {
+              "k": "size",
+              "src": "lfo",
+              "shape": "spring",
+              "cycles": 4,
+              "zeta": 0.824,
+              "wn": 10.08,
+              "min": 1.0,
+              "max": 1.15,
+              "mode": "mul"
+            }
+          ]
+        },
+        {
+          "type": "instrument",
+          "name": "INSTRUMENTO II",
+          "on": true,
+          "opacity": 0.8,
+          "blend": "normal",
+          "role": "instrument: shows the real signal that drives the picture (cause and effect)",
+          "p": {
+            "kind": "radar",
+            "size": 0.28,
+            "cx": 0.5,
+            "cy": 0.5,
+            "n": 36,
+            "weight": 3
+          }
+        },
+        {
+          "type": "hud",
+          "name": "INFORMAÇÃO II",
+          "on": true,
+          "opacity": 0.8,
+          "blend": "normal",
+          "role": "information: small, calm, always the same place; it tells the viewer the system is alive",
+          "p": {
+            "title": "POÇO CÓSMICO"
+          }
+        },
+        {
+          "type": "post",
+          "name": "ACABAMENTO",
+          "on": true,
+          "opacity": 1,
+          "blend": "normal",
+          "role": "finish: vignette and a touch of tension; scanlines only where the surface is a screen",
+          "p": {
+            "scan": 0.2,
+            "vig": 0.35,
+            "prob": 0.22
+          }
+        }
+      ]
+    },
+    {
+      "name": "COSMIC III",
+      "hypothesis": "PEAK: Uma queda lenta por um poço de estrelas em uma tela vertical; vertigem suave, sem pressa.",
+      "motion": "smooth",
+      "layers": [
+        {
+          "type": "bg",
+          "name": "FUNDO",
+          "on": true,
+          "opacity": 1,
+          "blend": "normal",
+          "role": "ground colour of the piece; the quiet reference everything else is read against",
+          "p": {
+            "grain": 0.4
+          }
+        },
+        {
+          "type": "shader",
+          "name": "CAMPO COSMIC III",
+          "on": true,
+          "opacity": 0.3,
+          "blend": "normal",
+          "role": "ground field: slow matter that gives the figure something to cut against",
+          "p": {
+            "preset": "ANÉIS SDF",
+            "p1": 6,
+            "p2": 1,
+            "p3": 0.2,
+            "p4": 0.35,
+            "c1": "secondary",
+            "c2": "secondary",
+            "res": 1,
+            "alphaMode": "alpha"
+          }
+        },
+        {
+          "type": "shader",
+          "name": "ATMOSFERA III",
+          "on": true,
+          "opacity": 0.12,
+          "blend": "add",
+          "role": "atmosphere: a second, fainter field in the accent that adds depth without competing with the hero",
+          "p": {
+            "preset": "KALEIDO",
+            "p1": 6,
+            "p2": 2.5,
+            "p3": 0.4,
+            "p4": 0.3,
+            "c1": "accent",
+            "c2": "accent",
+            "res": 0.5,
+            "alphaMode": "alpha"
+          }
+        },
+        {
+          "type": "flow",
+          "name": "HERÓI COSMIC III",
+          "on": true,
+          "opacity": 1,
+          "blend": "normal",
+          "role": "hero: the single dominant figure of this composition (the focal event)",
+          "p": {
+            "count": 840,
+            "trail": 14,
+            "amp": 0.2,
+            "audio": 0.61,
+            "band": "bass",
+            "width": 2.4,
+            "alpha": 0.9
+          },
+          "mod": [
+            {
+              "k": "amp",
+              "src": "lfo",
+              "shape": "spring",
+              "cycles": 4,
+              "zeta": 0.648,
+              "wn": 11.4,
+              "min": 1.0,
+              "max": 1.3,
+              "mode": "mul",
+              "ta": 0.042,
+              "depth": 0.09
+            }
+          ]
+        },
+        {
+          "type": "tunnel",
+          "name": "ESTRUTURA III",
+          "on": true,
+          "opacity": 0.3,
+          "blend": "normal",
+          "role": "structure: the grid or rhythm the eye measures the hero against",
+          "p": {
+            "shape": "circle",
+            "count": 10,
+            "cycles": 1,
+            "audio": 0.5,
+            "band": "high",
+            "size": 1
+          },
+          "mod": [
+            {
+              "k": "size",
+              "src": "lfo",
+              "shape": "spring",
+              "cycles": 4,
+              "zeta": 0.824,
+              "wn": 10.08,
+              "min": 1.0,
+              "max": 1.15,
+              "mode": "mul"
+            }
+          ]
+        },
+        {
+          "type": "instrument",
+          "name": "INSTRUMENTO III",
+          "on": true,
+          "opacity": 0.8,
+          "blend": "normal",
+          "role": "instrument: shows the real signal that drives the picture (cause and effect)",
+          "p": {
+            "kind": "scope",
+            "size": 0.28,
+            "cx": 0.5,
+            "cy": 0.86,
+            "n": 36,
+            "weight": 3
+          }
+        },
+        {
+          "type": "hud",
+          "name": "INFORMAÇÃO III",
+          "on": true,
+          "opacity": 0.8,
+          "blend": "normal",
+          "role": "information: small, calm, always the same place; it tells the viewer the system is alive",
+          "p": {
+            "title": "POÇO CÓSMICO"
+          }
+        },
+        {
+          "type": "post",
+          "name": "ACABAMENTO",
+          "on": true,
+          "opacity": 1,
+          "blend": "normal",
+          "role": "finish: vignette and a touch of tension; scanlines only where the surface is a screen",
+          "p": {
+            "scan": 0.2,
+            "vig": 0.35,
+            "prob": 0.22
+          }
+        }
+      ]
+    }
+  ]
+}

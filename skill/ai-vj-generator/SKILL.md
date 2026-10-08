@@ -73,6 +73,8 @@ Load only what the project needs.
 | Choosing SVG / Canvas / shader / 3D / code layer | `references/behavior-to-technique.md` |
 | LED, projection, mapping, folds, white-alpha, logos, fonts, code layer | `references/surface-model.md`, `references/walls-code-assets.md`, `references/output-targets.md` |
 | Deciding how much the music drives the picture (strategy none to full), band roles, section map, binding recipes | `references/audio-direction.md` |
+| The art bible (`meta.artBible`) written after the contract; how things move (motion profile, `layer.mod` spring); title + caption + data, reveal and text on a path (`typeset`); scoring a project before looking at it; picking a generator by family, surface and cost | `references/art-bible.md`, `references/motion-profiles.md`, `references/typography.md`, `references/evaluation.md` (`scripts/evaluate.mjs`), `references/families.md` (`scripts/families.py`) |
+| The Surface tab (presets, cuts, pixel map CSV/PNG, Resolume slices XML, legibility), the export manifest and parts, flash analysis and limiter, the browser Generate tab, kick/onset/flux sources | `references/surface-and-export.md`, `references/audio-bus.md` (onset section), `docs/GUIA-SEM-IA.md` |
 | A structured brief, the next questions to ask, or generating a project with no AI (rules, palette, tiers) | `scripts/brief_check.py`, `scripts/brief_to_project.py`, `schema/brief.schema.json` |
 | Working with another AI (ChatGPT, Gemini, Codex, local), or checking JSON structure without pip | `portable/PROMPT.md`, `scripts/schema_check.py`, `schema/project.schema.json` |
 | Audio, BPM, beat sync, integrated time, band transients, `layer.mod` modulation | `references/audio-bus.md` |
@@ -114,7 +116,7 @@ Up to 4 rounds when the project is large or the user said earlier results missed
 
 ## 6. Creative contract
 
-Before any code, write the contract (fields and the traceability rule in `references/creative-contract.md`). It is saved in `meta.contract` of the project and shown in the interface.
+Before any code, write the contract (fields and the traceability rule in `references/creative-contract.md`). It is saved in `meta.contract` of the project and shown in the interface. Right after it, write the art bible (nine lines, `references/art-bible.md`) into `meta.artBible`; every layer must be defensible by one of them. Run `node scripts/evaluate.mjs` before you look and fix the weakest measure first (`references/evaluation.md`).
 
 ```yaml
 creative_contract:

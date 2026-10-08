@@ -1,0 +1,98 @@
+{
+ "note": "ms por quadro a 1920x1080 em meia resolução, software (headless, sem GPU), média de 6 quadros, ms acima de um quadro só com o fundo (baseline 0.03 ms); low < 8 ms, medium < 20 ms, high >= 20 ms (toda camada custa uns 5 ms nesse tamanho só por alocar o canvas e compor). Máquina da autora: valores relativos importam, absolutos não.",
+ "canvas": [
+  1920,
+  1080
+ ],
+ "scale": 0.5,
+ "ms": {
+  "shader": {
+   "ms": 46.05,
+   "firstMs": 75.4
+  },
+  "sim": {
+   "ms": 28.87,
+   "firstMs": 1487.8
+  },
+  "flow": {
+   "ms": 18.02,
+   "firstMs": 17
+  },
+  "typeset": {
+   "ms": 13.87,
+   "firstMs": 8.6
+  },
+  "typewall": {
+   "ms": 13.67,
+   "firstMs": 40.2
+  },
+  "organism": {
+   "ms": 11.95,
+   "firstMs": 15
+  },
+  "bitfield": {
+   "ms": 11.02,
+   "firstMs": 44.8
+  },
+  "tunnel": {
+   "ms": 9.94,
+   "firstMs": 7.2
+  },
+  "pixeltext": {
+   "ms": 9.94,
+   "firstMs": 11.8
+  },
+  "symbols": {
+   "ms": 9.09,
+   "firstMs": 49
+  },
+  "text": {
+   "ms": 8.65,
+   "firstMs": 11.8
+  },
+  "hud": {
+   "ms": 8.52,
+   "firstMs": 15.8
+  },
+  "hazard": {
+   "ms": 7.94,
+   "firstMs": 6.5
+  },
+  "data": {
+   "ms": 7.47,
+   "firstMs": 42.4
+  },
+  "measure": {
+   "ms": 7.2,
+   "firstMs": 10
+  },
+  "structure": {
+   "ms": 6.9,
+   "firstMs": 9.9
+  },
+  "shape": {
+   "ms": 6.89,
+   "firstMs": 7
+  },
+  "instrument": {
+   "ms": 6.8,
+   "firstMs": 5.7
+  },
+  "blocks": {
+   "ms": 6.19,
+   "firstMs": 32.4
+  },
+  "post": {
+   "ms": 5.94,
+   "firstMs": 6.2
+  },
+  "event": {
+   "ms": 5.92,
+   "firstMs": 6.5
+  },
+  "lines": {
+   "ms": 5.09,
+   "firstMs": 6.7
+  }
+ }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "Pressure Test",
+  "lang": "en",
+  "concept": "A wall of cold signal that tightens with the beat and releases on the break; the crowd should feel contained pressure.",
+  "mood": [
+    "industrial",
+    "glitch"
+  ],
+  "energy": 0.75,
+  "density": "balanced",
+  "surface": {
+    "type": "led",
+    "w": 4500,
+    "h": 800,
+    "fps": 30,
+    "pitchMm": 3.9,
+    "viewingDistanceM": [
+      8,
+      40
+    ],
+    "folds": [
+      2250
+    ]
+  },
+  "time": {
+    "bpm": 132,
+    "bars": 4
+  },
+  "audio": {
+    "strategy": "rhythmic"
+  },
+  "compositions": 3
+}

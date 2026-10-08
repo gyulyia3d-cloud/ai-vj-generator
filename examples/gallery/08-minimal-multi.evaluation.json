@@ -1,0 +1,133 @@
+{
+  "lang": "en",
+  "loopFrames": 411,
+  "set": 86,
+  "weights": {
+    "hierarchy": 20,
+    "contrast": 15,
+    "density": 10,
+    "breathing": 15,
+    "motion": 15,
+    "arc": 15,
+    "repetition": 10
+  },
+  "compositions": [
+    {
+      "index": 0,
+      "name": "MINIMAL I",
+      "total": 84,
+      "score": {
+        "hierarchy": 94,
+        "contrast": 17,
+        "density": 100,
+        "breathing": 100,
+        "motion": 100,
+        "arc": 85,
+        "repetition": 100
+      },
+      "raw": {
+        "declaredDensity": "sparse",
+        "dominance": 0.19714831314807663,
+        "p99": 0.3676094114780426,
+        "coverage": 0.10294367283950617,
+        "quiet": 0.8489583333333334,
+        "motion": 0.015466042416818948,
+        "dead": 0,
+        "seamJump": false,
+        "arcRange": 0.5890250860891297,
+        "arcPeak": 0,
+        "strongLayers": 2,
+        "layers": 12,
+        "maxCorrelation": 0.9029429066860177,
+        "similarTo": 2
+      },
+      "notes": {
+        "hierarchy": "one clear hero over a quiet supporting cast",
+        "contrast": "nothing separates enough from the ground: raise the hero, darken the ground field or lighten the figure",
+        "density": "the amount of drawing is about right",
+        "breathing": "there is empty space for the figure to breathe",
+        "motion": "movement is present, continuous and the loop seam is clean",
+        "arc": "the energy rises and falls over the loop",
+        "repetition": "this composition is clearly different from the others"
+      }
+    },
+    {
+      "index": 1,
+      "name": "MINIMAL II",
+      "total": 77,
+      "score": {
+        "hierarchy": 55,
+        "contrast": 21,
+        "density": 81,
+        "breathing": 100,
+        "motion": 100,
+        "arc": 100,
+        "repetition": 100
+      },
+      "raw": {
+        "declaredDensity": "sparse",
+        "dominance": 0.13952528726963434,
+        "p99": 0.38385099172592163,
+        "coverage": 0.3255555555555556,
+        "quiet": 0.7060185185185185,
+        "motion": 0.03282733581655824,
+        "dead": 0,
+        "seamJump": false,
+        "arcRange": 0.3431875569501338,
+        "arcPeak": 0.3333333333333333,
+        "strongLayers": 2,
+        "layers": 12,
+        "maxCorrelation": 0.2569854489214683,
+        "similarTo": 0
+      },
+      "notes": {
+        "hierarchy": "the eye has several competing centres or no centre: raise the hero, lower the opacity of everything else",
+        "contrast": "nothing separates enough from the ground: raise the hero, darken the ground field or lighten the figure",
+        "density": "the amount of drawing is about right",
+        "breathing": "there is empty space for the figure to breathe",
+        "motion": "movement is present, continuous and the loop seam is clean",
+        "arc": "the energy rises and falls over the loop",
+        "repetition": "this composition is clearly different from the others"
+      }
+    },
+    {
+      "index": 2,
+      "name": "MINIMAL III",
+      "total": 97,
+      "score": {
+        "hierarchy": 95,
+        "contrast": 100,
+        "density": 100,
+        "breathing": 100,
+        "motion": 100,
+        "arc": 85,
+        "repetition": 100
+      },
+      "raw": {
+        "declaredDensity": "sparse",
+        "dominance": 0.1979506418616311,
+        "p99": 0.6860948801040649,
+        "coverage": 0.03582561728395062,
+        "quiet": 0.9626736111111113,
+        "motion": 0.029936019853402347,
+        "dead": 0,
+        "seamJump": false,
+        "arcRange": 0.6439264382848211,
+        "arcPeak": 0,
+        "strongLayers": 2,
+        "layers": 12,
+        "maxCorrelation": 0.9029429066860177,
+        "similarTo": 0
+      },
+      "notes": {
+        "hierarchy": "one clear hero over a quiet supporting cast",
+        "contrast": "the brightest figure reads strongly against the ground",
+        "density": "the amount of drawing is about right",
+        "breathing": "there is empty space for the figure to breathe",
+        "motion": "movement is present, continuous and the loop seam is clean",
+        "arc": "the energy rises and falls over the loop",
+        "repetition": "this composition is clearly different from the others"
+      }
+    }
+  ]
+}

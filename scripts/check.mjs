@@ -184,14 +184,25 @@ try {
 } catch (e) {
   e.status === 3 ? console.log('  --   features_check pulado (sem navegador)') : bad('features_check: ' + String(e.stdout).split('\n').filter(l => /ERRO/.test(l)).slice(0, 4).join(' | '));
 }
+try { execFileSync(process.execPath, [join(ROOT, 'scripts', 'embed-modules.mjs'), '--check'], { stdio: 'pipe' }); ok('módulos do navegador (gerador, avaliador, abas, flash, áudio, UX) embutidos no motor em dia'); }
+catch (e) { bad('embed-modules: ' + String(e.stderr || e.stdout).trim().slice(0, 160)); }
 try { execFileSync(process.execPath, [join(ROOT, 'scripts', 'embed-glsl-lib.mjs'), '--check'], { stdio: 'pipe' }); ok('biblioteca GLSL embutida no motor em dia'); }
 catch (e) { bad('GLSL embed: ' + String(e.stderr || e.stdout).trim().slice(0, 160)); }
 // V7: vocabulário de áudio estendido, layer.mod e ponte ISF
 const NL = String.fromCharCode(10);
-for (const [f, label] of [['v7_check.mjs', 'áudio V7 (tempo integrado fecha o loop) e layer.mod'], ['isf_check.mjs', 'ponte ISF (exportar, importar, compilar)'], ['lib_check.mjs', 'biblioteca GLSL (#include) compila e desenha'], ['generator_check.mjs', 'gerador sem IA (12 climas), brief, esquema e estratégia de áudio']]) {
+for (const [f, label] of [['v7_check.mjs', 'áudio V7 (tempo integrado fecha o loop) e layer.mod'], ['isf_check.mjs', 'ponte ISF (exportar, importar, compilar)'], ['lib_check.mjs', 'biblioteca GLSL (#include) compila e desenha'], ['generator_check.mjs', 'gerador sem IA (12 climas), brief, esquema e estratégia de áudio'],
+  ['motion_check.mjs', 'fase 2: perfis de movimento (curva Python = curva do motor) e bíblia de arte na interface'], ['typeset_check.mjs', 'fase 2: tipografia (hierarquia, revelação, caminho; o loop fecha)'], ['evaluate_check.mjs', 'fase 2: avaliador estrutural reprova os defeitos fabricados'],
+  ['genai_check.mjs', 'fase 3: gerador do navegador = gerador Python (12 climas, galeria, casos de borda)'], ['gen_ui_check.mjs', 'fase 3: aba Gerar (formulário, preset 4500×800, avaliar, idioma)'], ['surface_check.mjs', 'fase 3: Superfície (XML idêntico ao Python, pixel map CSV/PNG, cortes, legibilidade)'],
+  ['export_check.mjs', 'fase 3: export (manifesto, SHA-256, partes) e segurança de flash (análise e limitador medidos nos PNG)'], ['audio_check.mjs', 'fase 3: detector de kick/onset com histórico e fontes novas no layer.mod'], ['mod_ui_check.mjs', 'fase 3: editor de modulação e curva de perfil de movimento'], ['ux_check.mjs', 'fase 3: modo Criativo/Avançado, ajuda por aba, atalhos e tour'],
+  ['phase3_acceptance.mjs', 'fase 3 (aceite): do motor limpo ao ZIP da parede 4500×800, só pela interface']]) {
   try { execFileSync(process.execPath, [join(SKILL, 'scripts', f)], { stdio: 'pipe' }); ok(label); }
   catch (e) { e.status === 3 ? console.log(`  --   ${f} pulado (sem navegador)`) : bad(`${f}: ` + String(e.stdout).split(NL).filter(l => /ERRO/.test(l)).slice(0, 4).join(' | ')); }
 }
+// fase 2: famílias da biblioteca e galeria de referência
+try { execFileSync('python', [join(SKILL, 'scripts', 'families.py'), 'check'], { stdio: 'pipe' }); ok('famílias: o manifesto cobre todos os geradores, receitas e módulos GLSL'); }
+catch (e) { bad('families: ' + String(e.stdout || e.stderr).trim().slice(0, 200)); }
+try { execFileSync(process.execPath, [join(ROOT, 'scripts', 'gallery.mjs'), '--check'], { stdio: 'pipe' }); ok('galeria: 8 briefs geram projetos limpos e toda composição tira nota >= 75'); }
+catch (e) { e.status === 3 ? console.log('  --   galeria pulada (sem navegador)') : bad('galeria: ' + String(e.stdout).split(NL).filter(l => /ERRO/.test(l)).slice(0, 3).join(' | ')); }
 // visualizador de arquivos gerados (OUTPUT.html)
 try {
   const dir = (await import('node:fs')).mkdtempSync(join(tmpdir(), 'aivj-out-')), fs = await import('node:fs');

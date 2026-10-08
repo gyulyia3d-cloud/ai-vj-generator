@@ -49,10 +49,19 @@
       }
     },
     "output": { "type": "object", "properties": { "mode": { "type": "string", "enum": ["alpha", "rgb", "white-alpha"] } } },
-    "text": { "type": "object", "properties": { "title": { "type": "string" }, "words": { "type": "array", "items": { "type": "string" }, "maxItems": 12 } } },
+    "text": { "type": "object", "description": "Exact words only. words = big rotating words (typewall). title + caption/data = a three-level hierarchy (typeset).", "properties": { "title": { "type": "string" }, "caption": { "type": "string" }, "data": { "type": "string" }, "words": { "type": "array", "items": { "type": "string" }, "maxItems": 12 }, "path": { "type": "string", "enum": ["none", "circle", "wave", "line"] } } },
     "compositions": { "type": "integer", "minimum": 1, "maximum": 6, "description": "How many compositions in the set (default 3)." },
     "focalEvent": { "type": "string", "description": "The one dominant event of the piece." },
     "banned": { "type": "array", "items": { "type": "string" }, "description": "Effects this piece must not use." },
+    "motionProfile": {
+      "type": "object",
+      "description": "Optional override of the motion profile the mood would pick (references/motion-profiles.md). Every axis 0..1.",
+      "properties": {
+        "energy": { "type": "number", "minimum": 0, "maximum": 1 }, "elasticity": { "type": "number", "minimum": 0, "maximum": 1 },
+        "anticipation": { "type": "number", "minimum": 0, "maximum": 1 }, "continuity": { "type": "number", "minimum": 0, "maximum": 1 },
+        "rhythm": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
     "seed": { "type": "integer" },
     "lang": { "type": "string", "enum": ["en", "pt"] }
   }

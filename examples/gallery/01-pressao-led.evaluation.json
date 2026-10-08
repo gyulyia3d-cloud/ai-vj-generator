@@ -1,0 +1,133 @@
+{
+  "lang": "en",
+  "loopFrames": 218,
+  "set": 86,
+  "weights": {
+    "hierarchy": 20,
+    "contrast": 15,
+    "density": 10,
+    "breathing": 15,
+    "motion": 15,
+    "arc": 15,
+    "repetition": 10
+  },
+  "compositions": [
+    {
+      "index": 0,
+      "name": "INDUSTRIAL I",
+      "total": 87,
+      "score": {
+        "hierarchy": 93,
+        "contrast": 100,
+        "density": 100,
+        "breathing": 35,
+        "motion": 100,
+        "arc": 85,
+        "repetition": 100
+      },
+      "raw": {
+        "declaredDensity": "balanced",
+        "dominance": 0.19394303832595808,
+        "p99": 0.7415427565574646,
+        "coverage": 0.1610949612403101,
+        "quiet": 0.8428819444444445,
+        "motion": 0.0446180366075588,
+        "dead": 0,
+        "seamJump": false,
+        "arcRange": 1.3117490294677792,
+        "arcPeak": 0,
+        "strongLayers": 1,
+        "layers": 13,
+        "maxCorrelation": 0.6276943869119688,
+        "similarTo": 2
+      },
+      "notes": {
+        "hierarchy": "one clear hero over a quiet supporting cast",
+        "contrast": "the brightest figure reads strongly against the ground",
+        "density": "the amount of drawing is about right",
+        "breathing": "almost nothing but quiet: the piece may feel absent",
+        "motion": "movement is present, continuous and the loop seam is clean",
+        "arc": "the energy rises and falls over the loop",
+        "repetition": "this composition is clearly different from the others"
+      }
+    },
+    {
+      "index": 1,
+      "name": "GLITCH II",
+      "total": 82,
+      "score": {
+        "hierarchy": 74,
+        "contrast": 49,
+        "density": 100,
+        "breathing": 81,
+        "motion": 100,
+        "arc": 85,
+        "repetition": 100
+      },
+      "raw": {
+        "declaredDensity": "balanced",
+        "dominance": 0.16526532352005185,
+        "p99": 0.47066667675971985,
+        "coverage": 0.2993297803617571,
+        "quiet": 0.7404513888888888,
+        "motion": 0.016905202345413612,
+        "dead": 0,
+        "seamJump": false,
+        "arcRange": 0.7170691675342832,
+        "arcPeak": 0,
+        "strongLayers": 1,
+        "layers": 12,
+        "maxCorrelation": 0.8268568035492232,
+        "similarTo": 2
+      },
+      "notes": {
+        "hierarchy": "one clear hero over a quiet supporting cast",
+        "contrast": "nothing separates enough from the ground: raise the hero, darken the ground field or lighten the figure",
+        "density": "the amount of drawing is about right",
+        "breathing": "there is empty space for the figure to breathe",
+        "motion": "movement is present, continuous and the loop seam is clean",
+        "arc": "the energy rises and falls over the loop",
+        "repetition": "this composition is clearly different from the others"
+      }
+    },
+    {
+      "index": 2,
+      "name": "INDUSTRIAL III",
+      "total": 90,
+      "score": {
+        "hierarchy": 98,
+        "contrast": 53,
+        "density": 100,
+        "breathing": 100,
+        "motion": 100,
+        "arc": 85,
+        "repetition": 100
+      },
+      "raw": {
+        "declaredDensity": "balanced",
+        "dominance": 0.20653994274127419,
+        "p99": 0.48380470275878906,
+        "coverage": 0.2631661821705427,
+        "quiet": 0.6556712962962963,
+        "motion": 0.03411751645933042,
+        "dead": 0,
+        "seamJump": false,
+        "arcRange": 0.56146590357698,
+        "arcPeak": 0,
+        "strongLayers": 1,
+        "layers": 13,
+        "maxCorrelation": 0.8268568035492232,
+        "similarTo": 1
+      },
+      "notes": {
+        "hierarchy": "one clear hero over a quiet supporting cast",
+        "contrast": "nothing separates enough from the ground: raise the hero, darken the ground field or lighten the figure",
+        "density": "the amount of drawing is about right",
+        "breathing": "there is empty space for the figure to breathe",
+        "motion": "movement is present, continuous and the loop seam is clean",
+        "arc": "the energy rises and falls over the loop",
+        "repetition": "this composition is clearly different from the others"
+      }
+    }
+  ]
+}
