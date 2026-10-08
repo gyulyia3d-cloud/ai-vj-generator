@@ -430,6 +430,20 @@
    "cost": "high",
    "maturity": "stable",
    "note": "Write the chain, not the GLSL. Cycles are whole numbers per loop so the loop closes; numbers accept bass, hit, p1..p4."
+  },
+  "blobs": {
+   "family": "information",
+   "role": "detect and mark blobs in the image below (by brightness, contrast, colour or luminance zone): boxes, ids, links",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "low",
+   "maturity": "stable",
+   "note": "Reads the stack below it like fx. Stateless: ids follow area order, not identity over time."
   }
  },
  "recipes": {

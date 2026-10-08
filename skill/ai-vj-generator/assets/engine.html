@@ -588,7 +588,7 @@ html.stagemode #toast,html.stagemode #hint{display:none!important}
    função pura de (parâmetros, quadro) → o mesmo código desenha o preview,
    o export PNG alpha e a gravação.
    ===================================================================== */
-const VERSION = '2.7.1';
+const VERSION = '2.8.0';
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const TAU = Math.PI * 2, GA = Math.PI * (3 - Math.sqrt(5));
 const clamp = (v, a, b) => v < a ? a : v > b ? b : v, lerp = (a, b, t) => a + (b - a) * t;
@@ -2261,7 +2261,7 @@ function contactSheet(ci, o) {
       const F = frameAt(Math.round(b * fpb), comp); cx.setTransform(1, 0, 0, 1, 0, 0); cx.globalCompositeOperation = 'source-over'; cx.globalAlpha = 1; cx.clearRect(0, 0, w, h);
       comp.layers.forEach((L, i) => {
         if (!L.on || L.type === 'bg') return;
-        renderLayer(lx, comp, L, i, F, sc, W, H, L.type === 'fx' ? cmp : undefined); if (luma) lumaKey(lx, w, h);
+        renderLayer(lx, comp, L, i, F, sc, W, H, BELOW_TYPES.has(L.type) ? cmp : undefined); if (luma) lumaKey(lx, w, h);
         cx.globalAlpha = L.opacity; cx.globalCompositeOperation = fxOp(L, (BLENDS[L.blend] || BLENDS.normal)[0]); cx.drawImage(lay, 0, 0); cx.globalAlpha = 1; cx.globalCompositeOperation = 'source-over';
       });
       sx.drawImage(cmp, 0, row * h);
@@ -2639,7 +2639,7 @@ function tick(now) {
   const comp = cur(), F = frameAt(ST.n, comp), W = P.canvas.w, H = P.canvas.h;
   ST.F = F;
   /* explodido: camadas desligadas aparecem como fantasma e atualizam a cada 6 quadros para poupar a GPU */
-  comp.layers.forEach((L, i) => { const D = DOM.layers[i]; if (D && (isVis(i) || (ST.exploded && thumbTick % 6 === i % 6))) renderLayer(D.ctx, comp, L, i, F, ST.ps, W, H, L.type === 'fx' ? fxLiveBelow(comp, i) : undefined); });
+  comp.layers.forEach((L, i) => { const D = DOM.layers[i]; if (D && (isVis(i) || (ST.exploded && thumbTick % 6 === i % 6))) renderLayer(D.ctx, comp, L, i, F, ST.ps, W, H, BELOW_TYPES.has(L.type) ? fxLiveBelow(comp, i) : undefined); });
   if (ST.manEv != null && F.beatF > ST.manEv + 32) ST.manEv = null;
   if (F.beat !== ST.lastBeat) { ST.lastBeat = F.beat; $$('#dots i').forEach((d, i) => d.classList.toggle('on', i === F.beat % 4)); }
   if (!scrubbing) { const s = $('#scrub'); s.max = F.LF - 1; s.value = F.n; }
@@ -2673,7 +2673,7 @@ function drawThumb(ci) {
   c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1; c.fillStyle = '#000'; c.fillRect(0, 0, w, h);
   comp.layers.forEach((L, i) => {
     if (!L.on) return;
-    renderLayer(TH_SCR_CTX, comp, L, i, F, k, W, H, L.type === 'fx' ? cv : undefined);
+    renderLayer(TH_SCR_CTX, comp, L, i, F, k, W, H, BELOW_TYPES.has(L.type) ? cv : undefined);
     c.globalAlpha = L.opacity; c.globalCompositeOperation = fxOp(L, (BLENDS[L.blend] || BLENDS.normal)[0]); c.drawImage(TH_SCR, 0, 0);
   });
   c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
@@ -3151,7 +3151,7 @@ async function exportRun(info, bar) {
         for (const i of tgt) {
           const L = comp.layers[i];
           if (alpha && L.type === 'bg' && !single) continue;
-          renderLayer(lctx, comp, L, i, F, EXP.scale, W, H, L.type === 'fx' ? cmp : undefined);
+          renderLayer(lctx, comp, L, i, F, EXP.scale, W, H, BELOW_TYPES.has(L.type) ? cmp : undefined);
           if (EXP.luma) lumaKey(lctx, w, h);
           if (perLayer || single) await put(`${PROJ}/LAYERS/${cn}/L${i}_${safe(L.name)}/${tag}${cn}_L${i}_${pad(n, 6)}.png`, lay);
           cctx.globalAlpha = L.opacity; cctx.globalCompositeOperation = fxOp(L, (BLENDS[L.blend] || BLENDS.normal)[0]); cctx.drawImage(lay, 0, 0); cctx.globalAlpha = 1; cctx.globalCompositeOperation = 'source-over';
@@ -5339,7 +5339,7 @@ async function mp4Render({ ci = ST.ci, start = 0, end = -1, scale = 1, fps = nul
       cctx.setTransform(1, 0, 0, 1, 0, 0); cctx.globalCompositeOperation = 'source-over'; cctx.globalAlpha = 1; cctx.clearRect(0, 0, w, h);
       if (!hasBg) { cctx.fillStyle = col(comp, 'bg'); cctx.fillRect(0, 0, w, h); }
       for (const idx of on) {
-        const L = comp.layers[idx]; renderLayer(lctx, comp, L, idx, F, scale, W, H, L.type === 'fx' ? cmp : undefined);
+        const L = comp.layers[idx]; renderLayer(lctx, comp, L, idx, F, scale, W, H, BELOW_TYPES.has(L.type) ? cmp : undefined);
         cctx.globalAlpha = L.opacity; cctx.globalCompositeOperation = fxOp(L, (BLENDS[L.blend] || BLENDS.normal)[0]); cctx.drawImage(lay, 0, 0, w, h);
       }
       cctx.globalAlpha = 1; cctx.globalCompositeOperation = 'source-over';
@@ -5464,6 +5464,7 @@ function fxBody(src) { return FX_PRE + src.replace(/void\s+main\s*\(\s*\)/, 'voi
 const fxOf = p => FX[p.preset] || FX.PIXELATE;
 /* o efeito entra no lugar do que está abaixo: com opacidade cheia e blend normal ele substitui a imagem (copy); senão mistura */
 const fxOp = (L, op) => L.type === 'fx' && (L.opacity == null || L.opacity >= 0.999) && (!L.blend || L.blend === 'normal') ? 'copy' : op;
+const BELOW_TYPES = new Set(['fx', 'blobs']);   // camadas que leem a imagem das camadas abaixo
 let FXS = null;   // canvas de rascunho para a imagem "abaixo" na viewport
 function fxLiveBelow(comp, i) {
   const src = DOM.layers[0] && DOM.layers[0].cv; if (!src) return null;
@@ -5662,6 +5663,73 @@ reg('synth', 'Cadeia (osc, noise, kaleid, modulate…)', 'gen', [
   GEN.shader.draw(c, Object.assign({}, R, { p: Object.assign({}, R.p, { src }) }));
 });
 /*__SYNTH_END__*/
+/*__BLOBS_START__*/
+/* Camada "blobs": detecção e marcação de manchas na imagem das camadas ABAIXO dela (como o fx, lê a pilha). Inspirada na ideia do BlobTracking.jl
+   (achar regiões, dar um número a cada uma, ligar), com código próprio e sem câmera: a fonte é a própria composição. Quatro modos de achar as manchas:
+   brilho (luminância acima do limiar), contraste (borda: gradiente local), cor (matiz perto de um alvo) e zonas (a luminância dividida em N faixas, uma faixa escolhida).
+   Função pura do quadro: o mesmo quadro dá as mesmas manchas, os mesmos números e o mesmo desenho; o loop fecha quando a imagem de baixo fecha.
+   Os números das manchas são por ordem de área (B01 é a maior): sem estado entre quadros, então não há "identidade" que sobreviva a um salto; o rastro de movimento fica para o fx com histórico.
+   Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html. Docs: references/blob-layer.md */
+const BLOBX = (() => {
+  const lum = (r, g, b) => 0.299 * r + 0.587 * g + 0.114 * b;
+  function hueOf(r, g, b) { const mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn; if (d < 1e-6) return [0, 0, mx]; let h = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h = ((h / 6) % 1 + 1) % 1; return [h, d / (mx || 1), mx]; }
+  /* d: Uint8ClampedArray RGBA de w por h. o: { mode, thr, hue, tol, zones, zone, minArea, max } -> { mask, blobs } */
+  function analyze(d, w, h, o) {
+    const mode = o.mode || 'brilho', thr = o.thr != null ? o.thr : 0.5, N = w * h, mask = new Uint8Array(N), L = new Float32Array(N);
+    for (let i = 0; i < N; i++) L[i] = d[i * 4 + 3] < 8 ? 0 : lum(d[i * 4], d[i * 4 + 1], d[i * 4 + 2]) / 255;
+    if (mode === 'brilho') { for (let i = 0; i < N; i++) mask[i] = L[i] >= thr && d[i * 4 + 3] >= 8 ? 1 : 0; }
+    else if (mode === 'contraste') {
+      for (let y = 1; y < h - 1; y++) for (let x = 1; x < w - 1; x++) { const i = y * w + x, gx = L[i + 1] - L[i - 1] + 0.5 * (L[i - w + 1] - L[i - w - 1] + L[i + w + 1] - L[i + w - 1]), gy = L[i + w] - L[i - w] + 0.5 * (L[i + w - 1] - L[i - w - 1] + L[i + w + 1] - L[i - w + 1]); mask[i] = Math.sqrt(gx * gx + gy * gy) * 0.5 >= thr * 0.5 ? 1 : 0; }
+    } else if (mode === 'cor') {
+      const th = (o.hue != null ? o.hue : 0) % 1, tol = o.tol != null ? o.tol : 0.06, smin = o.sat != null ? o.sat : 0.25;
+      for (let i = 0; i < N; i++) { if (d[i * 4 + 3] < 8) continue; const [hh, s, v] = hueOf(d[i * 4] / 255, d[i * 4 + 1] / 255, d[i * 4 + 2] / 255); let dh = Math.abs(hh - th); dh = Math.min(dh, 1 - dh); mask[i] = dh <= tol && s >= smin && v >= 0.12 ? 1 : 0; }
+    } else if (mode === 'zonas') {
+      const Z = Math.max(2, Math.round(o.zones || 4)), zi = Math.max(0, Math.min(Z - 1, Math.round(o.zone != null ? o.zone : Z - 1)));
+      for (let i = 0; i < N; i++) { if (d[i * 4 + 3] < 8) continue; const z = Math.min(Z - 1, Math.floor(L[i] * Z)); mask[i] = z === zi ? 1 : 0; }
+    }
+    /* componentes conexas (4 vizinhos), união-busca */
+    const par = new Int32Array(N).fill(-1), find = a => { while (par[a] !== a) { par[a] = par[par[a]]; a = par[a]; } return a; };
+    for (let i = 0; i < N; i++) if (mask[i]) { par[i] = i; }
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { const i = y * w + x; if (!mask[i]) continue; if (x > 0 && mask[i - 1]) { const a = find(i), b = find(i - 1); if (a !== b) par[a] = b; } if (y > 0 && mask[i - w]) { const a = find(i), b = find(i - w); if (a !== b) par[a] = b; } }
+    const map = new Map();
+    for (let i = 0; i < N; i++) if (mask[i]) { const r = find(i); let b = map.get(r); if (!b) { b = { n: 0, sx: 0, sy: 0, x0: 1e9, y0: 1e9, x1: -1, y1: -1, root: r, lum: 0 }; map.set(r, b); } const x = i % w, y = (i / w) | 0; b.n++; b.sx += x; b.sy += y; b.lum += L[i]; if (x < b.x0) b.x0 = x; if (x > b.x1) b.x1 = x; if (y < b.y0) b.y0 = y; if (y > b.y1) b.y1 = y; }
+    const minA = Math.max(1, Math.round((o.minArea != null ? o.minArea : 0.002) * N)), max = Math.max(1, Math.round(o.max || 12));
+    const blobs = [...map.values()].filter(b => b.n >= minA).sort((a, b) => b.n - a.n || a.sy / a.n - b.sy / b.n || a.sx / a.n - b.sx / b.n).slice(0, max)
+      .map((b, k) => ({ id: k + 1, area: b.n / N, cx: (b.sx / b.n + 0.5) / w, cy: (b.sy / b.n + 0.5) / h, x0: b.x0 / w, y0: b.y0 / h, x1: (b.x1 + 1) / w, y1: (b.y1 + 1) / h, lum: b.lum / b.n, root: b.root }));
+    return { mask, blobs, w, h, find };
+  }
+  return { analyze, hueOf };
+})();
+let BLOBCV = null;
+reg('blobs', 'Manchas · detectar e marcar (lê as camadas abaixo)', 'gen', [
+  S('mode', 'Achar por', 'brilho', ['brilho', 'contraste', 'cor', 'zonas']), N('thr', 'Limiar (brilho e contraste)', 0.55, 0.02, 0.98, 0.01),
+  N('hue', 'Cor alvo (matiz 0 a 1)', 0.08, 0, 1, 0.005), N('tol', 'Tolerância da cor', 0.06, 0.01, 0.5, 0.005), N('sat', 'Saturação mínima (cor)', 0.25, 0, 1, 0.01),
+  N('zones', 'Zonas (nº de faixas de luminância)', 4, 2, 8, 1), N('zone', 'Zona escolhida (0 = mais escura)', 3, 0, 7, 1),
+  N('minArea', 'Área mínima (fração da imagem)', 0.002, 0.0002, 0.2, 0.0002), N('max', 'Máximo de manchas', 12, 1, 64, 1), N('grid', 'Resolução da análise (colunas)', 128, 32, 320, 8),
+  B('box', 'Caixas (cantos)', true), B('ids', 'Números e valores', true), B('cross', 'Cruz no centro', true), B('links', 'Linhas entre manchas vizinhas', true), B('fill', 'Preencher a mancha', false),
+  N('weight', 'Espessura', 3.5, 0.5, 40, 0.5), N('pad', 'Folga da caixa', 0.01, 0, 0.1, 0.002), C('color', 'Cor', 'primary'), C('hot', 'Cor do destaque', 'accent'),
+], (c, R) => {
+  const { p, F, comp, W, H, below, u } = R; if (!below) return;
+  const gw = Math.max(16, Math.round(p.grid)), gh = Math.max(9, Math.round(gw * below.height / below.width));
+  if (!BLOBCV || BLOBCV.width !== gw || BLOBCV.height !== gh) { BLOBCV = document.createElement('canvas'); BLOBCV.width = gw; BLOBCV.height = gh; }
+  const bx = BLOBCV.getContext('2d', { willReadFrequently: true }); bx.setTransform(1, 0, 0, 1, 0, 0); bx.clearRect(0, 0, gw, gh); bx.imageSmoothingEnabled = true; bx.drawImage(below, 0, 0, gw, gh);
+  const im = bx.getImageData(0, 0, gw, gh), r = BLOBX.analyze(im.data, gw, gh, p), A = col(comp, p.color), Hc = col(comp, p.hot), lw = p.weight * u;
+  if (!r.blobs.length) return;
+  if (p.fill) { const hot = hexRgb(Hc), cvs = document.createElement('canvas'); cvs.width = gw; cvs.height = gh; const cx = cvs.getContext('2d'), out = cx.createImageData(gw, gh), keep = new Set(r.blobs.map(b => b.root));
+    for (let i = 0; i < gw * gh; i++) if (r.mask[i] && keep.has(r.find(i))) { const o = i * 4; out.data[o] = hot[0]; out.data[o + 1] = hot[1]; out.data[o + 2] = hot[2]; out.data[o + 3] = 110; }
+    cx.putImageData(out, 0, 0); c.imageSmoothingEnabled = false; c.drawImage(cvs, 0, 0, W, H); c.imageSmoothingEnabled = true; }
+  c.lineWidth = lw; c.lineCap = 'square'; c.strokeStyle = A; c.fillStyle = A;
+  if (p.links) { c.globalAlpha = 0.55; c.beginPath(); r.blobs.forEach((b, i) => { let best = -1, bd = 1e9; r.blobs.forEach((o, j) => { if (j === i) return; const d = (o.cx - b.cx) ** 2 + (o.cy - b.cy) ** 2; if (d < bd) { bd = d; best = j; } }); if (best >= 0) { c.moveTo(b.cx * W, b.cy * H); c.lineTo(r.blobs[best].cx * W, r.blobs[best].cy * H); } }); c.stroke(); c.globalAlpha = 1; }
+  const fs = Math.max(11, Math.min(W, H) * 0.03);
+  r.blobs.forEach((b, i) => {
+    const pad = p.pad * Math.min(W, H), x0 = b.x0 * W - pad, y0 = b.y0 * H - pad, x1 = b.x1 * W + pad, y1 = b.y1 * H + pad, ck = Math.min(x1 - x0, y1 - y0) * 0.22, hot = i === 0;
+    c.strokeStyle = hot ? Hc : A; c.fillStyle = hot ? Hc : A;
+    if (p.box) { c.beginPath(); for (const [x, y, sx, sy] of [[x0, y0, 1, 1], [x1, y0, -1, 1], [x0, y1, 1, -1], [x1, y1, -1, -1]]) { c.moveTo(x + sx * ck, y); c.lineTo(x, y); c.lineTo(x, y + sy * ck); } c.stroke(); }
+    if (p.cross) { const m = Math.min(x1 - x0, y1 - y0) * 0.12 + lw * 3; c.beginPath(); c.moveTo(b.cx * W - m, b.cy * H); c.lineTo(b.cx * W + m, b.cy * H); c.moveTo(b.cx * W, b.cy * H - m); c.lineTo(b.cx * W, b.cy * H + m); c.stroke(); }
+    if (p.ids) { c.font = `700 ${fs}px ${fam('mono') || 'monospace'}`; c.textBaseline = 'bottom'; c.fillText(`B${String(b.id).padStart(2, '0')}  ${(b.area * 100).toFixed(1)}%`, x0, y0 - lw); c.textBaseline = 'alphabetic'; }
+  });
+});
+/*__BLOBS_END__*/
 /*__UX_START__*/
 /* UX (fase 3): modo Criativo/Avançado, ajuda de cada aba, atalhos (tecla ?) e tour guiado. Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html.
    Textos pela função T3 (gen-ui.js). O teste (ux_check.mjs) confere que todo atalho do teclado aparece na lista. */
@@ -5966,14 +6034,14 @@ function boot() {
   document.fonts && document.fonts.load('800 40px "Martian Mono"').catch(() => {});
   if (!embedded && !saved && !store.get('seenWiz', false)) openWiz();
   raf = requestAnimationFrame(tick);
-  window.AIVJ = { version: VERSION, get PAL() { return PAL; }, get RECIPES() { return RECIPES; }, addRecipe, addTestCards, recipeLayer, importFile, parseModel, setLang, setHow, undo, redo, evalExpr, applyTheme, layoutApply, setPanelOpen, setZoneDraw, get hist() { return ST.hist.length; }, get histLabels() { return ST.hl.slice(); }, surface: SC, specOf, applyCalc, renderSpec, specMarkdown, get project() { return P; }, get audio() { return AUD; }, pseudoAudio, synthTimes, applyMods, motionCurve, GENAI, EVALUATOR, flash: FLASH, ONSET, UX, fx: { FX, body: fxBody, op: fxOp }, synth: { SYN, src: synthSrc }, mp4: { X: MP4X, render: mp4Render, run: exportMp4Run }, isf: { X: ISFX, helpers: isfHelpers, shaderSrc: isfShaderSrc, LIB: ISFLIB, add: isfAddLib, files: isfImportFiles, exp: isfExport, ui: ISFUI, render: renderIsf }, modUI: { render: modPanel, params: modNumericParams, sources: MOD_SOURCES }, expRun: exportRun, EXP, surfx: SURFX, surUI: { state: SUR, plan: surPlan, pattern: surPatternBlob, applyPreset: surApplyPreset, render: renderSurface }, genUI: { get state() { return GU; }, toBrief: genToBrief, fromBrief: genFromBrief, go: genGo, evalNow: genEval, applyPreset: genApplyPreset, presets: SURFACE_PRESETS, render: renderGen }, evaluate: lang => EVALUATOR.run(lang), shaderResolve, GLIB, specBins, simBake, parsePly, get LAYERERR() { return LAYER_ERR; }, setSeed, bpmWaves, get GLERR() { return GL.err; }, layerFrame, pm, importJson, frameAt, validate: o => validate(o), GEN, loopFrames, contactSheet, layerAudit, allowCode, loadAssets, toLogo, projectOut, get state() { return ST; }, geom, lintCode, compileCode, setCi(i) { ST.ci = i; refreshAll(); },
+  window.AIVJ = { version: VERSION, get PAL() { return PAL; }, get RECIPES() { return RECIPES; }, addRecipe, addTestCards, recipeLayer, importFile, parseModel, setLang, setHow, undo, redo, evalExpr, applyTheme, layoutApply, setPanelOpen, setZoneDraw, get hist() { return ST.hist.length; }, get histLabels() { return ST.hl.slice(); }, surface: SC, specOf, applyCalc, renderSpec, specMarkdown, get project() { return P; }, get audio() { return AUD; }, pseudoAudio, synthTimes, applyMods, motionCurve, GENAI, EVALUATOR, flash: FLASH, ONSET, UX, fx: { FX, body: fxBody, op: fxOp }, synth: { SYN, src: synthSrc }, blobs: { X: BLOBX }, layerErrors: () => [...LAYER_ERR.values()], mp4: { X: MP4X, render: mp4Render, run: exportMp4Run }, isf: { X: ISFX, helpers: isfHelpers, shaderSrc: isfShaderSrc, LIB: ISFLIB, add: isfAddLib, files: isfImportFiles, exp: isfExport, ui: ISFUI, render: renderIsf }, modUI: { render: modPanel, params: modNumericParams, sources: MOD_SOURCES }, expRun: exportRun, EXP, surfx: SURFX, surUI: { state: SUR, plan: surPlan, pattern: surPatternBlob, applyPreset: surApplyPreset, render: renderSurface }, genUI: { get state() { return GU; }, toBrief: genToBrief, fromBrief: genFromBrief, go: genGo, evalNow: genEval, applyPreset: genApplyPreset, presets: SURFACE_PRESETS, render: renderGen }, evaluate: lang => EVALUATOR.run(lang), shaderResolve, GLIB, specBins, simBake, parsePly, get LAYERERR() { return LAYER_ERR; }, setSeed, bpmWaves, get GLERR() { return GL.err; }, layerFrame, pm, importJson, frameAt, validate: o => validate(o), GEN, loopFrames, contactSheet, layerAudit, allowCode, loadAssets, toLogo, projectOut, get state() { return ST; }, geom, lintCode, compileCode, setCi(i) { ST.ci = i; refreshAll(); },
     /* gancho de teste: renderiza a composição ci no quadro n, determinístico, sem tocar no preview */
     renderFrame(ci, n, scale = 0.25, alpha = false) {
       const comp = P.compositions[ci], W = P.canvas.w, H = P.canvas.h, w = Math.round(W * scale), h = Math.round(H * scale);
       const a = document.createElement('canvas'); a.width = w; a.height = h; const ac = a.getContext('2d', { willReadFrequently: true });
       const b = document.createElement('canvas'); b.width = w; b.height = h; const bc = b.getContext('2d');
       const live = ST.live; ST.live = false; RENDER_ALPHA = alpha; EXPORTING = true;
-      try { const F = frameAt(n, comp); comp.layers.forEach((L, i) => { if (!L.on || (alpha && L.type === 'bg')) return; renderLayer(bc, comp, L, i, F, scale, W, H, L.type === 'fx' ? a : undefined); ac.globalAlpha = L.opacity; ac.globalCompositeOperation = fxOp(L, (BLENDS[L.blend] || BLENDS.normal)[0]); ac.drawImage(b, 0, 0); ac.globalAlpha = 1; ac.globalCompositeOperation = 'source-over'; }); }
+      try { const F = frameAt(n, comp); comp.layers.forEach((L, i) => { if (!L.on || (alpha && L.type === 'bg')) return; renderLayer(bc, comp, L, i, F, scale, W, H, BELOW_TYPES.has(L.type) ? a : undefined); ac.globalAlpha = L.opacity; ac.globalCompositeOperation = fxOp(L, (BLENDS[L.blend] || BLENDS.normal)[0]); ac.drawImage(b, 0, 0); ac.globalAlpha = 1; ac.globalCompositeOperation = 'source-over'; }); }
       finally { ST.live = live; RENDER_ALPHA = false; EXPORTING = false; }
       return ac.getImageData(0, 0, w, h);
     } };

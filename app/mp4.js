@@ -86,7 +86,7 @@ async function mp4Render({ ci = ST.ci, start = 0, end = -1, scale = 1, fps = nul
       cctx.setTransform(1, 0, 0, 1, 0, 0); cctx.globalCompositeOperation = 'source-over'; cctx.globalAlpha = 1; cctx.clearRect(0, 0, w, h);
       if (!hasBg) { cctx.fillStyle = col(comp, 'bg'); cctx.fillRect(0, 0, w, h); }
       for (const idx of on) {
-        const L = comp.layers[idx]; renderLayer(lctx, comp, L, idx, F, scale, W, H, L.type === 'fx' ? cmp : undefined);
+        const L = comp.layers[idx]; renderLayer(lctx, comp, L, idx, F, scale, W, H, BELOW_TYPES.has(L.type) ? cmp : undefined);
         cctx.globalAlpha = L.opacity; cctx.globalCompositeOperation = fxOp(L, (BLENDS[L.blend] || BLENDS.normal)[0]); cctx.drawImage(lay, 0, 0, w, h);
       }
       cctx.globalAlpha = 1; cctx.globalCompositeOperation = 'source-over';

@@ -19,7 +19,7 @@ Read this when the briefing is being answered, before choosing layers. It is a *
 `structure`, `lines`, `tunnel`, `symbols`, `hazard`, `blocks`, `bitfield`, recipe `greeble-plate` (hard-surface panel detail from a seed), GLSL `vjHexTile` `vjRepeat` `vjPolarRepeat`.
 
 ## 4. Information
-`instrument` (bars, radial, scope, radar, rings, heat: always tied to a real signal), `data`, `measure`, `hud`, `text`.
+`instrument` (bars, radial, scope, radar, rings, heat: always tied to a real signal), `data`, `measure`, `hud`, `text`, and `blobs` (finds regions in the image below by brightness, contrast, colour or luminance zone, and marks them: `references/blob-layer.md`).
 
 ## 5. Finish (the last passes) and display emulation: the `fx` layer
 `references/fx-layer.md` has the 22 presets. By intent:

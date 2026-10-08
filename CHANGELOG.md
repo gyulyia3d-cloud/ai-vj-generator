@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.8.0 (08/10/2026) · Camada blobs
+
+- **Camada `blobs`** (`app/blobs.js`): acha regiões na imagem das camadas abaixo por brilho, contraste, cor (matiz alvo) ou zona de luminância, numera por área e desenha caixas, cruz, valores e ligações. Determinística, fecha o loop (`blobs_check.mjs`). Sem identidade entre quadros: isso pede o `fx` com histórico.
+
 ## 2.7.1 (08/10/2026) · Correção do menu
 
 - **Abas e botões do menu travados**: a ajuda da aba (`#tabHelp`) era inserida dentro do cabeçalho em linha e espremia as abas numa coluna de 64 px, cobrindo-as (vinha da 2.5.0). Agora fica abaixo do cabeçalho.

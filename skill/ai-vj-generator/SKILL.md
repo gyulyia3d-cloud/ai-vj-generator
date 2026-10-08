@@ -67,6 +67,7 @@ Load only what the project needs.
 | Motion, physics, VFX, math, easing, the 12 principles | `references/animation-principles.md`, `references/knowledge/motion-generative-gpu.md`, `references/repertoire/animation.md`, `references/repertoire/generative-art.md` |
 | What the engine can already do, by need (ground, figure, structure, information, finish, motion, transitions): read before choosing layers | `references/vocabulary.md` |
 | Effects over the stack (CRT, VHS, halftone, dither, glass, bloom, glitch…): the `fx` layer | `references/fx-layer.md` |
+| Detecting and marking regions of the image below (brightness, contrast, colour, zones): the `blobs` layer | `references/blob-layer.md` |
 | A picture written as one line (`osc(…).kaleid(6).modulate(noise(3),0.2).tint()`): the `synth` layer | `references/synth-chain.md` |
 | Shader building blocks: noise, SDF 2D/3D, raymarch, Oklab, dither, easing, LED emulation (`#include`, 20 modules) | `references/glsl-library.md` |
 | Writing shaders | `references/glsl-recipes.md` (tested recipes, Hydra/Synesthesia translation), `references/project-schema.md` (GLSL contract) |

@@ -95,6 +95,7 @@ function fxBody(src) { return FX_PRE + src.replace(/void\s+main\s*\(\s*\)/, 'voi
 const fxOf = p => FX[p.preset] || FX.PIXELATE;
 /* o efeito entra no lugar do que está abaixo: com opacidade cheia e blend normal ele substitui a imagem (copy); senão mistura */
 const fxOp = (L, op) => L.type === 'fx' && (L.opacity == null || L.opacity >= 0.999) && (!L.blend || L.blend === 'normal') ? 'copy' : op;
+const BELOW_TYPES = new Set(['fx', 'blobs']);   // camadas que leem a imagem das camadas abaixo
 let FXS = null;   // canvas de rascunho para a imagem "abaixo" na viewport
 function fxLiveBelow(comp, i) {
   const src = DOM.layers[0] && DOM.layers[0].cv; if (!src) return null;
