@@ -600,6 +600,34 @@
    "cost": "unmeasured",
    "maturity": "stable",
    "note": "Tested starting move; change numbers, palette roles and audio mapping."
+  },
+  "hilbert-curve": {
+   "family": "structure",
+   "role": "Hilbert curve: one line that covers a grid, a head runs it once per loop",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Tested starting move; set tiles to the canvas aspect."
+  },
+  "greeble-plate": {
+   "family": "structure",
+   "role": "Greeble plate: recursive panel detail from a seed, a light scans it once per loop",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Keep opacity under 0.6 behind information."
   }
  },
  "glslModules": {
@@ -770,6 +798,118 @@
    "cost": "unmeasured",
    "maturity": "stable",
    "note": "Written from scratch for this project."
+  },
+  "noise.gradient": {
+   "family": "noise",
+   "role": "GLSL module (#include noise.gradient)",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Written from scratch for this project; checked numerically by lib2_check.mjs."
+  },
+  "noise.warp": {
+   "family": "noise",
+   "role": "GLSL module (#include noise.warp)",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Written from scratch for this project; checked numerically by lib2_check.mjs."
+  },
+  "sdf2d.more": {
+   "family": "form",
+   "role": "GLSL module (#include sdf2d.more)",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Written from scratch for this project; checked numerically by lib2_check.mjs."
+  },
+  "space.more": {
+   "family": "form",
+   "role": "GLSL module (#include space.more)",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Written from scratch for this project; checked numerically by lib2_check.mjs."
+  },
+  "color.more": {
+   "family": "colour",
+   "role": "GLSL module (#include color.more)",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Written from scratch for this project; checked numerically by lib2_check.mjs."
+  },
+  "easing.more": {
+   "family": "motion",
+   "role": "GLSL module (#include easing.more)",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Written from scratch for this project; checked numerically by lib2_check.mjs."
+  },
+  "filter": {
+   "family": "finish",
+   "role": "GLSL module (#include filter)",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Written from scratch for this project; checked numerically by lib2_check.mjs."
+  },
+  "math": {
+   "family": "form",
+   "role": "GLSL module (#include math)",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "stable",
+   "note": "Written from scratch for this project; checked numerically by lib2_check.mjs."
   }
  }
 }

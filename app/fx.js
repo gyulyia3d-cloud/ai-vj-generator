@@ -77,6 +77,18 @@ void main(){ vec2 uv=gl_FragCoord.xy/uRes; float st=mod(floor(uPh*max(1.,floor(u
   if(uP.w>.5){ f=mix(f,1.-f,step(.5,mod(floor(q),2.))); } gl_FragColor=tx(f); }` },
   AUTOMODULAÇÃO: { labels: ['Quantidade (px)', 'Escala', 'Rotação (voltas)', 'Canal (0 cor, 1 luz)'], d: [40, 1, 1, 0], tag: 'distorção', src:
 `void main(){ vec2 uv=gl_FragCoord.xy/uRes; vec2 c=uv-.5; c=vjRot(TAU*uPh*floor(uP.z+.5))*c/max(.3,uP.y)+.5; vec4 m=tx(c); vec2 d=uP.w>.5?vec2(fxLuma(m.rgb)-.5):(m.rg-.5); gl_FragColor=tx(uv+d*uP.x/uRes*(1.+uBass*.4)); }` },
+  SABATTIER: { labels: ['Limiar', 'Suavidade', 'Linha de Mackie', 'Mistura de cor'], d: [0.5, 0.12, 0.8, 0.7], tag: 'foto', src:
+`void main(){ vec2 uv=gl_FragCoord.xy/uRes, e=1.5/uRes; vec4 t=tx(uv); vec3 c=t.rgb; float th=uP.x+.1*sin(TAU*uPh); vec3 sol=mix(c,1.-c,smoothstep(th-uP.y,th+uP.y,c));
+  float l0=fxLuma(c), l1=fxLuma(tx(uv+vec2(e.x,0.)).rgb), l2=fxLuma(tx(uv+vec2(0.,e.y)).rgb); float ed=clamp((abs(l0-l1)+abs(l0-l2))*6.,0.,1.);
+  vec3 o=mix(vec3(fxLuma(sol)),sol,clamp(uP.w,0.,1.)); o=mix(o,uC1,ed*uP.z*.5); gl_FragColor=vec4(o,t.a); }` },
+  HACHURA: { labels: ['Espaçamento (px)', 'Espessura', 'Papel x tinta (0 a 1)', 'Cor da fonte'], d: [7, 0.32, 1, 0.15], tag: 'traço', src:
+`float hl(vec2 p,float a,float sp,float w){float c=cos(a),s=sin(a);float q=(p.x*c+p.y*s)/sp;return smoothstep(w,w-.18,abs(fract(q)-.5)*2.);}
+void main(){ vec2 uv=gl_FragCoord.xy/uRes, p=gl_FragCoord.xy; vec4 t=tx(uv); float d=1.-fxLuma(t.rgb), sp=max(3.,uP.x), w=clamp(uP.y,.05,.9);
+  float k=hl(p,.7854,sp,w)*step(.22,d)+hl(p,-.7854,sp,w)*step(.45,d)+hl(p,0.,sp*1.1,w)*step(.68,d)+hl(p,1.5708,sp*1.1,w)*step(.85,d); k=clamp(k,0.,1.);
+  vec3 paper=mix(uBg,uC1,clamp(uP.z,0.,1.)), ink=mix(uBg,t.rgb,clamp(uP.w,0.,1.)); gl_FragColor=vec4(mix(paper,ink,k),t.a); }` },
+  'POLAR (PLANETINHA)': { labels: ['Voltas por loop', 'Potência do raio', 'Zoom', 'Mistura central'], d: [1, 0.8, 1, 0.1], tag: 'geometria', src:
+`void main(){ vec2 uv=gl_FragCoord.xy/uRes, p=(uv-.5)*vec2(uRes.x/uRes.y,1.); float r=length(p)*2./max(.2,uP.z), a=atan(p.y,p.x)/TAU+.5+uPh*floor(uP.x+.5);
+  vec2 q=vec2(fract(a),clamp(pow(r,max(.2,uP.y)),0.,1.)); vec4 t=tx(q); vec4 o=tx(uv); gl_FragColor=vec4(mix(t.rgb,o.rgb,clamp(uP.w,0.,1.)*smoothstep(.3,0.,r)),max(t.a,o.a)); }` },
 };
 const FX_NAMES = Object.keys(FX);
 function fxBody(src) { return FX_PRE + src.replace(/void\s+main\s*\(\s*\)/, 'void fxMain()') + ' void main(){ fxMain(); vec4 o=tx(gl_FragCoord.xy/uRes); gl_FragColor=mix(o,gl_FragColor,uMixK); }'; }

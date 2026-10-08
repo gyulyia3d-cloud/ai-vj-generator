@@ -26,4 +26,10 @@ r = subprocess.run([sys.executable, os.path.join(HERE, "export_slices.py"), "--s
 assert r.returncode == 0 and "3 slice" in r.stdout and "3 output screen" in r.stdout, r.stdout + r.stderr
 r = subprocess.run([sys.executable, os.path.join(HERE, "export_slices.py"), "--size", "100x3000", "--out", d], capture_output=True, text=True, encoding="utf-8")
 assert r.returncode != 0 and "does not fit" in (r.stderr + r.stdout)
+# same vocabulary as a file Arena itself saved (element and parameter names kept in references/arena-advanced-output-structure.json)
+facts = json.load(open(os.path.join(HERE, "..", "references", "arena-advanced-output-structure.json"), encoding="utf-8"))
+els = sorted({e.tag for e in root.iter()})
+assert els == facts["elements"], (set(els) ^ set(facts["elements"]))
+pnames = sorted({e.get("name") for e in root.iter() if e.tag.startswith("Param") and e.get("name")})
+assert pnames == facts["parameters"], (set(pnames) ^ set(facts["parameters"]))
 print("export_slices ok")

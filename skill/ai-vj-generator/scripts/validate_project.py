@@ -582,8 +582,8 @@ def validate(path, extra_assets=()):
                             e.append(f"{mw}.mode: must be set, add or mul")
                         if m.get("src") == "lfo" and not float(m.get("cycles", 1)).is_integer():
                             e.append(f"{mw}.cycles: must be a whole number or the loop does not close")
-                        if m.get("shape", "sin") not in ("sin", "tri", "saw", "spring"):
-                            e.append(f"{mw}.shape: must be sin, tri, saw or spring")
+                        if m.get("shape", "sin") not in ("sin", "tri", "saw", "bounce", "rubber", "shake", "jello", "tada", "heartbeat", "swing", "wobble", "pulse", "spring"):
+                            e.append(f"{mw}.shape: must be sin, tri, saw, bounce, rubber, shake, jello, tada, heartbeat, swing, wobble, pulse or spring")
                         if m.get("shape") == "spring":
                             if m.get("src") != "lfo":
                                 e.append(f"{mw}: shape spring needs src lfo")

@@ -90,5 +90,27 @@ try {
   check(live.matched >= 11 && live.seen.length <= 13 && Math.abs(live.bpm - 120) < 3, `AUD.update (analisador ao vivo simulado): ${live.matched} de 12 kicks, ${live.seen.length} disparos, BPM ${live.bpm.toFixed(1)}`, JSON.stringify(live));
 } catch (e) { bad('exceção: ' + (e.message || e)); }
 await page.close();
+/* ---- Kalman do andamento: intervalos ruidosos, kicks perdidos, kick duplo e mudança de andamento ---- */
+{
+  const { TempoKalman } = new Function(src + '; return ONSET;')(), tk = new TempoKalman();
+  let sd = 7; const rn = () => (sd = (sd * 1664525 + 1013904223) >>> 0) / 4294967296;
+  const run = (bpm, n, jit, miss = 0) => { for (let i = 0; i < n; i++) { let ioi = 60000 / bpm + (rn() - 0.5) * 2 * jit; if (miss && i % miss === miss - 1) ioi *= 2; tk.update(ioi); } };
+  run(120, 24, 15); check(Math.abs(tk.bpm - 120) < 1.5 && tk.conf > 0.5, `Kalman: 120 BPM com jitter de ±15 ms -> ${tk.bpm.toFixed(1)} (confiança ${tk.conf.toFixed(2)})`, tk.bpm + ' ' + tk.conf);
+  run(120, 24, 15, 6); check(Math.abs(tk.bpm - 120) < 2, `Kalman: kick perdido (intervalo dobrado) não derruba a estimativa (${tk.bpm.toFixed(1)})`, String(tk.bpm));
+  tk.update(250); tk.update(500); tk.update(500); check(Math.abs(tk.bpm - 120) < 2, `Kalman: um intervalo de metade (kick duplo) é dobrado de volta (${tk.bpm.toFixed(1)})`, String(tk.bpm));
+  run(128, 14, 15); check(Math.abs(tk.bpm - 128) < 2.5, `Kalman: o andamento muda para 128 e ele acompanha em 14 kicks (${tk.bpm.toFixed(1)})`, String(tk.bpm));
+  const t2 = new TempoKalman(); for (let i = 0; i < 40; i++) t2.update(60000 / 140 + (rn() - 0.5) * 120); check(Math.abs(t2.bpm - 140) < 6, `Kalman: jitter grande (±60 ms) ainda converge perto de 140 (${t2.bpm.toFixed(1)})`, String(t2.bpm));
+  const med = a => { const q = a.slice().sort((x, y) => x - y); return q[q.length >> 1]; };
+  let ek = 0, em = 0; const ioi = []; const t3 = new TempoKalman(); for (let i = 0; i < 60; i++) { const v = 60000 / 124 + (rn() - 0.5) * 70; ioi.push(v); t3.update(v); if (i >= 20) { ek += Math.abs(t3.bpm - 124); em += Math.abs(60000 / med(ioi.slice(-8)) - 124); } }
+  check(ek <= em * 1.15, `Kalman erra tanto quanto a mediana (ou menos): ${(ek / 40).toFixed(2)} contra ${(em / 40).toFixed(2)} BPM`, `${ek} ${em}`);
+}
+/* ---- formas de atenção do LFO: fecham o loop (f(0) = f(1)), ficam em 0..1 e se movem ---- */
+{
+  const LFO_X = new Function(readFileSync(join(HERE, '..', '..', '..', 'app', 'mod-ui.js'), 'utf8') + '; return LFO_X;')();
+  for (const [nm, f] of Object.entries(LFO_X)) {
+    let lo = 1, hi = 0; for (let k = 0; k <= 200; k++) { const v = f(k / 200); lo = Math.min(lo, v); hi = Math.max(hi, v); }
+    check(Math.abs(f(0) - f(1)) < 0.01 && lo >= 0 && hi <= 1 && hi - lo > 0.3, `LFO ${nm}: f(0)=f(1) (${f(0).toFixed(3)} / ${f(1).toFixed(3)}), em 0..1 (${lo.toFixed(2)}..${hi.toFixed(2)}), tem movimento`, `${f(0)} ${f(1)} ${lo} ${hi}`);
+  }
+}
 console.log(fail ? `\n${fail} falha(s).` : '\náudio ok.');
 process.exit(fail ? 1 : 0);

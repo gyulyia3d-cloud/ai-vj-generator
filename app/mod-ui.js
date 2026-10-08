@@ -6,6 +6,21 @@ const MOD_SOURCES = [
   ['onbeat', 'onda: no beat', 'wave: on the beat'], ['bsin', 'onda: seno por beat', 'wave: sine per beat'], ['bsin2', 'onda: seno por 2 beats', 'wave: sine per 2 beats'], ['bsin4', 'onda: seno por 4 beats', 'wave: sine per 4 beats'], ['btri', 'onda: triângulo por beat', 'wave: triangle per beat'],
   ['lfo', 'LFO (ciclos inteiros por loop)', 'LFO (whole cycles per loop)'],
 ];
+/* formas de atenção para o LFO (vocabulário que o animate.css popularizou, curvas escritas aqui): f(x) de 0..1 dentro do ciclo, sempre com f(0) = f(1) para o loop fechar */
+const LFO_X = (() => {
+  const T = Math.PI * 2, c = x => Math.max(0, Math.min(1, x)), g = (x, m, w) => Math.exp(-Math.pow((x - m) / w, 2)), hb0 = g(0, 0.08, 0.035) + 0.6 * g(0, 0.24, 0.045);
+  return {
+    bounce: x => c(Math.abs(Math.sin(Math.PI * 3 * x)) * Math.pow(1 - x, 1.2)),
+    rubber: x => c(0.5 + 0.5 * Math.sin(T * 4 * x) * Math.exp(-5 * x)),
+    shake: x => c(0.5 + 0.5 * Math.sin(T * 7 * x) * (1 - x) * Math.min(1, x * 8)),
+    jello: x => c(0.5 + 0.5 * Math.sin(T * 3 * x) * Math.exp(-3.5 * x)),
+    tada: x => c(0.5 + 0.5 * Math.sin(T * 5 * x) * Math.sin(Math.PI * x)),
+    heartbeat: x => c(g(x, 0.08, 0.035) + 0.6 * g(x, 0.24, 0.045) - hb0),
+    swing: x => c(0.5 + 0.5 * Math.sin(T * 3 * x) * (1 - x)),
+    wobble: x => c(0.5 + 0.5 * Math.sin(T * 2 * x) * Math.sin(T * 3 * x)),
+    pulse: x => Math.pow(0.5 + 0.5 * Math.cos(T * x), 6),
+  };
+})();
 const MOD_FREE_SRC = ['lfo', 'onbeat', 'bsin', 'bsin2', 'bsin4', 'btri'];
 function modNumericParams(L) { return paramGroups(L).flatMap(g => g[1]).filter(d => d.t === 'n' && d.k !== 'audio').map(d => ({ k: d.k, l: d.l, d: d.d, min: d.min, max: d.max })); }
 function modPanel(host, L) {
@@ -21,7 +36,7 @@ function modPanel(host, L) {
       <select data-mk="mode" data-mi="${i}" aria-label="${T3('Modo', 'Mode')}">${opt([['set', T3('definir', 'set')], ['add', T3('somar', 'add')], ['mul', T3('multiplicar', 'multiply')]], m.mode || 'set')}</select>
       <button data-mdel="${i}" title="${T3('Remover', 'Remove')}">×</button></div>
       <div class="row"><span class="lbl">min</span>${num(i, 'min', m.min == null ? 0 : m.min)}<span class="lbl">max</span>${num(i, 'max', m.max == null ? 1 : m.max)}
-      ${m.src === 'lfo' ? `<span class="lbl">${T3('ciclos', 'cycles')}</span>${num(i, 'cycles', m.cycles || 1, 44)}<select data-mk="shape" data-mi="${i}" aria-label="${T3('Forma', 'Shape')}">${opt([['sin', 'sin'], ['tri', 'tri'], ['saw', 'saw'], ['spring', T3('mola (perfil)', 'spring (profile)')]], m.shape || 'sin')}</select>` : ''}</div>
+      ${m.src === 'lfo' ? `<span class="lbl">${T3('ciclos', 'cycles')}</span>${num(i, 'cycles', m.cycles || 1, 44)}<select data-mk="shape" data-mi="${i}" aria-label="${T3('Forma', 'Shape')}">${opt([['sin', 'sin'], ['tri', 'tri'], ['saw', 'saw'], ['bounce', 'bounce'], ['rubber', 'rubber'], ['shake', 'shake'], ['jello', 'jello'], ['tada', 'tada'], ['heartbeat', 'heartbeat'], ['swing', 'swing'], ['wobble', 'wobble'], ['pulse', 'pulse'], ['spring', T3('mola (perfil)', 'spring (profile)')]], m.shape || 'sin')}</select>` : ''}</div>
       ${m.src === 'lfo' && m.shape === 'spring' ? `<div class="row"><span class="lbl">zeta</span>${num(i, 'zeta', m.zeta, 48)}<span class="lbl">wn</span>${num(i, 'wn', m.wn, 48)}<span class="lbl">${T3('antecip.', 'wind-up')}</span>${num(i, 'ta', m.ta == null ? 0 : m.ta, 48)}<span class="lbl">${T3('prof.', 'depth')}</span>${num(i, 'depth', m.depth == null ? 0 : m.depth, 48)}<span class="lbl">${T3('degraus', 'steps')}</span>${num(i, 'steps', m.steps == null ? 0 : m.steps, 44)}</div>` : ''}
     </div>`).join('');
   const pf = ST.modProf || (ST.modProf = { energy: 0.5, elasticity: 0.4, anticipation: 0.3, continuity: 0.8, rhythm: 0.3 });
