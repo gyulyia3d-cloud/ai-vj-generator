@@ -67,6 +67,7 @@ try {
   const target = pf.find(m => m.shape === 'spring' && m.mode === 'mul');
   check(target && target.zeta < 0.3 && Number.isInteger(target.cycles) && target.min === 1, `"Aplicar como curva de mola" cria o layer.mod do perfil (elasticidade 0,9 → zeta ${target && target.zeta})`, JSON.stringify(pf));
   // remover
+  await new Promise(r => setTimeout(r, 500));   // o histórico agrupa edições a menos de 350 ms; sem a espera o desfazer volta além da remoção
   const n0 = pf.length; await E(`document.querySelector('[data-mdel="0"]').click()`);
   const after = await E(`(AIVJ.project.compositions[0].layers[${h.i}].mod || []).length`);
   check(after === n0 - 1, 'remover tira só a entrada escolhida', `${n0} → ${after}`);

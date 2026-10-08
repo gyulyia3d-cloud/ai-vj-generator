@@ -9,6 +9,7 @@ import { existsSync, mkdtempSync, rmSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { tmpdir } from 'node:os';
+import { chromeFlags, extraCandidates } from './chrome_env.mjs';
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -16,7 +17,7 @@ export function findChrome(explicit) {
   const c = [explicit, process.env.CHROME_PATH,
     'C:/Program Files/Google/Chrome/Application/chrome.exe', 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
     'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Microsoft/Edge/Application/msedge.exe',
-    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser', '/usr/bin/microsoft-edge'].filter(Boolean);
+    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser', '/usr/bin/microsoft-edge', ...extraCandidates()].filter(Boolean);
   return c.find(p => existsSync(p));
 }
 
@@ -25,7 +26,7 @@ export async function openPage(file, { chrome, width = 1400, height = 900, waitF
   if (!exe) { console.error('Nenhum Chrome/Edge encontrado. Passe --chrome <caminho> ou defina CHROME_PATH.'); process.exit(3); }
   if (typeof WebSocket === 'undefined') { console.error('Este script precisa de Node 22+ (WebSocket global).'); process.exit(3); }
   const port = 9300 + Math.floor(Math.random() * 600), profile = mkdtempSync(join(tmpdir(), 'aivj-cdp-'));
-  const proc = spawn(exe, ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--allow-file-access-from-files', '--no-first-run', '--no-default-browser-check',
+  const proc = spawn(exe, [...chromeFlags, '--headless=new', '--disable-gpu', '--hide-scrollbars', '--allow-file-access-from-files', '--no-first-run', '--no-default-browser-check',
     `--user-data-dir=${profile}`, `--remote-debugging-port=${port}`, `--window-size=${width},${height}`, url || pathToFileURL(resolve(file)).href], { stdio: 'ignore' });
   let closed = false;
   const close = async () => { if (closed) return; closed = true; try { proc.kill(); } catch {} await sleep(400); try { rmSync(profile, { recursive: true, force: true }); } catch {} };

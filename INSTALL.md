@@ -6,7 +6,7 @@ Três caminhos, do mais simples ao mais completo. Escolha um.
 
 1. Baixe o repositório: botão **Code → Download ZIP** no GitHub, e descompacte.
 2. Dê dois cliques em `app/index.html`.
-3. A interface abre em "Aguardando briefing": ela não gera animações sozinha. Cole o PROJECT JSON que o Claude escreveu, ou abra o **Standard** (biblioteca original). Para criar um projeto novo, use o Claude (caminho B ou C).
+3. A interface abre em "Aguardando briefing": cole o PROJECT JSON (do Claude, de outra IA ou do gerador sem IA), ou clique em **Abrir demonstração (sem IA)**. Para criar um projeto novo, use o Claude (caminho B ou C).
 
 Para microfone e janelas de saída, o navegador exige um endereço `http://`. Com [Node.js](https://nodejs.org) 18 ou mais recente:
 

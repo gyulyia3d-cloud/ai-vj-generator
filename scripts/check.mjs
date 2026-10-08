@@ -12,6 +12,10 @@ const ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const SKILL = join(ROOT, 'skill', 'ai-vj-generator');
 let fail = 0;
 const ok = m => console.log('  ok  ' + m), bad = m => { fail++; console.log('  ERRO ' + m); };
+// verificações puladas (sem navegador, sem python...) não são sucesso: contamos e dizemos no fim
+const skipped = [], _log = console.log;
+console.log = (...a) => { if (typeof a[0] === 'string' && a[0].startsWith('  --')) skipped.push(a[0].replace(/^  --\s+/, '')); _log(...a); };
+const STRICT = process.argv.includes('--strict') || process.env.CI === 'true';
 
 const html = await readFile(join(ROOT, 'app', 'index.html'), 'utf8');
 const js = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]).join('\n;\n');
@@ -211,5 +215,10 @@ try {
   const h = fs.readFileSync(join(dir, 'OUTPUT.html'), 'utf8');
   /<details/.test(h) && !/<script>alert/.test(h) && h.includes('a.aivj.json') ? ok('output_viewer gera OUTPUT.html e escapa o conteúdo') : bad('output_viewer: página inválida ou sem escape');
 } catch (e) { bad('output_viewer: ' + String(e.message).slice(0, 160)); }
-console.log(fail ? `\n${fail} problema(s).` : '\nTudo certo.');
-process.exit(fail ? 1 : 0);
+if (fail) console.log(`\n${fail} problema(s).`);
+else if (skipped.length) {
+  console.log(`\nPASSOU, mas ${skipped.length} verificação(ões) foram PULADAS e não provam nada:`);
+  for (const m of skipped) console.log('  - ' + m.slice(0, 110));
+  console.log('Instale/aponte um Chrome (CHROME_PATH) e rode de novo' + (STRICT ? '. (--strict/CI: tratado como falha)' : ' (ou use --strict para falhar).'));
+} else console.log('\nTudo certo.');
+process.exit(fail || (STRICT && skipped.length) ? 1 : 0);

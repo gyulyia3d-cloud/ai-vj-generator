@@ -15,6 +15,7 @@
 //
 // Sem dependências: usa o Node (WebSocket global, Node 22+) e o Chrome ou Edge já instalado.
 import { spawn } from 'node:child_process';
+import { chromeFlags, extraCandidates } from './chrome_env.mjs';
 import { existsSync, mkdtempSync, rmSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -29,14 +30,14 @@ const html = resolve(pos[0]), scale = +opt('--scale', 0.2), asJson = argv.includ
 const CANDIDATES = [opt('--chrome'), process.env.CHROME_PATH,
   'C:/Program Files/Google/Chrome/Application/chrome.exe', 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
   'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Microsoft/Edge/Application/msedge.exe',
-  '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser', '/usr/bin/microsoft-edge'].filter(Boolean);
+  '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser', '/usr/bin/microsoft-edge', ...extraCandidates()].filter(Boolean);
 const chrome = CANDIDATES.find(p => existsSync(p));
 if (!chrome) { console.error('Nenhum Chrome/Edge encontrado. Passe --chrome <caminho> ou defina CHROME_PATH.'); process.exit(3); }
 if (typeof WebSocket === 'undefined') { console.error('Este script precisa de Node 22+ (WebSocket global).'); process.exit(3); }
 
 const port = 9300 + Math.floor(Math.random() * 600);
 const profile = mkdtempSync(join(tmpdir(), 'aivj-loop-'));
-const proc = spawn(chrome, ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--allow-file-access-from-files', '--no-first-run',
+const proc = spawn(chrome, [...chromeFlags, '--headless=new', '--disable-gpu', '--hide-scrollbars', '--allow-file-access-from-files', '--no-first-run',
   '--no-default-browser-check', `--user-data-dir=${profile}`, `--remote-debugging-port=${port}`, '--window-size=1400,900', pathToFileURL(html).href], { stdio: 'ignore' });
 const cleanup = () => { try { proc.kill(); } catch {} setTimeout(() => { try { rmSync(profile, { recursive: true, force: true }); } catch {} }, 500); };
 process.on('exit', cleanup);

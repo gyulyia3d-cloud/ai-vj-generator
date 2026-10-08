@@ -1,0 +1,24 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pillow numpy
+      # CI=true faz o check.mjs tratar verificações puladas (ex.: sem navegador) como falha
+      - name: node scripts/check.mjs
+        run: node scripts/check.mjs
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
