@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.7.1 (08/10/2026) · Correção do menu
+
+- **Abas e botões do menu travados**: a ajuda da aba (`#tabHelp`) era inserida dentro do cabeçalho em linha e espremia as abas numa coluna de 64 px, cobrindo-as (vinha da 2.5.0). Agora fica abaixo do cabeçalho.
+- **Esc não fechava o assistente** de primeiro uso quando o cursor estava na caixa de JSON (o foco automático engolia a tecla). Corrigido, e o assistente ganhou o botão Fechar.
+- `menu_check.mjs`: clique de verdade (evento de mouse no ponto do botão) em todas as abas em 3 tamanhos, botões do topo não cobertos, Esc e Fechar.
+
 ## 2.7.0 (08/10/2026) · Render MP4, camada fx, camada synth, biblioteca GLSL e relatório V9
 
 - **MP4 (H.264) quadro a quadro**: `app/mp4.js` (muxer próprio + WebCodecs) na aba Exportar, e `scripts/render.mjs` (MP4 ou PNG por linha de comando, `AIVJ_GPU=1` liga a GPU). Sem gravação de tela e sem WebM; o botão Gravar fica como rascunho. Testado com ffprobe/ffmpeg (`mp4_check.mjs`). 4500×800 renderiza e codifica a cerca de 20 quadros por segundo numa GPU integrada.
