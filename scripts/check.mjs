@@ -11,6 +11,7 @@ import { tmpdir } from 'node:os';
 const ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const SKILL = join(ROOT, 'skill', 'ai-vj-generator');
 let fail = 0;
+const skippedBrowser = [], skipB = m => { skippedBrowser.push(m); console.log('  --   ' + m); };
 const ok = m => console.log('  ok  ' + m), bad = m => { fail++; console.log('  ERRO ' + m); };
 
 const html = await readFile(join(ROOT, 'app', 'index.html'), 'utf8');
@@ -119,7 +120,7 @@ try {
   ok('QA headless: folha de contato do exemplo sem ERROR');
 } catch (e) {
   const msg = String(e.stderr || e.stdout || e.message).slice(0, 300);
-  e.status === 3 ? console.log('  --   QA headless pulado: ' + msg.trim().split('\n')[0]) : bad('QA headless: ' + msg);
+  e.status === 3 ? skipB('QA headless pulado: ' + msg.trim().split('\n')[0]) : bad('QA headless: ' + msg);
 }
 // V5: calculadora de superfície e paleta (testes unitários) e galeria de receitas renderizada no motor
 for (const tst of ['test_surface_calc.py', 'test_palette.py', 'test_recipes.py', 'test_export_slices.py']) {
@@ -138,7 +139,7 @@ try {
   try {
     execFileSync(process.execPath, [join(SKILL, 'scripts', 'loop_check.mjs'), join(out, 'gal.html')], { stdio: 'pipe' });
     ok('loop_check: todas as receitas fecham o loop');
-  } catch (e) { e.status === 3 ? console.log('  --   loop_check pulado') : bad('loop_check: ' + String(e.stdout).split('\n').filter(l => /EMENDA/.test(l)).slice(0, 4).join(' | ')); }
+  } catch (e) { e.status === 3 ? skipB('loop_check pulado') : bad('loop_check: ' + String(e.stdout).split('\n').filter(l => /EMENDA/.test(l)).slice(0, 4).join(' | ')); }
   try {
     const fs = await import('node:fs'), P = JSON.parse(fs.readFileSync(g, 'utf8'));
     P.compositions = [{ name: 'CONTROLE NEGATIVO', hypothesis: 'x', layers: [P.compositions[0].layers[0],
@@ -147,7 +148,7 @@ try {
     fs.writeFileSync(join(out, 'neg.aivj.json'), JSON.stringify(P));
     execFileSync(process.execPath, [join(SKILL, 'scripts', 'make-artifact.mjs'), join(out, 'neg.aivj.json'), '--out', join(out, 'neg.html')], { stdio: 'pipe' });
     try { execFileSync(process.execPath, [join(SKILL, 'scripts', 'loop_check.mjs'), join(out, 'neg.html')], { stdio: 'pipe' }); bad('loop_check não reprovou um loop quebrado (o teste não consegue falhar)'); }
-    catch (e) { e.status === 1 ? ok('loop_check reprova o controle negativo') : console.log('  --   controle negativo pulado'); }
+    catch (e) { e.status === 1 ? ok('loop_check reprova o controle negativo') : skipB('controle negativo pulado'); }
   } catch (e) { bad('controle negativo: ' + String(e.message).slice(0, 200)); }
 } catch (e) {
   const msg = String(e.stderr || e.stdout || e.message).slice(0, 300);
@@ -158,21 +159,21 @@ try {
   execFileSync(process.execPath, [join(SKILL, 'scripts', 'ui_check.mjs')], { stdio: 'pipe' });
   ok('interface: aba Ficha (paridade, fluxo, segurança)');
 } catch (e) {
-  e.status === 3 ? console.log('  --   ui_check pulado (sem navegador)') : bad('ui_check: ' + String(e.stdout).split('\n').filter(l => /ERRO/.test(l)).slice(0, 4).join(' | '));
+  e.status === 3 ? skipB('ui_check pulado (sem navegador)') : bad('ui_check: ' + String(e.stdout).split('\n').filter(l => /ERRO/.test(l)).slice(0, 4).join(' | '));
 }
 // V5: receitas embutidas, paleta OKLCH (paridade com palette.py) e aba Receitas
 try {
   execFileSync(process.execPath, [join(SKILL, 'scripts', 'recipes_ui_check.mjs')], { stdio: 'pipe' });
   ok('interface: receitas e paleta OKLCH (embutido, histórico, paridade, segurança)');
 } catch (e) {
-  e.status === 3 ? console.log('  --   recipes_ui_check pulado (sem navegador)') : bad('recipes_ui_check: ' + String(e.stdout).split('\n').filter(l => /ERRO/.test(l)).slice(0, 4).join(' | '));
+  e.status === 3 ? skipB('recipes_ui_check pulado (sem navegador)') : bad('recipes_ui_check: ' + String(e.stdout).split('\n').filter(l => /ERRO/.test(l)).slice(0, 4).join(' | '));
 }
 // V5: layout, tema, histórico, números e coordenadas
 try {
   execFileSync(process.execPath, [join(SKILL, 'scripts', 'ui_layout_check.mjs')], { stdio: 'pipe' });
   ok('interface: layout, tema, histórico, números e coordenadas');
 } catch (e) {
-  e.status === 3 ? console.log('  --   ui_layout_check pulado (sem navegador)') : bad('ui_layout_check: ' + String(e.stdout).split('\n').filter(l => /ERRO/.test(l)).slice(0, 4).join(' | '));
+  e.status === 3 ? skipB('ui_layout_check pulado (sem navegador)') : bad('ui_layout_check: ' + String(e.stdout).split('\n').filter(l => /ERRO/.test(l)).slice(0, 4).join(' | '));
 }
 // receitas embutidas no motor = references/recipes
 try { execFileSync(process.execPath, [join(ROOT, 'scripts', 'embed-recipes.mjs'), '--check'], { stdio: 'pipe' }); ok('receitas embutidas no motor em dia'); }
@@ -182,7 +183,7 @@ try {
   execFileSync(process.execPath, [join(SKILL, 'scripts', 'features_check.mjs')], { stdio: 'pipe' });
   ok('interface: paletas, +Efeitos, ajuda, idioma e objeto 3D');
 } catch (e) {
-  e.status === 3 ? console.log('  --   features_check pulado (sem navegador)') : bad('features_check: ' + String(e.stdout).split('\n').filter(l => /ERRO/.test(l)).slice(0, 4).join(' | '));
+  e.status === 3 ? skipB('features_check pulado (sem navegador)') : bad('features_check: ' + String(e.stdout).split('\n').filter(l => /ERRO/.test(l)).slice(0, 4).join(' | '));
 }
 try { execFileSync(process.execPath, [join(ROOT, 'scripts', 'embed-glsl-lib.mjs'), '--check'], { stdio: 'pipe' }); ok('biblioteca GLSL embutida no motor em dia'); }
 catch (e) { bad('GLSL embed: ' + String(e.stderr || e.stdout).trim().slice(0, 160)); }
@@ -190,7 +191,7 @@ catch (e) { bad('GLSL embed: ' + String(e.stderr || e.stdout).trim().slice(0, 16
 const NL = String.fromCharCode(10);
 for (const [f, label] of [['v7_check.mjs', 'áudio V7 (tempo integrado fecha o loop) e layer.mod'], ['isf_check.mjs', 'ponte ISF (exportar, importar, compilar)'], ['lib_check.mjs', 'biblioteca GLSL (#include) compila e desenha'], ['generator_check.mjs', 'gerador sem IA (12 climas), brief, esquema e estratégia de áudio']]) {
   try { execFileSync(process.execPath, [join(SKILL, 'scripts', f)], { stdio: 'pipe' }); ok(label); }
-  catch (e) { e.status === 3 ? console.log(`  --   ${f} pulado (sem navegador)`) : bad(`${f}: ` + String(e.stdout).split(NL).filter(l => /ERRO/.test(l)).slice(0, 4).join(' | ')); }
+  catch (e) { e.status === 3 ? skipB(`${f} pulado (sem navegador)`) : bad(`${f}: ` + String(e.stdout).split(NL).filter(l => /ERRO/.test(l)).slice(0, 4).join(' | ')); }
 }
 // visualizador de arquivos gerados (OUTPUT.html)
 try {
@@ -200,5 +201,11 @@ try {
   const h = fs.readFileSync(join(dir, 'OUTPUT.html'), 'utf8');
   /<details/.test(h) && !/<script>alert/.test(h) && h.includes('a.aivj.json') ? ok('output_viewer gera OUTPUT.html e escapa o conteúdo') : bad('output_viewer: página inválida ou sem escape');
 } catch (e) { bad('output_viewer: ' + String(e.message).slice(0, 160)); }
-console.log(fail ? `\n${fail} problema(s).` : '\nTudo certo.');
+const needBrowser = process.argv.includes('--require-browser');
+if (skippedBrowser.length) {
+  console.log(`\nATENCAO: ${skippedBrowser.length} teste(s) de navegador foram PULADOS; o motor nao foi exercitado.`);
+  console.log('  Defina CHROME_PATH (ou --chrome) e rode de novo. Use --require-browser para tratar isso como falha.');
+  if (needBrowser) fail++;
+}
+console.log(fail ? `\n${fail} problema(s).` : skippedBrowser.length ? '\nTudo certo, MAS sem testes de navegador (veja o aviso acima).' : '\nTudo certo.');
 process.exit(fail ? 1 : 0);
