@@ -57,7 +57,7 @@ skill/ai-vj-generator/  conteúdo para qualquer IA: portable/PROMPT.md, SKILL.md
 adapters/               como cada ferramenta carrega as instruções (README.md); claude/ tem o instalador
 examples/               briefs, galeria de 8 projetos e 24 composições com notas
 scripts/                serve · build · render · bench · check · embed-* · sync-skill
-docs/                   guias e roadmap; historico/ guarda os relatórios antigos
+docs/                   guias e roadmap
 AGENTS.md · GEMINI.md · CLAUDE.md   ponteiros para o PROMPT.md, na raiz para as ferramentas acharem
 ```
 

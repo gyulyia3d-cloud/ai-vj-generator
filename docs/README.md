@@ -7,7 +7,7 @@
 | Usar com ChatGPT, Gemini, Codex, Claude ou modelo local | [AI-AGNOSTIC.md](AI-AGNOSTIC.md) e [../adapters/README.md](../adapters/README.md) |
 | Saber o que falta e a ordem sugerida | [PROXIMOS-PASSOS.md](PROXIMOS-PASSOS.md) |
 | Ver o roadmap e as decisões de escopo | [ROADMAP.md](ROADMAP.md) |
-| Notas da versão | [RELEASE-3.0.0.md](RELEASE-3.0.0.md) e [../CHANGELOG.md](../CHANGELOG.md) |
+| Notas da versão | [../CHANGELOG.md](../CHANGELOG.md) |
 | Entender as instruções que a IA segue | [../skill/ai-vj-generator/portable/PROMPT.md](../skill/ai-vj-generator/portable/PROMPT.md) |
 | O que o motor já sabe fazer, por necessidade | `skill/ai-vj-generator/references/vocabulary.md` |
 | Camadas novas | `references/fx-layer.md`, `synth-chain.md`, `blob-layer.md` |
@@ -19,7 +19,6 @@
 | Briefing | `references/briefing/` (diagnóstico, arquétipos, banco de perguntas) |
 | Formato do projeto | `references/project-schema.md`, `schema/` |
 | Qualidade e testes | `references/quality-gates.md`, `../scripts/check.mjs` |
-| Relatórios antigos (V7, V8, V9, análises) | [historico/](historico/) |
 
 Os caminhos `references/…` ficam em `skill/ai-vj-generator/references/`.
 

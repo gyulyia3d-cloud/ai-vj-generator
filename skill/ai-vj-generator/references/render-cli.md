@@ -6,7 +6,7 @@ The engine never records the viewport. Every output is a **deterministic frame**
 |---|---|---|
 | PNG sequence (alpha or RGB), per composition or per layer, ZIP in parts, manifest with SHA-256 | Export tab, `Renderizar e baixar ZIP` | the format that keeps alpha; any software opens it, `ffmpeg` converts it |
 | **MP4 (H.264)** | Export tab, section `Vídeo MP4`, button `Renderizar e baixar MP4` | frame by frame, encoded with WebCodecs, no alpha |
-| MP4 or PNG by command line | `node scripts/render.mjs <project> --out <dir> --format mp4\|png` | headless Chrome/Edge, no interface |
+| MP4 or PNG by command line | `node scripts/render.mjs <project> --out <dir> --format mp4\|png [--region N]` (`--region N` renders display N only, PNG or MP4) | headless Chrome/Edge, no interface |
 
 No WebM, no `MediaRecorder`, no screen recording: that path stalled the video renders.
 

@@ -60,6 +60,11 @@ try {
   execFileSync(process.execPath, [join(ROOT, 'scripts', 'render.mjs'), pj, '--out', outDir, '--format', 'mp4', '--end', '5', '--quality', 'low'], { stdio: 'pipe' });
   const { readdirSync } = await import('node:fs'), top = readdirSync(outDir), pngs = readdirSync(join(outDir, top.find(x => !x.endsWith('.mp4'))));
   check(pngs.length === 4 && pngs[0] === '000000.png', 'CLI: --format png grava 4 quadros numerados', pngs.join(','));
+  const rp = JSON.parse(readFileSync(pj, 'utf8')); rp.canvas.displays = [{ x: 0, y: 0, w: 320, h: 360, name: 'ESQ' }, { x: 320, y: 0, w: 320, h: 360, name: 'DIR' }];
+  const pj2 = join(tmp, 'reg.json'); writeFileSync(pj2, JSON.stringify(rp)); const outR = join(tmp, 'cliR');
+  execFileSync(process.execPath, [join(ROOT, 'scripts', 'render.mjs'), pj2, '--out', outR, '--format', 'png', '--end', '1', '--region', '1'], { stdio: 'pipe' });
+  const dR = readdirSync(outR)[0], ihdr = readFileSync(join(outR, dR, '000000.png'));
+  check(/_R2$/.test(dR) && ihdr.readUInt32BE(16) === 320 && ihdr.readUInt32BE(20) === 360, 'CLI: --region 1 grava PNG 320×360 numa pasta _R2', dR + ' ' + ihdr.readUInt32BE(16) + 'x' + ihdr.readUInt32BE(20));
   const m4 = top.find(x => x.endsWith('.mp4')); check(!!m4 && /640x360_30fps/.test(m4) && readFileSync(join(outDir, m4)).length > 1000, 'CLI: --format mp4 grava o arquivo com tamanho e fps no nome', top.join(','));
 } catch (e) { bad('exceção: ' + (e.message || e)); }
 await page.close();

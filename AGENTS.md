@@ -12,4 +12,4 @@ For any coding or chat agent working in, or with, this repository (Codex, Cursor
 - A test is only worth something if it can fail: add a negative control or a mutation check. UI tests must click with real mouse events, not `.click()`: a covered button passes the second and fails the first.
 - Look at renders (`scripts/contact_sheet.mjs`) before calling visual work done.
 - Render without screen capture: `node scripts/render.mjs` (MP4 or PNG); measure cost with `node scripts/bench.mjs`.
-- Roadmap: `docs/ROADMAP.md`; what is left, in small blocks: `docs/PROXIMOS-PASSOS.md`; history: `docs/historico/`, `CHANGELOG.md`.
+- Roadmap: `docs/ROADMAP.md`; what is left, in small blocks: `docs/PROXIMOS-PASSOS.md`; version notes: `CHANGELOG.md`.

@@ -1,6 +1,6 @@
-# Roadmap oficial (v11, a partir do motor 3.0.0)
+# Roadmap oficial (v11, motor 3.1.0)
 
-Substitui o roadmap v10 (guardado em `historico/ROADMAP-v10.md`). Decidido pela autora em 08/10/2026.
+Substitui o roadmap v10. Decidido pela autora em 08/10/2026.
 
 ## Produto
 Sistema generativo de animação orientado por direção de arte. Entra um briefing e informação 2D de uma superfície; saem **PNG sequence** (RGB, RGBA, por camada, projeto completo ou região) e **MP4**.
@@ -10,12 +10,12 @@ Cadeia de decisão: intenção, significado, conceito, linguagem visual, composi
 ## Fora de escopo (não planejar, não prometer)
 Software de performance ou VJ playback, media server, projection mapping, geração de pixel map ou blueprint, gestão de LED wall, MIDI, OSC, NDI, controle remoto, integração com Resolume, TouchDesigner ou OBS, domo, DOOH, simulação do prédio ou do projetor, visualização 3D da instalação, tracking físico. O 3D existe só para gerar a animação.
 
-Referências antigas a isso ficam apenas no `CHANGELOG.md` e em `historico/`.
+Referências antigas a isso ficam apenas no `CHANGELOG.md`.
 
 ## Fases (ordem obrigatória)
 | Fase | Foco | Estado |
 |---|---|---|
-| 0 | Limpeza de escopo | em andamento (`FASE-0-AUDITORIA.md`) |
+| 0 | Limpeza de escopo | **feita (3.1.0)** |
 | 1 | Fonte única da verdade (registry de geradores, parâmetros, modulação, capabilities) | pendente |
 | 2 | Fundação WebGL2 (GLSL ES 3.00, VAO, FrameContext determinístico) | pendente |
 | 3 | Recursos de GPU (pools de textura e framebuffer, métricas) | pendente |
@@ -41,7 +41,7 @@ Referências antigas a isso ficam apenas no `CHANGELOG.md` e em `historico/`.
 | 23 | Documentação final literal | pendente |
 | 24 | Portão final de qualidade | pendente |
 
-WebGL2 (fase 2) vem antes de 3D e partículas. A decisão anterior de não migrar (`historico/RELATORIO-V9-githubs3.md` §5) está revogada por este roadmap; a fase 2 registra o ADR.
+WebGL2 (fase 2) vem antes de 3D e partículas. A decisão anterior de não migrar (relatório V9 §5, medido) está revogada por este roadmap; a fase 2 registra o ADR.
 
 ## Regras
 - Determinismo acima de novidade visual: sem `Math.random`, `Date.now` ou `performance.now` no render.
