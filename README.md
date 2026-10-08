@@ -51,7 +51,10 @@ O instalador copia as 4 skills de `skill/` para `~/.claude/skills/`. Reinicie o 
 | **Tempo** | BPM global com tap, loop em compassos inteiros, sempre seamless, modos loop / ping-pong / reverse / random / phase / audio / manual, pausa e scrub quadro a quadro. |
 | **Áudio** | Reatividade on/off; microfone ou arquivo; bass / mid / high / rms por camada, com suavização. |
 | **Canvas** | Qualquer proporção: 16:9, 9:16, 32:9, 5120×500 para paredes em L. A viewport se adapta, com safe area, grade, zoom, 100% e displays recortados. |
-| **Export** | PNG sequence com alpha (composição, por camada ou uma camada), branco α para colorir no software, WebM ao vivo, janela de saída para o 2º monitor, project.json reproduzível. |
+| **Export** | PNG sequence com alpha (composição, por camada ou uma camada), branco α para colorir no software, **MP4 H.264 quadro a quadro** (aba Exportar ou `node scripts/render.mjs`, sem gravar a tela), janela de saída para o 2º monitor, project.json reproduzível. O botão Gravar (WebM ao vivo) é só rascunho. |
+| **Efeitos sobre a pilha (`fx`)** | 22 efeitos que leem as camadas abaixo: CRT, VHS, halftone, dither, bordas, pintura, painel de LED, vidro líquido, bloom, glitch, espelho… (`references/fx-layer.md`). |
+| **Cadeia (`synth`)** | uma linha vira shader: `osc(18,1,0.6).kaleid(6).modulate(noise(3,1),0.1).tint()` (`references/synth-chain.md`). |
+| **ISF** | aba ISF: 84 geradores (11 originais, MIT e CC0 com autoria), importar `.fs`, exportar camadas para o Resolume. |
 | **STANDARD** | O motor de camadas original (organismo em filotaxia, estrutura áurea, medição, dados, HUD, evento, pós), portado para relógio por quadros. |
 | **Validação** | ERROR / WARNING / OPTIMIZATION antes de exportar: mídia ausente, shader quebrado, loop que não fecha, moiré em LED, canvas grande demais. |
 

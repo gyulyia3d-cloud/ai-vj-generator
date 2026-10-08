@@ -16,7 +16,10 @@
 | Superfície, fatias do Resolume, manifesto de export, segurança de flash | `references/surface-and-export.md` |
 | Perfis de movimento, bíblia de arte, avaliador, tipografia, famílias | `references/motion-profiles.md`, `art-bible.md`, `evaluation.md`, `typography.md`, `families.md` |
 | Qualidade e testes | `references/quality-gates.md`, `../scripts/check.mjs` |
-| Histórico de decisões | [RELATORIO-V7-githubs2.md](RELATORIO-V7-githubs2.md), [RELATORIO-V8-roadmap.md](RELATORIO-V8-roadmap.md), `../CHANGELOG.md` |
+| O que o motor já sabe fazer, por necessidade (para o briefing) | `references/vocabulary.md`, `fx-layer.md`, `synth-chain.md` |
+| Renderizar MP4 ou PNG sem gravar a tela | `references/render-cli.md` |
+| O que falta fazer, em blocos pequenos | [PROXIMOS-PASSOS.md](PROXIMOS-PASSOS.md) |
+| Histórico de decisões | [RELATORIO-V7-githubs2.md](RELATORIO-V7-githubs2.md), [RELATORIO-V8-roadmap.md](RELATORIO-V8-roadmap.md), [RELATORIO-V9-githubs3.md](RELATORIO-V9-githubs3.md), `../CHANGELOG.md` |
 
 (Os caminhos `references/…` ficam em `skill/ai-vj-generator/references/`.)
 
