@@ -37,7 +37,7 @@ if (!chrome) { console.error('Nenhum Chrome/Edge encontrado. Passe --chrome <cam
 
 const url = pathToFileURL(html).href + '?qa=1';
 const profile = mkdtempSync(join(tmpdir(), 'aivj-qa-'));
-const r = spawnSync(chrome, ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--allow-file-access-from-files', '--no-first-run', '--no-default-browser-check',
+const r = spawnSync(chrome, ['--headless=new', ...(process.getuid?.() === 0 ? ['--no-sandbox', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] : []), '--disable-gpu', '--hide-scrollbars', '--allow-file-access-from-files', '--no-first-run', '--no-default-browser-check',
   `--user-data-dir=${profile}`, '--window-size=1600,1000', '--virtual-time-budget=90000', '--dump-dom', url], { encoding: 'utf8', maxBuffer: 1024 * 1024 * 1024, timeout: 240000 });
 if (r.error) { console.error('Falha ao iniciar o navegador: ' + r.error.message); process.exit(3); }
 const dom = r.stdout || '';

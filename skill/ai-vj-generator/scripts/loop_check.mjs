@@ -36,7 +36,7 @@ if (typeof WebSocket === 'undefined') { console.error('Este script precisa de No
 
 const port = 9300 + Math.floor(Math.random() * 600);
 const profile = mkdtempSync(join(tmpdir(), 'aivj-loop-'));
-const proc = spawn(chrome, ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--allow-file-access-from-files', '--no-first-run',
+const proc = spawn(chrome, ['--headless=new', ...(process.getuid?.() === 0 ? ['--no-sandbox', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] : []), '--disable-gpu', '--hide-scrollbars', '--allow-file-access-from-files', '--no-first-run',
   '--no-default-browser-check', `--user-data-dir=${profile}`, `--remote-debugging-port=${port}`, '--window-size=1400,900', pathToFileURL(html).href], { stdio: 'ignore' });
 const cleanup = () => { try { proc.kill(); } catch {} setTimeout(() => { try { rmSync(profile, { recursive: true, force: true }); } catch {} }, 500); };
 process.on('exit', cleanup);

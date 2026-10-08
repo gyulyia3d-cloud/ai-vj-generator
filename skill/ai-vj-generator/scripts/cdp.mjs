@@ -25,7 +25,7 @@ export async function openPage(file, { chrome, width = 1400, height = 900, waitF
   if (!exe) { console.error('Nenhum Chrome/Edge encontrado. Passe --chrome <caminho> ou defina CHROME_PATH.'); process.exit(3); }
   if (typeof WebSocket === 'undefined') { console.error('Este script precisa de Node 22+ (WebSocket global).'); process.exit(3); }
   const port = 9300 + Math.floor(Math.random() * 600), profile = mkdtempSync(join(tmpdir(), 'aivj-cdp-'));
-  const proc = spawn(exe, ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--allow-file-access-from-files', '--no-first-run', '--no-default-browser-check',
+  const proc = spawn(exe, ['--headless=new', ...(process.getuid?.() === 0 ? ['--no-sandbox', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] : []), '--disable-gpu', '--hide-scrollbars', '--allow-file-access-from-files', '--no-first-run', '--no-default-browser-check',
     `--user-data-dir=${profile}`, `--remote-debugging-port=${port}`, `--window-size=${width},${height}`, url || pathToFileURL(resolve(file)).href], { stdio: 'ignore' });
   let closed = false;
   const close = async () => { if (closed) return; closed = true; try { proc.kill(); } catch {} await sleep(400); try { rmSync(profile, { recursive: true, force: true }); } catch {} };
