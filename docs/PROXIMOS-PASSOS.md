@@ -1,72 +1,66 @@
 # Próximos passos (escolha a ordem)
 
-Estado em 08/10/2026: Fases 1, 2 e 3 feitas (2.5.0). `node scripts/check.mjs` verde. Cada item abaixo é um bloco pequeno, com um teste de aceite. Tamanho em dias-focados (df).
+Estado em 08/10/2026, motor **2.7.0**: Fases 1, 2 e 3 feitas; da Fase 4 já entraram a camada `fx` (textura de entrada), MP4 e render por linha de comando. `node scripts/check.mjs` verde. Cada item abaixo é um bloco pequeno com um teste de aceite. Tamanho em dias-focados (df). Análise completa: `docs/RELATORIO-V9-githubs3.md`.
 
-## A. Fechar a Fase 3 (sobras)
+## Feito desde a última lista
+Aba **ISF** (84 geradores, importar, exportar) · render **MP4 (H.264)** e **PNG por CLI** sem gravar a tela · camada **`fx`** com 22 efeitos · camada **`synth`** (cadeia de uma linha, inspirada no Hydra, código próprio) · 9 módulos GLSL novos com teste numérico · 8 transições novas (16) · 9 formas de LFO de atenção · Kalman do andamento · receitas `hilbert-curve` e `greeble-plate` · XML do Arena conferido contra um arquivo real · medição do motor e **decisão sobre WebGL2** (não trocar agora; relatório V9 §5).
+
+## A. Estado entre quadros, sem assar o loop (Fase 4, o item que mais abre possibilidades)
 | # | Item | df | Aceite |
 |---|---|---|---|
-| A1 | Arrastar e redimensionar fatias na vista de Superfície | 2 | teste CDP arrasta e o XML muda |
-| A2 | Rotação de 90° por fatia (UI + XML) | 1 | XML do navegador = Python |
-| A3 | Limitador de flash por camada (hoje só global) | 1 | PNG medido cai abaixo do limite |
-| A4 | Flash vermelho e área do flash na análise (WCAG 2.3.1 completo) | 1 | casos sintéticos reprovam |
-| A5 | Export WebM (MediaRecorder) | 1 | arquivo abre; duração = loop |
-| A6 | Painel de espectro desenhado para escolher faixas dos reatores | 2 | clicar na faixa grava `band` no `layer.mod` |
-| A7 | Testar o detector de kick com arquivo de áudio real (WAV de teste) | 1 | BPM do kick dentro de ±2 |
+| A1 | `fx` com histórico: cache de N quadros e **pré-aquecimento determinístico** (recalcula os N quadros anteriores quando se salta; guarda o último quando se toca em ordem) | 4 | o quadro n é idêntico tocando em ordem e saltando direto; teste A-B-A |
+| A2 | trilhas (feedback), slit-scan, mosh e BFI como presets do A1 | 3 | cada um passa em `fx_check` e fecha o loop com pré-aquecimento de um loop |
+| A3 | contexto **WebGL2** com texturas float só para as camadas que precisarem (ping-pong), mantendo WebGL1 como padrão | 3 | paridade de pixels com o WebGL1 nas camadas antigas |
+| A4 | jump-flood, Turing e reação-difusão em GPU (substitui o `sim` de CPU assado) | 5 | `sim` novo roda sem assar; loop fecha por construção ou por pré-aquecimento |
+| A5 | `render.mjs --jobs N`: fatias de quadros em várias páginas headless e junção de MP4 por GOP fechado | 2 | MP4 de 4 fatias = MP4 de uma peça (mesmos quadros) |
 
-## B. Gate 2 e Gate 3 (só você)
-| # | Item | Aceite |
-|---|---|---|
-| B1 | Olhar as 24 composições da galeria (`examples/gallery/README.md`) e marcar as que você refaria | lista de reprovadas |
-| B2 | Exportar PNG sequence 4500×800 e abrir no Resolume | entra sem retrabalho |
-| B3 | Dois testes do `/vj` com o mesmo briefing (registrar tempo, perguntas, avisos, nota) | tabela preenchida |
-
-## C. Qualidade do projeto (baratos, fazer antes da Fase 4)
+## B. Mais vocabulário
 | # | Item | df | Nota |
 |---|---|---|---|
-| C1 | Subir o commit local (`main` está à frente do GitHub) e a tag `v2.5.0` | 0,1 | pede seu aval |
-| C2 | Remover `skill.rar` e `dist/` do repositório (gerados) ou documentar por que ficam | 0,2 | |
-| C3 | CI no GitHub (já existe em `.github/workflows`): confirmar que passa com Chrome do runner | 0,5 | veio do ramo `claude/lucid-mendel` |
-| C4 | Nomes de arquivo do ISF perdem acento (`AÇÃO` vira `AC_MULO`) | 0,3 | bug em `isf.py` |
-| C5 | Botão ISF na interface (ver seção abaixo) | 3 | hoje só linha de comando |
-| C6 | Apagar os ramos remotos já fundidos | 0,1 | |
+| B1 | camada `doodle` (grade com regras por célula e semente, ideia do css-doodle) | 1 | combina com LED |
+| B2 | biblioteca de cadeias `synth` salvas no projeto + 10 cadeias novas | 1 | |
+| B3 | mais ISF: ampliar a biblioteca com os 7 geradores MIT que não compilam em WebGL1 depois de corrigidos, e aceitar `audioFFT` mapeando para as bandas do motor | 2 | cada correção registrada |
+| B4 | mais 6 efeitos `fx` sem histórico (granulação de filme, anamórfico, tilt-shift, lente de gotas, duotom por mapa, estêncil) | 2 | |
+| B5 | Python espelhando a gramática do `synth` (validação antes do navegador) | 1 | hoje só o motor valida |
 
-## D. Fase 4 — render (40 df, só depois de A e B)
-D1 motor modular `src/` (6) → D2 compositor GPU WebGL2 com paridade de pixels (24) → D3 orçamento de GPU, `sim` em GPU, ISF multipasso (10).
+## C. Fechar a Fase 3 (sobras)
+Arrastar fatias na vista · rotação de 90° por fatia · limitador de flash por camada · flash vermelho e área do flash · painel de espectro desenhado · teste do detector de kick com áudio real. (1 a 2 df cada; veja `docs/ROADMAP.md`.)
 
-## E. Fase 5 — integrações (25 df)
-E1 Web MIDI (3) · E2 OSC por ponte local (4) · E3 NDI/Spout via OBS, só documentar o ensaio (2) · E4 MCP do Resolume: entregar o set ao Arena (8) · E5 exportadores MadMapper/pixel map/blueprint plano (8).
+## D. Só você
+| # | Item | Aceite |
+|---|---|---|
+| D1 | olhar as 24 composições da galeria e as 22 amostras de `fx` (`node scripts/contact_sheet.mjs`) | lista do que refazer |
+| D2 | rodar `render.mjs` ou o botão MP4 com um projeto seu e abrir no Resolume | entra sem retrabalho |
+| D3 | dois testes do `/vj` com o mesmo briefing (tempo, perguntas, avisos, nota) | tabela preenchida |
+
+## E. Fase 5 (integrações), na ordem em que valem a pena
+MIDI de entrada (Web MIDI) · ponte local WebSocket para **OSC**, com os painéis feitos no OSCAR · MCP do Resolume · NDI e Spout nativos só se a ponte do OBS não bastar (decisão sua: ficam para depois).
 
 ## Sugestão de ordem
-C1 → C4 → B1/B2 → A3, A4 (segurança) → A1, A2 → C5 → A5–A7 → Fase 4.
+D2 (testar o MP4 e o ISF na sua máquina) → B1/B4 (rápido, visível) → A1 e A2 (o grande ganho) → A5 → A3/A4 → C.
 
 ---
 
 # Como usar os shaders ISF
 
-ISF é um shader GLSL com um cabeçalho JSON. Resolume Arena, Wire, VDMX e MadMapper abrem `.fs` direto. **Hoje o ISF só existe por linha de comando**, não há botão na interface (item C5).
+ISF é um shader GLSL com um cabeçalho JSON. Resolume, VDMX e MadMapper abrem `.fs` direto.
 
-## 1. Levar um shader seu para o Resolume
-1. Tenha um projeto `.aivj.json` com camadas do tipo `shader`.
-2. Rode:
-   ```bash
-   python skill/ai-vj-generator/scripts/isf.py export meu-projeto.json --out isf-out
-   ```
-3. Copie os `.fs` de `isf-out` para `Documentos\Resolume Arena\ISF` e atualize a lista de efeitos no Arena (a pasta pode não existir; crie).
-4. No Arena, arraste o shader da aba Fontes para uma camada.
-5. **Automatize o parâmetro `phase` de 0 a 1** (envelope linear, durando o loop). Sem isso o shader fica parado. `p1..p4` e as cores `c1, c2, cbg` viram controles. Áudio (`bass mid high rms hit…`) são floats comuns: ligue-os ao FFT do Arena.
-6. Use a mistura Add ou Screen para luz sobre preto.
+## No motor (aba ISF)
+1. **Biblioteca**: escolha um cartão e clique em **Adicionar à composição**. Os 11 "AIVJ" fecham o loop de verdade e reagem a graves, médios, agudos e golpes; os outros 73 têm autoria e licença no cartão (MIT ou CC0).
+2. **Importar arquivo .fs**: aceita gerador de um passe. Filtro (com imagem de entrada), multipasso e textura de áudio são recusados dizendo o motivo.
+3. **Exportar camada selecionada / todas**: baixa `.fs` com a entrada `phase`.
 
-Observações: o projeto `examples/duas-paredes-codigo.json` não tem camada shader (exportar dá "no shader layer found"); use `examples/noite-filotaxia-1080p.json`.
+## Levar para o Resolume
+1. Copie os `.fs` para `Documentos\Resolume Arena\ISF` e atualize a lista de fontes.
+2. Arraste o shader para uma camada.
+3. **Automatize `phase` de 0 a 1 durante o loop.** Sem isso o shader fica parado. `p1..p4` e as cores `c1, c2, cbg` viram controles; `bass mid high rms hit…` são números que você liga ao FFT.
+4. Use mistura Add ou Screen para luz sobre preto.
 
-## 2. Trazer um ISF de terceiros para o seu projeto
+## Por linha de comando (opcional)
 ```bash
+python skill/ai-vj-generator/scripts/isf.py export meu-projeto.json --out isf-out
 python skill/ai-vj-generator/scripts/isf.py check  gerador.fs
 python skill/ai-vj-generator/scripts/isf.py import gerador.fs --project meu-projeto.json --comp 0 --bars 4 --bpm 124
+node skill/ai-vj-generator/scripts/isf_ui_check.mjs
 ```
-Só entram **geradores** de um passe (sem `inputImage`, sem áudio, sem `PASSES`). Dos 326 arquivos testados, 35 importam. Respeite a licença: o autor é copiado para o `role` da camada, e não redistribua os arquivos de terceiros.
-
-## 3. Testar
-```bash
-node skill/ai-vj-generator/scripts/isf_check.mjs
-```
-Detalhes: `skill/ai-vj-generator/references/isf-bridge.md`.
+Detalhes e licenças: `skill/ai-vj-generator/references/isf-bridge.md`, `skill/ai-vj-generator/isf-library/README.md`.

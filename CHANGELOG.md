@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.7.0 (08/10/2026) · Render MP4, camada fx, camada synth, biblioteca GLSL e relatório V9
+
+- **MP4 (H.264) quadro a quadro**: `app/mp4.js` (muxer próprio + WebCodecs) na aba Exportar, e `scripts/render.mjs` (MP4 ou PNG por linha de comando, `AIVJ_GPU=1` liga a GPU). Sem gravação de tela e sem WebM; o botão Gravar fica como rascunho. Testado com ffprobe/ffmpeg (`mp4_check.mjs`). 4500×800 renderiza e codifica a cerca de 20 quadros por segundo numa GPU integrada.
+- **Camada `fx`** (`app/fx.js`): efeito de uma passada que lê as camadas abaixo. 22 efeitos: PIXELATE, HALFTONE, DITHER, CRT, VHS, ABERRAÇÃO CROMÁTICA, BORDAS NEON, KUWAHARA, MAPA DE GRADIENTE, PAINEL DE LED, VIDRO LÍQUIDO, DESLOCAR, ESPELHO, BLOOM, ARRASTO DE PIXEL, GRADE E VINHETA, GLITCH EM BLOCOS, REPETIR, AUTOMODULAÇÃO, SABATTIER, HACHURA, POLAR (PLANETINHA). Todos fecham o loop (`fx_check.mjs`).
+- **Camada `synth`** (`app/synth.js`): uma cadeia de uma linha (`osc(18,1,0.6).kaleid(6).modulate(noise(3,1),0.1).tint()`) vira shader. Gramática, operadores e GLSL próprios; ciclos inteiros por loop; expressões com `bass`, `hit`, `p1..p4`; erros em português; só nomes permitidos (nada de GLSL solto). 10 exemplos (`synth_check.mjs`).
+- **Biblioteca GLSL**: 8 módulos novos (`noise.gradient noise.warp sdf2d.more space.more color.more easing.more filter math`), 20 no total, com teste numérico (`lib2_check.mjs`); a ideia segue o mapa de módulos de bibliotecas conhecidas, o código é original.
+- **Movimento**: 9 formas de LFO de atenção (`bounce rubber shake jello tada heartbeat swing wobble pulse`), 8 transições novas (16), `vjSpring`, Kalman do andamento (`kickBpmK`, `kickConf`; 1,6 BPM de erro contra 3,0 da mediana nos testes).
+- **Receitas**: `hilbert-curve` e `greeble-plate`.
+- **XML do Arena** conferido contra um arquivo salvo pelo Resolume: 34 elementos e 38 parâmetros idênticos (`references/arena-advanced-output-structure.json`).
+- **Medição e decisão**: `scripts/bench.mjs` mede o custo por tipo de camada; a troca do motor para WebGL2 **não** compensa agora (o codificador domina o quadro): `docs/RELATORIO-V9-githubs3.md` §5.
+- **Documentação**: `references/vocabulary.md` (cardápio por necessidade, para o briefing), `fx-layer.md`, `synth-chain.md`, `render-cli.md`; `docs/PROXIMOS-PASSOS.md` reescrito.
+
+
 ## 2.6.0 (08/10/2026) · Aba ISF: biblioteca, importar e exportar shaders para o Resolume
 
 - **Aba ISF** (`app/isf-ui.js`): biblioteca de 84 geradores com miniatura, busca e filtro (11 originais do projeto, 28 MIT de repositórios abertos, 45 CC0 do glslop.com); botão **Importar arquivo .fs** (vários de uma vez, com o motivo de cada recusa); **Exportar camada selecionada / todas** como `.fs` com a entrada `phase`. Cada camada guarda autoria e licença no `role`.

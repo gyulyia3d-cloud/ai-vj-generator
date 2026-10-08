@@ -19,9 +19,10 @@ Every transport, export or integration claim carries one of four labels. Never p
 | Font and image import | SUPPORTED | File API, `FontFace` |
 | Project JSON export and import | SUPPORTED | PROJETO tab |
 | PNG frame / PNG sequence (alpha, per layer, white-alpha) | EXPORTABLE | Deterministic frame render, ZIP download |
-| WebM recording | EXPORTABLE | `MediaRecorder` over the canvas stream; where the browser supports it |
+| **MP4 (H.264), frame by frame** | EXPORTABLE | Export tab or `node scripts/render.mjs`; WebCodecs, no screen capture (`render-cli.md`). No alpha |
+| WebM live recording (the `Gravar` button) | EXPORTABLE, draft only | `MediaRecorder` over the viewport: a quick take of what is on screen, not a render; it can stall on heavy compositions. Deliver MP4 or PNG sequence |
 | Contact sheet PNG | EXPORTABLE | Interface button or `scripts/contact_sheet.mjs` |
-| Resolume (PNG sequence + Alley → DXV3 / HAP, or WebM) | EXPORTABLE | See `delivery.md` |
+| Resolume (PNG sequence + Alley → DXV3 / HAP, MP4, or live ISF shaders) | EXPORTABLE | See `delivery.md`, `isf-bridge.md` |
 | TouchDesigner | EXPORTABLE / REQUIRES BRIDGE | Movie File In TOP reads the sequence; Web Render TOP can show the HTML live |
 | NDI | REQUIRES BRIDGE | Output window → OBS → DistroAV / NDI plugin → NDI source |
 | Spout (Windows) / Syphon (macOS) | REQUIRES BRIDGE | OBS + Spout2 / Syphon plugin, or TouchDesigner Web Render TOP → Spout/Syphon Out |
@@ -29,7 +30,7 @@ Every transport, export or integration claim carries one of four labels. Never p
 | OSC (UDP) | REQUIRES BRIDGE | A browser cannot open UDP sockets: `generator → WebSocket → local bridge → UDP OSC → Resolume` |
 | WebSocket | CONCEPTUAL | A page can open a WebSocket to a local server, but this version has no sender and the bridge is not bundled |
 | MIDI | CONCEPTUAL | Web MIDI works in Chrome / Edge but is not implemented in this version |
-| Direct MP4 / HAP encoding in the browser | CONCEPTUAL | Not implemented; use WebM or the PNG sequence and an external encoder |
+| HAP / ProRes / DXV encoding in the browser | CONCEPTUAL | Not implemented; use the PNG sequence and `ffmpeg` (commands in `render-cli.md`); DXV3 only through Resolume Alley |
 
 If a bridge is requested, generate the OSC address schema, the parameter map and the WebSocket payloads as documentation, and label the delivery `REQUIRES BRIDGE`. Do not write code that implies the browser sends UDP.
 
@@ -38,7 +39,7 @@ If a bridge is requested, generate the OSC address schema, the parameter map and
 ```json
 "capabilities": {
   "supported": ["preview", "outputWindow", "audioInput"],
-  "exportable": ["pngSequenceAlpha", "pngSequenceWhiteAlpha", "webm"],
+  "exportable": ["pngSequenceAlpha", "pngSequenceWhiteAlpha", "mp4"],
   "requiresBridge": ["ndi", "spout", "osc"],
   "conceptual": ["midi"]
 }

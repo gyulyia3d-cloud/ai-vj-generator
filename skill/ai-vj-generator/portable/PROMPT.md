@@ -36,3 +36,6 @@ If the user has no time for the interview: they fill a brief and run `python scr
 JSON parses · `schema` is `ai-vj-generator/2` · canvas w/h are the real pixels · fps is 24/25/30/50/60 · every composition has ≥ 6 named layers with a `role` · at least one shader reads `uBass/uMid/uHigh/uHit` (or strategy none + reason) · no layer type outside the generator list (`references/project-schema.md`) · contract fields are specific, not generic · no random/time calls in code layers.
 
 Where to read more, by need: `docs/QUICKSTART.md`, `docs/AI-AGNOSTIC.md`, `skill/ai-vj-generator/SKILL.md` (full router with a read map).
+
+## Vocabulary available (v2.7)
+Before choosing layers read `references/vocabulary.md` (or `skill/ai-vj-generator/references/vocabulary.md` in the repository). Besides shader, code and the 2D layers there are: `fx` (effects over the stack: CRT, VHS, halftone, dither, glass, bloom, glitch), `synth` (a one-line chain such as `osc(18,1,0.6).kaleid(6).modulate(noise(3,1),0.1).tint()` compiled to a shader), ISF generators (`isf-library`), 16 transitions, attention-shaped LFOs (`bounce rubber shake jello tada heartbeat swing wobble pulse`). Rendering is by frame (MP4 or PNG sequence), never by screen capture.

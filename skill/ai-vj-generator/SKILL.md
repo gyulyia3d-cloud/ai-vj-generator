@@ -65,7 +65,10 @@ Load only what the project needs.
 | Drama and hierarchy: focal event, release zone, banned list, transitions between pieces, emotion to motion | `references/tension-and-release.md` |
 | Craft: layer tiers, naming, hierarchy ratios, the finish pass | `references/craft-and-finish.md` (always, before building and before delivery) |
 | Motion, physics, VFX, math, easing, the 12 principles | `references/animation-principles.md`, `references/knowledge/motion-generative-gpu.md`, `references/repertoire/animation.md`, `references/repertoire/generative-art.md` |
-| Shader building blocks: noise, SDF 2D/3D, raymarch, Oklab, dither, easing, LED emulation (`#include`) | `references/glsl-library.md` |
+| What the engine can already do, by need (ground, figure, structure, information, finish, motion, transitions): read before choosing layers | `references/vocabulary.md` |
+| Effects over the stack (CRT, VHS, halftone, dither, glass, bloom, glitch…): the `fx` layer | `references/fx-layer.md` |
+| A picture written as one line (`osc(…).kaleid(6).modulate(noise(3),0.2).tint()`): the `synth` layer | `references/synth-chain.md` |
+| Shader building blocks: noise, SDF 2D/3D, raymarch, Oklab, dither, easing, LED emulation (`#include`, 20 modules) | `references/glsl-library.md` |
 | Writing shaders | `references/glsl-recipes.md` (tested recipes, Hydra/Synesthesia translation), `references/project-schema.md` (GLSL contract) |
 | Writing code layers (flow fields, particles, grids, springs, Euclidean rhythms) | `references/creative-coding-patterns.md` |
 | A reference names a tool, library or effect (Hydra, TouchDesigner, Cavalry, Wire, Synesthesia, oF, p5, Strudel) | `references/software-techniques.md`, `references/effects-glossary.md` |
@@ -80,7 +83,8 @@ Load only what the project needs.
 | Audio, BPM, beat sync, integrated time, band transients, `layer.mod` modulation | `references/audio-bus.md` |
 | A still image with depth (2.5D parallax), a depth map, Gaussian splats or a point cloud (.ply) | `references/depth-and-splats.md`, `scripts/depth_estimate.py` |
 | Getting output into Resolume live (OBS + Spout2, URL parameters), cutting a long wall for the media server (Advanced Output XML, test pattern) | `references/bridge-obs-spout.md`, `scripts/export_slices.py` |
-| Exporting shaders to Resolume/Wire/VDMX as ISF, or importing an ISF generator | `references/isf-bridge.md`, `scripts/isf.py` |
+| ISF: the 84-shader library in the ISF tab, importing/exporting `.fs` for Resolume/Wire/VDMX | `references/isf-bridge.md`, `isf-library/README.md`, `scripts/isf.py` |
+| Rendering: MP4 (H.264) or PNG sequence, by the Export tab or `node scripts/render.mjs`, never by screen capture | `references/render-cli.md` |
 | Maths, physics or a named form (attractor, orbit, wave, fractal, knot, pendulum, Chladni, quasicrystal) | `references/math-forms.md`, then `python scripts/recipes.py list` / `layer <id>` (tested recipes in `references/recipes/`) |
 | Perception, hierarchy, comfort, flicker, aliasing, photosensitivity, hierarchy problems | `references/perception-and-gestalt.md` |
 | Palette, contrast, additive light, LED or projector colour | `references/color-science.md`, `python scripts/palette.py` |

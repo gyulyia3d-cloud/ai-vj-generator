@@ -11,4 +11,6 @@ For any coding or chat agent working in, or with, this repository (Codex, Gemini
 - Rules that never break: deterministic frames (no `Math.random`, no clocks), loops close on whole bars, every shader reads audio unless `audio.strategy` is `none` with a reason, native pixels (never assume 16:9), licences: concepts from AGPL/GPL/non-commercial code, never copies (`references/provenance.md`).
 - A test is only worth something if it can fail: add a negative control or a mutation check.
 - Look at renders (`scripts/contact_sheet.mjs`) before calling visual work done.
-- Roadmap and priorities: `docs/ROADMAP.md`.
+- New layer kinds live in modules under `app/` (`fx.js`, `synth.js`, `isf-ui.js`, `mp4.js`); after editing run `node scripts/embed-modules.mjs`, then `node scripts/build.mjs` and `node scripts/sync-skill.mjs`. Their tests: `fx_check.mjs`, `synth_check.mjs`, `isf_ui_check.mjs`, `mp4_check.mjs`, `lib2_check.mjs`.
+- Render without screen capture: `node scripts/render.mjs` (MP4 or PNG); measure cost with `node scripts/bench.mjs`.
+- Roadmap and priorities: `docs/ROADMAP.md`; what is left: `docs/PROXIMOS-PASSOS.md`.

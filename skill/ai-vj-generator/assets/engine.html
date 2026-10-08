@@ -482,7 +482,7 @@ html.stagemode #toast,html.stagemode #hint{display:none!important}
     <button id="audBtn" aria-pressed="false" title="A">Áudio</button>
     <button id="palBtn" aria-haspopup="dialog" aria-expanded="false" title="Paleta de cor">Cor</button>
     <span class="sep"></span>
-    <button id="rec" aria-pressed="false" title="R">Gravar</button>
+    <button id="rec" aria-pressed="false" title="R · gravação ao vivo da viewport (WebM): só rascunho. Para entregar use MP4 ou PNG na aba Exportar">Gravar</button>
     <button id="cleanBtn" title="H">Tela limpa</button>
     <button id="fsBtn" title="F">Cheia</button>
   </nav>
@@ -588,7 +588,7 @@ html.stagemode #toast,html.stagemode #hint{display:none!important}
    função pura de (parâmetros, quadro) → o mesmo código desenha o preview,
    o export PNG alpha e a gravação.
    ===================================================================== */
-const VERSION = '2.6.0';
+const VERSION = '2.7.0';
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const TAU = Math.PI * 2, GA = Math.PI * (3 - Math.sqrt(5));
 const clamp = (v, a, b) => v < a ? a : v > b ? b : v, lerp = (a, b, t) => a + (b - a) * t;
