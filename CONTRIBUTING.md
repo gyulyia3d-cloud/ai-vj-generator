@@ -18,3 +18,9 @@ node scripts/check.mjs
 ```
 
 Se você mudou um gerador, atualize `skill/ai-vj-generator/references/project-schema.md`. Se mudou o comportamento da skill, rode o cenário de teste descrito em `docs/ANALISE.md` (seção "Teste da skill") com e sem a skill.
+
+## Testes sem navegador, CI e demonstração
+
+- `node scripts/check.mjs` termina com **"Tudo certo."** só quando nada foi pulado. Sem Chrome/Edge ele diz `PASSOU, mas N verificações foram PULADAS`; com `--strict` (ou `CI=true`) isso é falha.
+- Chrome é achado em `CHROME_PATH`, nos caminhos usuais ou no Chromium do Playwright. Como root (contêiner/CI) os scripts já usam `--no-sandbox`, e todos usam WebGL por software (`scripts/chrome_env.mjs`).
+- `.github/workflows/check.yml` roda os testes em cada PR; `pages.yml` publica o motor (ative em Settings → Pages → Source: GitHub Actions).

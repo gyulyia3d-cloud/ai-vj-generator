@@ -10,6 +10,7 @@
 //
 // Saída: NN_nome.png (6 quadros empilhados, de cima para baixo) · report.json · exit 1 se houver ERROR.
 import { spawnSync } from 'node:child_process';
+import { chromeFlags, extraCandidates } from './chrome_env.mjs';
 import { existsSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
@@ -30,14 +31,14 @@ const CANDIDATES = [
   'C:/Program Files/Google/Chrome/Application/chrome.exe', 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
   'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Microsoft/Edge/Application/msedge.exe',
   '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge',
-  '/usr/bin/google-chrome', '/usr/bin/google-chrome-stable', '/usr/bin/chromium', '/usr/bin/chromium-browser', '/usr/bin/microsoft-edge'
+  '/usr/bin/google-chrome', '/usr/bin/google-chrome-stable', '/usr/bin/chromium', '/usr/bin/chromium-browser', '/usr/bin/microsoft-edge', ...extraCandidates()
 ].filter(Boolean);
 const chrome = CANDIDATES.find(p => existsSync(p));
 if (!chrome) { console.error('Nenhum Chrome/Edge encontrado. Passe --chrome <caminho> ou defina CHROME_PATH. Alternativa: abra o HTML, aba Exportar, "Folha de contato PNG".'); process.exit(3); }
 
 const url = pathToFileURL(html).href + '?qa=1';
 const profile = mkdtempSync(join(tmpdir(), 'aivj-qa-'));
-const r = spawnSync(chrome, ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--allow-file-access-from-files', '--no-first-run', '--no-default-browser-check',
+const r = spawnSync(chrome, [...chromeFlags, '--headless=new', '--disable-gpu', '--hide-scrollbars', '--allow-file-access-from-files', '--no-first-run', '--no-default-browser-check',
   `--user-data-dir=${profile}`, '--window-size=1600,1000', '--virtual-time-budget=90000', '--dump-dom', url], { encoding: 'utf8', maxBuffer: 1024 * 1024 * 1024, timeout: 240000 });
 if (r.error) { console.error('Falha ao iniciar o navegador: ' + r.error.message); process.exit(3); }
 const dom = r.stdout || '';

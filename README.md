@@ -1,10 +1,12 @@
 # AI VJ Generator
 
-**Skill para o Claude + motor de composição generativa para VJs.** Você digita `/vj`, descreve o set e anexa referências; o Claude analisa o briefing, as imagens e os vídeos, conversa com você, e cria do zero um sistema visual em camadas, aberto num gerador ao vivo pronto para projetar, gravar ou exportar em PNG com alpha para o Resolume. Sem presets, sem modelos: cada projeto nasce só do seu briefing.
+**Skill para o Claude + motor de composição generativa para VJs.** Você digita `/vj`, descreve o set e anexa referências; o Claude analisa o briefing, as imagens e os vídeos, conversa com você, e cria do zero um sistema visual em camadas, aberto num gerador ao vivo pronto para projetar, gravar ou exportar em PNG com alpha para o Resolume. Cada projeto nasce do seu briefing; a demonstração mostra a biblioteca original.
 
 *Claude skill + generative composition engine for VJs. Describe the set, the space and the music; Claude interviews you, sets the art direction and hands you a live generator with 5 layered compositions, ready to project, record or export as alpha PNG sequences for Resolume. English summary below.*
 
 ![Como instalar — mapa mental](docs/install-mindmap.svg)
+
+**Demonstração online:** <https://gyulyia3d-cloud.github.io/ai-vj-generator/> (abre o motor no navegador; ver `.github/workflows/pages.yml`).
 
 **Documentação:** [docs/README.md](docs/README.md) · começo rápido (com Claude, outra IA ou sem IA): [docs/QUICKSTART.md](docs/QUICKSTART.md) · roadmap: [docs/ROADMAP.md](docs/ROADMAP.md)
 
@@ -24,7 +26,7 @@ git clone https://github.com/gyulyia3d-cloud/ai-vj-generator.git; cd ai-vj-gener
 
 O instalador copia as 4 skills de `skill/` para `~/.claude/skills/`. Reinicie o Claude Code e digite: `/vj set de techno industrial, LED 5120×500, 132 BPM, anexei duas referências`. Guia completo, incluindo claude.ai: [INSTALL.md](INSTALL.md).
 
-**Sem o Claude:** abra `app/index.html` no navegador (ou rode `node scripts/serve.mjs` e acesse `http://localhost:5173`). A interface **não inventa animações**: ela abre com "Aguardando briefing" e carrega o projeto que o Claude escreveu (ou um JSON colado). O botão STANDARD abre a biblioteca original de camadas.
+**Sem o Claude:** abra `app/index.html` no navegador (ou rode `node scripts/serve.mjs` e acesse `http://localhost:5173`). A interface abre em "Aguardando briefing": carregue um projeto (do Claude, de outra IA, ou gerado sem IA pelo [caminho C](docs/QUICKSTART.md)) ou clique em **Abrir demonstração (sem IA)** para ver a biblioteca original de camadas funcionando.
 
 ## O que ele faz
 
