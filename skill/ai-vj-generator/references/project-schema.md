@@ -48,7 +48,7 @@ Write only what differs from defaults. The engine normalizes the file: missing f
 | `layer.mod` | list of `{k, src, min, max, mode, cycles, shape}`: drives any numeric `p` parameter from the audio bus or an LFO (see `audio-bus.md`, Modulation) |
 | `time.bars` | 1 2 4 8 16 32 (loop length in 4/4 bars) |
 | `time.mode` | `loop` `pingpong` `reverse` `random` `phase` `audio` `manual` |
-| `time.transition` | `cut` `fade` `wipe` `glitch` `zoom` `slide` `iris` `blinds` (the outgoing composition is a snapshot that zooms away, slides out, opens an iris or dissolves through blinds; pick by the concept's argument, `references/tension-and-release.md` §5) |
+| `time.transition` | `cut` `fade` `wipe` `glitch` `zoom` `slide` `iris` `blinds` `crosszoom` `spin` `radial` `diagonal` `slices` `flip` `blur` `drop` (the outgoing composition is a snapshot that zooms away, slides out, opens an iris or dissolves through blinds; pick by the concept's argument, `references/tension-and-release.md` §5) |
 | `composition.motion` | `step` (interface, quantized) or `smooth` (matter, eased); affects `measure` and `hud` |
 | `layer.blend` | `normal` `add` `screen` `multiply` `difference` `overlay` `lighten` |
 | color params | palette key `bg` `primary` `secondary` `accent`, or `#RRGGBB` |

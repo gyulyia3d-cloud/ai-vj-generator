@@ -53,7 +53,7 @@
         "bars": { "type": "integer", "enum": [1, 2, 4, 8, 16, 32] },
         "loop": { "type": "boolean" },
         "seamless": { "type": "boolean" },
-        "transition": { "type": "string", "enum": ["cut", "fade", "wipe", "glitch", "zoom", "slide", "iris", "blinds"] }
+        "transition": { "type": "string", "enum": ["cut", "fade", "wipe", "glitch", "zoom", "slide", "iris", "blinds", "crosszoom", "spin", "radial", "diagonal", "slices", "flip", "blur", "drop"] }
       }
     },
     "audio": {

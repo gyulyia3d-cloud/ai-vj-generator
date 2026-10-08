@@ -25,6 +25,16 @@ Rules: one module per line, at the top of the `src`. Dependencies are pulled in 
 | `easing` | `vjSmoother vjInOut vjOutBack vjElastic vjBounce vjExpoOut vjGain` |
 | `post` | `vjVignette vjGlow vjAA vjGrain vjScan` |
 | `led` | `vjLedDots vjCrtMask vjBleed` (preview the real surface: pitch in render pixels) |
+| `noise.gradient` | `vjRand vjGNoise vjCNoise` (Perlin), `vjPNoise` (tileable), `vjTurbulence`, `vjVoronoise(p,jitter,smooth)` |
+| `noise.warp` | `vjDomainWarp(p,k)`, `vjFlowWarp(p,k,TAU*uPh)` (loop-safe) |
+| `sdf2d.more` | `vjSdCross vjSdRhombus vjSdVesica vjSdMoon vjSdHeart vjSdArc vjSdPie vjSdEllipse`, `vjOpUnion vjOpInter vjOpXor vjOpRound vjOpMorph`, `vjFill vjStroke` |
+| `space.more` | `vjScaleAt vjShear vjFishEye vjBulge vjRipple vjMirrorTile vjFit` |
+| `color.more` | `vjHsl vjToHsl vjOklch vjTemp vjLevels`, blend modes `vjBScreen vjBMult vjBOverlay vjBHard vjBSoft vjBDodge vjBBurn vjBDiff vjBExcl` |
+| `easing.more` | the Penner set (`vjInSine … vjOutBounce`), `vjSpring(t,zeta,wn)`, `vjPingPong` |
+| `filter` | sampler filters for the `fx` layer: `vjBlur9 vjBoxBlur vjSharpen vjSobel vjDilate vjErode vjRadialBlur` (pass `uTex`) |
+| `math` | `vjMap vjSat vjWrap vjQuantize vjStep vjPulseTrain` |
+
+The new modules are checked numerically by `lib2_check.mjs` (shapes contain their centre, blends match known values, easings go 0 to 1, tileable noise tiles). The ideas follow the module map of well-known shader libraries (generative, sdf, space, color, filter, distort, animation) but every line is original: nothing from LYGIA (non-commercial licence) was read into or copied.
 
 ## Examples (compiled by `lib_check.mjs`)
 

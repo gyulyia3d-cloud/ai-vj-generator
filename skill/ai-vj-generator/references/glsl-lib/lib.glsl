@@ -99,3 +99,100 @@ float vjScan(vec2 f,float pitch,float amt){return 1.-amt*(.5+.5*sin(f.y*6.283185
 float vjLedDots(vec2 f,float pitch,float fill){vec2 g=fract(f/pitch)-.5;return 1.-smoothstep(fill*.5-.06,fill*.5+.06,length(g));}
 vec3 vjCrtMask(vec2 f){float m=mod(floor(f.x),3.);return m<1.?vec3(1.,.35,.35):(m<2.?vec3(.35,1.,.35):vec3(.35,.35,1.));}
 vec3 vjBleed(vec3 c,float amt){float l=dot(c,vec3(.333));return c+amt*l*l*vec3(1.);}
+//@module noise.gradient requires hash
+//@doc vjRand(p) 0..1 ; vjGNoise(p) smooth value noise 0..1 ; vjCNoise(p) classic gradient (Perlin) noise ~-.7..7 ; vjPNoise(p,period) tileable gradient noise ; vjTurbulence(p) 4 octaves 0..1 ; vjVoronoise(p,u,v) u=jitter 0..1, v=smoothness 0..1
+float vjRand(vec2 p){return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453);}
+float vjGNoise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*f*(f*(f*6.-15.)+10.);return mix(mix(vjRand(i),vjRand(i+vec2(1.,0.)),f.x),mix(vjRand(i+vec2(0.,1.)),vjRand(i+vec2(1.,1.)),f.x),f.y);}
+vec2 vjGrad(vec2 c){float a=6.2831853*vjRand(c+3.7);return vec2(cos(a),sin(a));}
+float vjCNoise(vec2 p){vec2 i=floor(p),f=fract(p),u=f*f*f*(f*(f*6.-15.)+10.);return mix(mix(dot(vjGrad(i),f),dot(vjGrad(i+vec2(1.,0.)),f-vec2(1.,0.)),u.x),mix(dot(vjGrad(i+vec2(0.,1.)),f-vec2(0.,1.)),dot(vjGrad(i+vec2(1.,1.)),f-vec2(1.,1.)),u.x),u.y);}
+float vjPNoise(vec2 p,vec2 per){vec2 i=floor(p),f=fract(p),u=f*f*f*(f*(f*6.-15.)+10.);vec2 a=mod(i,per),b=mod(i+vec2(1.,0.),per),c=mod(i+vec2(0.,1.),per),d=mod(i+vec2(1.,1.),per);return mix(mix(dot(vjGrad(a),f),dot(vjGrad(b),f-vec2(1.,0.)),u.x),mix(dot(vjGrad(c),f-vec2(0.,1.)),dot(vjGrad(d),f-vec2(1.,1.)),u.x),u.y);}
+float vjTurbulence(vec2 p){float v=0.,a=.5;for(int i=0;i<4;i++){v+=a*abs(vjCNoise(p))*1.6;p=p*2.03+vec2(5.2,1.3);a*=.5;}return clamp(v,0.,1.);}
+float vjVoronoise(vec2 p,float u,float v){vec2 n=floor(p),f=fract(p);float s=1.+63.*pow(1.-v,4.);float va=0.,wt=0.;for(int j=-2;j<=2;j++)for(int i=-2;i<=2;i++){vec2 g=vec2(float(i),float(j));vec2 o=vec2(vjRand(n+g),vjRand(n+g+9.1));float h=vjRand(n+g+4.3);float d=length(g-f+o*u);float w=pow(1.-smoothstep(0.,1.4142,d),s);va+=h*w;wt+=w;}return va/max(wt,1e-4);}
+//@module noise.warp requires noise.simplex
+//@doc vjDomainWarp(p,k) bends the coordinate with simplex noise before you sample anything else ; vjFlowWarp(p,k,t) the same with a loop-safe rotating field (pass TAU*uPh as t)
+vec2 vjDomainWarp(vec2 p,float k){return p+k*vec2(vjSimplex(p+vec2(1.7,9.2)),vjSimplex(p+vec2(8.3,2.8)));}
+vec2 vjFlowWarp(vec2 p,float k,float t){vec2 o=.5*vec2(cos(t),sin(t));return p+k*vec2(vjSimplex(p+o+vec2(1.7,9.2)),vjSimplex(p-o+vec2(8.3,2.8)));}
+//@module sdf2d.more
+//@doc more 2D distances (negative inside): vjSdCross(p,armLen,armHalfWidth) vjSdRhombus(p,halfDiagonals) vjSdVesica(p,r,d) lens vjSdMoon(p,ra,rb,d) vjSdHeart(p,size) vjSdArc(p,halfAngle,r,w) vjSdPie(p,halfAngle,r) vjSdEllipse(p,radii) ; ops vjOpUnion vjOpInter vjOpXor vjOpRound vjOpMorph ; render vjFill(d,aa) vjStroke(d,w,aa)
+float vjBox2(vec2 p,vec2 b){vec2 d=abs(p)-b;return length(max(d,0.))+min(max(d.x,d.y),0.);}
+float vjSdCross(vec2 p,float a,float w){return min(vjBox2(p,vec2(a,w)),vjBox2(p,vec2(w,a)));}
+float vjSdRhombus(vec2 p,vec2 b){p=abs(p);float s=sign(p.x/b.x+p.y/b.y-1.);vec2 a=vec2(b.x,0.),c=vec2(0.,b.y),pa=p-a,ca=c-a;float h=clamp(dot(pa,ca)/dot(ca,ca),0.,1.);return s*length(pa-ca*h);}
+float vjSdVesica(vec2 p,float r,float d){return max(length(p-vec2(-d,0.))-r,length(p-vec2(d,0.))-r);}
+float vjSdMoon(vec2 p,float ra,float rb,float d){return max(length(p)-ra,-(length(p-vec2(d,0.))-rb));}
+float vjSdHeart(vec2 p,float s){p=vec2(p.x,p.y+.25*s)/(s*.8);float x2=p.x*p.x,y3=p.y*p.y*p.y,q=x2+p.y*p.y-1.;float f=q*q*q-x2*y3;vec2 g=vec2(6.*q*q*p.x-2.*p.x*y3,6.*q*q*p.y-3.*x2*p.y*p.y);return f/max(length(g),1e-3)*s*.8;}
+float vjSdArc(vec2 p,float ap,float r,float w){p.x=abs(p.x);float a=atan(p.x,p.y);float d=a<ap?abs(length(p)-r):length(p-r*vec2(sin(ap),cos(ap)));return d-w;}
+float vjSdPie(vec2 p,float ap,float r){p.x=abs(p.x);float a=atan(p.x,p.y);vec2 e=vec2(sin(ap),cos(ap)),n=vec2(cos(ap),-sin(ap));return a<ap?max(length(p)-r,dot(p,n)):length(p-e*clamp(dot(p,e),0.,r));}
+float vjSdEllipse(vec2 p,vec2 r){return (length(p/r)-1.)*min(r.x,r.y);}
+float vjOpUnion(float a,float b){return min(a,b);}
+float vjOpInter(float a,float b){return max(a,b);}
+float vjOpXor(float a,float b){return max(min(a,b),-max(a,b));}
+float vjOpRound(float d,float r){return d-r;}
+float vjOpMorph(float a,float b,float t){return mix(a,b,t);}
+float vjFill(float d,float aa){return 1.-smoothstep(-aa,aa,d);}
+float vjStroke(float d,float w,float aa){return 1.-smoothstep(w-aa,w+aa,abs(d));}
+//@module space.more
+//@doc vjScaleAt(p,c,s) vjShear(p,k) vjFishEye(uv,k) vjBulge(uv,c,r,k) vjRipple(uv,c,freq,amp,phase) vjMirrorTile(p,n) vjFit(uv,aspect) (letterbox a coordinate to an aspect)
+vec2 vjScaleAt(vec2 p,vec2 c,float s){return (p-c)/s+c;}
+vec2 vjShear(vec2 p,float k){return vec2(p.x+k*p.y,p.y);}
+vec2 vjFishEye(vec2 uv,float k){float r=length(uv);return uv*(1.+k*r*r);}
+vec2 vjBulge(vec2 uv,vec2 c,float r,float k){vec2 d=uv-c;float m=length(d)/r;return c+d*(1.+k*(1.-smoothstep(0.,1.,m)));}
+vec2 vjRipple(vec2 uv,vec2 c,float freq,float amp,float ph){vec2 d=uv-c;float r=length(d)+1e-4;return uv+d/r*amp*sin(r*freq-ph)*exp(-r*2.);}
+vec2 vjMirrorTile(vec2 p,float n){vec2 q=p*n;return abs(fract(q*.5)*2.-1.);}
+vec2 vjFit(vec2 uv,float aspect){float a=uRes.x/uRes.y;return a>aspect?vec2(uv.x*a/aspect,uv.y):vec2(uv.x,uv.y*aspect/a);}
+//@module color.more requires color
+//@doc vjHsl(h,s,l)->rgb vjToHsl(rgb) ; vjOklch(L,C,h turns)->rgb ; vjTemp(kelvin)->rgb ; vjLevels(c,inLo,inHi,gamma) ; blend modes vjBScreen vjBOverlay vjBSoft vjBHard vjBDodge vjBBurn vjBDiff vjBExcl vjBMult (a=base,b=top)
+vec3 vjHsl(float h,float s,float l){vec3 k=mod(vec3(0.,8.,4.)+h*12.,12.);float a=s*min(l,1.-l);return l-a*clamp(min(k-3.,9.-k),-1.,1.);}
+vec3 vjToHsl(vec3 c){float mx=max(c.r,max(c.g,c.b)),mn=min(c.r,min(c.g,c.b)),l=(mx+mn)*.5,d=mx-mn,s=d<1e-5?0.:d/(1.-abs(2.*l-1.)),h=0.;if(d>1e-5){if(mx==c.r)h=mod((c.g-c.b)/d,6.);else if(mx==c.g)h=(c.b-c.r)/d+2.;else h=(c.r-c.g)/d+4.;h/=6.;}return vec3(h,s,l);}
+vec3 vjOklch(float L,float C,float h){float a=h*6.2831853;return vjFromOklab(vec3(L,C*cos(a),C*sin(a)));}
+vec3 vjTemp(float k){float t=clamp(k,1000.,12000.)/100.;vec3 c;c.r=t<=66.?1.:clamp(1.292936*pow(t-60.,-.1332047),0.,1.);c.g=t<=66.?clamp(.390082*log(t)-.631841,0.,1.):clamp(1.129891*pow(t-60.,-.0755148),0.,1.);c.b=t>=66.?1.:(t<=19.?0.:clamp(.543207*log(t-10.)-1.196254,0.,1.));return c;}
+vec3 vjLevels(vec3 c,float lo,float hi,float g){return pow(clamp((c-lo)/max(hi-lo,1e-4),0.,1.),vec3(1./max(g,.05)));}
+vec3 vjBScreen(vec3 a,vec3 b){return 1.-(1.-a)*(1.-b);}
+vec3 vjBMult(vec3 a,vec3 b){return a*b;}
+vec3 vjBOverlay(vec3 a,vec3 b){return mix(2.*a*b,1.-2.*(1.-a)*(1.-b),step(.5,a));}
+vec3 vjBHard(vec3 a,vec3 b){return mix(2.*a*b,1.-2.*(1.-a)*(1.-b),step(.5,b));}
+vec3 vjBSoft(vec3 a,vec3 b){return (1.-2.*b)*a*a+2.*b*a;}
+vec3 vjBDodge(vec3 a,vec3 b){return clamp(a/max(1.-b,1e-3),0.,1.);}
+vec3 vjBBurn(vec3 a,vec3 b){return 1.-clamp((1.-a)/max(b,1e-3),0.,1.);}
+vec3 vjBDiff(vec3 a,vec3 b){return abs(a-b);}
+vec3 vjBExcl(vec3 a,vec3 b){return a+b-2.*a*b;}
+//@module easing.more
+//@doc t in 0..1 (clamped): vjInSine vjOutSine vjInOutSine vjInQuad vjOutQuad vjInOutQuad vjInCubic vjOutCubic vjInQuart vjOutQuart vjInQuint vjOutQuint vjInExpo vjInCirc vjOutCirc vjInBack vjInOutBack vjInElastic vjOutElastic vjOutBounce ; vjSpring(t,zeta,wn) damped spring step response ; vjPingPong(x)
+float vjInSine(float t){t=clamp(t,0.,1.);return 1.-cos(t*1.5707963);}
+float vjOutSine(float t){t=clamp(t,0.,1.);return sin(t*1.5707963);}
+float vjInOutSine(float t){t=clamp(t,0.,1.);return -(cos(3.14159265*t)-1.)*.5;}
+float vjInQuad(float t){t=clamp(t,0.,1.);return t*t;}
+float vjOutQuad(float t){t=clamp(t,0.,1.);return 1.-(1.-t)*(1.-t);}
+float vjInOutQuad(float t){t=clamp(t,0.,1.);return t<.5?2.*t*t:1.-pow(-2.*t+2.,2.)*.5;}
+float vjInCubic(float t){t=clamp(t,0.,1.);return t*t*t;}
+float vjOutCubic(float t){t=clamp(t,0.,1.);return 1.-pow(1.-t,3.);}
+float vjInQuart(float t){t=clamp(t,0.,1.);return t*t*t*t;}
+float vjOutQuart(float t){t=clamp(t,0.,1.);return 1.-pow(1.-t,4.);}
+float vjInQuint(float t){t=clamp(t,0.,1.);return t*t*t*t*t;}
+float vjOutQuint(float t){t=clamp(t,0.,1.);return 1.-pow(1.-t,5.);}
+float vjInExpo(float t){t=clamp(t,0.,1.);return t<=0.?0.:pow(2.,10.*t-10.);}
+float vjInCirc(float t){t=clamp(t,0.,1.);return 1.-sqrt(1.-t*t);}
+float vjOutCirc(float t){t=clamp(t,0.,1.);return sqrt(1.-pow(t-1.,2.));}
+float vjInBack(float t){t=clamp(t,0.,1.);float c1=1.70158;return (c1+1.)*t*t*t-c1*t*t;}
+float vjInOutBack(float t){t=clamp(t,0.,1.);float c=1.70158*1.525;return t<.5?(pow(2.*t,2.)*((c+1.)*2.*t-c))*.5:(pow(2.*t-2.,2.)*((c+1.)*(t*2.-2.)+c)+2.)*.5;}
+float vjInElastic(float t){t=clamp(t,0.,1.);if(t<=0.||t>=1.)return t;return -pow(2.,10.*t-10.)*sin((t*10.-10.75)*2.0943951);}
+float vjOutElastic(float t){t=clamp(t,0.,1.);if(t<=0.||t>=1.)return t;return pow(2.,-10.*t)*sin((t*10.-.75)*2.0943951)+1.;}
+float vjOutBounce(float t){t=clamp(t,0.,1.);float n=7.5625,d=2.75;if(t<1./d)return n*t*t;if(t<2./d){t-=1.5/d;return n*t*t+.75;}if(t<2.5/d){t-=2.25/d;return n*t*t+.9375;}t-=2.625/d;return n*t*t+.984375;}
+float vjSpring(float t,float z,float w){t=max(t,0.);if(z>=1.)return 1.-(1.+w*t)*exp(-w*t);float wd=w*sqrt(1.-z*z);return 1.-exp(-z*w*t)*(cos(wd*t)+z*w/wd*sin(wd*t));}
+float vjPingPong(float x){return 1.-abs(fract(x*.5)*2.-1.);}
+//@module filter
+//@doc sampler filters for the fx layer (pass the sampler: vjBlur9(uTex,uv,dir) ...): vjBlur9(t,uv,dirInUv) vjSharpen(t,uv,px,amt) vjSobel(t,uv,px)->vec2 luma gradient vjDilate(t,uv,px) vjErode(t,uv,px) vjRadialBlur(t,uv,center,amt) vjBoxBlur(t,uv,px) 3x3
+vec4 vjBlur9(sampler2D t,vec2 uv,vec2 d){return texture2D(t,uv)*.2270270270+(texture2D(t,uv+d*1.3846153846)+texture2D(t,uv-d*1.3846153846))*.3162162162+(texture2D(t,uv+d*3.2307692308)+texture2D(t,uv-d*3.2307692308))*.0702702703;}
+vec4 vjBoxBlur(sampler2D t,vec2 uv,vec2 px){vec4 s=vec4(0.);for(int j=-1;j<=1;j++)for(int i=-1;i<=1;i++)s+=texture2D(t,uv+vec2(float(i),float(j))*px);return s/9.;}
+vec4 vjSharpen(sampler2D t,vec2 uv,vec2 px,float amt){vec4 c=texture2D(t,uv);vec4 a=(texture2D(t,uv+vec2(px.x,0.))+texture2D(t,uv-vec2(px.x,0.))+texture2D(t,uv+vec2(0.,px.y))+texture2D(t,uv-vec2(0.,px.y)))*.25;return vec4(clamp(c.rgb+amt*(c.rgb-a.rgb),0.,1.),c.a);}
+vec2 vjSobel(sampler2D t,vec2 uv,vec2 px){vec3 w=vec3(.299,.587,.114);float a=dot(texture2D(t,uv+vec2(-px.x,-px.y)).rgb,w),b=dot(texture2D(t,uv+vec2(0.,-px.y)).rgb,w),c=dot(texture2D(t,uv+vec2(px.x,-px.y)).rgb,w),d=dot(texture2D(t,uv+vec2(-px.x,0.)).rgb,w),f=dot(texture2D(t,uv+vec2(px.x,0.)).rgb,w),g=dot(texture2D(t,uv+vec2(-px.x,px.y)).rgb,w),h=dot(texture2D(t,uv+vec2(0.,px.y)).rgb,w),i=dot(texture2D(t,uv+px).rgb,w);return vec2(-a-2.*d-g+c+2.*f+i,-a-2.*b-c+g+2.*h+i);}
+vec4 vjDilate(sampler2D t,vec2 uv,vec2 px){vec4 m=vec4(0.);for(int j=-1;j<=1;j++)for(int i=-1;i<=1;i++)m=max(m,texture2D(t,uv+vec2(float(i),float(j))*px));return m;}
+vec4 vjErode(sampler2D t,vec2 uv,vec2 px){vec4 m=vec4(1.);for(int j=-1;j<=1;j++)for(int i=-1;i<=1;i++)m=min(m,texture2D(t,uv+vec2(float(i),float(j))*px));return m;}
+vec4 vjRadialBlur(sampler2D t,vec2 uv,vec2 c,float amt){vec4 s=vec4(0.);for(int i=0;i<8;i++){float k=float(i)/7.;s+=texture2D(t,uv+(c-uv)*amt*k);}return s/8.;}
+//@module math
+//@doc vjMap(x,a,b,c,d) remap ; vjSat(x) clamp 0..1 ; vjWrap(x,lo,hi) ; vjQuantize(x,n) ; vjStep(x,edge,w) smooth step with width ; vjPulseTrain(x,duty)
+float vjMap(float x,float a,float b,float c,float d){return c+(x-a)/(b-a)*(d-c);}
+float vjSat(float x){return clamp(x,0.,1.);}
+float vjWrap(float x,float lo,float hi){float r=hi-lo;return lo+mod(x-lo,r);}
+float vjQuantize(float x,float n){return floor(x*n+.5)/n;}
+float vjStep(float x,float e,float w){return smoothstep(e-w,e+w,x);}
+float vjPulseTrain(float x,float duty){return step(fract(x),duty);}

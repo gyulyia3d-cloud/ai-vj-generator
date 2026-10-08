@@ -416,6 +416,20 @@
    "cost": "medium",
    "maturity": "stable",
    "note": "Order matters: it only sees the layers underneath. Keep one or two per composition; on LED prefer PAINEL DE LED, DITHER and GRADE, avoid CRT and VHS."
+  },
+  "synth": {
+   "family": "ground",
+   "role": "one-line chain (osc, noise, voronoi, shape… then kaleid, modulate, tint…) compiled to a shader",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "high",
+   "maturity": "stable",
+   "note": "Write the chain, not the GLSL. Cycles are whole numbers per loop so the loop closes; numbers accept bass, hit, p1..p4."
   }
  },
  "recipes": {
