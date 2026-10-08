@@ -402,6 +402,20 @@
    "cost": "unmeasured",
    "maturity": "stable",
    "note": "Not a sandbox: lint plus per-project authorisation."
+  },
+  "fx": {
+   "family": "finish",
+   "role": "one-pass effect that reads everything below it: CRT, VHS, halftone, dither, edges, glass, bloom, glitch, tiling",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "medium",
+   "maturity": "stable",
+   "note": "Order matters: it only sees the layers underneath. Keep one or two per composition; on LED prefer PAINEL DE LED, DITHER and GRADE, avoid CRT and VHS."
   }
  },
  "recipes": {

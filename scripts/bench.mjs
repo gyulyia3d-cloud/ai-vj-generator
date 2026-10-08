@@ -20,14 +20,15 @@ execFileSync(process.execPath, [join(SK, 'scripts', 'make-artifact.mjs'), proj, 
 const page = await openPage(join(tmp, 'p.html'), { width: 1400, height: 900 });
 try {
   for (let i = 0; i < 80; i++) { if (await page.evaluate('!!(window.AIVJ && window.AIVJ.renderFrame)').catch(() => false)) break; await new Promise(r => setTimeout(r, 250)); }
-  const r = JSON.parse(await page.evaluate(`(() => {
+  const r = JSON.parse(await page.evaluate(`(async () => {
     const A = AIVJ, P = A.project, out = { gpu: (() => { const g = document.createElement('canvas').getContext('webgl2') || document.createElement('canvas').getContext('webgl'); if (!g) return 'sem WebGL'; const e = g.getExtension('WEBGL_debug_renderer_info'); return (g instanceof WebGL2RenderingContext ? 'webgl2 · ' : 'webgl1 · ') + (e ? g.getParameter(e.UNMASKED_RENDERER_WEBGL) : '?'); })(), canvas: P.canvas, comps: [] };
-    const time = (ci, mask) => { const c = P.compositions[ci], on = c.layers.map(l => l.on); c.layers.forEach((l, i) => l.on = mask(l, i) && on[i]);
-      A.renderFrame(ci, 0, ${scale}, true); const t0 = performance.now(); for (let n = 1; n <= ${frames}; n++) A.renderFrame(ci, n * 3, ${scale}, true); const ms = (performance.now() - t0) / ${frames};
+    /* caminho do export: canvases na GPU, sem getImageData; o custo de codificar H.264 é medido à parte (só com a camada de fundo) e descontado */
+    const time = async (ci, mask) => { const c = P.compositions[ci], on = c.layers.map(l => l.on); c.layers.forEach((l, i) => l.on = mask(l, i) && on[i]);
+      await A.mp4.render({ ci, start: 0, end: 1, scale: ${scale} }); const t0 = performance.now(); await A.mp4.render({ ci, start: 3, end: 2 + ${frames}, scale: ${scale} }); const ms = (performance.now() - t0) / ${frames};
       c.layers.forEach((l, i) => l.on = on[i]); return ms; };
-    P.compositions.forEach((c, ci) => { const byType = {}; for (const t of [...new Set(c.layers.map(l => l.type))]) byType[t] = +time(ci, l => l.type === t).toFixed(1);
-      out.comps.push({ name: c.name, total: +time(ci, () => true).toFixed(1), byType }); });
+    for (let ci = 0; ci < P.compositions.length; ci++) { const c = P.compositions[ci], byType = {}, base = await time(ci, () => false); for (const t of [...new Set(c.layers.map(l => l.type))]) byType[t] = +Math.max(0, await time(ci, l => l.type === t) - base).toFixed(1);
+      out.comps.push({ name: c.name, base: +base.toFixed(1), total: +(await time(ci, () => true)).toFixed(1), byType }); }
     return JSON.stringify(out); })()`));
   console.log(r.gpu, '· canvas', r.canvas.w + 'x' + r.canvas.h, '· escala', scale);
-  for (const c of r.comps) console.log(`${c.name}: ${c.total} ms/quadro (${(1000 / c.total).toFixed(1)} fps) · ` + Object.entries(c.byType).sort((x, y) => y[1] - x[1]).map(([t, v]) => `${t} ${v}`).join(' · '));
+  for (const c of r.comps) console.log(`${c.name}: ${c.total} ms/quadro (${(1000 / c.total).toFixed(1)} fps; codificar sozinho ${c.base} ms) · custo por tipo: ` + Object.entries(c.byType).sort((x, y) => y[1] - x[1]).map(([t, v]) => `${t} ${v}`).join(' · '));
 } finally { await page.close(); }
