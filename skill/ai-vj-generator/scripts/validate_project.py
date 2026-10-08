@@ -12,7 +12,7 @@ project was not generated from its own briefing (generic composition names, a
 stock palette, an example's name, near-identical compositions). For schema
 ai-vj-generator/2 it also checks the creative contract (meta.contract), layer
 roles, the audio hierarchy (at most 3 reactive layers per composition) and the
-honesty of the capabilities block (OSC, NDI, Spout, Syphon and SDI need a bridge).
+honesty of the capabilities block (OSC, NDI, Spout, Syphon, SDI, MIDI and WebSocket are out of scope).
 
 Exit code 1 when there are errors. It cannot compile GLSL: open the HTML and read
 the validation panel for that. It reads the parameter registry from ../assets/engine.html.
@@ -236,9 +236,10 @@ CONTRACT_KEYS = ("concept", "audienceEffect", "semioticIntent", "visualLanguage"
 CONTRACT_REQUIRED = ("concept", "audienceEffect", "semioticIntent", "visualLanguage", "colorLogic", "spatialLogic",
                      "motionLanguage", "temporalArc", "loopGrammar", "technicalStrategy", "forbiddenShortcuts")
 LOOP_GRAMMARS = ("cyclic", "morphological", "continuous", "event", "evolutionary")
-# transports a browser cannot do on its own (capabilities.md): only 'requiresBridge' may list them
-BRIDGE_ONLY = {"osc", "ndi", "spout", "syphon", "sdi"}
-NOT_IMPLEMENTED = {"midi", "websocket", "mp4", "hap"}
+# outside the product scope (references/capabilities.md): may only appear under notSupported
+OUT_OF_SCOPE = {"osc", "ndi", "spout", "syphon", "sdi", "midi", "websocket", "hap", "mapping", "projectionmapping", "pixelmapgeneration", "blueprintgeneration"}
+# legacy labels (schema 2 before 3.1): accepted, treated as notSupported, reported as deprecated
+LEGACY_CAP = {"requiresBridge": "notSupported", "conceptual": "notSupported"}
 
 
 ART_BIBLE_KEYS = ("thesis", "material", "space", "motion", "dramaturgy", "color", "typography", "audio", "banned")
@@ -325,26 +326,26 @@ def check_contract(meta, out):
 
 
 def check_capabilities(cap, out):
-    """Schema 2: transport honesty (references/capabilities.md)."""
+    """Capability honesty (references/capabilities.md): supported, exportable, inputOnly, notSupported."""
     e, w = out["errors"], out["warnings"]
     if cap is None:
         return
     if not isinstance(cap, dict):
-        e.append("capabilities must be an object with supported / exportable / requiresBridge / conceptual lists")
+        e.append("capabilities must be an object with supported / exportable / inputOnly / notSupported lists")
         return
     for k, v in cap.items():
-        if k not in ("supported", "exportable", "requiresBridge", "conceptual"):
-            w.append(f"capabilities.{k}: unknown label (use supported, exportable, requiresBridge, conceptual)")
-        elif not isinstance(v, list):
+        if k in LEGACY_CAP:
+            w.append(f"capabilities.{k}: deprecated label, read as {LEGACY_CAP[k]} (migration: move the items to capabilities.notSupported)")
+        elif k not in ("supported", "exportable", "inputOnly", "notSupported"):
+            w.append(f"capabilities.{k}: unknown label (use supported, exportable, inputOnly, notSupported)")
+        if not isinstance(v, list):
             e.append(f"capabilities.{k} must be a list")
             continue
-        if k in ("supported", "exportable") and isinstance(v, list):
+        if k in ("supported", "exportable", "inputOnly"):
             for item in v:
                 n = str(item).lower().replace("-", "").replace("_", "").replace(" ", "")
-                if n in BRIDGE_ONLY:
-                    e.append(f"capabilities.{k}: '{item}' needs a bridge; list it under requiresBridge (browsers cannot send it directly)")
-                elif n in NOT_IMPLEMENTED:
-                    e.append(f"capabilities.{k}: '{item}' is not implemented in this engine; list it under conceptual")
+                if n in OUT_OF_SCOPE:
+                    e.append(f"capabilities.{k}: '{item}' is outside the product scope; list it under notSupported or remove it")
 
 
 SPEC_KEYS = ("archetype", "confirmed", "derived", "zones", "assumed", "show", "risks")

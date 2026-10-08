@@ -1,8 +1,8 @@
 # AI VJ Generator
 
-**Motor de composição generativa para VJs, com instruções que qualquer IA entende (ou nenhuma).** Você descreve o set (espaço, música, clima) para uma IA, preenche um briefing no navegador, ou usa o gerador sem IA. O resultado é **um arquivo JSON** que o motor abre, mostra ao vivo e exporta em **PNG sequence (com alpha), MP4 (H.264) ou shaders ISF** para o Resolume, TouchDesigner, MadMapper e outros. Mesmo projeto + mesma semente = mesmos quadros, e todo loop fecha.
+**Sistema generativo de animação orientado por direção de arte, com instruções que qualquer IA entende (ou nenhuma).** Você descreve a peça (superfície, música, conceito) para uma IA, preenche um briefing no navegador, ou usa o gerador sem IA. O resultado é **um arquivo JSON** que o motor abre, mostra em preview e exporta em **PNG sequence (RGB ou RGBA, projeto completo, por região ou por camada) e MP4 (H.264, sem alpha)**. Mesmo projeto + mesma semente = mesmos quadros, e todo loop fecha.
 
-*Generative composition engine for VJs, with instructions any AI can follow (or none at all). Describe the venue, the music and the mood to an AI, fill a brief in the browser, or use the AI-free generator; get one JSON file the engine opens, previews and exports as alpha PNG sequences, MP4 or ISF shaders. English summary at the end.*
+*Generative animation system driven by art direction, with instructions any AI can follow (or none at all). Describe the surface, the music and the concept to an AI, fill a brief in the browser, or use the AI-free generator; get one JSON file the engine opens, previews and exports as PNG sequences (RGB or RGBA, full project, region or layer) and MP4. English summary at the end.*
 
 **Demonstração online:** <https://gyulyia3d-cloud.github.io/ai-vj-generator/> · **Documentação:** [docs/README.md](docs/README.md) · **Começo rápido:** [docs/QUICKSTART.md](docs/QUICKSTART.md) · **O que falta:** [docs/PROXIMOS-PASSOS.md](docs/PROXIMOS-PASSOS.md)
 
@@ -37,15 +37,16 @@ O núcleo é **um texto**: [`skill/ai-vj-generator/portable/PROMPT.md`](skill/ai
 
 Cada camada é uma **função pura de (parâmetros, número do quadro)**: o relógio conta quadros, não milissegundos, e toda aleatoriedade sai de um hash com semente. Por isso o mesmo código desenha o preview, o PNG e o MP4, o último quadro encaixa no primeiro, e um render pode ser repetido e comparado. Nunca há gravação de tela.
 
-## Transporte de sinal, sem promessa falsa
+## O que o produto faz e não faz
 
-| Destino | Estado |
+| Capacidade | Estado |
 |---|---|
-| Tela cheia e segundo monitor | Suportado |
-| PNG sequence com alpha, MP4, JSON, ISF | Suportado |
-| Resolume, TouchDesigner, Notch, MadMapper | Exportável (PNG ou MP4, ISF, XML de saída) |
-| NDI, Spout, Syphon, SDI | Requer ponte (OBS + plugin, ou placa de captura): documentado, não nativo |
-| OSC, MIDI | Planejado (Fase 5) |
+| Geração, composição, animação, análise de superfície e de áudio, preview (inclui tela cheia) | Suportado |
+| PNG sequence (RGB, RGBA, por camada, por região), MP4 (sem alpha), JSON, manifesto | Exportável |
+| Blueprint, planta, pixel map, foto da superfície, máscara, referência | Só entrada e análise: o motor lê, nunca gera |
+| MIDI, OSC, NDI, Spout, Syphon, SDI, integração com Resolume, TouchDesigner ou OBS, mapping, simulação da instalação | Fora de escopo |
+
+Roadmap em vigor: [docs/ROADMAP.md](docs/ROADMAP.md). Os arquivos exportados são arquivos comuns; qualquer software os abre.
 
 ## Estrutura do repositório
 

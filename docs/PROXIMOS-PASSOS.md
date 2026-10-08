@@ -30,11 +30,11 @@ Arrastar fatias na vista · rotação de 90° por fatia · limitador de flash po
 | # | Item | Aceite |
 |---|---|---|
 | D1 | olhar as 24 composições da galeria e as 22 amostras de `fx` (`node scripts/contact_sheet.mjs`) | lista do que refazer |
-| D2 | rodar `render.mjs` ou o botão MP4 com um projeto seu e abrir no Resolume | entra sem retrabalho |
+| D2 | rodar `render.mjs` ou o botão MP4 com um projeto seu e abrir o arquivo | abre sem retrabalho |
 | D3 | dois testes do `/vj` com o mesmo briefing (tempo, perguntas, avisos, nota) | tabela preenchida |
 
-## E. Fase 5 (integrações), na ordem em que valem a pena
-MIDI de entrada (Web MIDI) · ponte local WebSocket para **OSC**, com os painéis feitos no OSCAR · MCP do Resolume · NDI e Spout nativos só se a ponte do OBS não bastar (decisão sua: ficam para depois).
+## E. Integrações
+Removidas do produto (roadmap v11, 08/10/2026): MIDI, OSC, NDI, Spout, MCP e integração com Resolume, TouchDesigner ou OBS não serão feitos. A próxima etapa é a Fase 0 (limpeza) e depois a Fase 1 (registry); ver `docs/ROADMAP.md`.
 
 ## Sugestão de ordem
 D2 (testar o MP4 e o ISF na sua máquina) → B1/B4 (rápido, visível) → A1 e A2 (o grande ganho) → A5 → A3/A4 → C.

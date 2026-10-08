@@ -69,21 +69,20 @@
   "capabilities": {
     "supported": [
       "preview",
-      "outputWindow",
-      "fullscreen"
+      "fullscreenPreview"
     ],
     "exportable": [
       "pngSequenceAlpha",
       "pngSequenceWhiteAlpha",
       "webm"
     ],
-    "requiresBridge": [
-      "ndi",
-      "spout",
-      "osc"
+    "inputOnly": [
+      "surfaceBitmap"
     ],
-    "conceptual": [
-      "midi"
+    "notSupported": [
+      "midi",
+      "osc",
+      "ndi"
     ]
   },
   "compositions": [

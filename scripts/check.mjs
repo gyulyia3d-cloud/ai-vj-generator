@@ -107,6 +107,10 @@ try {
   const bad1 = structuredClone(ex); bad1.capabilities = { supported: ['osc', 'midi'] };
   (await run(ex, 'aivj-v2-good.json')) === 0 ? ok('validador aceita o exemplo schema 2') : bad('validador recusou o exemplo schema 2');
   (await run(bad1, 'aivj-v2-bad.json')) === 1 ? ok('validador recusa OSC/MIDI como supported') : bad('validador deixou passar OSC/MIDI como supported');
+  const legacy = structuredClone(ex); legacy.capabilities = { supported: ['preview'], requiresBridge: ['ndi'], conceptual: ['midi'] };
+  (await run(legacy, 'aivj-v2-legacy.json')) === 0 ? ok('validador ainda abre capabilities legadas (requiresBridge/conceptual) com aviso') : bad('validador recusou capabilities legadas');
+  const bad2 = structuredClone(ex); bad2.capabilities = { exportable: ['ndi'] };
+  (await run(bad2, 'aivj-v2-bad2.json')) === 1 ? ok('validador recusa NDI como exportable') : bad('validador deixou passar NDI como exportable');
 } catch (e) { console.log('  --   teste do validador pulado: ' + String(e.message).split('\n')[0]); }
 // os geradores são neutros: nenhum texto de peça anterior (coordenadas, cidade, rótulos) fora do bloco STD_P/STD_TELE do STANDARD
 const MAXN = { 'SÃO PAULO': 1, '−23.5226': 1, 'ORG_01': 1, 'PADRÃO DETECTADO': 2 };

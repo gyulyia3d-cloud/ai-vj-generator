@@ -1,62 +1,52 @@
 # Capability labels
 
-Every transport, export or integration claim carries one of four labels. Never present a bridge-only feature as native.
+The AI VJ Generator is a generative animation system: briefing and 2D surface information in, PNG sequence or MP4 out. It is not a performance tool, a media server or a mapping tool. Every claim about what the engine does carries one of four labels. Never present something outside these labels as a feature.
 
 | Label | Meaning |
 |---|---|
 | `SUPPORTED` | Works directly in the generator / browser |
 | `EXPORTABLE` | Produced as a file the user takes elsewhere |
-| `REQUIRES BRIDGE` | Needs a local tool or plugin between the browser and the destination |
-| `CONCEPTUAL` | Design only; no runtime support in this version |
+| `INPUT / ANALYSIS ONLY` | The engine reads it as input and analyses it; it never generates it |
+| `NOT SUPPORTED` | Outside the product scope. Do not promise, document as a feature or generate it |
 
 ## Status table for this engine
 
 | Capability | Label | How |
 |---|---|---|
-| Live preview, composition switching, layer controls | SUPPORTED | The interface |
-| Fullscreen, output window (no editor UI), cropped displays | SUPPORTED | Move the window to the secondary display by hand; the browser cannot manage the OS display topology |
-| Microphone / line input / audio file | SUPPORTED | Web Audio; microphone needs the user's permission |
+| Generation from a briefing, composition, animation, 2D layers | SUPPORTED | The interface, or `portable/PROMPT.md` with any AI |
+| Preview, fullscreen preview, composition switching, layer controls | SUPPORTED | The interface |
+| Surface analysis (aspect ratio, regions, safe areas, legibility) | SUPPORTED | PROJETO / Superfície tabs |
+| Audio analysis (microphone, line input, audio file) | SUPPORTED | Web Audio; the microphone needs the user's permission |
 | Font and image import | SUPPORTED | File API, `FontFace` |
+| ISF generator library as a layer type | SUPPORTED | Layer type ISF, 84 shaders chosen in the layer parameters |
 | Project JSON export and import | SUPPORTED | PROJETO tab |
-| PNG frame / PNG sequence (alpha, per layer, white-alpha) | EXPORTABLE | Deterministic frame render, ZIP download |
-| **MP4 (H.264), frame by frame** | EXPORTABLE | Export tab or `node scripts/render.mjs`; WebCodecs, no screen capture (`render-cli.md`). No alpha |
-| WebM live recording (the `Gravar` button) | EXPORTABLE, draft only | `MediaRecorder` over the viewport: a quick take of what is on screen, not a render; it can stall on heavy compositions. Deliver MP4 or PNG sequence |
+| PNG frame / PNG sequence (RGB, RGBA, white-alpha, per layer) | EXPORTABLE | Deterministic frame render, ZIP download |
+| PNG sequence / MP4 of the full project or of a user-defined region (slice) | EXPORTABLE | Export tab (displays are regions) |
+| **MP4 (H.264), frame by frame** | EXPORTABLE | Export tab or `node scripts/render.mjs`; WebCodecs, no screen capture (`render-cli.md`). H.264 has no alpha: use the PNG sequence when alpha matters |
+| WebM live recording (the `Gravar` button) | EXPORTABLE, draft only | `MediaRecorder` over the viewport: a quick take of what is on screen, not a render. Deliver MP4 or PNG sequence |
 | Contact sheet PNG | EXPORTABLE | Interface button or `scripts/contact_sheet.mjs` |
-| Resolume (PNG sequence + Alley → DXV3 / HAP, MP4, or live ISF shaders) | EXPORTABLE | See `delivery.md`, `isf-bridge.md` |
-| TouchDesigner | EXPORTABLE / REQUIRES BRIDGE | Movie File In TOP reads the sequence; Web Render TOP can show the HTML live |
-| NDI | REQUIRES BRIDGE | Output window → OBS → DistroAV / NDI plugin → NDI source |
-| Spout (Windows) / Syphon (macOS) | REQUIRES BRIDGE | OBS + Spout2 / Syphon plugin, or TouchDesigner Web Render TOP → Spout/Syphon Out |
-| SDI | REQUIRES BRIDGE | Capture / output card (Blackmagic, AJA) fed by the screen output |
-| OSC (UDP) | REQUIRES BRIDGE | A browser cannot open UDP sockets: `generator → WebSocket → local bridge → UDP OSC → Resolume` |
-| WebSocket | CONCEPTUAL | A page can open a WebSocket to a local server, but this version has no sender and the bridge is not bundled |
-| MIDI | CONCEPTUAL | Web MIDI works in Chrome / Edge but is not implemented in this version |
-| HAP / ProRes / DXV encoding in the browser | CONCEPTUAL | Not implemented; use the PNG sequence and `ffmpeg` (commands in `render-cli.md`); DXV3 only through Resolume Alley |
+| Render manifest (fps, seed, resolution, SHA-256) | EXPORTABLE | Export tab |
+| Blueprint, plan, pixel map, surface bitmap, photograph, mask, reference image | INPUT / ANALYSIS ONLY | Imported as surface or reference; the engine never creates a new blueprint or pixel map |
+| MIDI, OSC, NDI, Spout, Syphon, SDI, WebSocket control | NOT SUPPORTED | Not a performance tool |
+| Resolume, TouchDesigner, OBS integration, Advanced Output / mapping files | NOT SUPPORTED | Not a mapping or media-server tool. A PNG sequence or MP4 is an ordinary file any software can open |
+| Projection mapping, projector simulation, 3D model of the installation, dome | NOT SUPPORTED | The surface is input and constraint, never a simulated environment |
+| HAP / ProRes / DXV encoding in the browser | NOT SUPPORTED | Convert the PNG sequence with `ffmpeg` (commands in `render-cli.md`) |
 
-If a bridge is requested, generate the OSC address schema, the parameter map and the WebSocket payloads as documentation, and label the delivery `REQUIRES BRIDGE`. Do not write code that implies the browser sends UDP.
-
-## Declaring it in the project (schema 2)
+## Declaring it in the project
 
 ```json
 "capabilities": {
-  "supported": ["preview", "outputWindow", "audioInput"],
-  "exportable": ["pngSequenceAlpha", "pngSequenceWhiteAlpha", "mp4"],
-  "requiresBridge": ["ndi", "spout", "osc"],
-  "conceptual": ["midi"]
+  "supported": ["preview", "fullscreenPreview", "audioInput"],
+  "exportable": ["pngSequenceAlpha", "mp4"],
+  "inputOnly": ["surfaceBitmap"],
+  "notSupported": ["midi", "osc"]
 }
 ```
 
-Optional, but the validator checks that `osc`, `ndi`, `spout`, `syphon`, `sdi`, `midi`, `websocket` never appear under `supported` or `exportable`, and that OSC, NDI, Spout, Syphon and SDI are not claimed anywhere except `requiresBridge`.
+The validator rejects MIDI, OSC, NDI, Spout, Syphon, SDI, WebSocket and mapping under `supported`, `exportable` or `inputOnly`.
 
-## Resolume-friendly delivery
+**Migration.** Projects saved before 3.1 may carry `requiresBridge` and `conceptual`. They still open: the validator reads both as `notSupported` and warns with the replacement. Move those items to `notSupported`.
 
-Native canvas size, alpha policy, fps, loop length, PNG sequence or video as requested, and a compact routing note. White-alpha: RGB set to white, luminance becomes alpha; document whether the destination expects straight or premultiplied alpha.
+## Delivery
 
-## V7 additions
-
-| Item | Label | How |
-|---|---|---|
-| Shader as ISF `.fs` (Resolume, Wire, VDMX, MadMapper) | EXPORTABLE | `scripts/isf.py export` (`isf-bridge.md`) |
-| ISF generator into a project | SUPPORTED (single-pass generators) | `scripts/isf.py import` |
-| Spout into Resolume | REQUIRES BRIDGE | OBS Browser Source + Spout2 plugin, `?stage=1&alpha=1` (`bridge-obs-spout.md`) |
-| Resolume Advanced Output slices + test pattern | EXPORTABLE | `scripts/export_slices.py` |
-| Stage mode (clean output, transparent) | SUPPORTED | URL parameters `stage alpha comp play q` |
+Native canvas size, alpha policy, fps, loop length, PNG sequence or video as requested. White-alpha: RGB set to white, luminance becomes alpha; document whether the destination expects straight or premultiplied alpha. Say honestly which format keeps alpha (PNG sequence) and which does not (MP4 H.264).

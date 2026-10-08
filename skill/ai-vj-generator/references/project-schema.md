@@ -24,7 +24,7 @@ Write only what differs from defaults. The engine normalizes the file: missing f
     { "name": "NAME", "hypothesis": "SLOT — one sentence", "motion": "step", "palette": { "accent": "#FF2A3D" },
       "layers": [ { "type": "bg", "name": "FUNDO", "on": true, "opacity": 1, "blend": "normal", "role": "why this layer exists", "p": { } } ] }
   ],
-  "capabilities": { "supported": ["preview", "outputWindow"], "exportable": ["pngSequenceAlpha", "webm"], "requiresBridge": ["ndi", "osc"], "conceptual": ["midi"] }
+  "capabilities": { "supported": ["preview", "outputWindow"], "exportable": ["pngSequenceAlpha", "webm"], "inputOnly": ["surfaceBitmap"], "notSupported": ["midi", "osc"] }
 }
 ```
 
