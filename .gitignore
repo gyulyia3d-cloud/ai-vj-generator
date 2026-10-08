@@ -6,3 +6,5 @@ Thumbs.db
 *.aivj.html
 *.rar
 .first-run
+__pycache__/
+*.pyc
