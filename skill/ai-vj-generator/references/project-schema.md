@@ -211,6 +211,9 @@ How it closes the loop: it warms up one loop, records two, and cross-fades them 
 ### `temporal` — effects over time (phase 4)
 `p.preset`: `TRILHA` (persistence p1, brightness p2), `FEEDBACK` (persistence p1, zoom p2, rotation p3, drift p4), `SLIT SCAN` (frames 2 to 24 p1, axis p2, invert p3, curve p4), `DESLOCAR` (amount p1, gain p2). Reads the layers below like `fx`. See `temporal-layer.md`.
 
+### `layer.mod` shape `env` (phase 6)
+`{ k, src: "lfo", shape: "env", cycles, keys: [0..1, ...], min, max, mode }`: a closed envelope through `keys` (the value at the start of each phase). Used by the Composition IR (`composition-ir.md`).
+
 ### Layer categories (interface)
 The interface groups the types in nine categories of at most two words: Fundo, Shader, Formas, Texto, Mídia, Dados, Partículas, Efeito, Código. The category is not stored: the project keeps `layer.type`. `registry/generators.json` lists every type with its category, render mode, parameters and cost class; `schema/project.schema.json` restricts `layer.type` to that list.
 

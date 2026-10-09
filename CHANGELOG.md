@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.8.0 (09/10/2026) · Fase 6: Composition IR
+
+- **Composition IR** (`composition_ir.py`, `app/composition.js`, dados em `registry/composition.json`): uma por composição, em `meta.compositionIR`. Traz gramática espacial, zonas (herói, secundário, apoio, fundo), espaço negativo, ponto focal, massa visual, equilíbrio, alinhamento, eixo de movimento, mapa de densidade, escalas, profundidade, áreas seguras, comportamento de borda, âncora do texto e cinco fases (establish, develop, transform, peak, release).
+- **12 gramáticas** (centered, offset, diagonal, radial, horizontal, vertical, distributed, clustered, asymmetric, symmetrical, hierarchical, edge-driven). A proporção da superfície e os verbos do Creative IR votam: a superfície ganha o primeiro lugar, o conceito molda o resto, e cada composição de um set usa uma gramática diferente. As zonas são frações do lado curto: o herói nunca é esticado para a proporção.
+- **Aplicada às camadas** quando o Creative IR conduz: posição e escala do herói e da estrutura, centro do instrumento e do texto, direção das linhas, e as cinco fases como modulação `env` (escala, contraste, movimento, rotação, densidade), com o loop fechando.
+- Nova forma de modulação `env` (motor, editor, esquema e validador). A galeria foi regenerada.
+- Teste novo `composition_check.mjs` (Python = navegador em 40 casos, 5 superfícies; espaço negativo em 60 combinações; mesmos geradores em outro lugar; envelope fecha o loop); `references/composition-ir.md`.
+
 ## 3.7.0 (09/10/2026) · Fase 5: Creative IR
 
 - **Creative IR** (`creative_ir.py`, `app/creative.js`, dados em `registry/creative.json`): compila o briefing em conceito, verbos visuais, motivos, estratégia de composição e de animação, famílias de gerador e faixas de parâmetro, e grava em `meta.creativeIR`. 32 verbos semânticos (cada um com geometria, movimento, comportamento espacial e temporal, densidade, papel do áudio, transição, material e composição), 16 conceitos (palavras em português e inglês), pesos de humor e 5 arcos.

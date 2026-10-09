@@ -23,6 +23,7 @@ sys.path.insert(0, HERE)
 import schema_check  # noqa: E402
 import motion_profiles as mp  # noqa: E402
 import creative_ir as cir  # noqa: E402
+import composition_ir as comp_ir  # noqa: E402
 
 # mood -> hue, scheme, motion, hero generators (type, params), shader presets, structure, whether a data/HUD tier suits
 MOODS = {
@@ -118,7 +119,7 @@ def layer(t, name, role, p=None, opacity=1, blend="normal"):
     return L
 
 
-def build_comp(i, n, brief, mood, strat, rnd, prof=None, ir=None):
+def build_comp(i, n, brief, mood, strat, rnd, prof=None, ir=None, cmp=None):
     e = float(brief.get("energy", 0.5))
     dens = {"sparse": 0.6, "balanced": 1.0, "dense": 1.5}.get(brief.get("density", "balanced"), 1.0)
     drv = bool(ir and ir["drives"])
@@ -135,6 +136,8 @@ def build_comp(i, n, brief, mood, strat, rnd, prof=None, ir=None):
         hero_t = ir["hierarchy"]["hero"][i % len(ir["hierarchy"]["hero"])]
         mine = next((h for h in m["hero"] if h[0] == hero_t), None)
         hero_p = dict(mine[1] if mine else POOL_HERO.get(hero_t, {}))
+        if hero_t == "lines" and comp_ir.line_dir(cmp):
+            hero_p["dir"] = comp_ir.line_dir(cmp)
     texture = None
     if hero_t == "bitfield":
         # a bit field fills about half of the frame by nature: it is texture, not a figure. It takes the structure slot and the next generator becomes the hero.
@@ -173,6 +176,8 @@ def build_comp(i, n, brief, mood, strat, rnd, prof=None, ir=None):
         st_t = ir["hierarchy"]["structure"][i % len(ir["hierarchy"]["structure"])]
         mine = next((s for s in m["structure"] if s[0] == st_t), None)
         st_p = dict(mine[1] if mine else POOL_STRUCT.get(st_t, {}))
+        if st_t == "lines" and comp_ir.line_dir(cmp):
+            st_p["dir"] = comp_ir.line_dir(cmp)
     if texture is not None:
         st_t, st_p, st_op = "bitfield", dict(texture, levels=2), 0.1
     if st_t == "lines":
@@ -290,7 +295,8 @@ def build(brief):
     hh = ir["hierarchy"]["hero"]
     ir["novelty"] = round(1 - len([t for t in hh if t in mood_types]) / len(hh), 2) if tags else 1.0
     profs = [make_profile(brief, tags[i % len(tags)] if tags else None, e, bars, ir) for i in range(n)]
-    comps = [build_comp(i, n, brief, MOODS[tags[i % len(tags)]] if tags else None, strat, rnd, profs[i], ir) for i in range(n)]
+    cirs = [comp_ir.compile_composition(brief, ir, i) for i in range(n)]
+    comps = [build_comp(i, n, brief, MOODS[tags[i % len(tags)]] if tags else None, strat, rnd, profs[i], ir, cirs[i]) for i in range(n)]
     prof0 = profs[0]
     pt = brief.get("lang") == "pt"
     contract = {
@@ -315,6 +321,10 @@ def build(brief):
         "banned": ", ".join(brief.get("banned") or []) or "shockwave rings on every hit; particle bursts; neon glow everywhere",
         "tension": TENSION(e),
     }
+    # Composition IR: one per composition; applied to the layers only when the Creative IR drives (otherwise it is only recorded)
+    if drv:
+        for i, c in enumerate(comps):
+            comp_ir.apply_composition(c["layers"], cirs[i], sf["w"], sf["h"])
     art_bible = make_art_bible(brief, tags, contract, prof0, strat, led=surf in ("led", "multi", "projection", "mapping"), ir=ir)
     if strat == "none":
         contract["audioStrategyReason"] = (brief.get("audio") or {}).get("reason") or "The brief asks for a silent, music-independent piece."
@@ -327,7 +337,7 @@ def build(brief):
     if sf.get("folds"):
         canvas["folds"] = sf["folds"]
     proj = {"schema": "ai-vj-generator/2", "id": "".join(c if c.isalnum() else "-" for c in str(brief["name"]).lower()).strip("-") or "project", "seed": seed,
-            "meta": {"name": str(brief["name"]).upper(), "lang": brief.get("lang", "en"), "brief": brief["concept"], "contract": contract, "artBible": art_bible, "spec": spec, "creativeIR": ir},
+            "meta": {"name": str(brief["name"]).upper(), "lang": brief.get("lang", "en"), "brief": brief["concept"], "contract": contract, "artBible": art_bible, "spec": spec, "creativeIR": ir, "compositionIR": cirs},
             "canvas": canvas, "time": {"bpm": tm["bpm"], "bars": bars, "loop": True, "seamless": True, "mode": "loop", "transition": "fade" if prof0["axes"]["continuity"] >= 0.5 else "wipe"},
             "audio": {"reactive": strat != "none", "sens": 1, "smooth": 0.7, "strategy": strat},
             "palette": {**pal, **({"mode": "white-alpha"} if (brief.get("output") or {}).get("mode") == "white-alpha" else {})}, "compositions": comps}

@@ -582,7 +582,7 @@ html.stagemode #toast,html.stagemode #hint{display:none!important}
    função pura de (parâmetros, quadro) → o mesmo código desenha o preview,
    o export PNG alpha e a gravação.
    ===================================================================== */
-const VERSION = '3.7.0';
+const VERSION = '3.8.0';
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const TAU = Math.PI * 2, GA = Math.PI * (3 - Math.sqrt(5));
 const clamp = (v, a, b) => v < a ? a : v > b ? b : v, lerp = (a, b, t) => a + (b - a) * t;
@@ -2778,7 +2778,8 @@ function applyMods(p, L, LF) {
     if (!m || !m.k || !(m.k in q) || typeof q[m.k] !== 'number') continue;
     let v;
     if (m.src === 'lfo' && m.shape === 'spring') { const c = Math.max(1, Math.round(m.cycles || 1)); v = motionCurve(LF.lph * c, m.zeta == null ? 0.5 : +m.zeta, m.wn || 12, m.ta, m.depth, m.steps); const lo = m.min == null ? 0 : +m.min, hi = m.max == null ? 1 : +m.max, val = lo + v * (hi - lo); q[m.k] = m.mode === 'add' ? q[m.k] + val : m.mode === 'mul' ? q[m.k] * val : val; continue; }
-    if (m.src === 'lfo') { const c = Math.max(1, Math.round(m.cycles || 1)), x = LF.lph * c; const f = x - Math.floor(x); v = LFO_X[m.shape] ? LFO_X[m.shape](f) : m.shape === 'saw' ? f : m.shape === 'tri' ? 1 - Math.abs(2 * f - 1) : 0.5 - 0.5 * Math.cos(Math.PI * 2 * x); }
+    if (m.src === 'lfo' && m.shape === 'env' && Array.isArray(m.keys) && m.keys.length > 1) { const N = m.keys.length, x = LF.lph * Math.max(1, Math.round(m.cycles || 1)), u = (x - Math.floor(x)) * N, i0 = Math.floor(u) % N, f = u - Math.floor(u), s = f * f * (3 - 2 * f); v = m.keys[i0] + (m.keys[(i0 + 1) % N] - m.keys[i0]) * s; }
+    else if (m.src === 'lfo') { const c = Math.max(1, Math.round(m.cycles || 1)), x = LF.lph * c; const f = x - Math.floor(x); v = LFO_X[m.shape] ? LFO_X[m.shape](f) : m.shape === 'saw' ? f : m.shape === 'tri' ? 1 - Math.abs(2 * f - 1) : 0.5 - 0.5 * Math.cos(Math.PI * 2 * x); }
     else v = b[m.src] !== undefined ? b[m.src] : 0;
     v = clamp(v, 0, 1); const lo = m.min == null ? 0 : +m.min, hi = m.max == null ? 1 : +m.max, val = lo + v * (hi - lo);
     q[m.k] = m.mode === 'add' ? q[m.k] + val : m.mode === 'mul' ? q[m.k] * val : val;
@@ -4193,6 +4194,101 @@ const CREATIVE = (() => {
   return { compile, VERBS, DATA: D, tokens, norm };
 })();
 /*__CREATIVE_END__*/
+/*__COMPOSITIONDATA_START__*/
+/* Gerado de skill/ai-vj-generator/registry/composition.json por node scripts/registry.mjs --write. Não edite. */
+const COMPOSITION_DATA = {"note":"Fonte única do Composition IR (fase 6): gramáticas espaciais, afinidade por verbo e por proporção da superfície, e perfis das cinco fases. scripts/registry.mjs --write copia para app/composition-data.js.","grammars":[{"id":"centered","hero":[0.5,0.5,0.8],"secondary":[0.5,0.5,0.75],"support":[0.5,0.9],"text":[0.5,0.5,"center"],"negative":[0,0,0.12,1],"axis":"radial","alignment":"center","balance":"symmetric","heroMass":0.55,"edge":"contain","description":"one figure on the centre, quiet outer bands"},{"id":"offset","hero":[0.34,0.52,0.8],"secondary":[0.7,0.42,0.5],"support":[0.7,0.86],"text":[0.68,0.5,"left"],"negative":[0.6,0.55,0.4,0.45],"axis":"x","alignment":"left","balance":"asymmetric","heroMass":0.6,"edge":"contain","description":"the figure sits off centre and the open third answers it"},{"id":"diagonal","hero":[0.3,0.36,0.75],"secondary":[0.72,0.7,0.55],"support":[0.5,0.88],"text":[0.72,0.3,"left"],"negative":[0,0.6,0.3,0.4],"axis":"diag","alignment":"left","balance":"asymmetric","heroMass":0.5,"edge":"bleed","description":"the eye travels from the upper left to the lower right"},{"id":"radial","hero":[0.5,0.5,0.55],"secondary":[0.5,0.5,0.8],"support":[0.5,0.9],"text":[0.5,0.5,"center"],"negative":[0,0,0.1,1],"axis":"radial","alignment":"center","balance":"symmetric","heroMass":0.45,"edge":"contain","description":"everything is arranged around the centre"},{"id":"horizontal","hero":[0.28,0.5,0.7],"secondary":[0.7,0.5,0.55],"support":[0.5,0.88],"text":[0.7,0.5,"left"],"negative":[0,0,1,0.18],"axis":"x","alignment":"left","balance":"asymmetric","heroMass":0.5,"edge":"bleed","description":"a band that reads left to right"},{"id":"vertical","hero":[0.5,0.3,0.7],"secondary":[0.5,0.72,0.55],"support":[0.5,0.92],"text":[0.5,0.7,"center"],"negative":[0,0,0.18,1],"axis":"y","alignment":"center","balance":"symmetric","heroMass":0.5,"edge":"contain","description":"a column that reads top to bottom"},{"id":"distributed","hero":[0.5,0.5,0.5],"secondary":[0.2,0.5,0.4],"support":[0.8,0.5],"text":[0.5,0.85,"center"],"negative":[0.4,0,0.2,0.3],"axis":"x","alignment":"center","balance":"balanced","heroMass":0.34,"edge":"bleed","description":"the weight is shared across the whole width"},{"id":"clustered","hero":[0.62,0.58,0.65],"secondary":[0.4,0.65,0.4],"support":[0.7,0.9],"text":[0.62,0.3,"left"],"negative":[0,0,0.5,0.45],"axis":"diag","alignment":"right","balance":"asymmetric","heroMass":0.5,"edge":"contain","description":"the mass gathers in one corner and leaves a large void"},{"id":"asymmetric","hero":[0.26,0.6,0.9],"secondary":[0.8,0.3,0.35],"support":[0.8,0.85],"text":[0.78,0.55,"left"],"negative":[0.5,0.7,0.5,0.3],"axis":"diag","alignment":"left","balance":"asymmetric","heroMass":0.62,"edge":"bleed","description":"a large figure against one small counterweight"},{"id":"symmetrical","hero":[0.5,0.5,0.7],"secondary":[0.16,0.5,0.45],"support":[0.84,0.5],"text":[0.5,0.9,"center"],"negative":[0.35,0,0.3,0.2],"axis":"y","alignment":"center","balance":"symmetric","heroMass":0.5,"edge":"contain","description":"mirrored halves around a central figure"},{"id":"hierarchical","hero":[0.5,0.42,0.85],"secondary":[0.5,0.82,0.35],"support":[0.12,0.82],"text":[0.5,0.82,"center"],"negative":[0,0,1,0.1],"axis":"y","alignment":"center","balance":"asymmetric","heroMass":0.65,"edge":"contain","description":"a dominant figure, a clear second, a small third"},{"id":"edge-driven","hero":[0.86,0.5,0.4],"secondary":[0.14,0.5,0.4],"support":[0.5,0.92],"text":[0.2,0.2,"left"],"negative":[0.2,0.25,0.3,0.5],"axis":"x","alignment":"left","balance":"asymmetric","heroMass":0.4,"edge":"bleed","description":"the weight lives at the edges and the centre is a void"}],"grammarOrder":["centered","offset","diagonal","radial","horizontal","vertical","distributed","clustered","asymmetric","symmetrical","hierarchical","edge-driven"],"aspectClasses":{"ultrawide":{"horizontal":3,"offset":2,"edge-driven":2,"distributed":2,"diagonal":1},"wide":{"offset":3,"diagonal":2,"asymmetric":2,"horizontal":1,"centered":1},"standard":{"centered":2,"offset":2,"radial":2,"diagonal":1,"hierarchical":1,"clustered":1},"tall":{"vertical":3,"hierarchical":3,"centered":1,"symmetrical":1,"asymmetric":1},"ultratall":{"vertical":3,"hierarchical":3,"symmetrical":2}},"verbGrammars":{"grow":{"radial":2,"centered":1,"clustered":1},"contract":{"radial":3,"centered":2},"accumulate":{"vertical":2,"hierarchical":2,"distributed":1},"fracture":{"diagonal":3,"asymmetric":2},"drift":{"horizontal":3,"distributed":2},"orbit":{"radial":3,"centered":2},"breathe":{"centered":3,"symmetrical":2},"pulse":{"centered":2,"symmetrical":2},"erode":{"edge-driven":3,"clustered":2,"asymmetric":1},"bloom":{"radial":3,"centered":2},"collapse":{"vertical":3,"hierarchical":2},"stretch":{"horizontal":3,"diagonal":1},"fold":{"symmetrical":3,"vertical":1},"scatter":{"distributed":3,"edge-driven":2},"converge":{"radial":2,"diagonal":2,"centered":1},"oscillate":{"horizontal":2,"symmetrical":2},"morph":{"offset":2,"centered":1},"repel":{"edge-driven":3,"distributed":1},"attract":{"clustered":3,"radial":1},"trace":{"diagonal":3,"horizontal":1},"flow":{"horizontal":3,"diagonal":1},"hesitate":{"offset":2,"asymmetric":2},"freeze":{"centered":3,"symmetrical":1},"release":{"asymmetric":2,"offset":1,"radial":1},"compress":{"centered":2,"radial":2,"clustered":1},"expand":{"radial":3,"centered":1},"fragment":{"distributed":3,"asymmetric":1},"assemble":{"hierarchical":3,"clustered":1},"dissolve":{"edge-driven":2,"offset":2},"emerge":{"offset":2,"hierarchical":2},"sink":{"vertical":2,"hierarchical":2,"clustered":1},"rise":{"vertical":3,"diagonal":1}},"weights":{"aspect":12,"setSize":3,"baseHeroSize":0.7,"verb":10},"phaseNames":["establish","develop","transform","peak","release"],"phaseProfiles":{"pressure":{"heroScale":[1,0.92,0.84,1.22,1],"density":[0.8,1,1.15,1.35,0.9],"contrast":[1,1.08,1.15,1.3,1],"rotation":[0,0,0,2,0],"motion":[0.8,1,1.2,1.6,0.9]},"emerge":{"heroScale":[0.7,0.8,0.95,1.2,1.05],"density":[0.5,0.7,1,1.3,1.1],"contrast":[0.9,0.95,1,1.15,1],"rotation":[0,0,0,0,0],"motion":[0.6,0.8,1,1.2,0.9]},"erode":{"heroScale":[1.1,1.05,0.95,0.8,0.7],"density":[1.2,1.15,1,0.7,0.5],"contrast":[1.1,1.15,1.2,1,0.85],"rotation":[0,0,1,3,4],"motion":[0.8,1,1.3,1,0.6]},"drift":{"heroScale":[1,1,1.04,1,1],"density":[1,1,1.05,1,1],"contrast":[1,1,1,1,1],"rotation":[0,1,2,1,0],"motion":[0.8,1,1,1,0.9]},"cycle":{"heroScale":[1,1.1,0.95,1.1,1],"density":[1,1.1,1,1.1,1],"contrast":[1,1.05,1,1.1,1],"rotation":[0,2,0,-2,0],"motion":[1,1.1,1,1.1,1]}},"placeable":["tunnel","shape","organism"],"lineDir":{"x":"h","y":"v","diag":"d"}};
+/*__COMPOSITIONDATA_END__*/
+/*__COMPOSITION_START__*/
+/* Composition IR (fase 6): porta de skill/ai-vj-generator/scripts/composition_ir.py. Onde cada coisa fica, quanto espaço ocupa, onde nada entra e como isso muda ao longo do loop.
+   Lê o Creative IR (verbos) e a superfície (tamanho e proporção). Os dados (12 gramáticas espaciais, afinidades, perfis das cinco fases) vêm de registry/composition.json,
+   copiados para app/composition-data.js por node scripts/registry.mjs --write. Python e navegador dão o mesmo IR (scripts/composition_check.mjs).
+   O IR também é aplicado às camadas (apply): posição e escala do herói e da estrutura, centro do instrumento e do texto, direção das linhas e um envelope de cinco fases
+   (establish, develop, transform, peak, release) tocado como modulação `env`. Gerador e composição são independentes: trocar a gramática muda onde os mesmos geradores ficam.
+   Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html. */
+const COMPOSITION = (() => {
+  const D = COMPOSITION_DATA, G = {}, ENGINE_DEFAULT = { contrast: 1, speed: 1, rot: 0, sx: 1, sy: 1 }; D.grammars.forEach(g => { G[g.id] = g; });
+  const pyRound = (x, nd = 0) => {
+    if (!isFinite(x)) return x;
+    const neg = x < 0, a = Math.abs(x), full = a.toFixed(100), dot = full.indexOf('.'), tail = full.slice(dot + 1 + nd);
+    let out;
+    if (/^50*$/.test(tail)) { const head = full.slice(0, dot + 1 + nd).replace(/\.$/, ''), last = +head.replace('.', '').slice(-1); out = last % 2 === 0 ? head : (a + Math.pow(10, -nd) / 2).toFixed(nd); }
+    else out = a.toFixed(nd);
+    const v = Number(out);
+    return neg ? -v : v;
+  };
+  const r3 = x => pyRound(x, 3), r2 = x => pyRound(x, 2);
+  const aspectClass = (w, h) => { const r = w / h; return r >= 3 ? 'ultrawide' : r >= 1.5 ? 'wide' : r > 0.8 ? 'standard' : r > 0.4 ? 'tall' : 'ultratall'; };
+  function rankGrammars(ir, cls) {
+    /* o conceito (verbos, como fração do peso total) e a forma da superfície votam juntos; a superfície ganha o primeiro lugar, o conceito molda o resto do set */
+    const acc = {}; D.grammarOrder.forEach(g => { acc[g] = 0; });
+    let total = 0; for (const v of ir.visualVerbs || []) total += ir.verbScores[v];
+    for (const v of ir.visualVerbs || []) for (const [g, w] of Object.entries(D.verbGrammars[v] || {})) acc[g] += ir.verbScores[v] * w;
+    const scores = {}; D.grammarOrder.forEach(g => { scores[g] = total ? D.weights.verb * acc[g] / total : 0; });
+    for (const [g, w] of Object.entries(D.aspectClasses[cls])) scores[g] += D.weights.aspect * w;
+    return D.grammarOrder.filter(g => scores[g] > 0).sort((a, b) => (scores[b] - scores[a]) || (D.grammarOrder.indexOf(a) - D.grammarOrder.indexOf(b)));
+  }
+  function rect(cx, cy, size, W, H) {
+    const short = Math.min(W, H), w = Math.min(1.0, size * short / W), h = Math.min(1.0, size * short / H);
+    const x = Math.min(Math.max(cx - w / 2, 0.0), 1.0 - w), y = Math.min(Math.max(cy - h / 2, 0.0), 1.0 - h);
+    return { x: r3(x), y: r3(y), w: r3(w), h: r3(h) };
+  }
+  const center = z => [z.x + z.w / 2, z.y + z.h / 2];
+  const inside = (z, px, py) => z.x <= px && px <= z.x + z.w && z.y <= py && py <= z.y + z.h;
+
+  function compile(brief, ir, i) {
+    const sf = brief.surface, W = sf.w, H = sf.h, cls = aspectClass(W, H), top = rankGrammars(ir, cls).slice(0, D.weights.setSize), g = G[top[i % top.length]];
+    const hero = rect(g.hero[0], g.hero[1], g.hero[2], W, H), sec = rect(g.secondary[0], g.secondary[1], g.secondary[2], W, H), sup = rect(g.support[0], g.support[1], 0.3, W, H);
+    const neg = { x: g.negative[0], y: g.negative[1], w: g.negative[2], h: g.negative[3], why: 'left empty on purpose: nothing is placed here' };
+    const hm = g.heroMass, sm = r2((1 - hm) * 0.6), mass = { hero: hm, secondary: sm, support: r2(1 - hm - sm) };
+    const hc = center(hero), sc = center(sec), pc = center(sup);
+    const vx = mass.hero * hc[0] + mass.secondary * sc[0] + mass.support * pc[0], vy = mass.hero * hc[1] + mass.secondary * sc[1] + mass.support * pc[1];
+    const dmap = [];
+    for (let r = 0; r < 3; r++) { const row = []; for (let c = 0; c < 3; c++) { const px = (c + 0.5) / 3, py = (r + 0.5) / 3; row.push(inside(hero, px, py) ? 0.9 : inside(sec, px, py) ? 0.55 : inside(neg, px, py) ? 0.05 : 0.25); } dmap.push(row); }
+    const arcId = (ir.arc && ir.arc.id) || 'drift', prof = D.phaseProfiles[arcId];
+    const phases = D.phaseNames.map((name, k) => ({ name, at: r2(k / 5), heroScale: prof.heroScale[k], density: prof.density[k], contrast: prof.contrast[k], rotation: prof.rotation[k], motion: prof.motion[k] }));
+    const base = D.weights.baseHeroSize;
+    return {
+      version: 1, grammar: g.id, grammarSet: top, aspectClass: cls,
+      canvas: { w: W, h: H, aspect: r3(W / H), orientation: W > H * 1.1 ? 'wide' : H > W * 1.1 ? 'tall' : 'square' },
+      hierarchy: { primary: 'hero', secondary: 'structure', tertiary: 'ground' },
+      zones: { hero, secondary: sec, support: sup, background: { x: 0, y: 0, w: 1, h: 1 } },
+      negativeSpace: [neg], focalPoint: { x: r3(hc[0]), y: r3(hc[1]) },
+      visualMass: mass, balance: { type: g.balance, centre: { x: r3(vx), y: r3(vy) } },
+      alignment: g.alignment, movementAxis: g.axis, densityMap: dmap,
+      scaleHierarchy: { hero: r2(g.hero[2] / base), secondary: r2(g.secondary[2] / base), support: 0.4 },
+      depthHierarchy: { hero: 'foreground', secondary: 'midground', support: 'midground', background: 'background' },
+      safeAreas: { x: 0.05, y: 0.05, w: 0.9, h: 0.9 }, edgeBehavior: g.edge,
+      textAnchor: { cx: g.text[0], cy: g.text[1], align: g.text[2] },
+      temporal: { arc: arcId, phases }, description: g.description,
+    };
+  }
+  function envMod(k, raw, mode) {
+    const lo = Math.min(...raw), hi = Math.max(...raw); if (hi - lo < 1e-9) return null;
+    return { k, src: 'lfo', shape: 'env', cycles: 1, min: pyRound(lo, 4), max: pyRound(hi, 4), mode, keys: raw.map(x => pyRound((x - lo) / (hi - lo), 4)) };
+  }
+  function apply(layers, comp, W, H) {
+    const placeable = D.placeable, z = comp.zones, ph = comp.temporal.phases, col = key => ph.map(p => p[key]);
+    for (const L of layers) {
+      const nm = L.name, t = L.type; L.p = L.p || {}; const p = L.p;
+      if (nm.startsWith('HER')) {
+        if (placeable.includes(t)) { const c = center(z.hero); p.x = pyRound((c[0] - 0.5) * W); p.y = pyRound((c[1] - 0.5) * H); p.sx = p.sy = comp.scaleHierarchy.hero; }
+        L.mod = L.mod || [];
+        let specs = [['contrast', col('contrast'), 'mul'], ['speed', col('motion'), 'mul']];
+        if (placeable.includes(t)) specs = [['sx', col('heroScale'), 'mul'], ['sy', col('heroScale'), 'mul'], ['rot', col('rotation'), 'add']].concat(specs);
+        if (typeof p.count === 'number') specs.push(['count', col('density'), 'mul']);
+        for (const [k, raw, mode] of specs) { const m = envMod(k, raw, mode); if (m) { if (p[k] === undefined) p[k] = k in ENGINE_DEFAULT ? ENGINE_DEFAULT[k] : 1; L.mod.push(m); } }
+      } else if (nm.startsWith('ESTRUTURA')) {
+        if (placeable.includes(t)) { const c = center(z.secondary); p.x = pyRound((c[0] - 0.5) * W); p.y = pyRound((c[1] - 0.5) * H); p.sx = p.sy = comp.scaleHierarchy.secondary; }
+      } else if (t === 'instrument') {
+        const c = center(z.support); p.cx = r2(Math.min(Math.max(c[0], 0.1), 0.9)); p.cy = r2(Math.min(Math.max(c[1], 0.1), 0.9));
+      } else if (t === 'typeset') { const a = comp.textAnchor; p.cx = a.cx; p.cy = a.cy; p.align = a.align; }
+    }
+    return layers;
+  }
+  const lineDir = comp => D.lineDir[comp.movementAxis];
+  return { compile, apply, lineDir, aspectClass, rankGrammars, DATA: D };
+})();
+/*__COMPOSITION_END__*/
 /*__GENAI_START__*/
 /* Gerador sem IA (fase 3): porta de skill/ai-vj-generator/scripts/brief_to_project.py + motion_profiles.py.
    Mesmo brief, mesmo projeto, no navegador, sem Python e sem IA. A paridade com o Python é testada por scripts/genai_check.mjs (12 climas + a galeria).
@@ -4302,13 +4398,13 @@ const GENAI = (() => {
   }
   const layer = (t, name, role, p, opacity = 1, blend = 'normal') => { const L = { type: t, name, on: true, opacity, blend, role }; if (p !== undefined && p !== null) L.p = p; return L; };
 
-  function buildComp(i, n, brief, mood, strat, prof, ir) {
+  function buildComp(i, n, brief, mood, strat, prof, ir, cmp) {
     const e = +(brief.energy == null ? 0.5 : brief.energy); let dens = { sparse: 0.6, balanced: 1.0, dense: 1.5 }[brief.density || 'balanced'] || 1.0; const drv = !!(ir && ir.drives);
     if (drv) dens = dens * ir.density * (0.7 + 0.6 * ir.arc.energy[Math.min(i, 5)]);
     const surf = (brief.surface || {}).type || 'screen', led = ['led', 'multi', 'projection', 'mapping'].includes(surf), m = mood || MOODS.minimal;
     const moods = brief.mood || [], tag = (moods.length ? moods[i % Math.max(1, moods.length)] : 'composition').toUpperCase(), reactive = strat !== 'none';
     let [heroT, heroP] = m.hero[i % m.hero.length]; heroP = Object.assign({}, heroP);
-    if (drv) { heroT = ir.hierarchy.hero[i % ir.hierarchy.hero.length]; const mine = m.hero.find(h => h[0] === heroT); heroP = Object.assign({}, mine ? mine[1] : (POOL_HERO[heroT] || {})); }
+    if (drv) { heroT = ir.hierarchy.hero[i % ir.hierarchy.hero.length]; const mine = m.hero.find(h => h[0] === heroT); heroP = Object.assign({}, mine ? mine[1] : (POOL_HERO[heroT] || {})); if (heroT === 'lines' && COMPOSITION.lineDir(cmp)) heroP.dir = COMPOSITION.lineDir(cmp); }
     let texture = null;
     if (heroT === 'bitfield') {
       texture = heroP; const alt = m.hero.filter(h => h[0] !== 'bitfield');
@@ -4327,7 +4423,7 @@ const GENAI = (() => {
     if (heroT === 'lines') capLines(heroP, brief.surface.w, brief.surface.h, 0.1);
     const sh = drv ? ir.hierarchy.ground[i % ir.hierarchy.ground.length] : m.shader[i % m.shader.length];
     let [stT, stP] = m.structure[i % m.structure.length]; stP = Object.assign({}, stP); let stOp = 0.3;
-    if (drv) { stT = ir.hierarchy.structure[i % ir.hierarchy.structure.length]; const mine = m.structure.find(s => s[0] === stT); stP = Object.assign({}, mine ? mine[1] : (POOL_STRUCT[stT] || {})); }
+    if (drv) { stT = ir.hierarchy.structure[i % ir.hierarchy.structure.length]; const mine = m.structure.find(s => s[0] === stT); stP = Object.assign({}, mine ? mine[1] : (POOL_STRUCT[stT] || {})); if (stT === 'lines' && COMPOSITION.lineDir(cmp)) stP.dir = COMPOSITION.lineDir(cmp); }
     if (texture !== null) { stT = 'bitfield'; stP = Object.assign({}, texture, { levels: 2 }); stOp = 0.1; }
     if (stT === 'lines') capLines(stP, brief.surface.w, brief.surface.h, 0.15);
     if (reactive && ['lines', 'structure', 'tunnel'].includes(stT) && heroT !== stT) { stP.audio = 0.5; stP.band = 'high'; }
@@ -4424,7 +4520,8 @@ const GENAI = (() => {
     const ir = CREATIVE.compile(brief), drv = ir.drives; ir.colorLogic = colorWhy;
     { const mt = tags.length ? new Set(MOODS[tags[0]].hero.map(h => h[0])) : new Set(), hh = ir.hierarchy.hero; ir.novelty = tags.length ? pyRound(1 - hh.filter(t => mt.has(t)).length / hh.length, 2) : 1.0; }
     const profs = Array.from({ length: n }, (_, i) => makeProfile(brief, tags.length ? tags[i % tags.length] : null, e, bars, ir));
-    const comps = profs.map((pr, i) => buildComp(i, n, brief, tags.length ? MOODS[tags[i % tags.length]] : null, strat, pr, ir)), prof0 = profs[0], pt = brief.lang === 'pt';
+    const cirs = Array.from({ length: n }, (_, i) => COMPOSITION.compile(brief, ir, i));
+    const comps = profs.map((pr, i) => buildComp(i, n, brief, tags.length ? MOODS[tags[i % tags.length]] : null, strat, pr, ir, cirs[i])), prof0 = profs[0], pt = brief.lang === 'pt';
     const contract = {
       concept: brief.concept, audienceEffect: (pt ? 'O público deve sentir ' : 'The audience should feel ') + brief.concept.slice(0, 100),
       semioticIntent: drv ? ir.semioticIntent : `Mood ${tags.join(', ') || 'unspecified'}: ` + brief.concept.slice(0, 100),
@@ -4442,13 +4539,15 @@ const GENAI = (() => {
       releaseZone: 'The ground field and the empty third of the frame; no layer fills it.',
       banned: (brief.banned || []).join(', ') || 'shockwave rings on every hit; particle bursts; neon glow everywhere', tension: tension(e),
     };
+    /* Composition IR: uma por composição; só é aplicada às camadas quando o Creative IR conduz (senão fica apenas registrada) */
+    if (drv) comps.forEach((c, i) => COMPOSITION.apply(c.layers, cirs[i], sf.w, sf.h));
     const artBible = makeArtBible(brief, tags, contract, prof0, strat, led, ir);
     if (strat === 'none') contract.audioStrategyReason = (brief.audio || {}).reason || 'The brief asks for a silent, music-independent piece.';
     const spec = { archetype: [ARCH[surf] || 'clip-pack'], confirmed: { pixelMap: [sf.w, sf.h] }, assumed: [{ field: 'surface', why: "generated from the brief without AI; the facts are the brief's own", risk: 'confirm the pixel map and distances with the venue before delivery' }] };
     if (sf.pitchMm) spec.confirmed.pitchMm = sf.pitchMm; if (sf.viewingDistanceM) spec.confirmed.viewingDistanceM = sf.viewingDistanceM;
     const canvas = { w: sf.w, h: sf.h, fps: sf.fps || 30, target: ['screen', 'led', 'projection', 'mapping', 'multi'].includes(surf) ? surf : 'screen' }; if (sf.folds) canvas.folds = sf.folds;
     const id = String(brief.name).toLowerCase().split('').map(c => /[\p{L}\p{N}]/u.test(c) ? c : '-').join('').replace(/^-+|-+$/g, '') || 'project';
-    return { schema: 'ai-vj-generator/2', id, seed, meta: { name: String(brief.name).toUpperCase(), lang: brief.lang || 'en', brief: brief.concept, contract, artBible, spec, creativeIR: ir }, canvas,
+    return { schema: 'ai-vj-generator/2', id, seed, meta: { name: String(brief.name).toUpperCase(), lang: brief.lang || 'en', brief: brief.concept, contract, artBible, spec, creativeIR: ir, compositionIR: cirs }, canvas,
       time: { bpm: tm.bpm, bars, loop: true, seamless: true, mode: 'loop', transition: prof0.axes.continuity >= 0.5 ? 'fade' : 'wipe' }, audio: { reactive: strat !== 'none', sens: 1, smooth: 0.7, strategy: strat },
       palette: Object.assign({}, pal, (brief.output || {}).mode === 'white-alpha' ? { mode: 'white-alpha' } : {}), compositions: comps };
   }
@@ -5054,7 +5153,8 @@ function modPanel(host, L) {
       <select data-mk="mode" data-mi="${i}" aria-label="${T3('Modo', 'Mode')}">${opt([['set', T3('definir', 'set')], ['add', T3('somar', 'add')], ['mul', T3('multiplicar', 'multiply')]], m.mode || 'set')}</select>
       <button data-mdel="${i}" title="${T3('Remover', 'Remove')}">×</button></div>
       <div class="row"><span class="lbl">min</span>${num(i, 'min', m.min == null ? 0 : m.min)}<span class="lbl">max</span>${num(i, 'max', m.max == null ? 1 : m.max)}
-      ${m.src === 'lfo' ? `<span class="lbl">${T3('ciclos', 'cycles')}</span>${num(i, 'cycles', m.cycles || 1, 44)}<select data-mk="shape" data-mi="${i}" aria-label="${T3('Forma', 'Shape')}">${opt([['sin', 'sin'], ['tri', 'tri'], ['saw', 'saw'], ['bounce', 'bounce'], ['rubber', 'rubber'], ['shake', 'shake'], ['jello', 'jello'], ['tada', 'tada'], ['heartbeat', 'heartbeat'], ['swing', 'swing'], ['wobble', 'wobble'], ['pulse', 'pulse'], ['spring', T3('mola (perfil)', 'spring (profile)')]], m.shape || 'sin')}</select>` : ''}</div>
+      ${m.src === 'lfo' ? `<span class="lbl">${T3('ciclos', 'cycles')}</span>${num(i, 'cycles', m.cycles || 1, 44)}<select data-mk="shape" data-mi="${i}" aria-label="${T3('Forma', 'Shape')}">${opt([['sin', 'sin'], ['tri', 'tri'], ['saw', 'saw'], ['bounce', 'bounce'], ['rubber', 'rubber'], ['shake', 'shake'], ['jello', 'jello'], ['tada', 'tada'], ['heartbeat', 'heartbeat'], ['swing', 'swing'], ['wobble', 'wobble'], ['pulse', 'pulse'], ['spring', T3('mola (perfil)', 'spring (profile)')], ['env', T3('fases (envelope)', 'phases (envelope)')]], m.shape || 'sin')}</select>` : ''}</div>
+      ${m.src === 'lfo' && m.shape === 'env' ? `<div class="row"><span class="lbl">${T3('valores por fase', 'phase values')}</span><span class="note">${esc((m.keys || []).join(' · '))}</span></div>` : ''}
       ${m.src === 'lfo' && m.shape === 'spring' ? `<div class="row"><span class="lbl">zeta</span>${num(i, 'zeta', m.zeta, 48)}<span class="lbl">wn</span>${num(i, 'wn', m.wn, 48)}<span class="lbl">${T3('antecip.', 'wind-up')}</span>${num(i, 'ta', m.ta == null ? 0 : m.ta, 48)}<span class="lbl">${T3('prof.', 'depth')}</span>${num(i, 'depth', m.depth == null ? 0 : m.depth, 48)}<span class="lbl">${T3('degraus', 'steps')}</span>${num(i, 'steps', m.steps == null ? 0 : m.steps, 44)}</div>` : ''}
     </div>`).join('');
   const pf = ST.modProf || (ST.modProf = { energy: 0.5, elasticity: 0.4, anticipation: 0.3, continuity: 0.8, rhythm: 0.3 });
@@ -5077,6 +5177,8 @@ function modPanel(host, L) {
     if (k === 'src' && v !== 'lfo') { delete m.cycles; delete m.shape; for (const q of ['zeta', 'wn', 'ta', 'depth', 'steps']) delete m[q]; }
     if (k === 'shape' && v === 'spring') { const pr = GENAI.profile(ST.modProf.energy, ST.modProf.elasticity, ST.modProf.anticipation, ST.modProf.continuity, ST.modProf.rhythm, P.time.bars), t = GENAI.toMod(pr, m.k); Object.assign(m, { zeta: t.zeta, wn: t.wn, cycles: t.cycles }); if (t.ta) { m.ta = t.ta; m.depth = t.depth; } if (t.steps) m.steps = t.steps; if (m.min == null || m.max == null || m.mode == null) { m.min = t.min; m.max = t.max; m.mode = t.mode; } }
     if (k === 'shape' && v !== 'spring') for (const q of ['zeta', 'wn', 'ta', 'depth', 'steps']) delete m[q];
+    if (k === 'shape' && v === 'env' && !Array.isArray(m.keys)) m.keys = [0, 0.25, 1, 0.25, 0];
+    if (k === 'shape' && v !== 'env') delete m.keys;
     save(); re();
   }));
   $$('[data-mdel]', box).forEach(b => b.addEventListener('click', () => { mods.splice(+b.dataset.mdel, 1); if (!mods.length) delete L.mod; else L.mod = mods; save(T3('Modulação removida', 'Modulation removed')); re(); }));
@@ -6115,7 +6217,7 @@ function boot() {
   document.fonts && document.fonts.load('800 40px "Martian Mono"').catch(() => {});
   if (!embedded && !saved && !store.get('seenWiz', false)) openWiz();
   raf = requestAnimationFrame(tick);
-  window.AIVJ = { version: VERSION, get PAL() { return PAL; }, get RECIPES() { return RECIPES; }, addRecipe, addTestCards, recipeLayer, importFile, parseModel, setLang, setHow, undo, redo, evalExpr, applyTheme, layoutApply, setPanelOpen, setZoneDraw, get hist() { return ST.hist.length; }, get histLabels() { return ST.hl.slice(); }, surface: SC, specOf, applyCalc, renderSpec, specMarkdown, get project() { return P; }, get audio() { return AUD; }, pseudoAudio, synthTimes, applyMods, motionCurve, GENAI, EVALUATOR, flash: FLASH, ONSET, UX, fx: { FX, body: fxBody, op: fxOp }, synth: { SYN, src: synthSrc }, blobs: { X: BLOBX }, layerErrors: () => [...LAYER_ERR.values()], mp4: { X: MP4X, render: mp4Render, run: exportMp4Run }, isf: { X: ISFX, LIB: ISFLIB, lib: isfLib }, modUI: { render: modPanel, params: modNumericParams, sources: MOD_SOURCES }, expRun: exportRun, EXP, surfx: SURFX, region: regionRect, surUI: { state: SUR, applyPreset: surApplyPreset, render: renderSurface }, RG, TM, composeFrame, buildComposeGraph: buildComposeGraph, frameAt, canvasPool: CANVAS_POOL, webgl: WEBGL, glProgram: body => glProg(body), glError: body => GL.err.get(body), glInfo: () => { glInit(); return GL.r ? { version: GL.r.version, context: GL.gl.constructor.name, glsl: GL.gl.getParameter(GL.gl.SHADING_LANGUAGE_VERSION), caps: GL.r.caps, stats: GL.r.stats } : { failure: GL.failure }; }, glMetrics: () => GL.r ? GL.r.metrics() : null, glr: () => GL.r, presets: SURFACE_PRESETS, GEN, FAMILIES, COMMON, modSources: () => MOD_SOURCES.map(x => x[0]), evaluate: lang => EVALUATOR.run(lang), shaderResolve, GLIB, specBins, simBake, parsePly, get LAYERERR() { return LAYER_ERR; }, setSeed, bpmWaves, get GLERR() { return GL.err; }, layerFrame, pm, importJson, frameAt, validate: o => validate(o), GEN, loopFrames, contactSheet, layerAudit, allowCode, loadAssets, toLogo, projectOut, get state() { return ST; }, geom, lintCode, compileCode, setCi(i) { ST.ci = i; refreshAll(); },
+  window.AIVJ = { version: VERSION, get PAL() { return PAL; }, get RECIPES() { return RECIPES; }, addRecipe, addTestCards, recipeLayer, importFile, parseModel, setLang, setHow, undo, redo, evalExpr, applyTheme, layoutApply, setPanelOpen, setZoneDraw, get hist() { return ST.hist.length; }, get histLabels() { return ST.hl.slice(); }, surface: SC, specOf, applyCalc, renderSpec, specMarkdown, get project() { return P; }, get audio() { return AUD; }, pseudoAudio, synthTimes, applyMods, motionCurve, GENAI, EVALUATOR, flash: FLASH, ONSET, UX, fx: { FX, body: fxBody, op: fxOp }, synth: { SYN, src: synthSrc }, blobs: { X: BLOBX }, layerErrors: () => [...LAYER_ERR.values()], mp4: { X: MP4X, render: mp4Render, run: exportMp4Run }, isf: { X: ISFX, LIB: ISFLIB, lib: isfLib }, modUI: { render: modPanel, params: modNumericParams, sources: MOD_SOURCES }, expRun: exportRun, EXP, surfx: SURFX, region: regionRect, surUI: { state: SUR, applyPreset: surApplyPreset, render: renderSurface }, COMPOSITION, CREATIVE, applyMods, RG, TM, composeFrame, buildComposeGraph: buildComposeGraph, frameAt, canvasPool: CANVAS_POOL, webgl: WEBGL, glProgram: body => glProg(body), glError: body => GL.err.get(body), glInfo: () => { glInit(); return GL.r ? { version: GL.r.version, context: GL.gl.constructor.name, glsl: GL.gl.getParameter(GL.gl.SHADING_LANGUAGE_VERSION), caps: GL.r.caps, stats: GL.r.stats } : { failure: GL.failure }; }, glMetrics: () => GL.r ? GL.r.metrics() : null, glr: () => GL.r, presets: SURFACE_PRESETS, GEN, FAMILIES, COMMON, modSources: () => MOD_SOURCES.map(x => x[0]), evaluate: lang => EVALUATOR.run(lang), shaderResolve, GLIB, specBins, simBake, parsePly, get LAYERERR() { return LAYER_ERR; }, setSeed, bpmWaves, get GLERR() { return GL.err; }, layerFrame, pm, importJson, frameAt, validate: o => validate(o), GEN, loopFrames, contactSheet, layerAudit, allowCode, loadAssets, toLogo, projectOut, get state() { return ST; }, geom, lintCode, compileCode, setCi(i) { ST.ci = i; refreshAll(); },
     /* gancho de teste: renderiza a composição ci no quadro n, determinístico, sem tocar no preview */
     renderFrame(ci, n, scale = 0.25, alpha = false) {
       const comp = P.compositions[ci], W = P.canvas.w, H = P.canvas.h, w = Math.round(W * scale), h = Math.round(H * scale);

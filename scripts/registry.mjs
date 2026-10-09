@@ -44,6 +44,9 @@ const mod = rd(join(REG, 'modulation.json')), cap = rd(join(REG, 'capabilities.j
 const schemaPath = join(SK, 'schema', 'project.schema.json'), briefSchemaPath = join(SK, 'schema', 'brief.schema.json'), creative = rd(join(REG, 'creative.json'));
 const creativeJs = '/* Gerado de skill/ai-vj-generator/registry/creative.json por node scripts/registry.mjs --write. Não edite. */\nconst CREATIVE_DATA = ' + JSON.stringify(creative) + ';\n';
 const creativeJsPath = join(ROOT, 'app', 'creative-data.js');
+const composition = rd(join(REG, 'composition.json'));
+const compositionJs = '/* Gerado de skill/ai-vj-generator/registry/composition.json por node scripts/registry.mjs --write. Não edite. */\nconst COMPOSITION_DATA = ' + JSON.stringify(composition) + ';\n';
+const compositionJsPath = join(ROOT, 'app', 'composition-data.js');
 const verbIds = creative.verbs.map(v => v.id);
 
 if (mode === 'write') {
@@ -54,6 +57,7 @@ if (mode === 'write') {
   s = s.replace(/("type": \{ "type": "string", )(?:"minLength": 1|"enum": \[[^\]]*\]) \},(\s*"name": \{ "type": "string" \},\s*"role")/, `$1"enum": ${typeEnum} },$2`);
   writeFileSync(schemaPath, s);
   writeFileSync(creativeJsPath, creativeJs);
+  writeFileSync(compositionJsPath, compositionJs);
   let b = rd(briefSchemaPath); b.properties.verbs = { type: 'array', items: { type: 'string', enum: verbIds }, description: 'Optional: visual verbs the author wants (the Creative IR adds them with extra weight). See registry/creative.json.' };
   writeFileSync(briefSchemaPath, JSON.stringify(b, null, 2) + '\n');
   console.log(`registry gravado: ${generators.generators.length} geradores, ${parameters.groups.reduce((a, g) => a + g.parameters.length, 0)} parâmetros comuns, ${mod.sources.length} fontes de modulação`);
@@ -90,5 +94,11 @@ const VK = ['geometry', 'motion', 'spatial', 'temporal', 'densityNote', 'audio',
 check(creative.verbs.every(v => VK.every(k => v[k] !== undefined && v[k] !== '') && creative.arcs[v.arc]), 'todo verbo define geometria, movimento, espaço, tempo, densidade, áudio, transição, material e composição, e aponta para um arco existente', creative.verbs.filter(v => !VK.every(k => v[k] !== undefined && v[k] !== '') || !creative.arcs[v.arc]).map(v => v.id).join(','));
 check(creative.concepts.every(c => Object.keys(c.verbs).every(v => verbIds.includes(v))) && Object.values(creative.moods).every(m => Object.keys(m).every(v => verbIds.includes(v))), 'conceitos e humores só citam verbos que existem', '');
 check(creative.verbs.every(v => Object.keys(v.families).every(t => creative.heroTypes.includes(t)) && v.shaders.every(s => creative.shaderOrder.includes(s)) && v.structure.every(s => creative.structureOrder.includes(s))), 'famílias, shaders e estruturas dos verbos existem nas listas de ordem', '');
+/* Composition IR: dados únicos, copiados para o navegador, coerentes entre si */
+check(readFileSync(compositionJsPath, 'utf8').replace(/\r\n/g, '\n') === compositionJs, 'composition.json = app/composition-data.js (dados do Composition IR no navegador)', 'rode node scripts/registry.mjs --write');
+const GI = composition.grammarOrder;
+check(GI.length === 12 && composition.grammars.every(g => ['hero', 'secondary', 'support', 'text', 'negative'].every(k => Array.isArray(g[k])) && ['x', 'y', 'diag', 'radial'].includes(g.axis)), 'as 12 gramáticas espaciais definem herói, secundário, apoio, texto, espaço negativo e eixo de movimento', '');
+check(Object.keys(composition.verbGrammars).every(v => verbIds.includes(v) && Object.keys(composition.verbGrammars[v]).every(g => GI.includes(g))) && verbIds.every(v => composition.verbGrammars[v]), 'todo verbo do Creative IR aponta para gramáticas que existem', verbIds.filter(v => !composition.verbGrammars[v]).join(','));
+check(Object.values(composition.aspectClasses).every(c => Object.keys(c).every(g => GI.includes(g))) && Object.values(creative.verbs.reduce((o, v) => (o[v.arc] = 1, o), {})).length === Object.keys(composition.phaseProfiles).length && Object.keys(creative.arcs).every(a => composition.phaseProfiles[a]), 'proporções e arcos do Creative IR têm gramática e perfil de fases', '');
 console.log(fail ? `\n${fail} deriva(s).` : '\nregistry ok.');
 process.exit(fail ? 1 : 0);

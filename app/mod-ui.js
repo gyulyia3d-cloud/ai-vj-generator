@@ -36,7 +36,8 @@ function modPanel(host, L) {
       <select data-mk="mode" data-mi="${i}" aria-label="${T3('Modo', 'Mode')}">${opt([['set', T3('definir', 'set')], ['add', T3('somar', 'add')], ['mul', T3('multiplicar', 'multiply')]], m.mode || 'set')}</select>
       <button data-mdel="${i}" title="${T3('Remover', 'Remove')}">×</button></div>
       <div class="row"><span class="lbl">min</span>${num(i, 'min', m.min == null ? 0 : m.min)}<span class="lbl">max</span>${num(i, 'max', m.max == null ? 1 : m.max)}
-      ${m.src === 'lfo' ? `<span class="lbl">${T3('ciclos', 'cycles')}</span>${num(i, 'cycles', m.cycles || 1, 44)}<select data-mk="shape" data-mi="${i}" aria-label="${T3('Forma', 'Shape')}">${opt([['sin', 'sin'], ['tri', 'tri'], ['saw', 'saw'], ['bounce', 'bounce'], ['rubber', 'rubber'], ['shake', 'shake'], ['jello', 'jello'], ['tada', 'tada'], ['heartbeat', 'heartbeat'], ['swing', 'swing'], ['wobble', 'wobble'], ['pulse', 'pulse'], ['spring', T3('mola (perfil)', 'spring (profile)')]], m.shape || 'sin')}</select>` : ''}</div>
+      ${m.src === 'lfo' ? `<span class="lbl">${T3('ciclos', 'cycles')}</span>${num(i, 'cycles', m.cycles || 1, 44)}<select data-mk="shape" data-mi="${i}" aria-label="${T3('Forma', 'Shape')}">${opt([['sin', 'sin'], ['tri', 'tri'], ['saw', 'saw'], ['bounce', 'bounce'], ['rubber', 'rubber'], ['shake', 'shake'], ['jello', 'jello'], ['tada', 'tada'], ['heartbeat', 'heartbeat'], ['swing', 'swing'], ['wobble', 'wobble'], ['pulse', 'pulse'], ['spring', T3('mola (perfil)', 'spring (profile)')], ['env', T3('fases (envelope)', 'phases (envelope)')]], m.shape || 'sin')}</select>` : ''}</div>
+      ${m.src === 'lfo' && m.shape === 'env' ? `<div class="row"><span class="lbl">${T3('valores por fase', 'phase values')}</span><span class="note">${esc((m.keys || []).join(' · '))}</span></div>` : ''}
       ${m.src === 'lfo' && m.shape === 'spring' ? `<div class="row"><span class="lbl">zeta</span>${num(i, 'zeta', m.zeta, 48)}<span class="lbl">wn</span>${num(i, 'wn', m.wn, 48)}<span class="lbl">${T3('antecip.', 'wind-up')}</span>${num(i, 'ta', m.ta == null ? 0 : m.ta, 48)}<span class="lbl">${T3('prof.', 'depth')}</span>${num(i, 'depth', m.depth == null ? 0 : m.depth, 48)}<span class="lbl">${T3('degraus', 'steps')}</span>${num(i, 'steps', m.steps == null ? 0 : m.steps, 44)}</div>` : ''}
     </div>`).join('');
   const pf = ST.modProf || (ST.modProf = { energy: 0.5, elasticity: 0.4, anticipation: 0.3, continuity: 0.8, rhythm: 0.3 });
@@ -59,6 +60,8 @@ function modPanel(host, L) {
     if (k === 'src' && v !== 'lfo') { delete m.cycles; delete m.shape; for (const q of ['zeta', 'wn', 'ta', 'depth', 'steps']) delete m[q]; }
     if (k === 'shape' && v === 'spring') { const pr = GENAI.profile(ST.modProf.energy, ST.modProf.elasticity, ST.modProf.anticipation, ST.modProf.continuity, ST.modProf.rhythm, P.time.bars), t = GENAI.toMod(pr, m.k); Object.assign(m, { zeta: t.zeta, wn: t.wn, cycles: t.cycles }); if (t.ta) { m.ta = t.ta; m.depth = t.depth; } if (t.steps) m.steps = t.steps; if (m.min == null || m.max == null || m.mode == null) { m.min = t.min; m.max = t.max; m.mode = t.mode; } }
     if (k === 'shape' && v !== 'spring') for (const q of ['zeta', 'wn', 'ta', 'depth', 'steps']) delete m[q];
+    if (k === 'shape' && v === 'env' && !Array.isArray(m.keys)) m.keys = [0, 0.25, 1, 0.25, 0];
+    if (k === 'shape' && v !== 'env') delete m.keys;
     save(); re();
   }));
   $$('[data-mdel]', box).forEach(b => b.addEventListener('click', () => { mods.splice(+b.dataset.mdel, 1); if (!mods.length) delete L.mod; else L.mod = mods; save(T3('Modulação removida', 'Modulation removed')); re(); }));

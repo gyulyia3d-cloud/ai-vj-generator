@@ -83,6 +83,7 @@ Load only what the project needs.
 | Working with another AI (ChatGPT, Gemini, Codex, local), or checking JSON structure without pip | `portable/PROMPT.md`, `scripts/schema_check.py`, `schema/project.schema.json` |
 | Audio, BPM, beat sync, integrated time, band transients, `layer.mod` modulation | `references/audio-bus.md` |
 | A still image with depth (2.5D parallax), a depth map, Gaussian splats or a point cloud (.ply) | `references/depth-and-splats.md`, `scripts/depth_estimate.py` |
+| Where things go: the 12 spatial grammars, zones, negative space, the five phases (`meta.compositionIR`, `env` modulation) | `references/composition-ir.md` |
 | Intention before technique: concept, 32 visual verbs, motifs, arc (`meta.creativeIR`, `brief.verbs`) | `references/creative-ir.md` |
 | Effects over time (trail, feedback, slit scan, displacement): the `temporal` layer | `references/temporal-layer.md` |
 | ISF: the 84-shader library as the `isf` layer (menu in the layer parameters) ; importing `.fs` with `scripts/isf.py import` | `references/isf-layer.md`, `isf-library/README.md`, `scripts/isf.py` |

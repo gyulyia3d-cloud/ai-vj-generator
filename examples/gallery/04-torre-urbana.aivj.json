@@ -148,7 +148,504 @@
       "forbiddenMotifs": [],
       "novelty": 0.67,
       "colorLogic": "complement scheme, OKLCH hue 60 (sodium yellow against dark asphalt)"
-    }
+    },
+    "compositionIR": [
+      {
+        "version": 1,
+        "grammar": "vertical",
+        "grammarSet": [
+          "vertical",
+          "hierarchical",
+          "symmetrical"
+        ],
+        "aspectClass": "ultratall",
+        "canvas": {
+          "w": 540,
+          "h": 1920,
+          "aspect": 0.281,
+          "orientation": "tall"
+        },
+        "hierarchy": {
+          "primary": "hero",
+          "secondary": "structure",
+          "tertiary": "ground"
+        },
+        "zones": {
+          "hero": {
+            "x": 0.15,
+            "y": 0.202,
+            "w": 0.7,
+            "h": 0.197
+          },
+          "secondary": {
+            "x": 0.225,
+            "y": 0.643,
+            "w": 0.55,
+            "h": 0.155
+          },
+          "support": {
+            "x": 0.35,
+            "y": 0.878,
+            "w": 0.3,
+            "h": 0.084
+          },
+          "background": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          }
+        },
+        "negativeSpace": [
+          {
+            "x": 0,
+            "y": 0,
+            "w": 0.18,
+            "h": 1,
+            "why": "left empty on purpose: nothing is placed here"
+          }
+        ],
+        "focalPoint": {
+          "x": 0.5,
+          "y": 0.3
+        },
+        "visualMass": {
+          "hero": 0.5,
+          "secondary": 0.3,
+          "support": 0.2
+        },
+        "balance": {
+          "type": "symmetric",
+          "centre": {
+            "x": 0.5,
+            "y": 0.55
+          }
+        },
+        "alignment": "center",
+        "movementAxis": "y",
+        "densityMap": [
+          [
+            0.05,
+            0.25,
+            0.25
+          ],
+          [
+            0.05,
+            0.25,
+            0.25
+          ],
+          [
+            0.05,
+            0.25,
+            0.25
+          ]
+        ],
+        "scaleHierarchy": {
+          "hero": 1.0,
+          "secondary": 0.79,
+          "support": 0.4
+        },
+        "depthHierarchy": {
+          "hero": "foreground",
+          "secondary": "midground",
+          "support": "midground",
+          "background": "background"
+        },
+        "safeAreas": {
+          "x": 0.05,
+          "y": 0.05,
+          "w": 0.9,
+          "h": 0.9
+        },
+        "edgeBehavior": "contain",
+        "textAnchor": {
+          "cx": 0.5,
+          "cy": 0.7,
+          "align": "center"
+        },
+        "temporal": {
+          "arc": "cycle",
+          "phases": [
+            {
+              "name": "establish",
+              "at": 0.0,
+              "heroScale": 1.0,
+              "density": 1.0,
+              "contrast": 1.0,
+              "rotation": 0,
+              "motion": 1.0
+            },
+            {
+              "name": "develop",
+              "at": 0.2,
+              "heroScale": 1.1,
+              "density": 1.1,
+              "contrast": 1.05,
+              "rotation": 2,
+              "motion": 1.1
+            },
+            {
+              "name": "transform",
+              "at": 0.4,
+              "heroScale": 0.95,
+              "density": 1.0,
+              "contrast": 1.0,
+              "rotation": 0,
+              "motion": 1.0
+            },
+            {
+              "name": "peak",
+              "at": 0.6,
+              "heroScale": 1.1,
+              "density": 1.1,
+              "contrast": 1.1,
+              "rotation": -2,
+              "motion": 1.1
+            },
+            {
+              "name": "release",
+              "at": 0.8,
+              "heroScale": 1.0,
+              "density": 1.0,
+              "contrast": 1.0,
+              "rotation": 0,
+              "motion": 1.0
+            }
+          ]
+        },
+        "description": "a column that reads top to bottom"
+      },
+      {
+        "version": 1,
+        "grammar": "hierarchical",
+        "grammarSet": [
+          "vertical",
+          "hierarchical",
+          "symmetrical"
+        ],
+        "aspectClass": "ultratall",
+        "canvas": {
+          "w": 540,
+          "h": 1920,
+          "aspect": 0.281,
+          "orientation": "tall"
+        },
+        "hierarchy": {
+          "primary": "hero",
+          "secondary": "structure",
+          "tertiary": "ground"
+        },
+        "zones": {
+          "hero": {
+            "x": 0.075,
+            "y": 0.3,
+            "w": 0.85,
+            "h": 0.239
+          },
+          "secondary": {
+            "x": 0.325,
+            "y": 0.771,
+            "w": 0.35,
+            "h": 0.098
+          },
+          "support": {
+            "x": 0.0,
+            "y": 0.778,
+            "w": 0.3,
+            "h": 0.084
+          },
+          "background": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          }
+        },
+        "negativeSpace": [
+          {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 0.1,
+            "why": "left empty on purpose: nothing is placed here"
+          }
+        ],
+        "focalPoint": {
+          "x": 0.5,
+          "y": 0.419
+        },
+        "visualMass": {
+          "hero": 0.65,
+          "secondary": 0.21,
+          "support": 0.14
+        },
+        "balance": {
+          "type": "asymmetric",
+          "centre": {
+            "x": 0.451,
+            "y": 0.56
+          }
+        },
+        "alignment": "center",
+        "movementAxis": "y",
+        "densityMap": [
+          [
+            0.25,
+            0.25,
+            0.25
+          ],
+          [
+            0.9,
+            0.9,
+            0.9
+          ],
+          [
+            0.25,
+            0.55,
+            0.25
+          ]
+        ],
+        "scaleHierarchy": {
+          "hero": 1.21,
+          "secondary": 0.5,
+          "support": 0.4
+        },
+        "depthHierarchy": {
+          "hero": "foreground",
+          "secondary": "midground",
+          "support": "midground",
+          "background": "background"
+        },
+        "safeAreas": {
+          "x": 0.05,
+          "y": 0.05,
+          "w": 0.9,
+          "h": 0.9
+        },
+        "edgeBehavior": "contain",
+        "textAnchor": {
+          "cx": 0.5,
+          "cy": 0.82,
+          "align": "center"
+        },
+        "temporal": {
+          "arc": "cycle",
+          "phases": [
+            {
+              "name": "establish",
+              "at": 0.0,
+              "heroScale": 1.0,
+              "density": 1.0,
+              "contrast": 1.0,
+              "rotation": 0,
+              "motion": 1.0
+            },
+            {
+              "name": "develop",
+              "at": 0.2,
+              "heroScale": 1.1,
+              "density": 1.1,
+              "contrast": 1.05,
+              "rotation": 2,
+              "motion": 1.1
+            },
+            {
+              "name": "transform",
+              "at": 0.4,
+              "heroScale": 0.95,
+              "density": 1.0,
+              "contrast": 1.0,
+              "rotation": 0,
+              "motion": 1.0
+            },
+            {
+              "name": "peak",
+              "at": 0.6,
+              "heroScale": 1.1,
+              "density": 1.1,
+              "contrast": 1.1,
+              "rotation": -2,
+              "motion": 1.1
+            },
+            {
+              "name": "release",
+              "at": 0.8,
+              "heroScale": 1.0,
+              "density": 1.0,
+              "contrast": 1.0,
+              "rotation": 0,
+              "motion": 1.0
+            }
+          ]
+        },
+        "description": "a dominant figure, a clear second, a small third"
+      },
+      {
+        "version": 1,
+        "grammar": "symmetrical",
+        "grammarSet": [
+          "vertical",
+          "hierarchical",
+          "symmetrical"
+        ],
+        "aspectClass": "ultratall",
+        "canvas": {
+          "w": 540,
+          "h": 1920,
+          "aspect": 0.281,
+          "orientation": "tall"
+        },
+        "hierarchy": {
+          "primary": "hero",
+          "secondary": "structure",
+          "tertiary": "ground"
+        },
+        "zones": {
+          "hero": {
+            "x": 0.15,
+            "y": 0.402,
+            "w": 0.7,
+            "h": 0.197
+          },
+          "secondary": {
+            "x": 0.0,
+            "y": 0.437,
+            "w": 0.45,
+            "h": 0.127
+          },
+          "support": {
+            "x": 0.69,
+            "y": 0.458,
+            "w": 0.3,
+            "h": 0.084
+          },
+          "background": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          }
+        },
+        "negativeSpace": [
+          {
+            "x": 0.35,
+            "y": 0,
+            "w": 0.3,
+            "h": 0.2,
+            "why": "left empty on purpose: nothing is placed here"
+          }
+        ],
+        "focalPoint": {
+          "x": 0.5,
+          "y": 0.501
+        },
+        "visualMass": {
+          "hero": 0.5,
+          "secondary": 0.3,
+          "support": 0.2
+        },
+        "balance": {
+          "type": "symmetric",
+          "centre": {
+            "x": 0.486,
+            "y": 0.5
+          }
+        },
+        "alignment": "center",
+        "movementAxis": "y",
+        "densityMap": [
+          [
+            0.25,
+            0.05,
+            0.25
+          ],
+          [
+            0.9,
+            0.9,
+            0.9
+          ],
+          [
+            0.25,
+            0.25,
+            0.25
+          ]
+        ],
+        "scaleHierarchy": {
+          "hero": 1.0,
+          "secondary": 0.64,
+          "support": 0.4
+        },
+        "depthHierarchy": {
+          "hero": "foreground",
+          "secondary": "midground",
+          "support": "midground",
+          "background": "background"
+        },
+        "safeAreas": {
+          "x": 0.05,
+          "y": 0.05,
+          "w": 0.9,
+          "h": 0.9
+        },
+        "edgeBehavior": "contain",
+        "textAnchor": {
+          "cx": 0.5,
+          "cy": 0.9,
+          "align": "center"
+        },
+        "temporal": {
+          "arc": "cycle",
+          "phases": [
+            {
+              "name": "establish",
+              "at": 0.0,
+              "heroScale": 1.0,
+              "density": 1.0,
+              "contrast": 1.0,
+              "rotation": 0,
+              "motion": 1.0
+            },
+            {
+              "name": "develop",
+              "at": 0.2,
+              "heroScale": 1.1,
+              "density": 1.1,
+              "contrast": 1.05,
+              "rotation": 2,
+              "motion": 1.1
+            },
+            {
+              "name": "transform",
+              "at": 0.4,
+              "heroScale": 0.95,
+              "density": 1.0,
+              "contrast": 1.0,
+              "rotation": 0,
+              "motion": 1.0
+            },
+            {
+              "name": "peak",
+              "at": 0.6,
+              "heroScale": 1.1,
+              "density": 1.1,
+              "contrast": 1.1,
+              "rotation": -2,
+              "motion": 1.1
+            },
+            {
+              "name": "release",
+              "at": 0.8,
+              "heroScale": 1.0,
+              "density": 1.0,
+              "contrast": 1.0,
+              "rotation": 0,
+              "motion": 1.0
+            }
+          ]
+        },
+        "description": "mirrored halves around a central figure"
+      }
+    ]
   },
   "canvas": {
     "w": 540,
@@ -239,12 +736,14 @@
           "blend": "normal",
           "role": "hero: the single dominant figure of this composition (the focal event)",
           "p": {
-            "dir": "h",
-            "count": 20,
+            "dir": "v",
+            "count": 5,
             "weight": 24,
             "stepped": true,
             "audio": 0.79,
-            "band": "bass"
+            "band": "bass",
+            "contrast": 1,
+            "speed": 1
           },
           "mod": [
             {
@@ -260,6 +759,54 @@
               "ta": 0.057,
               "depth": 0.1221,
               "steps": 18
+            },
+            {
+              "k": "contrast",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": 1.0,
+              "max": 1.1,
+              "mode": "mul",
+              "keys": [
+                0.0,
+                0.5,
+                0.0,
+                1.0,
+                0.0
+              ]
+            },
+            {
+              "k": "speed",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": 1.0,
+              "max": 1.1,
+              "mode": "mul",
+              "keys": [
+                0.0,
+                1.0,
+                0.0,
+                1.0,
+                0.0
+              ]
+            },
+            {
+              "k": "count",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": 1.0,
+              "max": 1.1,
+              "mode": "mul",
+              "keys": [
+                0.0,
+                1.0,
+                0.0,
+                1.0,
+                0.0
+              ]
             }
           ]
         },
@@ -287,7 +834,7 @@
             "kind": "bars",
             "size": 0.28,
             "cx": 0.5,
-            "cy": 0.86,
+            "cy": 0.9,
             "n": 36,
             "weight": 3
           }
@@ -389,7 +936,14 @@
             "size": 150,
             "spread": 260,
             "audio": 0.79,
-            "band": "bass"
+            "band": "bass",
+            "x": 0,
+            "y": -155,
+            "sx": 1.21,
+            "sy": 1.21,
+            "rot": 0,
+            "contrast": 1,
+            "speed": 1
           },
           "mod": [
             {
@@ -405,6 +959,102 @@
               "ta": 0.0693,
               "depth": 0.1485,
               "steps": 17
+            },
+            {
+              "k": "sx",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": 0.95,
+              "max": 1.1,
+              "mode": "mul",
+              "keys": [
+                0.3333,
+                1.0,
+                0.0,
+                1.0,
+                0.3333
+              ]
+            },
+            {
+              "k": "sy",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": 0.95,
+              "max": 1.1,
+              "mode": "mul",
+              "keys": [
+                0.3333,
+                1.0,
+                0.0,
+                1.0,
+                0.3333
+              ]
+            },
+            {
+              "k": "rot",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": -2,
+              "max": 2,
+              "mode": "add",
+              "keys": [
+                0.5,
+                1.0,
+                0.5,
+                0.0,
+                0.5
+              ]
+            },
+            {
+              "k": "contrast",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": 1.0,
+              "max": 1.1,
+              "mode": "mul",
+              "keys": [
+                0.0,
+                0.5,
+                0.0,
+                1.0,
+                0.0
+              ]
+            },
+            {
+              "k": "speed",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": 1.0,
+              "max": 1.1,
+              "mode": "mul",
+              "keys": [
+                0.0,
+                1.0,
+                0.0,
+                1.0,
+                0.0
+              ]
+            },
+            {
+              "k": "count",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": 1.0,
+              "max": 1.1,
+              "mode": "mul",
+              "keys": [
+                0.0,
+                1.0,
+                0.0,
+                1.0,
+                0.0
+              ]
             }
           ]
         },
@@ -421,7 +1071,11 @@
             "cycles": 1,
             "audio": 0.5,
             "band": "high",
-            "size": 1
+            "size": 1,
+            "x": 0,
+            "y": 614,
+            "sx": 0.5,
+            "sy": 0.5
           },
           "mod": [
             {
@@ -448,8 +1102,8 @@
           "p": {
             "kind": "radial",
             "size": 0.28,
-            "cx": 0.5,
-            "cy": 0.5,
+            "cx": 0.15,
+            "cy": 0.82,
             "n": 36,
             "weight": 3
           }
@@ -551,7 +1205,9 @@
             "band": "bass",
             "width": 2.4,
             "alpha": 0.9,
-            "amp": 0.12
+            "amp": 0.12,
+            "contrast": 1,
+            "speed": 1
           },
           "mod": [
             {
@@ -567,6 +1223,54 @@
               "ta": 0.057,
               "depth": 0.1221,
               "steps": 18
+            },
+            {
+              "k": "contrast",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": 1.0,
+              "max": 1.1,
+              "mode": "mul",
+              "keys": [
+                0.0,
+                0.5,
+                0.0,
+                1.0,
+                0.0
+              ]
+            },
+            {
+              "k": "speed",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": 1.0,
+              "max": 1.1,
+              "mode": "mul",
+              "keys": [
+                0.0,
+                1.0,
+                0.0,
+                1.0,
+                0.0
+              ]
+            },
+            {
+              "k": "count",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": 1.0,
+              "max": 1.1,
+              "mode": "mul",
+              "keys": [
+                0.0,
+                1.0,
+                0.0,
+                1.0,
+                0.0
+              ]
             }
           ]
         },
@@ -609,8 +1313,8 @@
           "p": {
             "kind": "heat",
             "size": 0.28,
-            "cx": 0.5,
-            "cy": 0.86,
+            "cx": 0.84,
+            "cy": 0.5,
             "n": 36,
             "weight": 3
           }

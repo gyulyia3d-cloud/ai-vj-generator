@@ -256,6 +256,26 @@ ART_BIBLE_OPTIONAL = ("motionProfile", "density")
 MOTION_AXES = ("energy", "elasticity", "anticipation", "continuity", "rhythm")
 
 
+def check_composition_ir(meta, out):
+    """Phase 6: meta.compositionIR is a list with one Composition IR per composition (references/composition-ir.md)."""
+    e, w = out["errors"], out["warnings"]
+    cs = meta.get("compositionIR")
+    if cs is None:
+        return
+    if not isinstance(cs, list):
+        e.append("meta.compositionIR must be a list (one entry per composition)")
+        return
+    grammars = {g["id"] for g in _registry("composition.json")["grammars"]}
+    for i, c in enumerate(cs):
+        if not isinstance(c, dict) or c.get("grammar") not in grammars:
+            w.append(f"meta.compositionIR[{i}].grammar: unknown grammar (registry/composition.json)")
+            continue
+        for k in ("hero", "secondary"):
+            z = (c.get("zones") or {}).get(k) or {}
+            if not all(isinstance(z.get(q), (int, float)) and 0 <= z[q] <= 1 for q in ("x", "y", "w", "h")):
+                e.append(f"meta.compositionIR[{i}].zones.{k}: x, y, w, h must be numbers in 0..1")
+
+
 def check_creative_ir(meta, out):
     """Phase 5: meta.creativeIR (references/creative-ir.md). Verbs and generator types must exist in the registry."""
     e, w = out["errors"], out["warnings"]
@@ -499,6 +519,7 @@ def validate(path, extra_assets=()):
         check_contract(P.get("meta", {}), out)
         check_art_bible(P.get("meta", {}), out)
         check_creative_ir(P.get("meta", {}), out)
+        check_composition_ir(P.get("meta", {}), out)
         check_capabilities(P.get("capabilities"), out)
     cv, tm = P.get("canvas", {}), P.get("time", {})
     if v2:
@@ -617,8 +638,12 @@ def validate(path, extra_assets=()):
                             e.append(f"{mw}.mode: must be set, add or mul")
                         if m.get("src") == "lfo" and not float(m.get("cycles", 1)).is_integer():
                             e.append(f"{mw}.cycles: must be a whole number or the loop does not close")
-                        if m.get("shape", "sin") not in ("sin", "tri", "saw", "bounce", "rubber", "shake", "jello", "tada", "heartbeat", "swing", "wobble", "pulse", "spring"):
-                            e.append(f"{mw}.shape: must be sin, tri, saw, bounce, rubber, shake, jello, tada, heartbeat, swing, wobble, pulse or spring")
+                        if m.get("shape", "sin") not in ("sin", "tri", "saw", "bounce", "rubber", "shake", "jello", "tada", "heartbeat", "swing", "wobble", "pulse", "spring", "env"):
+                            e.append(f"{mw}.shape: must be sin, tri, saw, bounce, rubber, shake, jello, tada, heartbeat, swing, wobble, pulse, spring or env")
+                        if m.get("shape") == "env":
+                            ks = m.get("keys")
+                            if m.get("src") != "lfo" or not isinstance(ks, list) or len(ks) < 2 or not all(isinstance(x, (int, float)) and 0 <= x <= 1 for x in ks):
+                                e.append(f"{mw}: shape env needs src lfo and keys, a list of at least 2 numbers in 0..1 (the value at the start of each phase; the last one blends back into the first, so the loop closes)")
                         if m.get("shape") == "spring":
                             if m.get("src") != "lfo":
                                 e.append(f"{mw}: shape spring needs src lfo")

@@ -106,13 +106,13 @@ const GENAI = (() => {
   }
   const layer = (t, name, role, p, opacity = 1, blend = 'normal') => { const L = { type: t, name, on: true, opacity, blend, role }; if (p !== undefined && p !== null) L.p = p; return L; };
 
-  function buildComp(i, n, brief, mood, strat, prof, ir) {
+  function buildComp(i, n, brief, mood, strat, prof, ir, cmp) {
     const e = +(brief.energy == null ? 0.5 : brief.energy); let dens = { sparse: 0.6, balanced: 1.0, dense: 1.5 }[brief.density || 'balanced'] || 1.0; const drv = !!(ir && ir.drives);
     if (drv) dens = dens * ir.density * (0.7 + 0.6 * ir.arc.energy[Math.min(i, 5)]);
     const surf = (brief.surface || {}).type || 'screen', led = ['led', 'multi', 'projection', 'mapping'].includes(surf), m = mood || MOODS.minimal;
     const moods = brief.mood || [], tag = (moods.length ? moods[i % Math.max(1, moods.length)] : 'composition').toUpperCase(), reactive = strat !== 'none';
     let [heroT, heroP] = m.hero[i % m.hero.length]; heroP = Object.assign({}, heroP);
-    if (drv) { heroT = ir.hierarchy.hero[i % ir.hierarchy.hero.length]; const mine = m.hero.find(h => h[0] === heroT); heroP = Object.assign({}, mine ? mine[1] : (POOL_HERO[heroT] || {})); }
+    if (drv) { heroT = ir.hierarchy.hero[i % ir.hierarchy.hero.length]; const mine = m.hero.find(h => h[0] === heroT); heroP = Object.assign({}, mine ? mine[1] : (POOL_HERO[heroT] || {})); if (heroT === 'lines' && COMPOSITION.lineDir(cmp)) heroP.dir = COMPOSITION.lineDir(cmp); }
     let texture = null;
     if (heroT === 'bitfield') {
       texture = heroP; const alt = m.hero.filter(h => h[0] !== 'bitfield');
@@ -131,7 +131,7 @@ const GENAI = (() => {
     if (heroT === 'lines') capLines(heroP, brief.surface.w, brief.surface.h, 0.1);
     const sh = drv ? ir.hierarchy.ground[i % ir.hierarchy.ground.length] : m.shader[i % m.shader.length];
     let [stT, stP] = m.structure[i % m.structure.length]; stP = Object.assign({}, stP); let stOp = 0.3;
-    if (drv) { stT = ir.hierarchy.structure[i % ir.hierarchy.structure.length]; const mine = m.structure.find(s => s[0] === stT); stP = Object.assign({}, mine ? mine[1] : (POOL_STRUCT[stT] || {})); }
+    if (drv) { stT = ir.hierarchy.structure[i % ir.hierarchy.structure.length]; const mine = m.structure.find(s => s[0] === stT); stP = Object.assign({}, mine ? mine[1] : (POOL_STRUCT[stT] || {})); if (stT === 'lines' && COMPOSITION.lineDir(cmp)) stP.dir = COMPOSITION.lineDir(cmp); }
     if (texture !== null) { stT = 'bitfield'; stP = Object.assign({}, texture, { levels: 2 }); stOp = 0.1; }
     if (stT === 'lines') capLines(stP, brief.surface.w, brief.surface.h, 0.15);
     if (reactive && ['lines', 'structure', 'tunnel'].includes(stT) && heroT !== stT) { stP.audio = 0.5; stP.band = 'high'; }
@@ -228,7 +228,8 @@ const GENAI = (() => {
     const ir = CREATIVE.compile(brief), drv = ir.drives; ir.colorLogic = colorWhy;
     { const mt = tags.length ? new Set(MOODS[tags[0]].hero.map(h => h[0])) : new Set(), hh = ir.hierarchy.hero; ir.novelty = tags.length ? pyRound(1 - hh.filter(t => mt.has(t)).length / hh.length, 2) : 1.0; }
     const profs = Array.from({ length: n }, (_, i) => makeProfile(brief, tags.length ? tags[i % tags.length] : null, e, bars, ir));
-    const comps = profs.map((pr, i) => buildComp(i, n, brief, tags.length ? MOODS[tags[i % tags.length]] : null, strat, pr, ir)), prof0 = profs[0], pt = brief.lang === 'pt';
+    const cirs = Array.from({ length: n }, (_, i) => COMPOSITION.compile(brief, ir, i));
+    const comps = profs.map((pr, i) => buildComp(i, n, brief, tags.length ? MOODS[tags[i % tags.length]] : null, strat, pr, ir, cirs[i])), prof0 = profs[0], pt = brief.lang === 'pt';
     const contract = {
       concept: brief.concept, audienceEffect: (pt ? 'O público deve sentir ' : 'The audience should feel ') + brief.concept.slice(0, 100),
       semioticIntent: drv ? ir.semioticIntent : `Mood ${tags.join(', ') || 'unspecified'}: ` + brief.concept.slice(0, 100),
@@ -246,13 +247,15 @@ const GENAI = (() => {
       releaseZone: 'The ground field and the empty third of the frame; no layer fills it.',
       banned: (brief.banned || []).join(', ') || 'shockwave rings on every hit; particle bursts; neon glow everywhere', tension: tension(e),
     };
+    /* Composition IR: uma por composição; só é aplicada às camadas quando o Creative IR conduz (senão fica apenas registrada) */
+    if (drv) comps.forEach((c, i) => COMPOSITION.apply(c.layers, cirs[i], sf.w, sf.h));
     const artBible = makeArtBible(brief, tags, contract, prof0, strat, led, ir);
     if (strat === 'none') contract.audioStrategyReason = (brief.audio || {}).reason || 'The brief asks for a silent, music-independent piece.';
     const spec = { archetype: [ARCH[surf] || 'clip-pack'], confirmed: { pixelMap: [sf.w, sf.h] }, assumed: [{ field: 'surface', why: "generated from the brief without AI; the facts are the brief's own", risk: 'confirm the pixel map and distances with the venue before delivery' }] };
     if (sf.pitchMm) spec.confirmed.pitchMm = sf.pitchMm; if (sf.viewingDistanceM) spec.confirmed.viewingDistanceM = sf.viewingDistanceM;
     const canvas = { w: sf.w, h: sf.h, fps: sf.fps || 30, target: ['screen', 'led', 'projection', 'mapping', 'multi'].includes(surf) ? surf : 'screen' }; if (sf.folds) canvas.folds = sf.folds;
     const id = String(brief.name).toLowerCase().split('').map(c => /[\p{L}\p{N}]/u.test(c) ? c : '-').join('').replace(/^-+|-+$/g, '') || 'project';
-    return { schema: 'ai-vj-generator/2', id, seed, meta: { name: String(brief.name).toUpperCase(), lang: brief.lang || 'en', brief: brief.concept, contract, artBible, spec, creativeIR: ir }, canvas,
+    return { schema: 'ai-vj-generator/2', id, seed, meta: { name: String(brief.name).toUpperCase(), lang: brief.lang || 'en', brief: brief.concept, contract, artBible, spec, creativeIR: ir, compositionIR: cirs }, canvas,
       time: { bpm: tm.bpm, bars, loop: true, seamless: true, mode: 'loop', transition: prof0.axes.continuity >= 0.5 ? 'fade' : 'wipe' }, audio: { reactive: strat !== 'none', sens: 1, smooth: 0.7, strategy: strat },
       palette: Object.assign({}, pal, (brief.output || {}).mode === 'white-alpha' ? { mode: 'white-alpha' } : {}), compositions: comps };
   }
