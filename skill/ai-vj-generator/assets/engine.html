@@ -582,7 +582,7 @@ html.stagemode #toast,html.stagemode #hint{display:none!important}
    função pura de (parâmetros, quadro) → o mesmo código desenha o preview,
    o export PNG alpha e a gravação.
    ===================================================================== */
-const VERSION = '3.8.0';
+const VERSION = '3.9.0';
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const TAU = Math.PI * 2, GA = Math.PI * (3 - Math.sqrt(5));
 const clamp = (v, a, b) => v < a ? a : v > b ? b : v, lerp = (a, b, t) => a + (b - a) * t;
@@ -4269,15 +4269,15 @@ const COMPOSITION = (() => {
   function apply(layers, comp, W, H) {
     const placeable = D.placeable, z = comp.zones, ph = comp.temporal.phases, col = key => ph.map(p => p[key]);
     for (const L of layers) {
-      const nm = L.name, t = L.type; L.p = L.p || {}; const p = L.p;
-      if (nm.startsWith('HER')) {
+      const t = L.type, tier = tierOf(L); L.p = L.p || {}; const p = L.p;
+      if (tier === 'hero') {
         if (placeable.includes(t)) { const c = center(z.hero); p.x = pyRound((c[0] - 0.5) * W); p.y = pyRound((c[1] - 0.5) * H); p.sx = p.sy = comp.scaleHierarchy.hero; }
-        L.mod = L.mod || [];
+        L.mod = (L.mod || []).filter(m => m.shape !== 'env');
         let specs = [['contrast', col('contrast'), 'mul'], ['speed', col('motion'), 'mul']];
         if (placeable.includes(t)) specs = [['sx', col('heroScale'), 'mul'], ['sy', col('heroScale'), 'mul'], ['rot', col('rotation'), 'add']].concat(specs);
         if (typeof p.count === 'number') specs.push(['count', col('density'), 'mul']);
         for (const [k, raw, mode] of specs) { const m = envMod(k, raw, mode); if (m) { if (p[k] === undefined) p[k] = k in ENGINE_DEFAULT ? ENGINE_DEFAULT[k] : 1; L.mod.push(m); } }
-      } else if (nm.startsWith('ESTRUTURA')) {
+      } else if (tier === 'structure') {
         if (placeable.includes(t)) { const c = center(z.secondary); p.x = pyRound((c[0] - 0.5) * W); p.y = pyRound((c[1] - 0.5) * H); p.sx = p.sy = comp.scaleHierarchy.secondary; }
       } else if (t === 'instrument') {
         const c = center(z.support); p.cx = r2(Math.min(Math.max(c[0], 0.1), 0.9)); p.cy = r2(Math.min(Math.max(c[1], 0.1), 0.9));
@@ -4285,6 +4285,7 @@ const COMPOSITION = (() => {
     }
     return layers;
   }
+  const tierOf = L => { const nm = String(L.name || '').toUpperCase(), role = String(L.role || '').trim().toLowerCase(); return nm.startsWith('HER') || role.startsWith('hero') ? 'hero' : nm.startsWith('ESTRUTURA') || role.startsWith('structure') ? 'structure' : null; };
   const lineDir = comp => D.lineDir[comp.movementAxis];
   return { compile, apply, lineDir, aspectClass, rankGrammars, DATA: D };
 })();

@@ -281,6 +281,7 @@ def check_creative_ir(meta, out):
     e, w = out["errors"], out["warnings"]
     ir = meta.get("creativeIR")
     if ir is None:
+        out["notes"].append("no meta.creativeIR: run `python scripts/plan_ir.py brief.json --apply project.json` to record the intention plan and the composition of each composition (references/creative-ir.md)")
         return
     if not isinstance(ir, dict):
         e.append("meta.creativeIR must be an object")

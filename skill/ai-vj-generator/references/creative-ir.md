@@ -24,5 +24,8 @@ The same mood with two concepts ("decay" and "emergence", both "cold, contemplat
 ## Brief fields
 `brief.verbs`: optional list of verb ids (validated against the registry). Everything else comes from `concept`, `focalEvent`, `mood`, `banned`.
 
+## For an AI (or a person) writing the project by hand
+`python scripts/plan_ir.py brief.json` prints the Creative IR and one Composition IR per composition; `python scripts/plan_ir.py brief.json --apply project.json` records both in `meta` and places the layers (the layers say their tier in `role`: `hero: ...`, `structure: ...`). `portable/PROMPT.md` step 2b teaches the same without tools.
+
 ## Limits
 Keyword matching is literal (stems, accents removed): a concept written without any known word does not drive the choice. Say it with a verb in `brief.verbs`, or extend the lexicon in `registry/creative.json` and run `node scripts/registry.mjs --write`.

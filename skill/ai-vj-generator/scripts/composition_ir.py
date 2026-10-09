@@ -110,6 +110,12 @@ def env_mod(k, raw, mode):
     return {"k": k, "src": "lfo", "shape": "env", "cycles": 1, "min": round(lo, 4), "max": round(hi, 4), "mode": mode, "keys": [round((x - lo) / (hi - lo), 4) for x in raw]}
 
 
+def tier_of(L):
+    """The tier of a layer: by its name (HERÓI, ESTRUTURA, as the generator writes) or by its role, which must start with the tier ("hero: ...", "structure: ...")."""
+    nm, role = str(L.get("name", "")).upper(), str(L.get("role", "")).strip().lower()
+    return "hero" if nm.startswith("HER") or role.startswith("hero") else "structure" if nm.startswith("ESTRUTURA") or role.startswith("structure") else None
+
+
 def line_dir(comp):
     return DATA["lineDir"].get(comp["movementAxis"])
 
@@ -121,15 +127,17 @@ def apply_composition(layers, comp, W, H):
     ph = comp["temporal"]["phases"]
     col = lambda key: [p[key] for p in ph]
     for L in layers:
-        nm, t = L["name"], L["type"]
+        t = L["type"]
+        tier = tier_of(L)
         p = L.setdefault("p", {})
-        if nm.startswith("HER"):
+        if tier == "hero":
             if t in placeable:
                 c = center(z["hero"])
                 p["x"] = round((c[0] - 0.5) * W)
                 p["y"] = round((c[1] - 0.5) * H)
                 p["sx"] = p["sy"] = comp["scaleHierarchy"]["hero"]
             mods = L.setdefault("mod", [])
+            mods[:] = [m for m in mods if m.get("shape") != "env"]  # applying the plan twice must not stack envelopes
             specs = [("contrast", col("contrast"), "mul"), ("speed", col("motion"), "mul")]
             if t in placeable:
                 specs = [("sx", col("heroScale"), "mul"), ("sy", col("heroScale"), "mul"), ("rot", col("rotation"), "add")] + specs
@@ -140,7 +148,7 @@ def apply_composition(layers, comp, W, H):
                 if m:
                     p.setdefault(k, ENGINE_DEFAULT.get(k, 1))  # the modulation starts from a value that is written down, not from a hidden default
                     mods.append(m)
-        elif nm.startswith("ESTRUTURA"):
+        elif tier == "structure":
             if t in placeable:
                 c = center(z["secondary"])
                 p["x"] = round((c[0] - 0.5) * W)

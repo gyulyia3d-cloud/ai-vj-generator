@@ -44,10 +44,12 @@ The user types these; each starts clean. They are separate skills pointing back 
 
 ```text
 INTAKE → ATTACHMENT ANALYSIS → DIAGNOSE (ledger, archetype) → INTERVIEW → READBACK → CREATIVE CONTRACT
-→ CONCEPTUAL DIVERGENCE → ONE WORLD → COMPOSITION THESES → TECHNIQUE
+→ CONCEPTUAL DIVERGENCE → ONE WORLD → COMPOSITION THESES → CREATIVE IR + COMPOSITION IR (`scripts/plan_ir.py`) → TECHNIQUE
 → PROJECT JSON → VALIDATE → BUILD HTML → RENDER → OBSERVE → CRITIQUE
 → MUTATE → RE-VALIDATE → DELIVER
 ```
+
+**The two IRs.** *IR* = Intermediate Representation, a structured plan between the briefing and the generators. After the compositions theses and before choosing any generator, run `python scripts/plan_ir.py brief.json` (brief = concept, mood, `surface`, optional `verbs`). The Creative IR names the concept, 3-4 visual verbs, motifs, the hero/structure/ground types, motion axes and the arc; each Composition IR gives the spatial grammar, zones, negative space, movement axis and the five phases. Build the layers from them (start each layer `role` with its tier: `hero:`, `structure:`...), then `plan_ir.py brief.json --apply project.json` records both in `meta.creativeIR` / `meta.compositionIR` and places the layers. Details: `references/creative-ir.md`, `references/composition-ir.md`.
 
 The full protocol, with the files each step writes, is `references/briefing-flow.md`. Read it at the start of every project.
 

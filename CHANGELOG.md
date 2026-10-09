@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.9.0 (09/10/2026) · Os dois IR para qualquer IA
+
+- **`PROMPT.md` v3.1** (passo 2b): ensina qualquer IA, com ou sem ferramentas, a planejar a peça antes da técnica. IR = Representação Intermediária, um plano estruturado entre o briefing (palavras) e os geradores (código): o **Creative IR** (conceito, verbos visuais, motivos, hierarquia, comportamento) e um **Composition IR** por composição (gramática espacial, zonas, espaço negativo, fases). Lista os 32 verbos, as 12 gramáticas, os campos de `meta.creativeIR` e `meta.compositionIR`, a forma `env` e a regra de que o `role` de cada camada começa com o seu tier.
+- **`scripts/plan_ir.py`**: `plan_ir.py brief.json` imprime os dois IR; `--apply project.json` grava em `meta` e posiciona as camadas de um projeto escrito à mão (camadas achadas pelo `role` ou pelo nome, idempotente).
+- `SKILL.md`, `/vj` (Claude) e o validador (nota quando falta `meta.creativeIR`) apontam para o plano; `registry.mjs --check` confere que o PROMPT cita todos os verbos e gramáticas. Teste novo `plan_check.mjs`.
+
 ## 3.8.0 (09/10/2026) · Fase 6: Composition IR
 
 - **Composition IR** (`composition_ir.py`, `app/composition.js`, dados em `registry/composition.json`): uma por composição, em `meta.compositionIR`. Traz gramática espacial, zonas (herói, secundário, apoio, fundo), espaço negativo, ponto focal, massa visual, equilíbrio, alinhamento, eixo de movimento, mapa de densidade, escalas, profundidade, áreas seguras, comportamento de borda, âncora do texto e cinco fases (establish, develop, transform, peak, release).

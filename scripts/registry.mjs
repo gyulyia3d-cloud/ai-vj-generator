@@ -100,5 +100,8 @@ const GI = composition.grammarOrder;
 check(GI.length === 12 && composition.grammars.every(g => ['hero', 'secondary', 'support', 'text', 'negative'].every(k => Array.isArray(g[k])) && ['x', 'y', 'diag', 'radial'].includes(g.axis)), 'as 12 gramáticas espaciais definem herói, secundário, apoio, texto, espaço negativo e eixo de movimento', '');
 check(Object.keys(composition.verbGrammars).every(v => verbIds.includes(v) && Object.keys(composition.verbGrammars[v]).every(g => GI.includes(g))) && verbIds.every(v => composition.verbGrammars[v]), 'todo verbo do Creative IR aponta para gramáticas que existem', verbIds.filter(v => !composition.verbGrammars[v]).join(','));
 check(Object.values(composition.aspectClasses).every(c => Object.keys(c).every(g => GI.includes(g))) && Object.values(creative.verbs.reduce((o, v) => (o[v.arc] = 1, o), {})).length === Object.keys(composition.phaseProfiles).length && Object.keys(creative.arcs).every(a => composition.phaseProfiles[a]), 'proporções e arcos do Creative IR têm gramática e perfil de fases', '');
+/* o PROMPT.md (qualquer IA) ensina o vocabulário inteiro */
+const promptDoc = readFileSync(join(SK, 'portable', 'PROMPT.md'), 'utf8');
+check(verbIds.every(v => new RegExp('\\b' + v + '\\b').test(promptDoc)) && GI.every(g => promptDoc.includes(g)) && /plan_ir\.py/.test(promptDoc) && /meta\.creativeIR/.test(promptDoc) && /meta\.compositionIR/.test(promptDoc), 'PROMPT.md cita os 32 verbos, as 12 gramáticas, plan_ir.py e os dois campos do projeto', [...verbIds.filter(v => !new RegExp('\\b' + v + '\\b').test(promptDoc)), ...GI.filter(g => !promptDoc.includes(g))].join(','));
 console.log(fail ? `\n${fail} deriva(s).` : '\nregistry ok.');
 process.exit(fail ? 1 : 0);
