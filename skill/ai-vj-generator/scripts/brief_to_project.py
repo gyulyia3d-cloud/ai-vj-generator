@@ -22,6 +22,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import schema_check  # noqa: E402
 import motion_profiles as mp  # noqa: E402
+import creative_ir as cir  # noqa: E402
 
 # mood -> hue, scheme, motion, hero generators (type, params), shader presets, structure, whether a data/HUD tier suits
 MOODS = {
@@ -66,6 +67,14 @@ MOODS = {
 QUIET = {"GRADE SDF": [5, 1, 0.3, 0.06], "FAIXAS": [8, 1, 0.35, 0.15], "INTERFERÊNCIA": [6, 1, 0.25, 0.3], "CÉLULAS": [4, 1, 0.25, 0.08], "ANÉIS SDF": [6, 1, 0.2, 0.35],
          "KALEIDO": [6, 2.5, 0.4, 0.3], "CAMPO FBM": [1.6, 0.5, 0.7, 1.0], "FLUXO WARP": [1.2, 0.8, 0.4, 1.0]}
 INSTR = {"low": ["rings", "radar", "scope"], "high": ["bars", "radial", "heat"]}
+# first sample of each generator type across all moods, in table order: starting parameters when the concept picks a type the mood does not have
+POOL_HERO, POOL_STRUCT = {}, {}
+for _m in MOODS.values():
+    for _t, _p in _m["hero"]:
+        POOL_HERO.setdefault(_t, _p)
+    for _t, _p in _m["structure"]:
+        POOL_STRUCT.setdefault(_t, _p)
+POOL_STRUCT.setdefault("structure", {"grid": 100})
 ARC = ["ESTABLISH", "BUILD", "PEAK", "RELEASE", "TURN", "CODA"]
 ROMAN = ["I", "II", "III", "IV", "V", "VI"]
 ARCH = {"led": "stage-led", "projection": "facade-mapping", "mapping": "installation", "multi": "led-architecture", "screen": "clip-pack"}
@@ -109,9 +118,12 @@ def layer(t, name, role, p=None, opacity=1, blend="normal"):
     return L
 
 
-def build_comp(i, n, brief, mood, strat, rnd, prof=None):
+def build_comp(i, n, brief, mood, strat, rnd, prof=None, ir=None):
     e = float(brief.get("energy", 0.5))
     dens = {"sparse": 0.6, "balanced": 1.0, "dense": 1.5}.get(brief.get("density", "balanced"), 1.0)
+    drv = bool(ir and ir["drives"])
+    if drv:
+        dens = dens * ir["density"] * (0.7 + 0.6 * ir["arc"]["energy"][min(i, 5)])
     surf = (brief.get("surface") or {}).get("type", "screen")
     led = surf in ("led", "multi", "projection", "mapping")
     m = mood or MOODS["minimal"]
@@ -119,6 +131,10 @@ def build_comp(i, n, brief, mood, strat, rnd, prof=None):
     reactive = strat != "none"
     hero_t, hero_p = m["hero"][i % len(m["hero"])]
     hero_p = dict(hero_p)
+    if drv:
+        hero_t = ir["hierarchy"]["hero"][i % len(ir["hierarchy"]["hero"])]
+        mine = next((h for h in m["hero"] if h[0] == hero_t), None)
+        hero_p = dict(mine[1] if mine else POOL_HERO.get(hero_t, {}))
     texture = None
     if hero_t == "bitfield":
         # a bit field fills about half of the frame by nature: it is texture, not a figure. It takes the structure slot and the next generator becomes the hero.
@@ -149,22 +165,27 @@ def build_comp(i, n, brief, mood, strat, rnd, prof=None):
         hero_p.update(width=max(hero_p.get("width", 1.2), 2.4), alpha=0.9)
     if hero_t == "lines":
         cap_lines(hero_p, brief["surface"]["w"], brief["surface"]["h"], 0.1)
-    sh = m["shader"][i % len(m["shader"])]
+    sh = ir["hierarchy"]["ground"][i % len(ir["hierarchy"]["ground"])] if drv else m["shader"][i % len(m["shader"])]
     st_t, st_p = m["structure"][i % len(m["structure"])]
     st_p = dict(st_p)
     st_op = 0.3
+    if drv:
+        st_t = ir["hierarchy"]["structure"][i % len(ir["hierarchy"]["structure"])]
+        mine = next((s for s in m["structure"] if s[0] == st_t), None)
+        st_p = dict(mine[1] if mine else POOL_STRUCT.get(st_t, {}))
     if texture is not None:
         st_t, st_p, st_op = "bitfield", dict(texture, levels=2), 0.1
     if st_t == "lines":
         cap_lines(st_p, brief["surface"]["w"], brief["surface"]["h"], 0.15)
     if reactive and st_t in ("lines", "structure", "tunnel") and hero_t != st_t:
         st_p.update(audio=0.5, band="high")
+    sh2 = ir["hierarchy"]["ground"][(i + 1) % len(ir["hierarchy"]["ground"])] if drv else m["shader"][(i + 1) % len(m["shader"])]
     kinds = INSTR["high" if e >= 0.5 else "low"]
     words = (brief.get("text") or {}).get("words") or []
     title = (brief.get("text") or {}).get("title", "")
     L = [layer("bg", "FUNDO", "ground colour of the piece; the quiet reference everything else is read against", {"grain": 0 if led else 0.4})]
     L.append(layer("shader", f"CAMPO {tag} {ROMAN[i]}", "ground field: slow matter that gives the figure something to cut against", {"preset": sh, "p1": QUIET[sh][0], "p2": QUIET[sh][1], "p3": QUIET[sh][2], "p4": QUIET[sh][3], "c1": "secondary", "c2": "secondary", "res": 0.5 if led else 1, "alphaMode": "alpha"}, 0.3 if dens <= 1 else 0.22))
-    L.append(layer("shader", f"ATMOSFERA {ROMAN[i]}", "atmosphere: a second, fainter field in the accent that adds depth without competing with the hero", {"preset": m["shader"][(i + 1) % len(m["shader"])], "p1": QUIET[m["shader"][(i + 1) % len(m["shader"])]][0], "p2": QUIET[m["shader"][(i + 1) % len(m["shader"])]][1], "p3": QUIET[m["shader"][(i + 1) % len(m["shader"])]][2], "p4": QUIET[m["shader"][(i + 1) % len(m["shader"])]][3], "c1": "accent", "c2": "accent", "res": 0.5, "alphaMode": "alpha"}, 0.12 if dens <= 1 else 0.18, "add"))
+    L.append(layer("shader", f"ATMOSFERA {ROMAN[i]}", "atmosphere: a second, fainter field in the accent that adds depth without competing with the hero", {"preset": sh2, "p1": QUIET[sh2][0], "p2": QUIET[sh2][1], "p3": QUIET[sh2][2], "p4": QUIET[sh2][3], "c1": "accent", "c2": "accent", "res": 0.5, "alphaMode": "alpha"}, 0.12 if dens <= 1 else 0.18, "add"))
     hero_op = 1
     L.append(layer(hero_t, f"HERÓI {tag} {ROMAN[i]}", f"hero: the single dominant figure of this composition ({brief.get('focalEvent', 'the focal event')})", hero_p, hero_op))
     hero_L = L[-1]
@@ -193,16 +214,22 @@ def build_comp(i, n, brief, mood, strat, rnd, prof=None):
     else:
         L.append(layer("shape", f"MARCA {ROMAN[i]}", "event: one clean mark that appears on the hit and gives the loop a landmark", {"kind": "ring", "layout": "single", "size": 120 + 40 * i, "pulseAmt": 0.4}, 0.9))
     L.append(layer("post", "ACABAMENTO", "finish: vignette and a touch of tension; scanlines only where the surface is a screen", {"scan": 0 if led else 0.2, "vig": 0.35, "prob": 0.1 + 0.3 * e}))
-    arc = ARC[min(i, len(ARC) - 1)] if n > 1 else "ESTABLISH"
+    arc = (ir["arc"]["sequence"] if drv else ARC)[min(i, len(ARC) - 1)] if n > 1 else (ir["arc"]["sequence"][0] if drv else "ESTABLISH")
     return {"name": f"{tag} {ROMAN[i]}", "hypothesis": f"{arc}: {brief['concept'].strip()[:140]}", "motion": ("step" if prof["axes"]["continuity"] < 0.5 else "smooth") if prof else m["motion"], "layers": L}
 
 
-def make_profile(brief, mood_name, energy, bars):
-    """Mood table gives the four soft axes, the brief's energy gives the fifth; brief.motionProfile overrides any of them."""
+def make_profile(brief, mood_name, energy, bars, ir=None):
+    """Mood table gives the four soft axes, the brief's energy gives the fifth. The concept (Creative IR) weighs 65% on the axes and the mood 35%;
+    brief.motionProfile overrides any of them."""
     p = mp.mood_profile(mood_name, energy, bars)
     ov = brief.get("motionProfile") or {}
-    if ov:
+    drives = bool(ir and ir["drives"])
+    if drives or ov:
         ax = dict(p["axes"])
+        if drives:
+            c = cir.DATA["weights"]["conceptBlend"]
+            for k in mp.AXES:
+                ax[k] = round(c * ir["motion"]["axes"][k] + (1 - c) * ax[k], 3)
         ax.update({k: v for k, v in ov.items() if k in mp.AXES})
         p = mp.profile(bars=bars, **ax)
     return p
@@ -220,13 +247,14 @@ AUDIO_LINE = {"none": "the picture ignores the music.", "subtle": "the music onl
               "rhythmic": "kick drives the hero, hats drive the structure, at most three reactive layers.", "full": "the music drives most layers; the instrument layer shows the signal."}
 
 
-def make_art_bible(brief, tags, contract, prof, strat, led):
+def make_art_bible(brief, tags, contract, prof, strat, led, ir=None):
     """One page that turns the contract into decisions every layer can be checked against (references/art-bible.md)."""
     mood = ", ".join(tags) or "minimal"
     txt = brief.get("text") or {}
     return {
         "thesis": brief["concept"].strip()[:200],
-        "material": f"Light on a dark ground ({mood}); additive matter, no fake materials, no gradients that pretend to be objects.",
+        "material": (f"Light on a dark ground ({mood}); {ir['materialBehavior']}; no fake materials, no gradients that pretend to be objects." if ir and ir["drives"]
+                     else f"Light on a dark ground ({mood}); additive matter, no fake materials, no gradients that pretend to be objects."),
         "space": ("Read from far away: heavy strokes, large forms, the hero on the focal third, information at the edge." if led else "Read at arm's length: fine detail allowed, the hero on the focal third, information at the edge."),
         "motion": contract["motionLanguage"],
         "dramaturgy": contract["temporalArc"] + f" Tension: {contract['tension']}; one dominant figure per composition; the ground field is the release.",
@@ -255,22 +283,30 @@ def build(brief):
     n = int(brief.get("compositions", 3))
     e = float(brief.get("energy", 0.5))
     bars = tm.get("bars", 4)
-    profs = [make_profile(brief, tags[i % len(tags)] if tags else None, e, bars) for i in range(n)]
-    comps = [build_comp(i, n, brief, MOODS[tags[i % len(tags)]] if tags else None, strat, rnd, profs[i]) for i in range(n)]
+    ir = cir.compile_ir(brief)
+    drv = ir["drives"]
+    ir["colorLogic"] = color_why
+    mood_types = {h[0] for h in MOODS[tags[0]]["hero"]} if tags else set()
+    hh = ir["hierarchy"]["hero"]
+    ir["novelty"] = round(1 - len([t for t in hh if t in mood_types]) / len(hh), 2) if tags else 1.0
+    profs = [make_profile(brief, tags[i % len(tags)] if tags else None, e, bars, ir) for i in range(n)]
+    comps = [build_comp(i, n, brief, MOODS[tags[i % len(tags)]] if tags else None, strat, rnd, profs[i], ir) for i in range(n)]
     prof0 = profs[0]
     pt = brief.get("lang") == "pt"
     contract = {
         "concept": brief["concept"],
         "audienceEffect": ("O público deve sentir " if pt else "The audience should feel ") + brief["concept"][:100],
-        "semioticIntent": f"Mood {', '.join(tags) or 'unspecified'}: " + brief["concept"][:100],
-        "visualLanguage": f"Generator tiers from the mood table ({', '.join(tags) or 'minimal'}); one dominant figure per composition over a quiet ground.",
+        "semioticIntent": ir["semioticIntent"] if drv else f"Mood {', '.join(tags) or 'unspecified'}: " + brief["concept"][:100],
+        "visualLanguage": (f"Concept {ir['concept'] or 'from the verbs'}: verbs {', '.join(ir['visualVerbs'])}; motifs {', '.join(ir['visualMotifs'])}; one dominant figure per composition over a quiet ground." if drv
+                           else f"Generator tiers from the mood table ({', '.join(tags) or 'minimal'}); one dominant figure per composition over a quiet ground."),
         "formLanguage": "Forms follow the hero generator of each composition; the structure layer keeps one module and one grid.",
-        "materialLanguage": "Light on a dark ground: additive matter, no fake materials.",
+        "materialLanguage": f"Light on a dark ground: {ir['materialBehavior']}." if drv else "Light on a dark ground: additive matter, no fake materials.",
         "colorLogic": color_why + "; one accent used for events only.",
         "spatialLogic": f"Canvas {sf['w']}x{sf['h']} ({surf}); the hero sits on the focal zone, structure on the grid, information at the edge.",
         "motionLanguage": motion_sentence(prof0, bars),
         "typographyLanguage": "Uppercase, one family; text only when the brief supplies exact words.",
-        "temporalArc": f"Each composition: establish, evolve, peak, release over {bars} bars; the set follows {', '.join(ARC[:min(n, len(ARC))]).lower()}.",
+        "temporalArc": (f"{ir['temporalBehavior']}; over {bars} bars per composition, the set follows {', '.join(ir['arc']['sequence'][:min(n, 6)]).lower()}." if drv
+                        else f"Each composition: establish, evolve, peak, release over {bars} bars; the set follows {', '.join(ARC[:min(n, len(ARC))]).lower()}."),
         "loopGrammar": "cyclic: the loop closes on whole bars and every layer moves in whole cycles",
         "technicalStrategy": "Generated without AI by brief_to_project.py from the structured brief; native pixels, deterministic seed, engine generators only.",
         "forbiddenShortcuts": ", ".join(brief.get("banned") or []) or "Do not stretch 16:9 across another aspect; no unseeded randomness; no effect without a reason in the contract.",
@@ -279,7 +315,7 @@ def build(brief):
         "banned": ", ".join(brief.get("banned") or []) or "shockwave rings on every hit; particle bursts; neon glow everywhere",
         "tension": TENSION(e),
     }
-    art_bible = make_art_bible(brief, tags, contract, prof0, strat, led=surf in ("led", "multi", "projection", "mapping"))
+    art_bible = make_art_bible(brief, tags, contract, prof0, strat, led=surf in ("led", "multi", "projection", "mapping"), ir=ir)
     if strat == "none":
         contract["audioStrategyReason"] = (brief.get("audio") or {}).get("reason") or "The brief asks for a silent, music-independent piece."
     spec = {"archetype": [ARCH.get(surf, "clip-pack")], "confirmed": {"pixelMap": [sf["w"], sf["h"]]}, "assumed": [{"field": "surface", "why": "generated from the brief without AI; the facts are the brief's own", "risk": "confirm the pixel map and distances with the venue before delivery"}]}
@@ -291,7 +327,7 @@ def build(brief):
     if sf.get("folds"):
         canvas["folds"] = sf["folds"]
     proj = {"schema": "ai-vj-generator/2", "id": "".join(c if c.isalnum() else "-" for c in str(brief["name"]).lower()).strip("-") or "project", "seed": seed,
-            "meta": {"name": str(brief["name"]).upper(), "lang": brief.get("lang", "en"), "brief": brief["concept"], "contract": contract, "artBible": art_bible, "spec": spec},
+            "meta": {"name": str(brief["name"]).upper(), "lang": brief.get("lang", "en"), "brief": brief["concept"], "contract": contract, "artBible": art_bible, "spec": spec, "creativeIR": ir},
             "canvas": canvas, "time": {"bpm": tm["bpm"], "bars": bars, "loop": True, "seamless": True, "mode": "loop", "transition": "fade" if prof0["axes"]["continuity"] >= 0.5 else "wipe"},
             "audio": {"reactive": strat != "none", "sens": 1, "smooth": 0.7, "strategy": strat},
             "palette": {**pal, **({"mode": "white-alpha"} if (brief.get("output") or {}).get("mode") == "white-alpha" else {})}, "compositions": comps}

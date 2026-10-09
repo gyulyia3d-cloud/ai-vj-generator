@@ -1,7 +1,7 @@
 {
   "lang": "en",
   "loopFrames": 206,
-  "set": 88,
+  "set": 87,
   "weights": {
     "hierarchy": 20,
     "contrast": 15,
@@ -15,73 +15,34 @@
     {
       "index": 0,
       "name": "URBAN I",
-      "total": 86,
+      "total": 88,
       "score": {
-        "hierarchy": 78,
+        "hierarchy": 51,
         "contrast": 100,
         "density": 100,
         "breathing": 100,
-        "motion": 51,
+        "motion": 100,
         "arc": 85,
         "repetition": 100
       },
       "raw": {
         "declaredDensity": "dense",
-        "dominance": 0.17055691862723096,
+        "dominance": 0.13210767800914486,
         "p99": 0.9015741348266602,
-        "coverage": 0.33847334747942387,
-        "quiet": 0.464988425925926,
-        "motion": 0.1987304935652913,
+        "coverage": 0.42982011959876537,
+        "quiet": 0.13281249999999997,
+        "motion": 0.09617049965577039,
         "dead": 0,
         "seamJump": false,
-        "arcRange": 1.2409742107949813,
+        "arcRange": 0.8929536017955816,
         "arcPeak": 0,
         "strongLayers": 2,
         "layers": 13,
-        "maxCorrelation": 0.39411818300070683,
+        "maxCorrelation": 0.8929547003445565,
         "similarTo": 2
       },
       "notes": {
-        "hierarchy": "one clear hero over a quiet supporting cast",
-        "contrast": "the brightest figure reads strongly against the ground",
-        "density": "the amount of drawing is about right",
-        "breathing": "there is empty space for the figure to breathe",
-        "motion": "the picture changes too much from frame to frame: lower energy or slow the fastest layer",
-        "arc": "the energy rises and falls over the loop",
-        "repetition": "this composition is clearly different from the others"
-      }
-    },
-    {
-      "index": 1,
-      "name": "AGGRESSIVE II",
-      "total": 88,
-      "score": {
-        "hierarchy": 69,
-        "contrast": 62,
-        "density": 100,
-        "breathing": 98,
-        "motion": 100,
-        "arc": 100,
-        "repetition": 100
-      },
-      "raw": {
-        "declaredDensity": "dense",
-        "dominance": 0.15807541084670523,
-        "p99": 0.5101591944694519,
-        "coverage": 0.3138081114969136,
-        "quiet": 0.5295138888888887,
-        "motion": 0.09911858145126572,
-        "dead": 0,
-        "seamJump": false,
-        "arcRange": 1.3107400686084247,
-        "arcPeak": 0.6666666666666666,
-        "strongLayers": 2,
-        "layers": 12,
-        "maxCorrelation": 0.8986013579089289,
-        "similarTo": 2
-      },
-      "notes": {
-        "hierarchy": "one clear hero over a quiet supporting cast",
+        "hierarchy": "the eye has several competing centres or no centre: raise the hero, lower the opacity of everything else",
         "contrast": "the brightest figure reads strongly against the ground",
         "density": "the amount of drawing is about right",
         "breathing": "there is empty space for the figure to breathe",
@@ -91,33 +52,72 @@
       }
     },
     {
+      "index": 1,
+      "name": "AGGRESSIVE II",
+      "total": 82,
+      "score": {
+        "hierarchy": 75,
+        "contrast": 62,
+        "density": 100,
+        "breathing": 51,
+        "motion": 99,
+        "arc": 100,
+        "repetition": 100
+      },
+      "raw": {
+        "declaredDensity": "dense",
+        "dominance": 0.1663133727678873,
+        "p99": 0.5101591944694519,
+        "coverage": 0.3491030092592593,
+        "quiet": 0.6967592592592594,
+        "motion": 0.10870523956273126,
+        "dead": 0,
+        "seamJump": false,
+        "arcRange": 1.690608164128523,
+        "arcPeak": 0.6666666666666666,
+        "strongLayers": 2,
+        "layers": 12,
+        "maxCorrelation": 0.8359280011278045,
+        "similarTo": 0
+      },
+      "notes": {
+        "hierarchy": "one clear hero over a quiet supporting cast",
+        "contrast": "the brightest figure reads strongly against the ground",
+        "density": "the amount of drawing is about right",
+        "breathing": "almost nothing but quiet: the piece may feel absent",
+        "motion": "movement is present, continuous and the loop seam is clean",
+        "arc": "the energy rises and falls over the loop",
+        "repetition": "this composition is clearly different from the others"
+      }
+    },
+    {
       "index": 2,
       "name": "URBAN III",
-      "total": 90,
+      "total": 92,
       "score": {
-        "hierarchy": 77,
-        "contrast": 85,
+        "hierarchy": 67,
+        "contrast": 92,
         "density": 100,
-        "breathing": 80,
+        "breathing": 100,
         "motion": 100,
         "arc": 100,
         "repetition": 100
       },
       "raw": {
         "declaredDensity": "dense",
-        "dominance": 0.16964389669782678,
-        "p99": 0.5888219475746155,
-        "coverage": 0.27365551858281895,
-        "quiet": 0.6142939814814815,
-        "motion": 0.10258831918799677,
+        "dominance": 0.1560496475023206,
+        "p99": 0.624028205871582,
+        "coverage": 0.44503821855709874,
+        "quiet": 0.4282407407407407,
+        "motion": 0.09518617849711909,
         "dead": 0,
         "seamJump": false,
-        "arcRange": 1.704574261699176,
+        "arcRange": 1.2872264421246198,
         "arcPeak": 0.6666666666666666,
         "strongLayers": 2,
         "layers": 13,
-        "maxCorrelation": 0.8986013579089289,
-        "similarTo": 1
+        "maxCorrelation": 0.8929547003445565,
+        "similarTo": 0
       },
       "notes": {
         "hierarchy": "one clear hero over a quiet supporting cast",

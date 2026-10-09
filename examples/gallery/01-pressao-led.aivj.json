@@ -9,15 +9,15 @@
     "contract": {
       "concept": "A wall of cold signal that tightens with the beat and releases on the break; the crowd should feel contained pressure.",
       "audienceEffect": "The audience should feel A wall of cold signal that tightens with the beat and releases on the break; the crowd should feel c",
-      "semioticIntent": "Mood industrial, glitch: A wall of cold signal that tightens with the beat and releases on the break; the crowd should feel c",
-      "visualLanguage": "Generator tiers from the mood table (industrial, glitch); one dominant figure per composition over a quiet ground.",
+      "semioticIntent": "containment: compress + pulse + fragment + converge",
+      "visualLanguage": "Concept containment: verbs compress, pulse, fragment, converge; motifs squeeze, beat stamp, shards, vanishing point; one dominant figure per composition over a quiet ground.",
       "formLanguage": "Forms follow the hero generator of each composition; the structure layer keeps one module and one grid.",
-      "materialLanguage": "Light on a dark ground: additive matter, no fake materials.",
+      "materialLanguage": "Light on a dark ground: dense matte metal; lamp, signal.",
       "colorLogic": "analogous scheme, OKLCH hue 250 (cold steel and signal blue); one accent used for events only.",
       "spatialLogic": "Canvas 4500x800 (led); the hero sits on the focal zone, structure on the grid, information at the edge.",
-      "motionLanguage": "Profile: stepped, quantised to the beat grid; springy (zeta 0.868, 0% overshoot); with a wind-up dip before each hit; 16 move(s) per loop of 4 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py).",
+      "motionLanguage": "Profile: stepped, quantised to the beat grid; springy (zeta 0.8082, 1% overshoot); with a wind-up dip before each hit; 16 move(s) per loop of 4 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py).",
       "typographyLanguage": "Uppercase, one family; text only when the brief supplies exact words.",
-      "temporalArc": "Each composition: establish, evolve, peak, release over 4 bars; the set follows establish, build, peak.",
+      "temporalArc": "calm, compress, hold, break, release; slow build to the peak; over 4 bars per composition, the set follows calm, compress, hold.",
       "loopGrammar": "cyclic: the loop closes on whole bars and every layer moves in whole cycles",
       "technicalStrategy": "Generated without AI by brief_to_project.py from the structured brief; native pixels, deterministic seed, engine generators only.",
       "forbiddenShortcuts": "Do not stretch 16:9 across another aspect; no unseeded randomness; no effect without a reason in the contract.",
@@ -28,20 +28,20 @@
     },
     "artBible": {
       "thesis": "A wall of cold signal that tightens with the beat and releases on the break; the crowd should feel contained pressure.",
-      "material": "Light on a dark ground (industrial, glitch); additive matter, no fake materials, no gradients that pretend to be objects.",
+      "material": "Light on a dark ground (industrial, glitch); dense matte metal; lamp, signal; no fake materials, no gradients that pretend to be objects.",
       "space": "Read from far away: heavy strokes, large forms, the hero on the focal third, information at the edge.",
-      "motion": "Profile: stepped, quantised to the beat grid; springy (zeta 0.868, 0% overshoot); with a wind-up dip before each hit; 16 move(s) per loop of 4 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py).",
-      "dramaturgy": "Each composition: establish, evolve, peak, release over 4 bars; the set follows establish, build, peak. Tension: assertive; one dominant figure per composition; the ground field is the release.",
+      "motion": "Profile: stepped, quantised to the beat grid; springy (zeta 0.8082, 1% overshoot); with a wind-up dip before each hit; 16 move(s) per loop of 4 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py).",
+      "dramaturgy": "calm, compress, hold, break, release; slow build to the peak; over 4 bars per composition, the set follows calm, compress, hold. Tension: assertive; one dominant figure per composition; the ground field is the release.",
       "color": "analogous scheme, OKLCH hue 250 (cold steel and signal blue); one accent used for events only.",
       "typography": "No text unless the brief supplies exact words; if added: uppercase, one family, three sizes at most.",
       "audio": "Strategy rhythmic: kick drives the hero, hats drive the structure, at most three reactive layers.",
       "banned": "shockwave rings on every hit; particle bursts; neon glow everywhere",
       "motionProfile": {
-        "energy": 0.75,
-        "elasticity": 0.15,
-        "anticipation": 0.1,
-        "continuity": 0.15,
-        "rhythm": 0.55
+        "energy": 0.664,
+        "elasticity": 0.218,
+        "anticipation": 0.459,
+        "continuity": 0.405,
+        "rhythm": 0.561
       },
       "density": "balanced"
     },
@@ -67,6 +67,93 @@
           "risk": "confirm the pixel map and distances with the venue before delivery"
         }
       ]
+    },
+    "creativeIR": {
+      "version": 1,
+      "drives": true,
+      "concept": "containment",
+      "concepts": [
+        "containment",
+        "fracture",
+        "signal"
+      ],
+      "visualVerbs": [
+        "compress",
+        "pulse",
+        "fragment",
+        "converge"
+      ],
+      "verbScores": {
+        "compress": 32,
+        "pulse": 20,
+        "fragment": 20,
+        "converge": 18
+      },
+      "hierarchy": {
+        "hero": [
+          "lines",
+          "tunnel",
+          "shape"
+        ],
+        "structure": [
+          "tunnel",
+          "lines"
+        ],
+        "ground": [
+          "GRADE SDF",
+          "ANÉIS SDF",
+          "FAIXAS"
+        ]
+      },
+      "visualMotifs": [
+        "squeeze",
+        "beat stamp",
+        "shards",
+        "vanishing point"
+      ],
+      "motion": {
+        "axes": {
+          "energy": 0.618,
+          "elasticity": 0.254,
+          "anticipation": 0.652,
+          "continuity": 0.543,
+          "rhythm": 0.567
+        }
+      },
+      "density": 1.22,
+      "rhythm": 0.567,
+      "scale": "medium",
+      "arc": {
+        "id": "pressure",
+        "sequence": [
+          "CALM",
+          "COMPRESS",
+          "HOLD",
+          "BREAK",
+          "RELEASE",
+          "CODA"
+        ],
+        "energy": [
+          0.3,
+          0.65,
+          0.9,
+          1.0,
+          0.45,
+          0.2
+        ],
+        "description": "calm, compress, hold, break, release"
+      },
+      "spatialBehavior": "toward the centre; from the hero",
+      "temporalBehavior": "calm, compress, hold, break, release; slow build to the peak",
+      "materialBehavior": "dense matte metal; lamp, signal",
+      "audioRole": "low-frequency mass",
+      "compositionStrategy": "bars and rings squeeze together; the hero stamps on the kick",
+      "animationStrategy": "inward velocity (hold, pressure, release); sharp attack, fast decay (beat to beat)",
+      "audienceEffect": "A wall of cold signal that tightens with the beat and releases on the break; the crowd should feel contained pressure.",
+      "semioticIntent": "containment: compress + pulse + fragment + converge",
+      "forbiddenMotifs": [],
+      "novelty": 0.33,
+      "colorLogic": "analogous scheme, OKLCH hue 250 (cold steel and signal blue)"
     }
   },
   "canvas": {
@@ -101,7 +188,7 @@
   "compositions": [
     {
       "name": "INDUSTRIAL I",
-      "hypothesis": "ESTABLISH: A wall of cold signal that tightens with the beat and releases on the break; the crowd should feel contained pressure.",
+      "hypothesis": "CALM: A wall of cold signal that tightens with the beat and releases on the break; the crowd should feel contained pressure.",
       "motion": "step",
       "layers": [
         {
@@ -119,7 +206,7 @@
           "type": "shader",
           "name": "CAMPO INDUSTRIAL I",
           "on": true,
-          "opacity": 0.3,
+          "opacity": 0.22,
           "blend": "normal",
           "role": "ground field: slow matter that gives the figure something to cut against",
           "p": {
@@ -138,15 +225,15 @@
           "type": "shader",
           "name": "ATMOSFERA I",
           "on": true,
-          "opacity": 0.12,
+          "opacity": 0.18,
           "blend": "add",
           "role": "atmosphere: a second, fainter field in the accent that adds depth without competing with the hero",
           "p": {
-            "preset": "FAIXAS",
-            "p1": 8,
+            "preset": "ANÉIS SDF",
+            "p1": 6,
             "p2": 1,
-            "p3": 0.35,
-            "p4": 0.15,
+            "p3": 0.2,
+            "p4": 0.35,
             "c1": "accent",
             "c2": "accent",
             "res": 0.5,
@@ -154,19 +241,50 @@
           }
         },
         {
-          "type": "tunnel",
+          "type": "lines",
           "name": "HERÓI INDUSTRIAL I",
           "on": true,
           "opacity": 1,
           "blend": "normal",
           "role": "hero: the single dominant figure of this composition (the focal event)",
           "p": {
-            "shape": "rect",
-            "count": 14,
-            "cycles": 1,
+            "dir": "v",
+            "count": 39,
             "weight": 9,
+            "stepped": true,
             "audio": 0.75,
-            "band": "bass",
+            "band": "bass"
+          },
+          "mod": [
+            {
+              "k": "weight",
+              "src": "lfo",
+              "shape": "spring",
+              "cycles": 16,
+              "zeta": 0.8082,
+              "wn": 14.304,
+              "min": 1.0,
+              "max": 1.432,
+              "mode": "mul",
+              "ta": 0.0643,
+              "depth": 0.1377,
+              "steps": 15
+            }
+          ]
+        },
+        {
+          "type": "tunnel",
+          "name": "ESTRUTURA I",
+          "on": true,
+          "opacity": 0.3,
+          "blend": "normal",
+          "role": "structure: the grid or rhythm the eye measures the hero against",
+          "p": {
+            "shape": "circle",
+            "count": 10,
+            "cycles": 1,
+            "audio": 0.5,
+            "band": "high",
             "size": 1
           },
           "mod": [
@@ -175,29 +293,14 @@
               "src": "lfo",
               "shape": "spring",
               "cycles": 16,
-              "zeta": 0.868,
-              "wn": 15.25,
+              "zeta": 0.9041,
+              "wn": 12.113,
               "min": 1.0,
-              "max": 1.475,
+              "max": 1.216,
               "mode": "mul",
-              "ta": 0.014,
-              "depth": 0.03,
-              "steps": 8
+              "steps": 15
             }
           ]
-        },
-        {
-          "type": "structure",
-          "name": "ESTRUTURA I",
-          "on": true,
-          "opacity": 0.3,
-          "blend": "normal",
-          "role": "structure: the grid or rhythm the eye measures the hero against",
-          "p": {
-            "grid": 120,
-            "audio": 0.5,
-            "band": "high"
-          }
         },
         {
           "type": "instrument",
@@ -243,7 +346,7 @@
     },
     {
       "name": "GLITCH II",
-      "hypothesis": "BUILD: A wall of cold signal that tightens with the beat and releases on the break; the crowd should feel contained pressure.",
+      "hypothesis": "COMPRESS: A wall of cold signal that tightens with the beat and releases on the break; the crowd should feel contained pressure.",
       "motion": "step",
       "layers": [
         {
@@ -261,15 +364,15 @@
           "type": "shader",
           "name": "CAMPO GLITCH II",
           "on": true,
-          "opacity": 0.3,
+          "opacity": 0.22,
           "blend": "normal",
           "role": "ground field: slow matter that gives the figure something to cut against",
           "p": {
-            "preset": "INTERFERÊNCIA",
+            "preset": "ANÉIS SDF",
             "p1": 6,
             "p2": 1,
-            "p3": 0.25,
-            "p4": 0.3,
+            "p3": 0.2,
+            "p4": 0.35,
             "c1": "secondary",
             "c2": "secondary",
             "res": 0.5,
@@ -280,15 +383,15 @@
           "type": "shader",
           "name": "ATMOSFERA II",
           "on": true,
-          "opacity": 0.12,
+          "opacity": 0.18,
           "blend": "add",
           "role": "atmosphere: a second, fainter field in the accent that adds depth without competing with the hero",
           "p": {
-            "preset": "GRADE SDF",
-            "p1": 5,
+            "preset": "FAIXAS",
+            "p1": 8,
             "p2": 1,
-            "p3": 0.3,
-            "p4": 0.06,
+            "p3": 0.35,
+            "p4": 0.15,
             "c1": "accent",
             "c2": "accent",
             "res": 0.5,
@@ -296,61 +399,64 @@
           }
         },
         {
-          "type": "lines",
+          "type": "tunnel",
           "name": "HERÓI GLITCH II",
           "on": true,
           "opacity": 1,
           "blend": "normal",
           "role": "hero: the single dominant figure of this composition (the focal event)",
           "p": {
-            "dir": "v",
-            "count": 60,
-            "weight": 6,
-            "stepped": true,
+            "shape": "rect",
+            "count": 19,
+            "cycles": 1,
+            "weight": 9,
             "audio": 0.75,
-            "band": "bass"
-          },
-          "mod": [
-            {
-              "k": "weight",
-              "src": "lfo",
-              "shape": "spring",
-              "cycles": 32,
-              "zeta": 0.956,
-              "wn": 15.25,
-              "min": 1.0,
-              "max": 1.475,
-              "mode": "mul",
-              "steps": 5
-            }
-          ]
-        },
-        {
-          "type": "shape",
-          "name": "ESTRUTURA II",
-          "on": true,
-          "opacity": 0.3,
-          "blend": "normal",
-          "role": "structure: the grid or rhythm the eye measures the hero against",
-          "p": {
-            "kind": "square",
-            "layout": "grid",
-            "count": 48,
-            "size": 30,
-            "spread": 520
+            "band": "bass",
+            "size": 1
           },
           "mod": [
             {
               "k": "size",
               "src": "lfo",
               "shape": "spring",
-              "cycles": 32,
-              "zeta": 0.978,
-              "wn": 12.775,
+              "cycles": 16,
+              "zeta": 0.839,
+              "wn": 14.304,
               "min": 1.0,
-              "max": 1.2375,
+              "max": 1.432,
               "mode": "mul",
-              "steps": 5
+              "ta": 0.0594,
+              "depth": 0.1272,
+              "steps": 14
+            }
+          ]
+        },
+        {
+          "type": "lines",
+          "name": "ESTRUTURA II",
+          "on": true,
+          "opacity": 0.3,
+          "blend": "normal",
+          "role": "structure: the grid or rhythm the eye measures the hero against",
+          "p": {
+            "dir": "h",
+            "count": 18,
+            "weight": 2,
+            "audio": 0.5,
+            "band": "high"
+          },
+          "mod": [
+            {
+              "k": "weight",
+              "src": "lfo",
+              "shape": "spring",
+              "cycles": 16,
+              "zeta": 0.9195,
+              "wn": 12.113,
+              "min": 1.0,
+              "max": 1.216,
+              "mode": "mul",
+              "steps": 14
             }
           ]
         },
@@ -398,7 +504,7 @@
     },
     {
       "name": "INDUSTRIAL III",
-      "hypothesis": "PEAK: A wall of cold signal that tightens with the beat and releases on the break; the crowd should feel contained pressure.",
+      "hypothesis": "HOLD: A wall of cold signal that tightens with the beat and releases on the break; the crowd should feel contained pressure.",
       "motion": "step",
       "layers": [
         {
@@ -416,15 +522,15 @@
           "type": "shader",
           "name": "CAMPO INDUSTRIAL III",
           "on": true,
-          "opacity": 0.3,
+          "opacity": 0.22,
           "blend": "normal",
           "role": "ground field: slow matter that gives the figure something to cut against",
           "p": {
-            "preset": "INTERFERÊNCIA",
-            "p1": 6,
+            "preset": "FAIXAS",
+            "p1": 8,
             "p2": 1,
-            "p3": 0.25,
-            "p4": 0.3,
+            "p3": 0.35,
+            "p4": 0.15,
             "c1": "secondary",
             "c2": "secondary",
             "res": 0.5,
@@ -435,7 +541,7 @@
           "type": "shader",
           "name": "ATMOSFERA III",
           "on": true,
-          "opacity": 0.12,
+          "opacity": 0.18,
           "blend": "add",
           "role": "atmosphere: a second, fainter field in the accent that adds depth without competing with the hero",
           "p": {
@@ -451,19 +557,51 @@
           }
         },
         {
-          "type": "tunnel",
+          "type": "shape",
           "name": "HERÓI INDUSTRIAL III",
           "on": true,
           "opacity": 1,
           "blend": "normal",
           "role": "hero: the single dominant figure of this composition (the focal event)",
           "p": {
-            "shape": "rect",
-            "count": 14,
-            "cycles": 1,
-            "weight": 9,
+            "kind": "ring",
+            "layout": "radial",
+            "count": 12,
+            "size": 150,
+            "spread": 260,
             "audio": 0.75,
-            "band": "bass",
+            "band": "bass"
+          },
+          "mod": [
+            {
+              "k": "size",
+              "src": "lfo",
+              "shape": "spring",
+              "cycles": 16,
+              "zeta": 0.8082,
+              "wn": 14.304,
+              "min": 1.0,
+              "max": 1.432,
+              "mode": "mul",
+              "ta": 0.0643,
+              "depth": 0.1377,
+              "steps": 15
+            }
+          ]
+        },
+        {
+          "type": "tunnel",
+          "name": "ESTRUTURA III",
+          "on": true,
+          "opacity": 0.3,
+          "blend": "normal",
+          "role": "structure: the grid or rhythm the eye measures the hero against",
+          "p": {
+            "shape": "circle",
+            "count": 10,
+            "cycles": 1,
+            "audio": 0.5,
+            "band": "high",
             "size": 1
           },
           "mod": [
@@ -472,29 +610,14 @@
               "src": "lfo",
               "shape": "spring",
               "cycles": 16,
-              "zeta": 0.868,
-              "wn": 15.25,
+              "zeta": 0.9041,
+              "wn": 12.113,
               "min": 1.0,
-              "max": 1.475,
+              "max": 1.216,
               "mode": "mul",
-              "ta": 0.014,
-              "depth": 0.03,
-              "steps": 8
+              "steps": 15
             }
           ]
-        },
-        {
-          "type": "bitfield",
-          "name": "ESTRUTURA III",
-          "on": true,
-          "opacity": 0.1,
-          "blend": "normal",
-          "role": "structure: the grid or rhythm the eye measures the hero against",
-          "p": {
-            "form": 5,
-            "cell": 18,
-            "levels": 2
-          }
         },
         {
           "type": "instrument",

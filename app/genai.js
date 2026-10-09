@@ -77,6 +77,10 @@ const GENAI = (() => {
       hero: [['sim', { kind: 'ink', flow: 0.6 }], ['organism', { size: 1.0, spin: 0.4 }], ['flow', { count: 500, trail: 24, amp: 0.08 }]],
       shader: ['CAMPO FBM', 'FLUXO WARP', 'ANÉIS SDF'], structure: [['shape', { kind: 'ring', layout: 'single', size: 260 }], ['lines', { dir: 'h', count: 6, weight: 1.5 }]] },
   };
+  /* primeiro exemplar de cada tipo de gerador entre todos os climas, na ordem da tabela: parâmetros de partida quando o conceito escolhe um tipo que o clima não tem */
+  const POOL_HERO = {}, POOL_STRUCT = {};
+  for (const mm of Object.values(MOODS)) { for (const [t, pp] of mm.hero) if (!(t in POOL_HERO)) POOL_HERO[t] = pp; for (const [t, pp] of mm.structure) if (!(t in POOL_STRUCT)) POOL_STRUCT[t] = pp; }
+  POOL_STRUCT.structure = POOL_STRUCT.structure || { grid: 100 };
   const QUIET = { 'GRADE SDF': [5, 1, 0.3, 0.06], FAIXAS: [8, 1, 0.35, 0.15], 'INTERFERÊNCIA': [6, 1, 0.25, 0.3], 'CÉLULAS': [4, 1, 0.25, 0.08], 'ANÉIS SDF': [6, 1, 0.2, 0.35], KALEIDO: [6, 2.5, 0.4, 0.3], 'CAMPO FBM': [1.6, 0.5, 0.7, 1.0], 'FLUXO WARP': [1.2, 0.8, 0.4, 1.0] };
   const INSTR = { low: ['rings', 'radar', 'scope'], high: ['bars', 'radial', 'heat'] };
   const ARC = ['ESTABLISH', 'BUILD', 'PEAK', 'RELEASE', 'TURN', 'CODA'], ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
@@ -102,11 +106,13 @@ const GENAI = (() => {
   }
   const layer = (t, name, role, p, opacity = 1, blend = 'normal') => { const L = { type: t, name, on: true, opacity, blend, role }; if (p !== undefined && p !== null) L.p = p; return L; };
 
-  function buildComp(i, n, brief, mood, strat, prof) {
-    const e = +(brief.energy == null ? 0.5 : brief.energy), dens = { sparse: 0.6, balanced: 1.0, dense: 1.5 }[brief.density || 'balanced'] || 1.0;
+  function buildComp(i, n, brief, mood, strat, prof, ir) {
+    const e = +(brief.energy == null ? 0.5 : brief.energy); let dens = { sparse: 0.6, balanced: 1.0, dense: 1.5 }[brief.density || 'balanced'] || 1.0; const drv = !!(ir && ir.drives);
+    if (drv) dens = dens * ir.density * (0.7 + 0.6 * ir.arc.energy[Math.min(i, 5)]);
     const surf = (brief.surface || {}).type || 'screen', led = ['led', 'multi', 'projection', 'mapping'].includes(surf), m = mood || MOODS.minimal;
     const moods = brief.mood || [], tag = (moods.length ? moods[i % Math.max(1, moods.length)] : 'composition').toUpperCase(), reactive = strat !== 'none';
     let [heroT, heroP] = m.hero[i % m.hero.length]; heroP = Object.assign({}, heroP);
+    if (drv) { heroT = ir.hierarchy.hero[i % ir.hierarchy.hero.length]; const mine = m.hero.find(h => h[0] === heroT); heroP = Object.assign({}, mine ? mine[1] : (POOL_HERO[heroT] || {})); }
     let texture = null;
     if (heroT === 'bitfield') {
       texture = heroP; const alt = m.hero.filter(h => h[0] !== 'bitfield');
@@ -123,13 +129,14 @@ const GENAI = (() => {
     if (heroT === 'organism') heroP.dot = Math.max(heroP.dot == null ? 1 : heroP.dot, 2.2);
     if (heroT === 'flow') { heroP.width = Math.max(heroP.width == null ? 1.2 : heroP.width, 2.4); heroP.alpha = 0.9; }
     if (heroT === 'lines') capLines(heroP, brief.surface.w, brief.surface.h, 0.1);
-    const sh = m.shader[i % m.shader.length];
+    const sh = drv ? ir.hierarchy.ground[i % ir.hierarchy.ground.length] : m.shader[i % m.shader.length];
     let [stT, stP] = m.structure[i % m.structure.length]; stP = Object.assign({}, stP); let stOp = 0.3;
+    if (drv) { stT = ir.hierarchy.structure[i % ir.hierarchy.structure.length]; const mine = m.structure.find(s => s[0] === stT); stP = Object.assign({}, mine ? mine[1] : (POOL_STRUCT[stT] || {})); }
     if (texture !== null) { stT = 'bitfield'; stP = Object.assign({}, texture, { levels: 2 }); stOp = 0.1; }
     if (stT === 'lines') capLines(stP, brief.surface.w, brief.surface.h, 0.15);
     if (reactive && ['lines', 'structure', 'tunnel'].includes(stT) && heroT !== stT) { stP.audio = 0.5; stP.band = 'high'; }
     const kinds = INSTR[e >= 0.5 ? 'high' : 'low'], tx = brief.text || {}, words = tx.words || [], title = tx.title || '';
-    const sh2 = m.shader[(i + 1) % m.shader.length], q1 = QUIET[sh], q2 = QUIET[sh2];
+    const sh2 = drv ? ir.hierarchy.ground[(i + 1) % ir.hierarchy.ground.length] : m.shader[(i + 1) % m.shader.length], q1 = QUIET[sh], q2 = QUIET[sh2];
     const L = [layer('bg', 'FUNDO', 'ground colour of the piece; the quiet reference everything else is read against', { grain: led ? 0 : 0.4 })];
     L.push(layer('shader', `CAMPO ${tag} ${ROMAN[i]}`, 'ground field: slow matter that gives the figure something to cut against', { preset: sh, p1: q1[0], p2: q1[1], p3: q1[2], p4: q1[3], c1: 'secondary', c2: 'secondary', res: led ? 0.5 : 1, alphaMode: 'alpha' }, dens <= 1 ? 0.3 : 0.22));
     L.push(layer('shader', `ATMOSFERA ${ROMAN[i]}`, 'atmosphere: a second, fainter field in the accent that adds depth without competing with the hero', { preset: sh2, p1: q2[0], p2: q2[1], p3: q2[2], p4: q2[3], c1: 'accent', c2: 'accent', res: 0.5, alphaMode: 'alpha' }, dens <= 1 ? 0.12 : 0.18, 'add'));
@@ -154,12 +161,18 @@ const GENAI = (() => {
     } else if (m.info) L.push(layer('hud', `INFORMAÇÃO ${ROMAN[i]}`, 'information: small, calm, always the same place; it tells the viewer the system is alive', { title: title || String(brief.name).toUpperCase() }, 0.8));
     else L.push(layer('shape', `MARCA ${ROMAN[i]}`, 'event: one clean mark that appears on the hit and gives the loop a landmark', { kind: 'ring', layout: 'single', size: 120 + 40 * i, pulseAmt: 0.4 }, 0.9));
     L.push(layer('post', 'ACABAMENTO', 'finish: vignette and a touch of tension; scanlines only where the surface is a screen', { scan: led ? 0 : 0.2, vig: 0.35, prob: 0.1 + 0.3 * e }));
-    const arc = n > 1 ? ARC[Math.min(i, ARC.length - 1)] : 'ESTABLISH';
+    const arc = n > 1 ? (drv ? ir.arc.sequence : ARC)[Math.min(i, ARC.length - 1)] : (drv ? ir.arc.sequence[0] : 'ESTABLISH');
     return { name: `${tag} ${ROMAN[i]}`, hypothesis: `${arc}: ${brief.concept.trim().slice(0, 140)}`, motion: prof ? (prof.axes.continuity < 0.5 ? 'step' : 'smooth') : m.motion, layers: L };
   }
-  function makeProfile(brief, moodName, energy, bars) {
-    let p = moodProfile(moodName, energy, bars); const ov = brief.motionProfile || {};
-    if (Object.keys(ov).length) { const ax = Object.assign({}, p.axes); for (const k of AXES) if (ov[k] !== undefined) ax[k] = ov[k]; p = profile(ax.energy, ax.elasticity, ax.anticipation, ax.continuity, ax.rhythm, bars); }
+  /* o conceito (Creative IR) pesa 65% nos eixos de movimento e o humor 35%; o que o brief declara em motionProfile vale mais que os dois */
+  function makeProfile(brief, moodName, energy, bars, ir) {
+    let p = moodProfile(moodName, energy, bars); const ov = brief.motionProfile || {}, drives = ir && ir.drives;
+    if (drives || Object.keys(ov).length) {
+      const ax = Object.assign({}, p.axes), c = CREATIVE.DATA.weights.conceptBlend;
+      if (drives) for (const k of AXES) ax[k] = pyRound(c * ir.motion.axes[k] + (1 - c) * ax[k], 3);
+      for (const k of AXES) if (ov[k] !== undefined) ax[k] = ov[k];
+      p = profile(ax.energy, ax.elasticity, ax.anticipation, ax.continuity, ax.rhythm, bars);
+    }
     return p;
   }
   function motionSentence(p, bars) {
@@ -170,11 +183,11 @@ const GENAI = (() => {
   /* Python imprime float inteiro como "1.0"; em texto o número aparece como o Python o escreve (zeta é sempre fracionário aqui, mas por garantia) */
   const pyNum = x => Number.isInteger(x) ? x.toFixed(1) : String(x);
 
-  function makeArtBible(brief, tags, contract, prof, strat, led) {
+  function makeArtBible(brief, tags, contract, prof, strat, led, ir) {
     const mood = tags.join(', ') || 'minimal', tx = brief.text || {};
     return {
       thesis: brief.concept.trim().slice(0, 200),
-      material: `Light on a dark ground (${mood}); additive matter, no fake materials, no gradients that pretend to be objects.`,
+      material: ir && ir.drives ? `Light on a dark ground (${mood}); ${ir.materialBehavior}; no fake materials, no gradients that pretend to be objects.` : `Light on a dark ground (${mood}); additive matter, no fake materials, no gradients that pretend to be objects.`,
       space: led ? 'Read from far away: heavy strokes, large forms, the hero on the focal third, information at the edge.' : "Read at arm's length: fine detail allowed, the hero on the focal third, information at the edge.",
       motion: contract.motionLanguage,
       dramaturgy: contract.temporalArc + ` Tension: ${contract.tension}; one dominant figure per composition; the ground field is the release.`,
@@ -212,18 +225,20 @@ const GENAI = (() => {
     const seed = brief.seed !== undefined ? brief.seed : crc32(brief.name) % 900000 + 1000, tags = brief.mood || [], mood = tags.length ? MOODS[tags[0]] : null;
     const [pal, colorWhy] = palette(brief, mood), sf = brief.surface, tm = brief.time, surf = sf.type || 'screen', strat = (brief.audio || {}).strategy || 'rhythmic', n = brief.compositions === undefined ? 3 : brief.compositions;
     const e = +(brief.energy == null ? 0.5 : brief.energy), bars = tm.bars === undefined ? 4 : tm.bars, led = ['led', 'multi', 'projection', 'mapping'].includes(surf);
-    const profs = Array.from({ length: n }, (_, i) => makeProfile(brief, tags.length ? tags[i % tags.length] : null, e, bars));
-    const comps = profs.map((pr, i) => buildComp(i, n, brief, tags.length ? MOODS[tags[i % tags.length]] : null, strat, pr)), prof0 = profs[0], pt = brief.lang === 'pt';
+    const ir = CREATIVE.compile(brief), drv = ir.drives; ir.colorLogic = colorWhy;
+    { const mt = tags.length ? new Set(MOODS[tags[0]].hero.map(h => h[0])) : new Set(), hh = ir.hierarchy.hero; ir.novelty = tags.length ? pyRound(1 - hh.filter(t => mt.has(t)).length / hh.length, 2) : 1.0; }
+    const profs = Array.from({ length: n }, (_, i) => makeProfile(brief, tags.length ? tags[i % tags.length] : null, e, bars, ir));
+    const comps = profs.map((pr, i) => buildComp(i, n, brief, tags.length ? MOODS[tags[i % tags.length]] : null, strat, pr, ir)), prof0 = profs[0], pt = brief.lang === 'pt';
     const contract = {
       concept: brief.concept, audienceEffect: (pt ? 'O público deve sentir ' : 'The audience should feel ') + brief.concept.slice(0, 100),
-      semioticIntent: `Mood ${tags.join(', ') || 'unspecified'}: ` + brief.concept.slice(0, 100),
-      visualLanguage: `Generator tiers from the mood table (${tags.join(', ') || 'minimal'}); one dominant figure per composition over a quiet ground.`,
+      semioticIntent: drv ? ir.semioticIntent : `Mood ${tags.join(', ') || 'unspecified'}: ` + brief.concept.slice(0, 100),
+      visualLanguage: drv ? `Concept ${ir.concept || 'from the verbs'}: verbs ${ir.visualVerbs.join(', ')}; motifs ${ir.visualMotifs.join(', ')}; one dominant figure per composition over a quiet ground.` : `Generator tiers from the mood table (${tags.join(', ') || 'minimal'}); one dominant figure per composition over a quiet ground.`,
       formLanguage: 'Forms follow the hero generator of each composition; the structure layer keeps one module and one grid.',
-      materialLanguage: 'Light on a dark ground: additive matter, no fake materials.',
+      materialLanguage: drv ? `Light on a dark ground: ${ir.materialBehavior}.` : 'Light on a dark ground: additive matter, no fake materials.',
       colorLogic: colorWhy + '; one accent used for events only.',
       spatialLogic: `Canvas ${sf.w}x${sf.h} (${surf}); the hero sits on the focal zone, structure on the grid, information at the edge.`,
       motionLanguage: motionSentence(prof0, bars), typographyLanguage: 'Uppercase, one family; text only when the brief supplies exact words.',
-      temporalArc: `Each composition: establish, evolve, peak, release over ${bars} bars; the set follows ${ARC.slice(0, Math.min(n, ARC.length)).join(', ').toLowerCase()}.`,
+      temporalArc: drv ? `${ir.temporalBehavior}; over ${bars} bars per composition, the set follows ${ir.arc.sequence.slice(0, Math.min(n, 6)).join(', ').toLowerCase()}.` : `Each composition: establish, evolve, peak, release over ${bars} bars; the set follows ${ARC.slice(0, Math.min(n, ARC.length)).join(', ').toLowerCase()}.`,
       loopGrammar: 'cyclic: the loop closes on whole bars and every layer moves in whole cycles',
       technicalStrategy: 'Generated without AI by brief_to_project.py from the structured brief; native pixels, deterministic seed, engine generators only.',
       forbiddenShortcuts: (brief.banned || []).join(', ') || 'Do not stretch 16:9 across another aspect; no unseeded randomness; no effect without a reason in the contract.',
@@ -231,15 +246,15 @@ const GENAI = (() => {
       releaseZone: 'The ground field and the empty third of the frame; no layer fills it.',
       banned: (brief.banned || []).join(', ') || 'shockwave rings on every hit; particle bursts; neon glow everywhere', tension: tension(e),
     };
-    const artBible = makeArtBible(brief, tags, contract, prof0, strat, led);
+    const artBible = makeArtBible(brief, tags, contract, prof0, strat, led, ir);
     if (strat === 'none') contract.audioStrategyReason = (brief.audio || {}).reason || 'The brief asks for a silent, music-independent piece.';
     const spec = { archetype: [ARCH[surf] || 'clip-pack'], confirmed: { pixelMap: [sf.w, sf.h] }, assumed: [{ field: 'surface', why: "generated from the brief without AI; the facts are the brief's own", risk: 'confirm the pixel map and distances with the venue before delivery' }] };
     if (sf.pitchMm) spec.confirmed.pitchMm = sf.pitchMm; if (sf.viewingDistanceM) spec.confirmed.viewingDistanceM = sf.viewingDistanceM;
     const canvas = { w: sf.w, h: sf.h, fps: sf.fps || 30, target: ['screen', 'led', 'projection', 'mapping', 'multi'].includes(surf) ? surf : 'screen' }; if (sf.folds) canvas.folds = sf.folds;
     const id = String(brief.name).toLowerCase().split('').map(c => /[\p{L}\p{N}]/u.test(c) ? c : '-').join('').replace(/^-+|-+$/g, '') || 'project';
-    return { schema: 'ai-vj-generator/2', id, seed, meta: { name: String(brief.name).toUpperCase(), lang: brief.lang || 'en', brief: brief.concept, contract, artBible, spec }, canvas,
+    return { schema: 'ai-vj-generator/2', id, seed, meta: { name: String(brief.name).toUpperCase(), lang: brief.lang || 'en', brief: brief.concept, contract, artBible, spec, creativeIR: ir }, canvas,
       time: { bpm: tm.bpm, bars, loop: true, seamless: true, mode: 'loop', transition: prof0.axes.continuity >= 0.5 ? 'fade' : 'wipe' }, audio: { reactive: strat !== 'none', sens: 1, smooth: 0.7, strategy: strat },
       palette: Object.assign({}, pal, (brief.output || {}).mode === 'white-alpha' ? { mode: 'white-alpha' } : {}), compositions: comps };
   }
-  return { build, checkBrief, profile, toMod, moodProfile, pyRound, crc32, MOODS: MOOD_NAMES, MOOD_TABLE: MOODS };
+  return { build, checkBrief, compileIR: CREATIVE.compile, profile, toMod, moodProfile, pyRound, crc32, MOODS: MOOD_NAMES, MOOD_TABLE: MOODS };
 })();

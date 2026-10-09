@@ -256,6 +256,26 @@ ART_BIBLE_OPTIONAL = ("motionProfile", "density")
 MOTION_AXES = ("energy", "elasticity", "anticipation", "continuity", "rhythm")
 
 
+def check_creative_ir(meta, out):
+    """Phase 5: meta.creativeIR (references/creative-ir.md). Verbs and generator types must exist in the registry."""
+    e, w = out["errors"], out["warnings"]
+    ir = meta.get("creativeIR")
+    if ir is None:
+        return
+    if not isinstance(ir, dict):
+        e.append("meta.creativeIR must be an object")
+        return
+    verbs = {v["id"] for v in _registry("creative.json")["verbs"]}
+    for v in ir.get("visualVerbs", []):
+        if v not in verbs:
+            w.append(f"meta.creativeIR.visualVerbs: unknown verb '{v}' (registry/creative.json)")
+    if ir.get("drives") and not ir.get("visualVerbs"):
+        w.append("meta.creativeIR drives the generators but lists no visual verbs")
+    for k in ("hero", "structure", "ground"):
+        if not isinstance((ir.get("hierarchy") or {}).get(k, []), list):
+            e.append(f"meta.creativeIR.hierarchy.{k} must be a list")
+
+
 def check_art_bible(meta, out):
     """Phase 2: the one-page art bible (references/art-bible.md) and the motion profile that executes its 'motion' line."""
     e, w = out["errors"], out["warnings"]
@@ -478,6 +498,7 @@ def validate(path, extra_assets=()):
     if v2:
         check_contract(P.get("meta", {}), out)
         check_art_bible(P.get("meta", {}), out)
+        check_creative_ir(P.get("meta", {}), out)
         check_capabilities(P.get("capabilities"), out)
     cv, tm = P.get("canvas", {}), P.get("time", {})
     if v2:

@@ -8,14 +8,14 @@ Regenerar: `node scripts/gallery.mjs`. Conferir: `node scripts/gallery.mjs --che
 
 | Brief | Superfície | Clima | BPM | Notas por composição | Set |
 |---|---|---|---|---|---|
-| `01-pressao-led` | led 4500×800 | industrial, glitch | 132 | INDUSTRIAL I: **87** · GLITCH II: **82** · INDUSTRIAL III: **90** | **86** |
-| `02-jardim-tela` | screen 1920×1080 | organic, calm | 96 | ORGANIC I: **96** · CALM II: **85** · ORGANIC III: **89** | **90** |
-| `03-vertical-cosmos` | screen 1080×1920 | cosmic | 90 | COSMIC I: **88** · COSMIC II: **89** · COSMIC III: **85** | **87** |
-| `04-torre-urbana` | led 540×1920 | urban, aggressive | 140 | URBAN I: **86** · AGGRESSIVE II: **88** · URBAN III: **90** | **88** |
+| `01-pressao-led` | led 4500×800 | industrial, glitch | 132 | INDUSTRIAL I: **80** · GLITCH II: **78** · INDUSTRIAL III: **87** | **82** |
+| `02-jardim-tela` | screen 1920×1080 | organic, calm | 96 | ORGANIC I: **96** · CALM II: **87** · ORGANIC III: **85** | **89** |
+| `03-vertical-cosmos` | screen 1080×1920 | cosmic | 90 | COSMIC I: **83** · COSMIC II: **80** · COSMIC III: **78** | **80** |
+| `04-torre-urbana` | led 540×1920 | urban, aggressive | 140 | URBAN I: **88** · AGGRESSIVE II: **82** · URBAN III: **92** | **87** |
 | `05-ritual-mapping` | mapping 1920×1080 | ritual | 84 | RITUAL I: **90** · RITUAL II: **100** · RITUAL III: **91** | **94** |
-| `06-glitch-parede` | led 4500×2160 | glitch, retro | 150 | GLITCH I: **95** · RETRO II: **80** · GLITCH III: **93** | **89** |
-| `07-liquido-tela` | screen 1920×1080 | liquid, calm | 78 | LIQUID I: **90** · CALM II: **92** · LIQUID III: **92** | **91** |
-| `08-minimal-multi` | multi 5760×1080 | minimal | 70 | MINIMAL I: **84** · MINIMAL II: **77** · MINIMAL III: **97** | **86** |
+| `06-glitch-parede` | led 4500×2160 | glitch, retro | 150 | GLITCH I: **99** · RETRO II: **92** · GLITCH III: **99** | **97** |
+| `07-liquido-tela` | screen 1920×1080 | liquid, calm | 78 | LIQUID I: **86** · CALM II: **83** · LIQUID III: **83** | **84** |
+| `08-minimal-multi` | multi 5760×1080 | minimal | 70 | MINIMAL I: **82** · MINIMAL II: **84** · MINIMAL III: **96** | **87** |
 
 ## Pressure Test (`01-pressao-led`)
 
@@ -27,9 +27,9 @@ Regenerar: `node scripts/gallery.mjs`. Conferir: `node scripts/gallery.mjs --che
 
 ![01-pressao-led-03_INDUSTRIAL_III.jpg](contato/01-pressao-led-03_INDUSTRIAL_III.jpg)
 
-- **INDUSTRIAL I** — 87/100 · hierarchy 93 · contrast 100 · density 100 · breathing 35 · motion 100 · arc 85 · repetition 100
-- **GLITCH II** — 82/100 · hierarchy 74 · contrast 49 · density 100 · breathing 81 · motion 100 · arc 85 · repetition 100
-- **INDUSTRIAL III** — 90/100 · hierarchy 98 · contrast 53 · density 100 · breathing 100 · motion 100 · arc 85 · repetition 100
+- **INDUSTRIAL I** — 80/100 · hierarchy 77 · contrast 100 · density 100 · breathing 12 · motion 100 · arc 85 · repetition 100
+- **GLITCH II** — 78/100 · hierarchy 62 · contrast 45 · density 100 · breathing 71 · motion 100 · arc 85 · repetition 100
+- **INDUSTRIAL III** — 87/100 · hierarchy 99 · contrast 51 · density 100 · breathing 77 · motion 100 · arc 85 · repetition 100
 
 ## Jardim de Luz (`02-jardim-tela`)
 
@@ -41,9 +41,9 @@ Regenerar: `node scripts/gallery.mjs`. Conferir: `node scripts/gallery.mjs --che
 
 ![02-jardim-tela-03_ORGANIC_III.jpg](contato/02-jardim-tela-03_ORGANIC_III.jpg)
 
-- **ORGANIC I** — 96/100 · hierarchy 100 · contrast 100 · density 100 · breathing 92 · motion 100 · arc 100 · repetition 76
-- **CALM II** — 85/100 · hierarchy 100 · contrast 100 · density 85 · breathing 23 · motion 100 · arc 100 · repetition 76
-- **ORGANIC III** — 89/100 · hierarchy 63 · contrast 100 · density 100 · breathing 77 · motion 100 · arc 100 · repetition 100
+- **ORGANIC I** — 96/100 · hierarchy 100 · contrast 100 · density 100 · breathing 75 · motion 100 · arc 100 · repetition 100
+- **CALM II** — 87/100 · hierarchy 63 · contrast 100 · density 100 · breathing 61 · motion 100 · arc 100 · repetition 100
+- **ORGANIC III** — 85/100 · hierarchy 69 · contrast 100 · density 90 · breathing 65 · motion 100 · arc 85 · repetition 100
 
 ## Poço Cósmico (`03-vertical-cosmos`)
 
@@ -55,9 +55,9 @@ Regenerar: `node scripts/gallery.mjs`. Conferir: `node scripts/gallery.mjs --che
 
 ![03-vertical-cosmos-03_COSMIC_III.jpg](contato/03-vertical-cosmos-03_COSMIC_III.jpg)
 
-- **COSMIC I** — 88/100 · hierarchy 83 · contrast 59 · density 80 · breathing 100 · motion 100 · arc 100 · repetition 100
-- **COSMIC II** — 89/100 · hierarchy 52 · contrast 93 · density 100 · breathing 100 · motion 100 · arc 100 · repetition 100
-- **COSMIC III** — 85/100 · hierarchy 63 · contrast 53 · density 94 · breathing 100 · motion 100 · arc 100 · repetition 100
+- **COSMIC I** — 83/100 · hierarchy 48 · contrast 56 · density 100 · breathing 100 · motion 100 · arc 100 · repetition 100
+- **COSMIC II** — 80/100 · hierarchy 56 · contrast 23 · density 100 · breathing 100 · motion 100 · arc 100 · repetition 100
+- **COSMIC III** — 78/100 · hierarchy 50 · contrast 23 · density 93 · breathing 100 · motion 100 · arc 100 · repetition 100
 
 ## Sirene (`04-torre-urbana`)
 
@@ -69,9 +69,9 @@ Regenerar: `node scripts/gallery.mjs`. Conferir: `node scripts/gallery.mjs --che
 
 ![04-torre-urbana-03_URBAN_III.jpg](contato/04-torre-urbana-03_URBAN_III.jpg)
 
-- **URBAN I** — 86/100 · hierarchy 78 · contrast 100 · density 100 · breathing 100 · motion 51 · arc 85 · repetition 100
-- **AGGRESSIVE II** — 88/100 · hierarchy 69 · contrast 62 · density 100 · breathing 98 · motion 100 · arc 100 · repetition 100
-- **URBAN III** — 90/100 · hierarchy 77 · contrast 85 · density 100 · breathing 80 · motion 100 · arc 100 · repetition 100
+- **URBAN I** — 88/100 · hierarchy 51 · contrast 100 · density 100 · breathing 100 · motion 100 · arc 85 · repetition 100
+- **AGGRESSIVE II** — 82/100 · hierarchy 75 · contrast 62 · density 100 · breathing 51 · motion 99 · arc 100 · repetition 100
+- **URBAN III** — 92/100 · hierarchy 67 · contrast 92 · density 100 · breathing 100 · motion 100 · arc 100 · repetition 100
 
 ## Brasa (`05-ritual-mapping`)
 
@@ -97,9 +97,9 @@ Regenerar: `node scripts/gallery.mjs`. Conferir: `node scripts/gallery.mjs --che
 
 ![06-glitch-parede-03_GLITCH_III.jpg](contato/06-glitch-parede-03_GLITCH_III.jpg)
 
-- **GLITCH I** — 95/100 · hierarchy 73 · contrast 100 · density 100 · breathing 100 · motion 100 · arc 100 · repetition 100
-- **RETRO II** — 80/100 · hierarchy 47 · contrast 100 · density 100 · breathing 100 · motion 50 · arc 85 · repetition 100
-- **GLITCH III** — 93/100 · hierarchy 77 · contrast 100 · density 100 · breathing 100 · motion 81 · arc 100 · repetition 100
+- **GLITCH I** — 99/100 · hierarchy 95 · contrast 100 · density 100 · breathing 100 · motion 100 · arc 100 · repetition 100
+- **RETRO II** — 92/100 · hierarchy 62 · contrast 100 · density 100 · breathing 100 · motion 100 · arc 97 · repetition 100
+- **GLITCH III** — 99/100 · hierarchy 100 · contrast 100 · density 100 · breathing 93 · motion 100 · arc 100 · repetition 100
 
 ## Correnteza (`07-liquido-tela`)
 
@@ -111,9 +111,9 @@ Regenerar: `node scripts/gallery.mjs`. Conferir: `node scripts/gallery.mjs --che
 
 ![07-liquido-tela-03_LIQUID_III.jpg](contato/07-liquido-tela-03_LIQUID_III.jpg)
 
-- **LIQUID I** — 90/100 · hierarchy 65 · contrast 100 · density 92 · breathing 100 · motion 100 · arc 85 · repetition 100
-- **CALM II** — 92/100 · hierarchy 100 · contrast 100 · density 100 · breathing 100 · motion 100 · arc 85 · repetition 41
-- **LIQUID III** — 92/100 · hierarchy 100 · contrast 100 · density 96 · breathing 100 · motion 100 · arc 85 · repetition 41
+- **LIQUID I** — 86/100 · hierarchy 100 · contrast 20 · density 100 · breathing 100 · motion 100 · arc 85 · repetition 100
+- **CALM II** — 83/100 · hierarchy 82 · contrast 26 · density 100 · breathing 100 · motion 100 · arc 85 · repetition 100
+- **LIQUID III** — 83/100 · hierarchy 56 · contrast 63 · density 100 · breathing 100 · motion 100 · arc 85 · repetition 100
 
 ## Vão (`08-minimal-multi`)
 
@@ -125,6 +125,6 @@ Regenerar: `node scripts/gallery.mjs`. Conferir: `node scripts/gallery.mjs --che
 
 ![08-minimal-multi-03_MINIMAL_III.jpg](contato/08-minimal-multi-03_MINIMAL_III.jpg)
 
-- **MINIMAL I** — 84/100 · hierarchy 94 · contrast 17 · density 100 · breathing 100 · motion 100 · arc 85 · repetition 100
-- **MINIMAL II** — 77/100 · hierarchy 55 · contrast 21 · density 81 · breathing 100 · motion 100 · arc 100 · repetition 100
-- **MINIMAL III** — 97/100 · hierarchy 95 · contrast 100 · density 100 · breathing 100 · motion 100 · arc 85 · repetition 100
+- **MINIMAL I** — 82/100 · hierarchy 95 · contrast 4 · density 100 · breathing 97 · motion 100 · arc 85 · repetition 100
+- **MINIMAL II** — 84/100 · hierarchy 80 · contrast 37 · density 100 · breathing 100 · motion 100 · arc 85 · repetition 100
+- **MINIMAL III** — 96/100 · hierarchy 83 · contrast 96 · density 100 · breathing 100 · motion 98 · arc 100 · repetition 100

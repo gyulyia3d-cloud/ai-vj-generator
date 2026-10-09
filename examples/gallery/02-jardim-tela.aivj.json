@@ -9,15 +9,15 @@
     "contract": {
       "concept": "Um organismo de luz que cresce devagar e respira com a música; o público deve sentir cuidado e espanto.",
       "audienceEffect": "O público deve sentir Um organismo de luz que cresce devagar e respira com a música; o público deve sentir cuidado e espan",
-      "semioticIntent": "Mood organic, calm: Um organismo de luz que cresce devagar e respira com a música; o público deve sentir cuidado e espan",
-      "visualLanguage": "Generator tiers from the mood table (organic, calm); one dominant figure per composition over a quiet ground.",
+      "semioticIntent": "body: breathe + grow + pulse + bloom",
+      "visualLanguage": "Concept body: verbs breathe, grow, pulse, bloom; motifs inhale and exhale, seed point, beat stamp, opening petals; one dominant figure per composition over a quiet ground.",
       "formLanguage": "Forms follow the hero generator of each composition; the structure layer keeps one module and one grid.",
-      "materialLanguage": "Light on a dark ground: additive matter, no fake materials.",
+      "materialLanguage": "Light on a dark ground: skin, membrane; soft living matter.",
       "colorLogic": "analogous scheme, OKLCH hue 145 (living green, soft growth); one accent used for events only.",
       "spatialLogic": "Canvas 1920x1080 (screen); the hero sits on the focal zone, structure on the grid, information at the edge.",
-      "motionLanguage": "Profile: smooth, eased; springy (zeta 0.516, 15% overshoot); with a wind-up dip before each hit; 16 move(s) per loop of 8 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py).",
+      "motionLanguage": "Profile: smooth, eased; springy (zeta 0.5899, 10% overshoot); with a wind-up dip before each hit; 16 move(s) per loop of 8 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py).",
       "typographyLanguage": "Uppercase, one family; text only when the brief supplies exact words.",
-      "temporalArc": "Each composition: establish, evolve, peak, release over 8 bars; the set follows establish, build, peak.",
+      "temporalArc": "a figure that returns to where it began; one breath per bar; over 8 bars per composition, the set follows establish, turn, turn.",
       "loopGrammar": "cyclic: the loop closes on whole bars and every layer moves in whole cycles",
       "technicalStrategy": "Generated without AI by brief_to_project.py from the structured brief; native pixels, deterministic seed, engine generators only.",
       "forbiddenShortcuts": "Do not stretch 16:9 across another aspect; no unseeded randomness; no effect without a reason in the contract.",
@@ -28,20 +28,20 @@
     },
     "artBible": {
       "thesis": "Um organismo de luz que cresce devagar e respira com a música; o público deve sentir cuidado e espanto.",
-      "material": "Light on a dark ground (organic, calm); additive matter, no fake materials, no gradients that pretend to be objects.",
+      "material": "Light on a dark ground (organic, calm); skin, membrane; soft living matter; no fake materials, no gradients that pretend to be objects.",
       "space": "Read at arm's length: fine detail allowed, the hero on the focal third, information at the edge.",
-      "motion": "Profile: smooth, eased; springy (zeta 0.516, 15% overshoot); with a wind-up dip before each hit; 16 move(s) per loop of 8 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py).",
-      "dramaturgy": "Each composition: establish, evolve, peak, release over 8 bars; the set follows establish, build, peak. Tension: balanced; one dominant figure per composition; the ground field is the release.",
+      "motion": "Profile: smooth, eased; springy (zeta 0.5899, 10% overshoot); with a wind-up dip before each hit; 16 move(s) per loop of 8 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py).",
+      "dramaturgy": "a figure that returns to where it began; one breath per bar; over 8 bars per composition, the set follows establish, turn, turn. Tension: balanced; one dominant figure per composition; the ground field is the release.",
       "color": "analogous scheme, OKLCH hue 145 (living green, soft growth); one accent used for events only.",
       "typography": "No text unless the brief supplies exact words; if added: uppercase, one family, three sizes at most.",
       "audio": "Strategy structural: the music drives structure and scale, never every hit.",
       "banned": "shockwave rings on every hit; particle bursts; neon glow everywhere",
       "motionProfile": {
-        "energy": 0.35,
-        "elasticity": 0.55,
-        "anticipation": 0.55,
-        "continuity": 1.0,
-        "rhythm": 0.2
+        "energy": 0.433,
+        "elasticity": 0.466,
+        "anticipation": 0.488,
+        "continuity": 0.836,
+        "rhythm": 0.346
       },
       "density": "balanced"
     },
@@ -62,6 +62,92 @@
           "risk": "confirm the pixel map and distances with the venue before delivery"
         }
       ]
+    },
+    "creativeIR": {
+      "version": 1,
+      "drives": true,
+      "concept": "body",
+      "concepts": [
+        "emergence",
+        "body"
+      ],
+      "visualVerbs": [
+        "breathe",
+        "grow",
+        "pulse",
+        "bloom"
+      ],
+      "verbScores": {
+        "breathe": 34,
+        "grow": 32,
+        "pulse": 24,
+        "bloom": 21
+      },
+      "hierarchy": {
+        "hero": [
+          "organism",
+          "shape",
+          "sim"
+        ],
+        "structure": [
+          "shape",
+          "tunnel"
+        ],
+        "ground": [
+          "CAMPO FBM",
+          "FLUXO WARP",
+          "FAIXAS"
+        ]
+      },
+      "visualMotifs": [
+        "inhale and exhale",
+        "seed point",
+        "beat stamp",
+        "opening petals"
+      ],
+      "motion": {
+        "axes": {
+          "energy": 0.478,
+          "elasticity": 0.421,
+          "anticipation": 0.454,
+          "continuity": 0.748,
+          "rhythm": 0.425
+        }
+      },
+      "density": 1.05,
+      "rhythm": 0.425,
+      "scale": "large",
+      "arc": {
+        "id": "cycle",
+        "sequence": [
+          "ESTABLISH",
+          "TURN",
+          "TURN",
+          "TURN",
+          "RETURN",
+          "CODA"
+        ],
+        "energy": [
+          0.5,
+          0.7,
+          0.5,
+          0.7,
+          0.5,
+          0.4
+        ],
+        "description": "a figure that returns to where it began"
+      },
+      "spatialBehavior": "from the centre; radial from one centre",
+      "temporalBehavior": "a figure that returns to where it began; one breath per bar",
+      "materialBehavior": "skin, membrane; soft living matter",
+      "audioRole": "rms breathes the scale",
+      "compositionStrategy": "the hero inhales on the downbeat; the hero starts small and takes the room",
+      "animationStrategy": "sine, slow in and out (in, out); outward, slow in, no overshoot (seed to mass)",
+      "audienceEffect": "Um organismo de luz que cresce devagar e respira com a música; o público deve sentir cuidado e espanto.",
+      "semioticIntent": "body: breathe + grow + pulse + bloom",
+      "forbiddenMotifs": [],
+      "novelty": 0.33,
+      "colorLogic": "analogous scheme, OKLCH hue 145 (living green, soft growth)"
     }
   },
   "canvas": {
@@ -111,7 +197,7 @@
           "type": "shader",
           "name": "CAMPO ORGANIC I",
           "on": true,
-          "opacity": 0.3,
+          "opacity": 0.22,
           "blend": "normal",
           "role": "ground field: slow matter that gives the figure something to cut against",
           "p": {
@@ -130,7 +216,7 @@
           "type": "shader",
           "name": "ATMOSFERA I",
           "on": true,
-          "opacity": 0.12,
+          "opacity": 0.18,
           "blend": "add",
           "role": "atmosphere: a second, fainter field in the accent that adds depth without competing with the hero",
           "p": {
@@ -154,7 +240,7 @@
           "role": "hero: the single dominant figure of this composition (the focal event)",
           "p": {
             "size": 1.1,
-            "points": 2400,
+            "points": 2520,
             "audio": 0.59,
             "band": "bass",
             "dot": 2.2,
@@ -166,13 +252,14 @@
               "src": "lfo",
               "shape": "spring",
               "cycles": 16,
-              "zeta": 0.516,
-              "wn": 10.85,
+              "zeta": 0.5899,
+              "wn": 11.763,
               "min": 1.0,
-              "max": 1.275,
+              "max": 1.3165,
               "mode": "mul",
-              "ta": 0.077,
-              "depth": 0.165
+              "ta": 0.0683,
+              "depth": 0.1464,
+              "steps": 27
             }
           ]
         },
@@ -196,11 +283,12 @@
               "src": "lfo",
               "shape": "spring",
               "cycles": 16,
-              "zeta": 0.758,
-              "wn": 9.695,
+              "zeta": 0.795,
+              "wn": 10.334,
               "min": 1.0,
-              "max": 1.1375,
-              "mode": "mul"
+              "max": 1.1583,
+              "mode": "mul",
+              "steps": 27
             }
           ]
         },
@@ -251,7 +339,7 @@
     },
     {
       "name": "CALM II",
-      "hypothesis": "BUILD: Um organismo de luz que cresce devagar e respira com a música; o público deve sentir cuidado e espanto.",
+      "hypothesis": "TURN: Um organismo de luz que cresce devagar e respira com a música; o público deve sentir cuidado e espanto.",
       "motion": "smooth",
       "layers": [
         {
@@ -269,7 +357,7 @@
           "type": "shader",
           "name": "CAMPO CALM II",
           "on": true,
-          "opacity": 0.3,
+          "opacity": 0.22,
           "blend": "normal",
           "role": "ground field: slow matter that gives the figure something to cut against",
           "p": {
@@ -288,15 +376,15 @@
           "type": "shader",
           "name": "ATMOSFERA II",
           "on": true,
-          "opacity": 0.12,
+          "opacity": 0.18,
           "blend": "add",
           "role": "atmosphere: a second, fainter field in the accent that adds depth without competing with the hero",
           "p": {
-            "preset": "ANÉIS SDF",
-            "p1": 6,
+            "preset": "FAIXAS",
+            "p1": 8,
             "p2": 1,
-            "p3": 0.2,
-            "p4": 0.35,
+            "p3": 0.35,
+            "p4": 0.15,
             "c1": "accent",
             "c2": "accent",
             "res": 0.5,
@@ -304,61 +392,65 @@
           }
         },
         {
-          "type": "organism",
+          "type": "shape",
           "name": "HERÓI CALM II",
           "on": true,
           "opacity": 1,
           "blend": "normal",
           "role": "hero: the single dominant figure of this composition (the focal event)",
           "p": {
-            "size": 1.0,
-            "spin": 0.4,
+            "kind": "ring",
+            "layout": "radial",
+            "count": 9,
+            "size": 150,
+            "spread": 260,
             "audio": 0.59,
-            "band": "bass",
-            "dot": 2.2,
-            "breathe": 0.5
+            "band": "bass"
           },
           "mod": [
             {
-              "k": "breathe",
+              "k": "size",
               "src": "lfo",
               "shape": "spring",
-              "cycles": 8,
-              "zeta": 0.604,
-              "wn": 10.85,
+              "cycles": 16,
+              "zeta": 0.6207,
+              "wn": 11.763,
               "min": 1.0,
-              "max": 1.275,
+              "max": 1.3165,
               "mode": "mul",
-              "ta": 0.049,
-              "depth": 0.105
+              "ta": 0.0585,
+              "depth": 0.1254,
+              "steps": 27
             }
           ]
         },
         {
-          "type": "lines",
+          "type": "tunnel",
           "name": "ESTRUTURA II",
           "on": true,
           "opacity": 0.3,
           "blend": "normal",
           "role": "structure: the grid or rhythm the eye measures the hero against",
           "p": {
-            "dir": "h",
-            "count": 6,
-            "weight": 1.5,
+            "shape": "circle",
+            "count": 10,
+            "cycles": 1,
             "audio": 0.5,
-            "band": "high"
+            "band": "high",
+            "size": 1
           },
           "mod": [
             {
-              "k": "weight",
+              "k": "size",
               "src": "lfo",
               "shape": "spring",
-              "cycles": 8,
-              "zeta": 0.802,
-              "wn": 9.695,
+              "cycles": 16,
+              "zeta": 0.8104,
+              "wn": 10.334,
               "min": 1.0,
-              "max": 1.1375,
-              "mode": "mul"
+              "max": 1.1583,
+              "mode": "mul",
+              "steps": 27
             }
           ]
         },
@@ -409,7 +501,7 @@
     },
     {
       "name": "ORGANIC III",
-      "hypothesis": "PEAK: Um organismo de luz que cresce devagar e respira com a música; o público deve sentir cuidado e espanto.",
+      "hypothesis": "TURN: Um organismo de luz que cresce devagar e respira com a música; o público deve sentir cuidado e espanto.",
       "motion": "smooth",
       "layers": [
         {
@@ -427,15 +519,15 @@
           "type": "shader",
           "name": "CAMPO ORGANIC III",
           "on": true,
-          "opacity": 0.3,
+          "opacity": 0.22,
           "blend": "normal",
           "role": "ground field: slow matter that gives the figure something to cut against",
           "p": {
-            "preset": "CÉLULAS",
-            "p1": 4,
+            "preset": "FAIXAS",
+            "p1": 8,
             "p2": 1,
-            "p3": 0.25,
-            "p4": 0.08,
+            "p3": 0.35,
+            "p4": 0.15,
             "c1": "secondary",
             "c2": "secondary",
             "res": 1,
@@ -446,7 +538,7 @@
           "type": "shader",
           "name": "ATMOSFERA III",
           "on": true,
-          "opacity": 0.12,
+          "opacity": 0.18,
           "blend": "add",
           "role": "atmosphere: a second, fainter field in the accent that adds depth without competing with the hero",
           "p": {
@@ -462,36 +554,19 @@
           }
         },
         {
-          "type": "flow",
+          "type": "sim",
           "name": "HERÓI ORGANIC III",
           "on": true,
           "opacity": 1,
           "blend": "normal",
           "role": "hero: the single dominant figure of this composition (the focal event)",
           "p": {
-            "count": 900,
-            "trail": 10,
-            "audio": 0.59,
-            "band": "bass",
-            "width": 2.4,
-            "alpha": 0.9,
-            "amp": 0.12
-          },
-          "mod": [
-            {
-              "k": "amp",
-              "src": "lfo",
-              "shape": "spring",
-              "cycles": 16,
-              "zeta": 0.516,
-              "wn": 10.85,
-              "min": 1.0,
-              "max": 1.275,
-              "mode": "mul",
-              "ta": 0.077,
-              "depth": 0.165
-            }
-          ]
+            "kind": "reaction",
+            "feed": 0.037,
+            "kill": 0.06,
+            "threshold": 0.5,
+            "soft": 0.15
+          }
         },
         {
           "type": "shape",
@@ -513,11 +588,12 @@
               "src": "lfo",
               "shape": "spring",
               "cycles": 16,
-              "zeta": 0.758,
-              "wn": 9.695,
+              "zeta": 0.795,
+              "wn": 10.334,
               "min": 1.0,
-              "max": 1.1375,
-              "mode": "mul"
+              "max": 1.1583,
+              "mode": "mul",
+              "steps": 27
             }
           ]
         },

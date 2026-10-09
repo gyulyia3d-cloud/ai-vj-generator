@@ -62,6 +62,86 @@
           "risk": "confirm the pixel map and distances with the venue before delivery"
         }
       ]
+    },
+    "creativeIR": {
+      "version": 1,
+      "drives": false,
+      "concept": null,
+      "concepts": [],
+      "visualVerbs": [
+        "orbit",
+        "breathe",
+        "converge"
+      ],
+      "verbScores": {
+        "orbit": 2,
+        "breathe": 1,
+        "converge": 1
+      },
+      "hierarchy": {
+        "hero": [
+          "shape",
+          "tunnel",
+          "organism"
+        ],
+        "structure": [
+          "shape",
+          "lines"
+        ],
+        "ground": [
+          "ANÉIS SDF",
+          "KALEIDO",
+          "CAMPO FBM"
+        ]
+      },
+      "visualMotifs": [
+        "invisible attractor",
+        "inhale and exhale",
+        "vanishing point"
+      ],
+      "motion": {
+        "axes": {
+          "energy": 0.362,
+          "elasticity": 0.287,
+          "anticipation": 0.338,
+          "continuity": 0.875,
+          "rhythm": 0.375
+        }
+      },
+      "density": 1.0,
+      "rhythm": 0.375,
+      "scale": "medium",
+      "arc": {
+        "id": "cycle",
+        "sequence": [
+          "ESTABLISH",
+          "TURN",
+          "TURN",
+          "TURN",
+          "RETURN",
+          "CODA"
+        ],
+        "energy": [
+          0.5,
+          0.7,
+          0.5,
+          0.7,
+          0.5,
+          0.4
+        ],
+        "description": "a figure that returns to where it began"
+      },
+      "spatialBehavior": "around a point; from the centre",
+      "temporalBehavior": "a figure that returns to where it began; periodic, whole cycles",
+      "materialBehavior": "metal rings; skin, membrane",
+      "audioRole": "the kick marks the cycle",
+      "compositionStrategy": "satellites around an empty centre; the hero inhales on the downbeat",
+      "animationStrategy": "constant angular velocity (none, repeats); sine, slow in and out (in, out)",
+      "audienceEffect": "Anéis de brasa em volta de um objeto no palco, como um ritual que se acende e se apaga.",
+      "semioticIntent": "mood: orbit + breathe + converge",
+      "forbiddenMotifs": [],
+      "novelty": 0.0,
+      "colorLogic": "mono scheme, OKLCH hue 25 (ember and bone, a single warm family)"
     }
   },
   "canvas": {

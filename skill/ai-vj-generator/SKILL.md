@@ -83,6 +83,7 @@ Load only what the project needs.
 | Working with another AI (ChatGPT, Gemini, Codex, local), or checking JSON structure without pip | `portable/PROMPT.md`, `scripts/schema_check.py`, `schema/project.schema.json` |
 | Audio, BPM, beat sync, integrated time, band transients, `layer.mod` modulation | `references/audio-bus.md` |
 | A still image with depth (2.5D parallax), a depth map, Gaussian splats or a point cloud (.ply) | `references/depth-and-splats.md`, `scripts/depth_estimate.py` |
+| Intention before technique: concept, 32 visual verbs, motifs, arc (`meta.creativeIR`, `brief.verbs`) | `references/creative-ir.md` |
 | Effects over time (trail, feedback, slit scan, displacement): the `temporal` layer | `references/temporal-layer.md` |
 | ISF: the 84-shader library as the `isf` layer (menu in the layer parameters) ; importing `.fs` with `scripts/isf.py import` | `references/isf-layer.md`, `isf-library/README.md`, `scripts/isf.py` |
 | Rendering: MP4 (H.264) or PNG sequence, by the Export tab or `node scripts/render.mjs`, never by screen capture | `references/render-cli.md` |

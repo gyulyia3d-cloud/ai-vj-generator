@@ -16,6 +16,7 @@
         "lang": { "type": "string", "enum": ["en", "pt"] },
         "brief": { "type": "string" },
         "contract": { "type": "object" },
+        "creativeIR": { "type": "object", "description": "Creative IR compiled from the brief (references/creative-ir.md): concept, visual verbs, motifs, hierarchy, behaviours." },
         "artBible": {
           "type": "object",
           "properties": {

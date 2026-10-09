@@ -9,15 +9,15 @@
     "contract": {
       "concept": "Faixas e palavras gritadas em uma torre estreita de LED, como sinal de rua à noite.",
       "audienceEffect": "The audience should feel Faixas e palavras gritadas em uma torre estreita de LED, como sinal de rua à noite.",
-      "semioticIntent": "Mood urban, aggressive: Faixas e palavras gritadas em uma torre estreita de LED, como sinal de rua à noite.",
-      "visualLanguage": "Generator tiers from the mood table (urban, aggressive); one dominant figure per composition over a quiet ground.",
+      "semioticIntent": "signal: pulse + oscillate + accumulate + trace",
+      "visualLanguage": "Concept signal: verbs pulse, oscillate, accumulate, trace; motifs beat stamp, pendulum, stacked strata, drawn path; one dominant figure per composition over a quiet ground.",
       "formLanguage": "Forms follow the hero generator of each composition; the structure layer keeps one module and one grid.",
-      "materialLanguage": "Light on a dark ground: additive matter, no fake materials.",
+      "materialLanguage": "Light on a dark ground: lamp, signal; pendulum, wave.",
       "colorLogic": "complement scheme, OKLCH hue 60 (sodium yellow against dark asphalt); one accent used for events only.",
       "spatialLogic": "Canvas 540x1920 (led); the hero sits on the focal zone, structure on the grid, information at the edge.",
-      "motionLanguage": "Profile: stepped, quantised to the beat grid; springy (zeta 0.824, 1% overshoot); with a wind-up dip before each hit; 16 move(s) per loop of 4 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py).",
+      "motionLanguage": "Profile: smooth, eased; springy (zeta 0.7624, 2% overshoot); with a wind-up dip before each hit; 16 move(s) per loop of 4 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py).",
       "typographyLanguage": "Uppercase, one family; text only when the brief supplies exact words.",
-      "temporalArc": "Each composition: establish, evolve, peak, release over 4 bars; the set follows establish, build, peak.",
+      "temporalArc": "a figure that returns to where it began; on every beat; over 4 bars per composition, the set follows establish, turn, turn.",
       "loopGrammar": "cyclic: the loop closes on whole bars and every layer moves in whole cycles",
       "technicalStrategy": "Generated without AI by brief_to_project.py from the structured brief; native pixels, deterministic seed, engine generators only.",
       "forbiddenShortcuts": "Do not stretch 16:9 across another aspect; no unseeded randomness; no effect without a reason in the contract.",
@@ -28,20 +28,20 @@
     },
     "artBible": {
       "thesis": "Faixas e palavras gritadas em uma torre estreita de LED, como sinal de rua à noite.",
-      "material": "Light on a dark ground (urban, aggressive); additive matter, no fake materials, no gradients that pretend to be objects.",
+      "material": "Light on a dark ground (urban, aggressive); lamp, signal; pendulum, wave; no fake materials, no gradients that pretend to be objects.",
       "space": "Read from far away: heavy strokes, large forms, the hero on the focal third, information at the edge.",
-      "motion": "Profile: stepped, quantised to the beat grid; springy (zeta 0.824, 1% overshoot); with a wind-up dip before each hit; 16 move(s) per loop of 4 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py).",
-      "dramaturgy": "Each composition: establish, evolve, peak, release over 4 bars; the set follows establish, build, peak. Tension: assertive; one dominant figure per composition; the ground field is the release.",
+      "motion": "Profile: smooth, eased; springy (zeta 0.7624, 2% overshoot); with a wind-up dip before each hit; 16 move(s) per loop of 4 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py).",
+      "dramaturgy": "a figure that returns to where it began; on every beat; over 4 bars per composition, the set follows establish, turn, turn. Tension: assertive; one dominant figure per composition; the ground field is the release.",
       "color": "complement scheme, OKLCH hue 60 (sodium yellow against dark asphalt); one accent used for events only.",
       "typography": "Uppercase, one family, exact words from the brief only; a calm hierarchy: title, caption at 0.4x, data at 0.16x; revealed by glyph on the build and cleared before the loop ends.",
       "audio": "Strategy full: the music drives most layers; the instrument layer shows the signal.",
       "banned": "shockwave rings on every hit; particle bursts; neon glow everywhere",
       "motionProfile": {
-        "energy": 0.85,
-        "elasticity": 0.2,
-        "anticipation": 0.25,
-        "continuity": 0.2,
-        "rhythm": 0.6
+        "energy": 0.645,
+        "elasticity": 0.27,
+        "anticipation": 0.407,
+        "continuity": 0.513,
+        "rhythm": 0.611
       },
       "density": "dense"
     },
@@ -63,6 +63,91 @@
           "risk": "confirm the pixel map and distances with the venue before delivery"
         }
       ]
+    },
+    "creativeIR": {
+      "version": 1,
+      "drives": true,
+      "concept": "signal",
+      "concepts": [
+        "signal"
+      ],
+      "visualVerbs": [
+        "pulse",
+        "oscillate",
+        "accumulate",
+        "trace"
+      ],
+      "verbScores": {
+        "pulse": 16,
+        "oscillate": 10,
+        "accumulate": 9,
+        "trace": 9
+      },
+      "hierarchy": {
+        "hero": [
+          "lines",
+          "shape",
+          "flow"
+        ],
+        "structure": [
+          "lines",
+          "tunnel"
+        ],
+        "ground": [
+          "FAIXAS",
+          "INTERFERÊNCIA",
+          "FLUXO WARP"
+        ]
+      },
+      "visualMotifs": [
+        "beat stamp",
+        "pendulum",
+        "stacked strata",
+        "drawn path"
+      ],
+      "motion": {
+        "axes": {
+          "energy": 0.535,
+          "elasticity": 0.308,
+          "anticipation": 0.492,
+          "continuity": 0.682,
+          "rhythm": 0.617
+        }
+      },
+      "density": 1.0,
+      "rhythm": 0.617,
+      "scale": "small",
+      "arc": {
+        "id": "cycle",
+        "sequence": [
+          "ESTABLISH",
+          "TURN",
+          "TURN",
+          "TURN",
+          "RETURN",
+          "CODA"
+        ],
+        "energy": [
+          0.5,
+          0.7,
+          0.5,
+          0.7,
+          0.5,
+          0.4
+        ],
+        "description": "a figure that returns to where it began"
+      },
+      "spatialBehavior": "from the hero; back and forth",
+      "temporalBehavior": "a figure that returns to where it began; on every beat",
+      "materialBehavior": "lamp, signal; pendulum, wave",
+      "audioRole": "the kick drives the pulse",
+      "compositionStrategy": "the hero stamps on the kick; the hero swings across the frame",
+      "animationStrategy": "sharp attack, fast decay (beat to beat); sine or triangle, whole cycles (A to B to A)",
+      "audienceEffect": "Faixas e palavras gritadas em uma torre estreita de LED, como sinal de rua à noite.",
+      "semioticIntent": "signal: pulse + oscillate + accumulate + trace",
+      "forbiddenMotifs": [],
+      "novelty": 0.67,
+      "colorLogic": "complement scheme, OKLCH hue 60 (sodium yellow against dark asphalt)"
     }
   },
   "canvas": {
@@ -77,7 +162,7 @@
     "loop": true,
     "seamless": true,
     "mode": "loop",
-    "transition": "wipe"
+    "transition": "fade"
   },
   "audio": {
     "reactive": true,
@@ -95,7 +180,7 @@
     {
       "name": "URBAN I",
       "hypothesis": "ESTABLISH: Faixas e palavras gritadas em uma torre estreita de LED, como sinal de rua à noite.",
-      "motion": "step",
+      "motion": "smooth",
       "layers": [
         {
           "type": "bg",
@@ -135,11 +220,11 @@
           "blend": "add",
           "role": "atmosphere: a second, fainter field in the accent that adds depth without competing with the hero",
           "p": {
-            "preset": "GRADE SDF",
-            "p1": 5,
+            "preset": "INTERFERÊNCIA",
+            "p1": 6,
             "p2": 1,
-            "p3": 0.3,
-            "p4": 0.06,
+            "p3": 0.25,
+            "p4": 0.3,
             "c1": "accent",
             "c2": "accent",
             "res": 0.5,
@@ -147,47 +232,48 @@
           }
         },
         {
-          "type": "typewall",
+          "type": "lines",
           "name": "HERÓI URBAN I",
           "on": true,
           "opacity": 1,
           "blend": "normal",
           "role": "hero: the single dominant figure of this composition (the focal event)",
           "p": {
-            "rows": 4,
-            "weight": 800,
+            "dir": "h",
+            "count": 20,
+            "weight": 24,
+            "stepped": true,
             "audio": 0.79,
-            "band": "bass",
-            "fill": 0.82
+            "band": "bass"
           },
           "mod": [
             {
-              "k": "fill",
+              "k": "weight",
               "src": "lfo",
               "shape": "spring",
               "cycles": 16,
-              "zeta": 0.824,
-              "wn": 16.35,
+              "zeta": 0.7624,
+              "wn": 14.095,
               "min": 1.0,
-              "max": 1.525,
+              "max": 1.4225,
               "mode": "mul",
-              "ta": 0.035,
-              "depth": 0.075,
-              "steps": 10
+              "ta": 0.057,
+              "depth": 0.1221,
+              "steps": 18
             }
           ]
         },
         {
-          "type": "structure",
+          "type": "lines",
           "name": "ESTRUTURA I",
           "on": true,
           "opacity": 0.3,
           "blend": "normal",
           "role": "structure: the grid or rhythm the eye measures the hero against",
           "p": {
-            "grid": 90,
-            "audio": 0.5,
-            "band": "high"
+            "dir": "v",
+            "count": 14,
+            "weight": 4
           }
         },
         {
@@ -237,7 +323,7 @@
     },
     {
       "name": "AGGRESSIVE II",
-      "hypothesis": "BUILD: Faixas e palavras gritadas em uma torre estreita de LED, como sinal de rua à noite.",
+      "hypothesis": "TURN: Faixas e palavras gritadas em uma torre estreita de LED, como sinal de rua à noite.",
       "motion": "step",
       "layers": [
         {
@@ -259,11 +345,11 @@
           "blend": "normal",
           "role": "ground field: slow matter that gives the figure something to cut against",
           "p": {
-            "preset": "GRADE SDF",
-            "p1": 5,
+            "preset": "INTERFERÊNCIA",
+            "p1": 6,
             "p2": 1,
-            "p3": 0.3,
-            "p4": 0.06,
+            "p3": 0.25,
+            "p4": 0.3,
             "c1": "secondary",
             "c2": "secondary",
             "res": 0.5,
@@ -278,11 +364,11 @@
           "blend": "add",
           "role": "atmosphere: a second, fainter field in the accent that adds depth without competing with the hero",
           "p": {
-            "preset": "INTERFERÊNCIA",
-            "p1": 6,
-            "p2": 1,
-            "p3": 0.25,
-            "p4": 0.3,
+            "preset": "FLUXO WARP",
+            "p1": 1.2,
+            "p2": 0.8,
+            "p3": 0.4,
+            "p4": 1.0,
             "c1": "accent",
             "c2": "accent",
             "res": 0.5,
@@ -290,19 +376,51 @@
           }
         },
         {
-          "type": "tunnel",
+          "type": "shape",
           "name": "HERÓI AGGRESSIVE II",
           "on": true,
           "opacity": 1,
           "blend": "normal",
           "role": "hero: the single dominant figure of this composition (the focal event)",
           "p": {
-            "shape": "rect",
-            "count": 24,
-            "pulseAmt": 2,
-            "weight": 9,
+            "kind": "ring",
+            "layout": "radial",
+            "count": 13,
+            "size": 150,
+            "spread": 260,
             "audio": 0.79,
-            "band": "bass",
+            "band": "bass"
+          },
+          "mod": [
+            {
+              "k": "size",
+              "src": "lfo",
+              "shape": "spring",
+              "cycles": 16,
+              "zeta": 0.7158,
+              "wn": 14.095,
+              "min": 1.0,
+              "max": 1.4225,
+              "mode": "mul",
+              "ta": 0.0693,
+              "depth": 0.1485,
+              "steps": 17
+            }
+          ]
+        },
+        {
+          "type": "tunnel",
+          "name": "ESTRUTURA II",
+          "on": true,
+          "opacity": 0.3,
+          "blend": "normal",
+          "role": "structure: the grid or rhythm the eye measures the hero against",
+          "p": {
+            "shape": "circle",
+            "count": 10,
+            "cycles": 1,
+            "audio": 0.5,
+            "band": "high",
             "size": 1
           },
           "mod": [
@@ -310,44 +428,13 @@
               "k": "size",
               "src": "lfo",
               "shape": "spring",
-              "cycles": 32,
-              "zeta": 0.692,
-              "wn": 16.35,
+              "cycles": 16,
+              "zeta": 0.8579,
+              "wn": 11.966,
               "min": 1.0,
-              "max": 1.525,
+              "max": 1.2112,
               "mode": "mul",
-              "ta": 0.07,
-              "depth": 0.15,
-              "steps": 7
-            }
-          ]
-        },
-        {
-          "type": "shape",
-          "name": "ESTRUTURA II",
-          "on": true,
-          "opacity": 0.3,
-          "blend": "normal",
-          "role": "structure: the grid or rhythm the eye measures the hero against",
-          "p": {
-            "kind": "cross",
-            "layout": "grid",
-            "count": 24,
-            "size": 40,
-            "spread": 500
-          },
-          "mod": [
-            {
-              "k": "size",
-              "src": "lfo",
-              "shape": "spring",
-              "cycles": 32,
-              "zeta": 0.846,
-              "wn": 13.545,
-              "min": 1.0,
-              "max": 1.2625,
-              "mode": "mul",
-              "steps": 7
+              "steps": 17
             }
           ]
         },
@@ -398,8 +485,8 @@
     },
     {
       "name": "URBAN III",
-      "hypothesis": "PEAK: Faixas e palavras gritadas em uma torre estreita de LED, como sinal de rua à noite.",
-      "motion": "step",
+      "hypothesis": "TURN: Faixas e palavras gritadas em uma torre estreita de LED, como sinal de rua à noite.",
+      "motion": "smooth",
       "layers": [
         {
           "type": "bg",
@@ -420,11 +507,11 @@
           "blend": "normal",
           "role": "ground field: slow matter that gives the figure something to cut against",
           "p": {
-            "preset": "CÉLULAS",
-            "p1": 4,
-            "p2": 1,
-            "p3": 0.25,
-            "p4": 0.08,
+            "preset": "FLUXO WARP",
+            "p1": 1.2,
+            "p2": 0.8,
+            "p3": 0.4,
+            "p4": 1.0,
             "c1": "secondary",
             "c2": "secondary",
             "res": 0.5,
@@ -451,49 +538,66 @@
           }
         },
         {
-          "type": "tunnel",
+          "type": "flow",
           "name": "HERÓI URBAN III",
           "on": true,
           "opacity": 1,
           "blend": "normal",
           "role": "hero: the single dominant figure of this composition (the focal event)",
           "p": {
-            "shape": "rect",
-            "count": 14,
-            "weight": 9,
+            "count": 1350,
+            "trail": 10,
             "audio": 0.79,
             "band": "bass",
-            "size": 1
+            "width": 2.4,
+            "alpha": 0.9,
+            "amp": 0.12
           },
           "mod": [
             {
-              "k": "size",
+              "k": "amp",
               "src": "lfo",
               "shape": "spring",
               "cycles": 16,
-              "zeta": 0.824,
-              "wn": 16.35,
+              "zeta": 0.7624,
+              "wn": 14.095,
               "min": 1.0,
-              "max": 1.525,
+              "max": 1.4225,
               "mode": "mul",
-              "ta": 0.035,
-              "depth": 0.075,
-              "steps": 10
+              "ta": 0.057,
+              "depth": 0.1221,
+              "steps": 18
             }
           ]
         },
         {
-          "type": "structure",
+          "type": "lines",
           "name": "ESTRUTURA III",
           "on": true,
           "opacity": 0.3,
           "blend": "normal",
           "role": "structure: the grid or rhythm the eye measures the hero against",
           "p": {
-            "grid": 90,
+            "dir": "v",
+            "count": 14,
+            "weight": 4,
             "audio": 0.5,
             "band": "high"
-          }
+          },
+          "mod": [
+            {
+              "k": "weight",
+              "src": "lfo",
+              "shape": "spring",
+              "cycles": 16,
+              "zeta": 0.8812,
+              "wn": 11.966,
+              "min": 1.0,
+              "max": 1.2112,
+              "mode": "mul",
+              "steps": 18
+            }
+          ]
         },
         {
           "type": "instrument",

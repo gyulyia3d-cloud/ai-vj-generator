@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.7.0 (09/10/2026) · Fase 5: Creative IR
+
+- **Creative IR** (`creative_ir.py`, `app/creative.js`, dados em `registry/creative.json`): compila o briefing em conceito, verbos visuais, motivos, estratégia de composição e de animação, famílias de gerador e faixas de parâmetro, e grava em `meta.creativeIR`. 32 verbos semânticos (cada um com geometria, movimento, comportamento espacial e temporal, densidade, papel do áudio, transição, material e composição), 16 conceitos (palavras em português e inglês), pesos de humor e 5 arcos.
+- **O conceito pesa 3 vezes o humor.** Com conceito reconhecido (ou `brief.verbs`), o IR escolhe herói, estrutura e campo de cada composição, escala a densidade pelo arco, mistura o movimento (65% IR, 35% humor) e nomeia as composições pelo arco. Sem conceito reconhecido, o humor decide como antes.
+- Mesmo humor, conceitos diferentes: "decadência" e "emergência" com "frio, contemplativo" diferem em topologia, movimento, densidade, arranjo, arco, família de gerador e material (`creative_check.mjs`). Paridade Python = navegador em 20 briefings.
+- `brief.verbs` (opcional), `meta.creativeIR` no esquema e no validador; `references/creative-ir.md`.
+
 ## 3.6.0 (09/10/2026) · Fase 4: render graph e efeitos temporais
 
 - **RenderGraph** (`app/rendergraph.js`): nós Source, Generator, Shader, Effect, Mask, Composite, History, Feedback e Output; compilação (dependências, ordem estável, ciclos, um Output), execução com devolução de recursos ao pool e `CanvasPool`. A composição de um quadro (`composeFrame`) roda por ele em `renderFrame`, exportação PNG, MP4 e replay; paridade de pixels com a versão anterior: 0,000 de 255 em 123 quadros.

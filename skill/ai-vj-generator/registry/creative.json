@@ -1,0 +1,1747 @@
+{
+ "note": "Fonte única do Creative IR (fase 5): verbos semânticos, conceitos, pesos de humor e arcos. scripts/registry.mjs --write copia para app/creative-data.js; creative_ir.py e creative.js leem os mesmos dados e dão o mesmo IR.",
+ "heroTypes": [
+  "tunnel",
+  "lines",
+  "organism",
+  "sim",
+  "flow",
+  "typewall",
+  "shape",
+  "data"
+ ],
+ "shaderOrder": [
+  "GRADE SDF",
+  "FAIXAS",
+  "INTERFERÊNCIA",
+  "CÉLULAS",
+  "ANÉIS SDF",
+  "KALEIDO",
+  "CAMPO FBM",
+  "FLUXO WARP"
+ ],
+ "structureOrder": [
+  "structure",
+  "lines",
+  "shape",
+  "tunnel"
+ ],
+ "weights": {
+  "concept": 3,
+  "explicitVerb": 20,
+  "topVerbs": 4,
+  "conceptBlend": 0.65
+ },
+ "verbs": [
+  {
+   "id": "grow",
+   "geometry": "scale and count increase from a seed",
+   "motion": "outward, slow in, no overshoot",
+   "spatial": "radial from one centre",
+   "temporal": "slow build, long hold",
+   "densityNote": "increases",
+   "audio": "bass swells the scale",
+   "transition": "seed to mass",
+   "material": "soft living matter",
+   "composition": "the hero starts small and takes the room",
+   "motif": "seed point",
+   "scale": "large",
+   "families": {
+    "organism": 3,
+    "sim": 2,
+    "shape": 1
+   },
+   "shaders": [
+    "CAMPO FBM",
+    "FLUXO WARP",
+    "CÉLULAS"
+   ],
+   "structure": [
+    "shape",
+    "lines"
+   ],
+   "axes": {
+    "energy": 0.4,
+    "elasticity": 0.3,
+    "anticipation": 0.4,
+    "continuity": 0.9,
+    "rhythm": 0.25
+   },
+   "density": 1.1,
+   "arc": "emerge"
+  },
+  {
+   "id": "contract",
+   "geometry": "spacing shrinks and rings close inward",
+   "motion": "inward velocity, slow build then fast",
+   "spatial": "convergence to the centre",
+   "temporal": "slow build, peak, hold",
+   "densityNote": "increases at the centre",
+   "audio": "low-frequency mass response",
+   "transition": "hold, pressure, release",
+   "material": "dense matte metal",
+   "composition": "elements crowd the focal third",
+   "motif": "closing rings",
+   "scale": "medium",
+   "families": {
+    "tunnel": 3,
+    "lines": 2,
+    "shape": 1
+   },
+   "shaders": [
+    "ANÉIS SDF",
+    "GRADE SDF"
+   ],
+   "structure": [
+    "tunnel",
+    "lines"
+   ],
+   "axes": {
+    "energy": 0.5,
+    "elasticity": 0.2,
+    "anticipation": 0.6,
+    "continuity": 0.8,
+    "rhythm": 0.35
+   },
+   "density": 1.2,
+   "arc": "pressure"
+  },
+  {
+   "id": "accumulate",
+   "geometry": "layers add up and stay until the end",
+   "motion": "steady addition",
+   "spatial": "stacked, rising edge",
+   "temporal": "ramp up",
+   "densityNote": "grows slowly",
+   "audio": "integrated audio time sets the pile",
+   "transition": "empty to full",
+   "material": "grain, sediment",
+   "composition": "marks pile up toward the top of the frame",
+   "motif": "stacked strata",
+   "scale": "medium",
+   "families": {
+    "lines": 3,
+    "data": 2,
+    "flow": 1
+   },
+   "shaders": [
+    "FAIXAS",
+    "INTERFERÊNCIA"
+   ],
+   "structure": [
+    "lines",
+    "structure"
+   ],
+   "axes": {
+    "energy": 0.45,
+    "elasticity": 0.15,
+    "anticipation": 0.35,
+    "continuity": 0.85,
+    "rhythm": 0.45
+   },
+   "density": 1.3,
+   "arc": "emerge"
+  },
+  {
+   "id": "fracture",
+   "geometry": "hard edges split along lines",
+   "motion": "sudden steps with a short recoil",
+   "spatial": "fault lines across the frame",
+   "temporal": "tension, snap, aftermath",
+   "densityNote": "spikes at the break",
+   "audio": "hits trigger the cracks",
+   "transition": "whole to pieces",
+   "material": "glass, concrete",
+   "composition": "a fault line crosses the hero",
+   "motif": "fault lines",
+   "scale": "medium",
+   "families": {
+    "lines": 3,
+    "typewall": 2,
+    "tunnel": 1
+   },
+   "shaders": [
+    "INTERFERÊNCIA",
+    "FAIXAS",
+    "GRADE SDF"
+   ],
+   "structure": [
+    "lines",
+    "structure"
+   ],
+   "axes": {
+    "energy": 0.75,
+    "elasticity": 0.25,
+    "anticipation": 0.7,
+    "continuity": 0.25,
+    "rhythm": 0.7
+   },
+   "density": 1.2,
+   "arc": "erode"
+  },
+  {
+   "id": "drift",
+   "geometry": "slow lateral translation without a goal",
+   "motion": "constant slow velocity",
+   "spatial": "along one axis",
+   "temporal": "no beginning, no end",
+   "densityNote": "steady",
+   "audio": "the mid band nudges direction",
+   "transition": "none, continuous",
+   "material": "mist, soft grain",
+   "composition": "elements slide past the frame",
+   "motif": "slow current",
+   "scale": "large",
+   "families": {
+    "flow": 3,
+    "sim": 2,
+    "lines": 1
+   },
+   "shaders": [
+    "FLUXO WARP",
+    "CAMPO FBM"
+   ],
+   "structure": [
+    "lines",
+    "shape"
+   ],
+   "axes": {
+    "energy": 0.2,
+    "elasticity": 0.1,
+    "anticipation": 0.1,
+    "continuity": 1.0,
+    "rhythm": 0.15
+   },
+   "density": 0.8,
+   "arc": "drift"
+  },
+  {
+   "id": "orbit",
+   "geometry": "elements circle a centre or an invisible attractor",
+   "motion": "constant angular velocity",
+   "spatial": "around a point",
+   "temporal": "periodic, whole cycles",
+   "densityNote": "steady ring",
+   "audio": "the kick marks the cycle",
+   "transition": "none, repeats",
+   "material": "metal rings",
+   "composition": "satellites around an empty centre",
+   "motif": "invisible attractor",
+   "scale": "medium",
+   "families": {
+    "shape": 3,
+    "tunnel": 2,
+    "organism": 1
+   },
+   "shaders": [
+    "ANÉIS SDF",
+    "KALEIDO"
+   ],
+   "structure": [
+    "shape",
+    "tunnel"
+   ],
+   "axes": {
+    "energy": 0.35,
+    "elasticity": 0.2,
+    "anticipation": 0.3,
+    "continuity": 0.9,
+    "rhythm": 0.4
+   },
+   "density": 1.0,
+   "arc": "cycle"
+  },
+  {
+   "id": "breathe",
+   "geometry": "scale swells and shrinks softly",
+   "motion": "sine, slow in and out",
+   "spatial": "from the centre",
+   "temporal": "one breath per bar",
+   "densityNote": "constant",
+   "audio": "rms breathes the scale",
+   "transition": "in, out",
+   "material": "skin, membrane",
+   "composition": "the hero inhales on the downbeat",
+   "motif": "inhale and exhale",
+   "scale": "medium",
+   "families": {
+    "organism": 3,
+    "shape": 2,
+    "sim": 1
+   },
+   "shaders": [
+    "CAMPO FBM",
+    "ANÉIS SDF"
+   ],
+   "structure": [
+    "shape",
+    "lines"
+   ],
+   "axes": {
+    "energy": 0.25,
+    "elasticity": 0.5,
+    "anticipation": 0.2,
+    "continuity": 0.95,
+    "rhythm": 0.3
+   },
+   "density": 0.9,
+   "arc": "cycle"
+  },
+  {
+   "id": "pulse",
+   "geometry": "periodic hard-edged flashes of scale",
+   "motion": "sharp attack, fast decay",
+   "spatial": "from the hero",
+   "temporal": "on every beat",
+   "densityNote": "constant, spiky",
+   "audio": "the kick drives the pulse",
+   "transition": "beat to beat",
+   "material": "lamp, signal",
+   "composition": "the hero stamps on the kick",
+   "motif": "beat stamp",
+   "scale": "small",
+   "families": {
+    "shape": 2,
+    "tunnel": 2,
+    "lines": 2
+   },
+   "shaders": [
+    "FAIXAS",
+    "GRADE SDF"
+   ],
+   "structure": [
+    "tunnel",
+    "shape"
+   ],
+   "axes": {
+    "energy": 0.8,
+    "elasticity": 0.4,
+    "anticipation": 0.8,
+    "continuity": 0.3,
+    "rhythm": 0.9
+   },
+   "density": 1.0,
+   "arc": "cycle"
+  },
+  {
+   "id": "erode",
+   "geometry": "edges wear away and mass is lost",
+   "motion": "slow loss, small bites",
+   "spatial": "from the outside in",
+   "temporal": "slow, irreversible",
+   "densityNote": "decreases",
+   "audio": "the high band bites the edge",
+   "transition": "solid to residue",
+   "material": "stone, rust, dry grain",
+   "composition": "the figure loses its outline first",
+   "motif": "worn edge",
+   "scale": "large",
+   "families": {
+    "sim": 3,
+    "lines": 2,
+    "organism": 1
+   },
+   "shaders": [
+    "CAMPO FBM",
+    "INTERFERÊNCIA"
+   ],
+   "structure": [
+    "lines",
+    "structure"
+   ],
+   "axes": {
+    "energy": 0.3,
+    "elasticity": 0.1,
+    "anticipation": 0.2,
+    "continuity": 0.9,
+    "rhythm": 0.2
+   },
+   "density": 0.8,
+   "arc": "erode"
+  },
+  {
+   "id": "bloom",
+   "geometry": "radial opening, petals of repeated form",
+   "motion": "fast open, slow settle",
+   "spatial": "radial from a centre",
+   "temporal": "build, burst, settle",
+   "densityNote": "peak at the opening",
+   "audio": "the kick opens, hats shimmer",
+   "transition": "bud to flower",
+   "material": "light on a dark ground, wet",
+   "composition": "everything opens at the peak",
+   "motif": "opening petals",
+   "scale": "large",
+   "families": {
+    "organism": 3,
+    "flow": 2,
+    "shape": 1
+   },
+   "shaders": [
+    "KALEIDO",
+    "CAMPO FBM"
+   ],
+   "structure": [
+    "shape",
+    "tunnel"
+   ],
+   "axes": {
+    "energy": 0.6,
+    "elasticity": 0.5,
+    "anticipation": 0.55,
+    "continuity": 0.7,
+    "rhythm": 0.35
+   },
+   "density": 1.3,
+   "arc": "emerge"
+  },
+  {
+   "id": "collapse",
+   "geometry": "structure falls inward or downward",
+   "motion": "accelerating fall",
+   "spatial": "toward the lower third and the centre",
+   "temporal": "long hold, sudden fall, silence",
+   "densityNote": "drops at the fall",
+   "audio": "a hit triggers it, then silence",
+   "transition": "standing to rubble",
+   "material": "concrete, dust",
+   "composition": "the monument falls on the break",
+   "motif": "falling mass",
+   "scale": "large",
+   "families": {
+    "tunnel": 2,
+    "lines": 2,
+    "sim": 2
+   },
+   "shaders": [
+    "GRADE SDF",
+    "INTERFERÊNCIA"
+   ],
+   "structure": [
+    "structure",
+    "lines"
+   ],
+   "axes": {
+    "energy": 0.7,
+    "elasticity": 0.2,
+    "anticipation": 0.75,
+    "continuity": 0.3,
+    "rhythm": 0.4
+   },
+   "density": 1.1,
+   "arc": "pressure"
+  },
+  {
+   "id": "stretch",
+   "geometry": "forms elongate along one axis",
+   "motion": "elastic pull, slow release",
+   "spatial": "along the long axis",
+   "temporal": "slow pull, snap back",
+   "densityNote": "constant",
+   "audio": "the mid band pulls",
+   "transition": "round to line",
+   "material": "rubber, taut cable",
+   "composition": "the hero is pulled across the surface",
+   "motif": "taut line",
+   "scale": "large",
+   "families": {
+    "lines": 3,
+    "shape": 2,
+    "flow": 1
+   },
+   "shaders": [
+    "FAIXAS",
+    "FLUXO WARP"
+   ],
+   "structure": [
+    "lines",
+    "shape"
+   ],
+   "axes": {
+    "energy": 0.4,
+    "elasticity": 0.7,
+    "anticipation": 0.5,
+    "continuity": 0.7,
+    "rhythm": 0.3
+   },
+   "density": 0.9,
+   "arc": "drift"
+  },
+  {
+   "id": "fold",
+   "geometry": "planes bend along creases",
+   "motion": "hinged, symmetric",
+   "spatial": "mirror axes",
+   "temporal": "open, close",
+   "densityNote": "constant",
+   "audio": "the mid band hinges",
+   "transition": "flat to folded",
+   "material": "paper, cloth",
+   "composition": "the picture mirrors across a crease",
+   "motif": "crease",
+   "scale": "medium",
+   "families": {
+    "shape": 2,
+    "lines": 2,
+    "tunnel": 2
+   },
+   "shaders": [
+    "KALEIDO",
+    "GRADE SDF"
+   ],
+   "structure": [
+    "shape",
+    "structure"
+   ],
+   "axes": {
+    "energy": 0.4,
+    "elasticity": 0.3,
+    "anticipation": 0.4,
+    "continuity": 0.8,
+    "rhythm": 0.4
+   },
+   "density": 1.0,
+   "arc": "cycle"
+  },
+  {
+   "id": "scatter",
+   "geometry": "elements disperse in all directions",
+   "motion": "outward burst with drag",
+   "spatial": "from a centre to the edges",
+   "temporal": "burst, drift apart",
+   "densityNote": "spreads",
+   "audio": "a hit throws the pieces",
+   "transition": "cluster to dust",
+   "material": "powder, sparks",
+   "composition": "the hero bursts into many small marks",
+   "motif": "scattered marks",
+   "scale": "small",
+   "families": {
+    "flow": 3,
+    "shape": 2,
+    "sim": 1
+   },
+   "shaders": [
+    "CÉLULAS",
+    "CAMPO FBM"
+   ],
+   "structure": [
+    "shape",
+    "lines"
+   ],
+   "axes": {
+    "energy": 0.65,
+    "elasticity": 0.2,
+    "anticipation": 0.5,
+    "continuity": 0.6,
+    "rhythm": 0.5
+   },
+   "density": 1.4,
+   "arc": "erode"
+  },
+  {
+   "id": "converge",
+   "geometry": "lines and forms meet at a point",
+   "motion": "accelerating approach",
+   "spatial": "toward a focal point",
+   "temporal": "build to the meeting",
+   "densityNote": "tightens",
+   "audio": "the bass pulls inward",
+   "transition": "wide to one",
+   "material": "thread, magnet",
+   "composition": "everything points at one place",
+   "motif": "vanishing point",
+   "scale": "medium",
+   "families": {
+    "lines": 3,
+    "tunnel": 2,
+    "flow": 1
+   },
+   "shaders": [
+    "ANÉIS SDF",
+    "FAIXAS"
+   ],
+   "structure": [
+    "lines",
+    "tunnel"
+   ],
+   "axes": {
+    "energy": 0.5,
+    "elasticity": 0.25,
+    "anticipation": 0.55,
+    "continuity": 0.75,
+    "rhythm": 0.4
+   },
+   "density": 1.1,
+   "arc": "pressure"
+  },
+  {
+   "id": "oscillate",
+   "geometry": "swing between two states",
+   "motion": "sine or triangle, whole cycles",
+   "spatial": "back and forth",
+   "temporal": "periodic",
+   "densityNote": "constant",
+   "audio": "beat waves drive the swing",
+   "transition": "A to B to A",
+   "material": "pendulum, wave",
+   "composition": "the hero swings across the frame",
+   "motif": "pendulum",
+   "scale": "medium",
+   "families": {
+    "lines": 2,
+    "shape": 2,
+    "data": 1
+   },
+   "shaders": [
+    "INTERFERÊNCIA",
+    "FAIXAS"
+   ],
+   "structure": [
+    "lines",
+    "structure"
+   ],
+   "axes": {
+    "energy": 0.4,
+    "elasticity": 0.4,
+    "anticipation": 0.3,
+    "continuity": 0.9,
+    "rhythm": 0.6
+   },
+   "density": 1.0,
+   "arc": "cycle"
+  },
+  {
+   "id": "morph",
+   "geometry": "one form becomes another",
+   "motion": "smooth interpolation",
+   "spatial": "in place",
+   "temporal": "slow and continuous",
+   "densityNote": "constant",
+   "audio": "the mid band blends",
+   "transition": "A becomes B",
+   "material": "clay, liquid",
+   "composition": "the hero is never the same shape twice",
+   "motif": "becoming",
+   "scale": "medium",
+   "families": {
+    "organism": 2,
+    "sim": 3,
+    "flow": 1
+   },
+   "shaders": [
+    "FLUXO WARP",
+    "CAMPO FBM"
+   ],
+   "structure": [
+    "shape",
+    "lines"
+   ],
+   "axes": {
+    "energy": 0.35,
+    "elasticity": 0.4,
+    "anticipation": 0.3,
+    "continuity": 0.95,
+    "rhythm": 0.25
+   },
+   "density": 1.0,
+   "arc": "drift"
+  },
+  {
+   "id": "repel",
+   "geometry": "forms keep their distance",
+   "motion": "springy push away",
+   "spatial": "away from a centre",
+   "temporal": "hit, recoil",
+   "densityNote": "constant",
+   "audio": "hits push",
+   "transition": "close to apart",
+   "material": "magnet, same poles",
+   "composition": "the marks avoid one empty zone",
+   "motif": "empty zone",
+   "scale": "small",
+   "families": {
+    "flow": 3,
+    "shape": 2,
+    "lines": 1
+   },
+   "shaders": [
+    "CÉLULAS",
+    "GRADE SDF"
+   ],
+   "structure": [
+    "shape",
+    "lines"
+   ],
+   "axes": {
+    "energy": 0.55,
+    "elasticity": 0.6,
+    "anticipation": 0.6,
+    "continuity": 0.5,
+    "rhythm": 0.5
+   },
+   "density": 1.1,
+   "arc": "pressure"
+  },
+  {
+   "id": "attract",
+   "geometry": "forms are pulled toward a mass",
+   "motion": "gravity, accelerating",
+   "spatial": "toward a centre",
+   "temporal": "slow pull, merge",
+   "densityNote": "gathers",
+   "audio": "the bass is the pull",
+   "transition": "apart to together",
+   "material": "gravity, magnet",
+   "composition": "marks fall into orbit around a hidden mass",
+   "motif": "hidden mass",
+   "scale": "medium",
+   "families": {
+    "flow": 3,
+    "shape": 2,
+    "organism": 1
+   },
+   "shaders": [
+    "ANÉIS SDF",
+    "CAMPO FBM"
+   ],
+   "structure": [
+    "shape",
+    "tunnel"
+   ],
+   "axes": {
+    "energy": 0.45,
+    "elasticity": 0.3,
+    "anticipation": 0.5,
+    "continuity": 0.8,
+    "rhythm": 0.35
+   },
+   "density": 1.2,
+   "arc": "pressure"
+  },
+  {
+   "id": "trace",
+   "geometry": "a line draws the path of something that moved",
+   "motion": "follows a path and leaves a trail",
+   "spatial": "along a path",
+   "temporal": "draws over time",
+   "densityNote": "grows along the path",
+   "audio": "integrated audio time advances the drawing",
+   "transition": "blank to line",
+   "material": "ink, thread",
+   "composition": "a single line writes the composition",
+   "motif": "drawn path",
+   "scale": "small",
+   "families": {
+    "lines": 3,
+    "flow": 3
+   },
+   "shaders": [
+    "FLUXO WARP",
+    "FAIXAS"
+   ],
+   "structure": [
+    "lines",
+    "shape"
+   ],
+   "axes": {
+    "energy": 0.3,
+    "elasticity": 0.2,
+    "anticipation": 0.3,
+    "continuity": 0.95,
+    "rhythm": 0.3
+   },
+   "density": 0.7,
+   "arc": "emerge"
+  },
+  {
+   "id": "flow",
+   "geometry": "fields carry marks along streamlines",
+   "motion": "continuous noise-driven advection",
+   "spatial": "across the frame",
+   "temporal": "unending",
+   "densityNote": "steady",
+   "audio": "the mid band bends the field",
+   "transition": "none",
+   "material": "water, smoke",
+   "composition": "marks ride an invisible current",
+   "motif": "streamline",
+   "scale": "large",
+   "families": {
+    "flow": 3,
+    "sim": 3
+   },
+   "shaders": [
+    "FLUXO WARP",
+    "CAMPO FBM"
+   ],
+   "structure": [
+    "lines",
+    "shape"
+   ],
+   "axes": {
+    "energy": 0.3,
+    "elasticity": 0.2,
+    "anticipation": 0.15,
+    "continuity": 1.0,
+    "rhythm": 0.2
+   },
+   "density": 1.0,
+   "arc": "drift"
+  },
+  {
+   "id": "hesitate",
+   "geometry": "movement starts, stops and starts again",
+   "motion": "stutter with holds",
+   "spatial": "in place",
+   "temporal": "irregular pauses",
+   "densityNote": "constant",
+   "audio": "no audio lock; it holds on silence",
+   "transition": "stop and go",
+   "material": "a held breath",
+   "composition": "the hero almost moves, then waits",
+   "motif": "held breath",
+   "scale": "small",
+   "families": {
+    "shape": 3,
+    "lines": 2,
+    "typewall": 1
+   },
+   "shaders": [
+    "GRADE SDF",
+    "FAIXAS"
+   ],
+   "structure": [
+    "shape",
+    "lines"
+   ],
+   "axes": {
+    "energy": 0.3,
+    "elasticity": 0.4,
+    "anticipation": 0.8,
+    "continuity": 0.3,
+    "rhythm": 0.3
+   },
+   "density": 0.8,
+   "arc": "pressure"
+  },
+  {
+   "id": "freeze",
+   "geometry": "motion stops and the image holds",
+   "motion": "decelerate to rest",
+   "spatial": "static",
+   "temporal": "stillness after movement",
+   "densityNote": "constant",
+   "audio": "audio fades out",
+   "transition": "moving to still",
+   "material": "ice, photograph",
+   "composition": "everything stops on one frame of the loop",
+   "motif": "still frame",
+   "scale": "large",
+   "families": {
+    "shape": 2,
+    "typewall": 2,
+    "lines": 1
+   },
+   "shaders": [
+    "GRADE SDF",
+    "CAMPO FBM"
+   ],
+   "structure": [
+    "structure",
+    "shape"
+   ],
+   "axes": {
+    "energy": 0.1,
+    "elasticity": 0.05,
+    "anticipation": 0.1,
+    "continuity": 1.0,
+    "rhythm": 0.1
+   },
+   "density": 0.6,
+   "arc": "drift"
+  },
+  {
+   "id": "release",
+   "geometry": "tension lets go and forms relax outward",
+   "motion": "fast then settling",
+   "spatial": "outward from the tight point",
+   "temporal": "after the peak",
+   "densityNote": "decreases",
+   "audio": "the drop opens everything",
+   "transition": "tight to open",
+   "material": "spring, breath out",
+   "composition": "the hero relaxes after the break",
+   "motif": "exhale",
+   "scale": "large",
+   "families": {
+    "organism": 2,
+    "flow": 2,
+    "shape": 2
+   },
+   "shaders": [
+    "CAMPO FBM",
+    "FLUXO WARP"
+   ],
+   "structure": [
+    "shape",
+    "lines"
+   ],
+   "axes": {
+    "energy": 0.45,
+    "elasticity": 0.55,
+    "anticipation": 0.3,
+    "continuity": 0.8,
+    "rhythm": 0.3
+   },
+   "density": 1.0,
+   "arc": "pressure"
+  },
+  {
+   "id": "compress",
+   "geometry": "spacing is reduced and mass is pushed inward",
+   "motion": "inward velocity",
+   "spatial": "toward the centre",
+   "temporal": "slow build to the peak",
+   "densityNote": "increases",
+   "audio": "low-frequency mass",
+   "transition": "hold, pressure, release",
+   "material": "dense matte metal",
+   "composition": "bars and rings squeeze together",
+   "motif": "squeeze",
+   "scale": "medium",
+   "families": {
+    "tunnel": 3,
+    "lines": 3
+   },
+   "shaders": [
+    "GRADE SDF",
+    "ANÉIS SDF"
+   ],
+   "structure": [
+    "tunnel",
+    "lines"
+   ],
+   "axes": {
+    "energy": 0.55,
+    "elasticity": 0.2,
+    "anticipation": 0.65,
+    "continuity": 0.7,
+    "rhythm": 0.4
+   },
+   "density": 1.3,
+   "arc": "pressure"
+  },
+  {
+   "id": "expand",
+   "geometry": "forms widen into the frame",
+   "motion": "outward, accelerating",
+   "spatial": "from the centre to the edges",
+   "temporal": "build, open",
+   "densityNote": "spreads",
+   "audio": "the bass opens the frame",
+   "transition": "small to filling",
+   "material": "gas, light",
+   "composition": "the hero grows to the edges and past them",
+   "motif": "growing ring",
+   "scale": "large",
+   "families": {
+    "tunnel": 3,
+    "organism": 2,
+    "sim": 1
+   },
+   "shaders": [
+    "ANÉIS SDF",
+    "KALEIDO"
+   ],
+   "structure": [
+    "tunnel",
+    "shape"
+   ],
+   "axes": {
+    "energy": 0.55,
+    "elasticity": 0.35,
+    "anticipation": 0.5,
+    "continuity": 0.8,
+    "rhythm": 0.3
+   },
+   "density": 1.1,
+   "arc": "emerge"
+  },
+  {
+   "id": "fragment",
+   "geometry": "a whole breaks into many small pieces",
+   "motion": "stepped and uneven",
+   "spatial": "across the frame",
+   "temporal": "break, scatter",
+   "densityNote": "increases",
+   "audio": "hits cut the pieces",
+   "transition": "one to many",
+   "material": "shards, tiles",
+   "composition": "the image is cut into tiles that drift",
+   "motif": "shards",
+   "scale": "small",
+   "families": {
+    "typewall": 2,
+    "lines": 2,
+    "shape": 2
+   },
+   "shaders": [
+    "CÉLULAS",
+    "INTERFERÊNCIA"
+   ],
+   "structure": [
+    "structure",
+    "shape"
+   ],
+   "axes": {
+    "energy": 0.65,
+    "elasticity": 0.2,
+    "anticipation": 0.6,
+    "continuity": 0.35,
+    "rhythm": 0.65
+   },
+   "density": 1.4,
+   "arc": "erode"
+  },
+  {
+   "id": "assemble",
+   "geometry": "pieces gather into a whole",
+   "motion": "stepped, then settled",
+   "spatial": "toward a centre",
+   "temporal": "gather, lock",
+   "densityNote": "settles",
+   "audio": "the build locks on the kick",
+   "transition": "many to one",
+   "material": "tiles, parts",
+   "composition": "scattered marks line up into one figure",
+   "motif": "locking parts",
+   "scale": "medium",
+   "families": {
+    "shape": 3,
+    "typewall": 2,
+    "lines": 1
+   },
+   "shaders": [
+    "GRADE SDF",
+    "FAIXAS"
+   ],
+   "structure": [
+    "structure",
+    "shape"
+   ],
+   "axes": {
+    "energy": 0.5,
+    "elasticity": 0.3,
+    "anticipation": 0.6,
+    "continuity": 0.55,
+    "rhythm": 0.55
+   },
+   "density": 1.1,
+   "arc": "emerge"
+  },
+  {
+   "id": "dissolve",
+   "geometry": "edges soften until nothing is left",
+   "motion": "slow fade with grain",
+   "spatial": "uniform",
+   "temporal": "slow, irreversible",
+   "densityNote": "decreases",
+   "audio": "all bands fade",
+   "transition": "present to absent",
+   "material": "ink in water, mist",
+   "composition": "the figure loses its edge and fades into the ground",
+   "motif": "fading edge",
+   "scale": "large",
+   "families": {
+    "sim": 3,
+    "flow": 2,
+    "organism": 1
+   },
+   "shaders": [
+    "CAMPO FBM",
+    "FLUXO WARP"
+   ],
+   "structure": [
+    "shape",
+    "lines"
+   ],
+   "axes": {
+    "energy": 0.2,
+    "elasticity": 0.1,
+    "anticipation": 0.15,
+    "continuity": 0.95,
+    "rhythm": 0.15
+   },
+   "density": 0.7,
+   "arc": "erode"
+  },
+  {
+   "id": "emerge",
+   "geometry": "a figure becomes visible out of the ground",
+   "motion": "slow reveal",
+   "spatial": "from the ground up",
+   "temporal": "empty to present",
+   "densityNote": "increases",
+   "audio": "low audio, rising",
+   "transition": "nothing to something",
+   "material": "mist clearing, ink appearing",
+   "composition": "the hero rises out of an empty frame",
+   "motif": "reveal",
+   "scale": "medium",
+   "families": {
+    "organism": 3,
+    "sim": 2,
+    "shape": 1
+   },
+   "shaders": [
+    "CAMPO FBM",
+    "FLUXO WARP"
+   ],
+   "structure": [
+    "shape",
+    "lines"
+   ],
+   "axes": {
+    "energy": 0.25,
+    "elasticity": 0.25,
+    "anticipation": 0.3,
+    "continuity": 0.95,
+    "rhythm": 0.2
+   },
+   "density": 0.8,
+   "arc": "emerge"
+  },
+  {
+   "id": "sink",
+   "geometry": "mass moves down and out of sight",
+   "motion": "slow acceleration downward",
+   "spatial": "toward the lower edge",
+   "temporal": "slow and heavy",
+   "densityNote": "decreases",
+   "audio": "the bass weighs it down",
+   "transition": "high to low",
+   "material": "lead, deep water",
+   "composition": "the figure settles toward the bottom edge",
+   "motif": "settling",
+   "scale": "large",
+   "families": {
+    "sim": 3,
+    "lines": 2,
+    "shape": 1
+   },
+   "shaders": [
+    "CAMPO FBM",
+    "GRADE SDF"
+   ],
+   "structure": [
+    "lines",
+    "structure"
+   ],
+   "axes": {
+    "energy": 0.2,
+    "elasticity": 0.15,
+    "anticipation": 0.2,
+    "continuity": 0.9,
+    "rhythm": 0.2
+   },
+   "density": 0.8,
+   "arc": "erode"
+  },
+  {
+   "id": "rise",
+   "geometry": "mass moves upward and gets lighter",
+   "motion": "slow acceleration upward",
+   "spatial": "toward the upper edge",
+   "temporal": "slow lift, release",
+   "densityNote": "thins",
+   "audio": "the high band lifts",
+   "transition": "low to high",
+   "material": "smoke, helium",
+   "composition": "the figure ascends and thins",
+   "motif": "ascent",
+   "scale": "large",
+   "families": {
+    "flow": 3,
+    "organism": 2,
+    "lines": 1
+   },
+   "shaders": [
+    "FLUXO WARP",
+    "KALEIDO"
+   ],
+   "structure": [
+    "lines",
+    "shape"
+   ],
+   "axes": {
+    "energy": 0.35,
+    "elasticity": 0.3,
+    "anticipation": 0.4,
+    "continuity": 0.9,
+    "rhythm": 0.25
+   },
+   "density": 0.9,
+   "arc": "emerge"
+  }
+ ],
+ "concepts": [
+  {
+   "id": "decay",
+   "stems": [
+    "decad",
+    "decay",
+    "eros",
+    "erod",
+    "ruin",
+    "rust",
+    "desgast",
+    "entrop",
+    "deterior",
+    "apodre",
+    "wither",
+    "murch"
+   ],
+   "verbs": {
+    "erode": 5,
+    "fragment": 3,
+    "sink": 3,
+    "dissolve": 3,
+    "collapse": 2
+   }
+  },
+  {
+   "id": "emergence",
+   "stems": [
+    "emerg",
+    "nasc",
+    "surg",
+    "brot",
+    "germin",
+    "grow",
+    "cresc",
+    "genes",
+    "born",
+    "aparec",
+    "reveal",
+    "revel"
+   ],
+   "verbs": {
+    "emerge": 5,
+    "grow": 4,
+    "bloom": 3,
+    "accumulate": 2,
+    "assemble": 2
+   }
+  },
+  {
+   "id": "containment",
+   "stems": [
+    "conten",
+    "pressa",
+    "press",
+    "tens",
+    "compress",
+    "contain",
+    "confin",
+    "sufoc",
+    "apert",
+    "trap",
+    "prison"
+   ],
+   "verbs": {
+    "compress": 5,
+    "hesitate": 3,
+    "converge": 3,
+    "orbit": 2,
+    "attract": 2,
+    "freeze": 1
+   }
+  },
+  {
+   "id": "memory",
+   "stems": [
+    "memor",
+    "lembr",
+    "recorda",
+    "remember",
+    "trace",
+    "rastro",
+    "ecoa",
+    "echo",
+    "traco",
+    "vestig"
+   ],
+   "verbs": {
+    "trace": 5,
+    "dissolve": 3,
+    "accumulate": 3,
+    "breathe": 2,
+    "hesitate": 2
+   }
+  },
+  {
+   "id": "flow",
+   "stems": [
+    "flux",
+    "fluir",
+    "flow",
+    "corrent",
+    "river",
+    "rio",
+    "agua",
+    "water",
+    "ocean",
+    "onda",
+    "wave",
+    "liquid",
+    "liquido"
+   ],
+   "verbs": {
+    "flow": 5,
+    "drift": 4,
+    "morph": 3,
+    "stretch": 2
+   }
+  },
+  {
+   "id": "fracture",
+   "stems": [
+    "fratur",
+    "quebr",
+    "rupt",
+    "rompim",
+    "fractur",
+    "break",
+    "shatter",
+    "crack",
+    "rachad",
+    "estilha",
+    "glitch",
+    "falha",
+    "fault"
+   ],
+   "verbs": {
+    "fracture": 5,
+    "fragment": 4,
+    "scatter": 3,
+    "collapse": 2,
+    "pulse": 2
+   }
+  },
+  {
+   "id": "order",
+   "stems": [
+    "ordem",
+    "order",
+    "estrut",
+    "struct",
+    "arquitet",
+    "architect",
+    "monument",
+    "grade",
+    "grid",
+    "rigid",
+    "geomet",
+    "rigor",
+    "regra"
+   ],
+   "verbs": {
+    "assemble": 4,
+    "fold": 3,
+    "oscillate": 2,
+    "converge": 2,
+    "freeze": 2,
+    "compress": 2
+   }
+  },
+  {
+   "id": "chaos",
+   "stems": [
+    "caos",
+    "chaos",
+    "caotic",
+    "turbul",
+    "ruido",
+    "noise",
+    "tempest",
+    "tormenta",
+    "frenes",
+    "frenz"
+   ],
+   "verbs": {
+    "scatter": 4,
+    "fracture": 3,
+    "repel": 3,
+    "pulse": 3,
+    "oscillate": 2
+   }
+  },
+  {
+   "id": "ascent",
+   "stems": [
+    "ascen",
+    "ascent",
+    "subida",
+    "subir",
+    "rise",
+    "elev",
+    "voo",
+    "fly",
+    "flight",
+    "leve",
+    "lift",
+    "ceu",
+    "sky"
+   ],
+   "verbs": {
+    "rise": 5,
+    "expand": 3,
+    "release": 3,
+    "bloom": 2,
+    "drift": 2
+   }
+  },
+  {
+   "id": "descent",
+   "stems": [
+    "queda",
+    "cair",
+    "descid",
+    "descent",
+    "fall",
+    "afund",
+    "sink",
+    "drop",
+    "mergulh",
+    "profund",
+    "deep",
+    "abismo",
+    "abyss"
+   ],
+   "verbs": {
+    "sink": 5,
+    "collapse": 3,
+    "compress": 1,
+    "dissolve": 2,
+    "freeze": 2
+   }
+  },
+  {
+   "id": "cycle",
+   "stems": [
+    "ciclo",
+    "cycle",
+    "ritmo",
+    "rhythm",
+    "loop",
+    "orbit",
+    "orbita",
+    "circular",
+    "repeti",
+    "retorn",
+    "return",
+    "ronda",
+    "spiral",
+    "espiral"
+   ],
+   "verbs": {
+    "orbit": 5,
+    "oscillate": 4,
+    "pulse": 3,
+    "breathe": 3,
+    "fold": 2
+   }
+  },
+  {
+   "id": "silence",
+   "stems": [
+    "silenc",
+    "vazio",
+    "void",
+    "empty",
+    "quiet",
+    "contempl",
+    "calma",
+    "calm",
+    "repouso",
+    "paz",
+    "peace",
+    "serene",
+    "quietude"
+   ],
+   "verbs": {
+    "freeze": 4,
+    "breathe": 4,
+    "hesitate": 3,
+    "drift": 3,
+    "dissolve": 2,
+    "emerge": 1
+   }
+  },
+  {
+   "id": "expansion",
+   "stems": [
+    "expans",
+    "explos",
+    "expand",
+    "explod",
+    "univers",
+    "cosmos",
+    "cosmic",
+    "infinit",
+    "vast",
+    "vastid",
+    "amplit",
+    "galax",
+    "estrela",
+    "star"
+   ],
+   "verbs": {
+    "expand": 5,
+    "bloom": 4,
+    "scatter": 3,
+    "release": 3,
+    "rise": 2
+   }
+  },
+  {
+   "id": "connection",
+   "stems": [
+    "rede",
+    "network",
+    "conex",
+    "connect",
+    "link",
+    "teia",
+    "web",
+    "laco",
+    "vinculo",
+    "tecid",
+    "weave",
+    "ponte",
+    "bridge",
+    "junt"
+   ],
+   "verbs": {
+    "attract": 4,
+    "converge": 4,
+    "trace": 3,
+    "assemble": 3,
+    "oscillate": 2
+   }
+  },
+  {
+   "id": "signal",
+   "stems": [
+    "sinal",
+    "signal",
+    "dado",
+    "data",
+    "codigo",
+    "code",
+    "transmi",
+    "telemetr",
+    "frequen",
+    "binar",
+    "digital",
+    "pixel",
+    "scan"
+   ],
+   "verbs": {
+    "oscillate": 3,
+    "pulse": 4,
+    "trace": 3,
+    "accumulate": 3,
+    "fragment": 2
+   }
+  },
+  {
+   "id": "body",
+   "stems": [
+    "corpo",
+    "body",
+    "vida",
+    "life",
+    "vivo",
+    "living",
+    "organi",
+    "pulso",
+    "respir",
+    "breath",
+    "coracao",
+    "heart",
+    "cell",
+    "celula",
+    "carne",
+    "flesh"
+   ],
+   "verbs": {
+    "breathe": 5,
+    "pulse": 4,
+    "morph": 3,
+    "grow": 3,
+    "bloom": 2
+   }
+  }
+ ],
+ "moods": {
+  "industrial": {
+   "compress": 2,
+   "pulse": 2,
+   "assemble": 1
+  },
+  "organic": {
+   "grow": 2,
+   "breathe": 2,
+   "morph": 1
+  },
+  "cosmic": {
+   "expand": 2,
+   "orbit": 2,
+   "drift": 1
+  },
+  "urban": {
+   "pulse": 2,
+   "fracture": 1,
+   "oscillate": 1
+  },
+  "ritual": {
+   "orbit": 2,
+   "breathe": 1,
+   "converge": 1
+  },
+  "glitch": {
+   "fracture": 2,
+   "fragment": 2,
+   "scatter": 1
+  },
+  "minimal": {
+   "freeze": 2,
+   "hesitate": 1,
+   "drift": 1
+  },
+  "liquid": {
+   "flow": 2,
+   "morph": 2,
+   "drift": 1
+  },
+  "crystalline": {
+   "fold": 2,
+   "assemble": 1,
+   "fracture": 1
+  },
+  "retro": {
+   "oscillate": 2,
+   "trace": 1,
+   "accumulate": 1
+  },
+  "aggressive": {
+   "pulse": 2,
+   "fracture": 2,
+   "scatter": 1
+  },
+  "calm": {
+   "breathe": 2,
+   "drift": 2,
+   "dissolve": 1
+  }
+ },
+ "arcs": {
+  "pressure": {
+   "sequence": [
+    "CALM",
+    "COMPRESS",
+    "HOLD",
+    "BREAK",
+    "RELEASE",
+    "CODA"
+   ],
+   "energy": [
+    0.3,
+    0.65,
+    0.9,
+    1.0,
+    0.45,
+    0.2
+   ],
+   "description": "calm, compress, hold, break, release"
+  },
+  "emerge": {
+   "sequence": [
+    "VOID",
+    "SEED",
+    "GROWTH",
+    "BLOOM",
+    "SETTLE",
+    "CODA"
+   ],
+   "energy": [
+    0.15,
+    0.35,
+    0.65,
+    1.0,
+    0.7,
+    0.4
+   ],
+   "description": "from empty, a slow reveal, a bloom, a settling"
+  },
+  "erode": {
+   "sequence": [
+    "WHOLE",
+    "STRESS",
+    "FRACTURE",
+    "SCATTER",
+    "RESIDUE",
+    "CODA"
+   ],
+   "energy": [
+    0.5,
+    0.7,
+    1.0,
+    0.8,
+    0.35,
+    0.15
+   ],
+   "description": "whole, stress, break, scatter, residue"
+  },
+  "drift": {
+   "sequence": [
+    "ESTABLISH",
+    "DRIFT",
+    "DRIFT",
+    "SHIFT",
+    "DRIFT",
+    "CODA"
+   ],
+   "energy": [
+    0.4,
+    0.5,
+    0.5,
+    0.6,
+    0.5,
+    0.35
+   ],
+   "description": "one state that keeps moving, with a single shift"
+  },
+  "cycle": {
+   "sequence": [
+    "ESTABLISH",
+    "TURN",
+    "TURN",
+    "TURN",
+    "RETURN",
+    "CODA"
+   ],
+   "energy": [
+    0.5,
+    0.7,
+    0.5,
+    0.7,
+    0.5,
+    0.4
+   ],
+   "description": "a figure that returns to where it began"
+  }
+ }
+}

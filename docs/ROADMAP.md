@@ -1,4 +1,4 @@
-# Roadmap oficial (v11, motor 3.6.0)
+# Roadmap oficial (v11, motor 3.7.0)
 
 Substitui o roadmap v10. Decidido pela autora em 08/10/2026.
 
@@ -20,7 +20,7 @@ Referências antigas a isso ficam apenas no `CHANGELOG.md`.
 | 2 | Fundação WebGL2 (GLSL ES 3.00, VAO, FrameContext determinístico) | **feita (3.4.0)**; ver `ARQUITETURA-RENDER.md` |
 | 3 | Recursos de GPU (pools de textura e framebuffer, métricas) | **feita (3.5.0)** |
 | 4 | Render graph (History, Feedback, FX temporais) | **feita (3.6.0)** |
-| 5 | Creative IR (conceito e verbos semânticos acima de humor) | pendente |
+| 5 | Creative IR (conceito e verbos semânticos acima de humor) | **feita (3.7.0)** |
 | 6 | Composition IR | pendente |
 | 7 | Animation IR | pendente |
 | 8 | 2D generativo avançado (campos, topologias, tipografia, imagem como fonte) | pendente |

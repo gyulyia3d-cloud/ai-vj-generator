@@ -41,7 +41,10 @@ const generators = {
 const parameters = { note: 'Parâmetros comuns a toda camada (transformação, aparência, movimento, áudio). Gerado por scripts/registry.mjs --write.',
   groups: eng.common.map(c => ({ role: ROLE[c.group] || c.group.toLowerCase(), parameters: c.parameters.map(p => ({ ...p, unit: unitOf(p.label || ''), semanticRole: ROLE[c.group] || c.group.toLowerCase() })) })) };
 const mod = rd(join(REG, 'modulation.json')), cap = rd(join(REG, 'capabilities.json'));
-const schemaPath = join(SK, 'schema', 'project.schema.json');
+const schemaPath = join(SK, 'schema', 'project.schema.json'), briefSchemaPath = join(SK, 'schema', 'brief.schema.json'), creative = rd(join(REG, 'creative.json'));
+const creativeJs = '/* Gerado de skill/ai-vj-generator/registry/creative.json por node scripts/registry.mjs --write. Não edite. */\nconst CREATIVE_DATA = ' + JSON.stringify(creative) + ';\n';
+const creativeJsPath = join(ROOT, 'app', 'creative-data.js');
+const verbIds = creative.verbs.map(v => v.id);
 
 if (mode === 'write') {
   wr(join(REG, 'generators.json'), generators); wr(join(REG, 'parameters.json'), parameters);
@@ -50,6 +53,9 @@ if (mode === 'write') {
   s = s.replace(/("src": \{ "type": "string", "enum": )\[[^\]]*\]/, `$1${srcEnum}`);
   s = s.replace(/("type": \{ "type": "string", )(?:"minLength": 1|"enum": \[[^\]]*\]) \},(\s*"name": \{ "type": "string" \},\s*"role")/, `$1"enum": ${typeEnum} },$2`);
   writeFileSync(schemaPath, s);
+  writeFileSync(creativeJsPath, creativeJs);
+  let b = rd(briefSchemaPath); b.properties.verbs = { type: 'array', items: { type: 'string', enum: verbIds }, description: 'Optional: visual verbs the author wants (the Creative IR adds them with extra weight). See registry/creative.json.' };
+  writeFileSync(briefSchemaPath, JSON.stringify(b, null, 2) + '\n');
   console.log(`registry gravado: ${generators.generators.length} geradores, ${parameters.groups.reduce((a, g) => a + g.parameters.length, 0)} parâmetros comuns, ${mod.sources.length} fontes de modulação`);
   process.exit(0);
 }
@@ -75,5 +81,14 @@ const inScope = ['supported', 'exportable', 'inputOnly'].flatMap(k => cap.items[
 check(cap.labels.length === 4 && !cap.outOfScope.some(x => inScope.includes(x)), 'capabilities: nenhum item fora de escopo em supported, exportable ou inputOnly', inScope.filter(x => cap.outOfScope.includes(x)).join(','));
 const capDoc = readFileSync(join(SK, 'references', 'capabilities.md'), 'utf8');
 check(cap.labels.every(l => capDoc.includes(l)) && Object.keys(cap.legacyLabels).every(l => py.includes(l)), 'capabilities: capabilities.md e o validador usam os rótulos do registry', '');
+/* Creative IR: dados únicos, copiados para o navegador, aceitos pelo esquema do briefing */
+check(readFileSync(creativeJsPath, 'utf8').replace(/\r\n/g, '\n') === creativeJs, 'creative.json = app/creative-data.js (dados do Creative IR no navegador)', 'rode node scripts/registry.mjs --write');
+const bs = rd(briefSchemaPath);
+check(bs.properties.verbs && same(bs.properties.verbs.items.enum, verbIds), `brief.schema.json aceita os ${verbIds.length} verbos de creative.json`, 'rode --write');
+check(verbIds.length === 32 && new Set(verbIds).size === 32, 'o vocabulário tem 32 verbos distintos', String(verbIds.length));
+const VK = ['geometry', 'motion', 'spatial', 'temporal', 'densityNote', 'audio', 'transition', 'material', 'composition', 'motif', 'scale', 'families', 'shaders', 'structure', 'axes', 'density', 'arc'];
+check(creative.verbs.every(v => VK.every(k => v[k] !== undefined && v[k] !== '') && creative.arcs[v.arc]), 'todo verbo define geometria, movimento, espaço, tempo, densidade, áudio, transição, material e composição, e aponta para um arco existente', creative.verbs.filter(v => !VK.every(k => v[k] !== undefined && v[k] !== '') || !creative.arcs[v.arc]).map(v => v.id).join(','));
+check(creative.concepts.every(c => Object.keys(c.verbs).every(v => verbIds.includes(v))) && Object.values(creative.moods).every(m => Object.keys(m).every(v => verbIds.includes(v))), 'conceitos e humores só citam verbos que existem', '');
+check(creative.verbs.every(v => Object.keys(v.families).every(t => creative.heroTypes.includes(t)) && v.shaders.every(s => creative.shaderOrder.includes(s)) && v.structure.every(s => creative.structureOrder.includes(s))), 'famílias, shaders e estruturas dos verbos existem nas listas de ordem', '');
 console.log(fail ? `\n${fail} deriva(s).` : '\nregistry ok.');
 process.exit(fail ? 1 : 0);

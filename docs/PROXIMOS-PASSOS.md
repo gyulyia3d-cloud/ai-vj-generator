@@ -1,6 +1,6 @@
 # Próximos passos (escolha a ordem)
 
-Estado em 08/10/2026, motor **3.6.0**: Fases 1, 2 e 3 feitas; da Fase 4 já entraram a camada `fx` (textura de entrada), MP4 e render por linha de comando. `node scripts/check.mjs` verde. Cada item abaixo é um bloco pequeno com um teste de aceite. Tamanho em dias-focados (df). Análise completa: `docs/historico/RELATORIO-V9-githubs3.md`.
+Estado em 08/10/2026, motor **3.7.0**: Fases 1, 2 e 3 feitas; da Fase 4 já entraram a camada `fx` (textura de entrada), MP4 e render por linha de comando. `node scripts/check.mjs` verde. Cada item abaixo é um bloco pequeno com um teste de aceite. Tamanho em dias-focados (df). Análise completa: `docs/historico/RELATORIO-V9-githubs3.md`.
 
 ## Feito desde a última lista
 Camada **ISF** (84 geradores no parâmetro da camada) · render **MP4 (H.264)** e **PNG por CLI** sem gravar a tela · camada **`fx`** com 22 efeitos · camada **`synth`** (cadeia de uma linha, inspirada no Hydra, código próprio) · 9 módulos GLSL novos com teste numérico · 8 transições novas (16) · 9 formas de LFO de atenção · Kalman do andamento · receitas `hilbert-curve` e `greeble-plate` · XML do Arena conferido contra um arquivo real · medição do motor e **decisão sobre WebGL2** (não trocar agora; `historico/RELATORIO-V9-githubs3.md` §5) · camada `blobs` (detecção por brilho, contraste, cor e zona) · menu corrigido · reorganização 3.0: `adapters/`, `docs/historico/`, documentação neutra de ferramenta.

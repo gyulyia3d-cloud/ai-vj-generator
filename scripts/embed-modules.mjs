@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const html = path.join(root, 'app', 'index.html');
-const MODULES = [['GENAI', 'genai.js'], ['EVAL', 'evaluate.js'], ['UICORE', 'ui-core.js'], ['WEBGL', 'webgl.js'], ['SURFX', 'surface.js'], ['SURFUI', 'surface-ui.js'], ['FLASH', 'flash.js'], ['ONSET', 'onset.js'], ['MODUI', 'mod-ui.js'], ['ISF', 'isf.js'], ['MP4', 'mp4.js'], ['FX', 'fx.js'], ['SYNTH', 'synth.js'], ['BLOBS', 'blobs.js'], ['RENDERGRAPH', 'rendergraph.js'], ['TEMPORAL', 'temporal.js'], ['UX', 'ux.js']];
+const MODULES = [['CREATIVEDATA', 'creative-data.js'], ['CREATIVE', 'creative.js'], ['GENAI', 'genai.js'], ['EVAL', 'evaluate.js'], ['UICORE', 'ui-core.js'], ['WEBGL', 'webgl.js'], ['SURFX', 'surface.js'], ['SURFUI', 'surface-ui.js'], ['FLASH', 'flash.js'], ['ONSET', 'onset.js'], ['MODUI', 'mod-ui.js'], ['ISF', 'isf.js'], ['MP4', 'mp4.js'], ['FX', 'fx.js'], ['SYNTH', 'synth.js'], ['BLOBS', 'blobs.js'], ['RENDERGRAPH', 'rendergraph.js'], ['TEMPORAL', 'temporal.js'], ['UX', 'ux.js']];
 let t = fs.readFileSync(html, 'utf8');
 const crlf = t.includes('\r\n'); if (crlf) t = t.replace(/\r\n/g, '\n');
 let next = t;
