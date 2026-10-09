@@ -89,7 +89,7 @@
               "type": "object",
               "required": ["type"],
               "properties": {
-                "type": { "type": "string", "enum": ["bg","organism","structure","measure","data","hud","event","post","lines","instrument","bitfield","sim","parallax","splat","flow","tunnel","typewall","shader","image","video","model","shape","text","typeset","code","pixeltext","symbols","hazard","blocks","logo","isf","fx","synth","blobs"] },
+                "type": { "type": "string", "enum": ["bg","organism","structure","measure","data","hud","event","post","lines","instrument","bitfield","sim","parallax","splat","flow","tunnel","typewall","shader","image","video","model","shape","text","typeset","code","pixeltext","symbols","hazard","blocks","logo","isf","fx","synth","blobs","temporal"] },
                 "name": { "type": "string" },
                 "role": { "type": "string" },
                 "on": { "type": "boolean" },

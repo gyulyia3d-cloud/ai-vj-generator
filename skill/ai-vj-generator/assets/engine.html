@@ -582,7 +582,7 @@ html.stagemode #toast,html.stagemode #hint{display:none!important}
    função pura de (parâmetros, quadro) → o mesmo código desenha o preview,
    o export PNG alpha e a gravação.
    ===================================================================== */
-const VERSION = '3.5.0';
+const VERSION = '3.6.0';
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const TAU = Math.PI * 2, GA = Math.PI * (3 - Math.sqrt(5));
 const clamp = (v, a, b) => v < a ? a : v > b ? b : v, lerp = (a, b, t) => a + (b - a) * t;
@@ -716,7 +716,7 @@ const FAMILIES = [
   ['Mídia', [['image', 'Imagem'], ['video', 'Vídeo'], ['model', 'Objeto 3D'], ['parallax', 'Parallax'], ['splat', 'Splat 3D'], ['logo', 'Logo']]],
   ['Dados', [['measure', 'Medição'], ['data', 'Telemetria'], ['hud', 'HUD'], ['instrument', 'Instrumento'], ['blobs', 'Manchas']]],
   ['Partículas', [['flow', 'Fluxo'], ['sim', 'Simulação']]],
-  ['Efeito', [['fx', 'Filtro'], ['post', 'Pós'], ['event', 'Evento'], ['blocks', 'Glitch']]],
+  ['Efeito', [['fx', 'Filtro'], ['temporal', 'Tempo'], ['post', 'Pós'], ['event', 'Evento'], ['blocks', 'Glitch']]],
   ['Código', [['code', 'Código']]],
 ];
 const famOf = type => FAMILIES.find(f => f[1].some(x => x[0] === type));
@@ -1428,6 +1428,48 @@ reg('typewall', 'Parede tipográfica', 'gen', [
   c.textBaseline = 'alphabetic';
 });
 
+/* ===== composição de um quadro como RenderGraph =====
+   Source (acumulado) -> [Generator | Shader | Effect | History | Feedback] -> Composite -> ... -> Output.
+   É o único caminho de render fora da viewport ao vivo (renderFrame, exportação PNG, MP4 e o replay dos efeitos temporais). Os canvas de camada vêm de um pool. */
+let CANVAS_POOL_REAL = null;   /* RG vem de um módulo embutido mais abaixo: o pool nasce no primeiro uso */
+const CANVAS_POOL = { get real() { return CANVAS_POOL_REAL || (CANVAS_POOL_REAL = new RG.CanvasPool()); }, acquire(w, h) { return this.real.acquire(w, h); }, release(c) { this.real.release(c); }, get stats() { return this.real.stats; } };
+let COMPOSE_OPTS = null;
+const nodeTypeOf = L => L.type === 'temporal' ? TM.presetOf(pm(L)).kind : (L.type === 'shader' || L.type === 'isf' || L.type === 'synth') ? 'Shader' : BELOW_TYPES.has(L.type) ? 'Effect' : 'Generator';
+function buildComposeGraph(comp, F, o) {
+  const target = o.target, w = target.width, h = target.height, g = RG.create('quadro');
+  g.add({ id: 'src', type: 'Source', run: () => { const x = target.getContext('2d'); x.setTransform(1, 0, 0, 1, 0, 0); x.globalAlpha = 1; x.globalCompositeOperation = 'source-over'; x.clearRect(0, 0, w, h); if (o.bgFill) { x.fillStyle = o.bgFill; x.fillRect(0, 0, w, h); } return target; } });
+  let acc = 'src';
+  comp.layers.forEach((L, i) => {
+    if (o.upTo != null && i >= o.upTo) return;
+    if (o.only && !o.only.includes(i)) return;
+    if (!(o.vis ? o.vis(i, L) : L.on)) return;
+    if (o.skip && o.skip(i, L)) return;
+    const needs = BELOW_TYPES.has(L.type);
+    g.add({ id: 'L' + i, type: nodeTypeOf(L), deps: needs ? [acc] : [], run: ([below]) => {
+      const lay = CANVAS_POOL.acquire(w, h), lx = lay.getContext('2d');
+      renderLayer(lx, comp, L, i, F, o.scale, o.W, o.H, needs ? below : undefined);
+      if (o.luma) lumaKey(lx, w, h);
+      if (o.onLayer) o.onLayer(i, lay, L);
+      return lay; } });
+    g.add({ id: 'C' + i, type: 'Composite', deps: [acc, 'L' + i], inplace: true, run: ([a, lay]) => {
+      const x = a.getContext('2d'); x.globalAlpha = L.opacity; x.globalCompositeOperation = fxOp(L, (BLENDS[L.blend] || BLENDS.normal)[0]); x.drawImage(lay, 0, 0); x.globalAlpha = 1; x.globalCompositeOperation = 'source-over'; return a; } });
+    acc = 'C' + i;
+  });
+  g.add({ id: 'out', type: 'Output', deps: [acc], run: ([a]) => a });
+  return g;
+}
+function composeFrame(comp, F, o) {
+  const top = !TM.replaying, prev = COMPOSE_OPTS; COMPOSE_OPTS = o;
+  if (top && GL.r) GL.r.beginFrame();
+  try { const g = buildComposeGraph(comp, F, o); g.execute({}, CANVAS_POOL); COMPOSE_OPTS = prev; return o.target; }
+  finally { COMPOSE_OPTS = prev; if (top && GL.r) { GL.r.endFrame(); TM.sweep(); } }
+}
+/* a imagem das camadas abaixo de idx num quadro qualquer (usada pelo replay dos efeitos temporais) */
+function renderBelow(comp, idx, F, k, W, H, target) {
+  const o = COMPOSE_OPTS;
+  return composeFrame(comp, F, { target, scale: k, W, H, upTo: idx, bgFill: o ? o.bgFill : '#000', skip: o && o.skip });
+}
+
 /* ===== camadas fixas: shader, imagem, vídeo, forma, texto ===== */
 /*__WEBGL_START__*/
 /* WebGLRenderer (fase 2): contexto WebGL2, compilação e cache de programas, primitiva de tela cheia (VAO), texturas, framebuffers e estado.
@@ -1466,7 +1508,7 @@ const WEBGL = (() => {
     const r = {
       gl, canvas, version: 2, tick: 0,
       progs: new Map(), errors: new Map(), keyOf: new Map(),
-      stats: { compiles: 0, programs: 0, draws: 0, passes: 0, shaderSwitches: 0, textureAllocs: 0, textureReuses: 0, framebufferAllocs: 0, framebufferReuses: 0, stateChanges: 0, frameMs: 0 }, frame: 0,
+      stats: { compiles: 0, programs: 0, draws: 0, passes: 0, shaderSwitches: 0, textureAllocs: 0, textureReuses: 0, framebufferAllocs: 0, framebufferReuses: 0, arrayAllocs: 0, arrayReuses: 0, stateChanges: 0, frameMs: 0 }, frame: 0,
       state: { prog: null, vao: null, vw: 0, vh: 0, unit: -1, tex: new Map() },
       caps: {
         maxTextureSize: gl.getParameter(gl.MAX_TEXTURE_SIZE), maxDrawBuffers: gl.getParameter(gl.MAX_DRAW_BUFFERS), maxColorAttachments: gl.getParameter(gl.MAX_COLOR_ATTACHMENTS),
@@ -1525,11 +1567,14 @@ const WEBGL = (() => {
     r.bindFramebuffer = fb => { if (st.fbo === fb) return; gl.bindFramebuffer(gl.FRAMEBUFFER, fb); st.fbo = fb; st.vw = st.vh = 0; r.stats.stateChanges++; };
     r.bindTexture = (tex, unit) => { const u = unit || 0; if (st.units.get(u) === tex) return; if (st.unit !== u) { gl.activeTexture(gl.TEXTURE0 + u); st.unit = u; } gl.bindTexture(gl.TEXTURE_2D, tex); st.units.set(u, tex); r.stats.stateChanges++; };
 
+    /* upload e cópia agem na unidade ATIVA: ativa a unidade e liga a textura sempre (o cache de bindTexture só vale para amostragem) */
+    r.bindForWrite = (tex, unit) => { const u = unit || 0; gl.activeTexture(gl.TEXTURE0 + u); st.unit = u; gl.bindTexture(gl.TEXTURE_2D, tex); st.units.set(u, tex); };
+
     /* ---- formatos e VRAM estimada (o navegador não expõe o número real: largura x altura x bytes por pixel) ---- */
     const FMT = { rgba8: [gl.RGBA8, gl.RGBA, gl.UNSIGNED_BYTE, 4], rgba16f: [gl.RGBA16F, gl.RGBA, gl.HALF_FLOAT, 8], rgba32f: [gl.RGBA32F, gl.RGBA, gl.FLOAT, 16] };
-    const bytesOf = d => d.w * d.h * FMT[d.format][3] + (d.depth ? d.w * d.h * 4 : 0);
+    const bytesOf = d => d.w * d.h * FMT[d.format][3] * (d.layers || 1) + (d.depth ? d.w * d.h * 4 : 0);
     const norm = d => Object.assign({ format: 'rgba8', filter: 'linear', wrap: 'clamp', depth: false, usage: 'color' }, d);
-    const keyOf = d => [d.w, d.h, d.format, d.filter, d.wrap, d.depth ? 'z' : '', d.usage].join('|');
+    const keyOf = d => [d.w, d.h, d.format, d.filter, d.wrap, d.depth ? 'z' : '', d.layers || 1, d.usage].join('|');
     r.sampler = (tex, t) => { const f = t.filter === 'nearest' ? gl.NEAREST : gl.LINEAR, w = t.wrap === 'repeat' ? gl.REPEAT : t.wrap === 'mirror' ? gl.MIRRORED_REPEAT : gl.CLAMP_TO_EDGE;
       gl.bindTexture(gl.TEXTURE_2D, tex.tex || tex); st.units.delete(st.unit); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, f); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, f);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, w); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, w); };
@@ -1556,18 +1601,29 @@ const WEBGL = (() => {
       const ok = gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE; gl.bindFramebuffer(gl.FRAMEBUFFER, prev); if (!ok) throw new Error('framebuffer incompleto'); return { fb, tex: t.tex, w: d.w, h: d.h, format: d.format, rb }; },
       it => { gl.deleteFramebuffer(it.fb); gl.deleteTexture(it.tex); if (it.rb) gl.deleteRenderbuffer(it.rb); }, 'framebuffer');
 
+    /* arranjo de texturas (TEXTURE_2D_ARRAY): n camadas do mesmo tamanho; guarda os últimos n quadros de um efeito temporal */
+    r.arrays = makePool(d => { const f = FMT[d.format], tex = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D_ARRAY, tex); gl.texStorage3D(gl.TEXTURE_2D_ARRAY, 1, f[0], d.w, d.h, d.layers);
+      const fl = d.filter === 'nearest' ? gl.NEAREST : gl.LINEAR; gl.texParameteri(gl.TEXTURE_2D_ARRAY, gl.TEXTURE_MIN_FILTER, fl); gl.texParameteri(gl.TEXTURE_2D_ARRAY, gl.TEXTURE_MAG_FILTER, fl);
+      gl.texParameteri(gl.TEXTURE_2D_ARRAY, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D_ARRAY, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE); return { tex, w: d.w, h: d.h, layers: d.layers, format: d.format }; },
+      it => gl.deleteTexture(it.tex), 'array');
+    r.bindArray = (arr, unit) => { gl.activeTexture(gl.TEXTURE0 + (unit || 0)); st.unit = unit || 0; gl.bindTexture(gl.TEXTURE_2D_ARRAY, arr.tex); st.units.delete(st.unit); };
+    r.uploadSlice = (arr, slice, src) => { r.bindArray(arr, 0); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true); gl.texSubImage3D(gl.TEXTURE_2D_ARRAY, 0, 0, 0, slice, arr.w, arr.h, 1, gl.RGBA, gl.UNSIGNED_BYTE, src); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false); };
+    /* copia o que está no framebuffer de tela (o quadro recém-desenhado) para uma textura do pool, sem passe extra: é assim que a saída vira histórico */
+    r.copyScreenTo = (t, unit) => { r.bindFramebuffer(null); r.bindForWrite(t.tex, unit || 0); gl.copyTexSubImage2D(gl.TEXTURE_2D, 0, 0, 0, 0, 0, t.w, t.h); };
+    r.clearTexture = t => { const fb = gl.createFramebuffer(), prev = st.fbo; gl.bindFramebuffer(gl.FRAMEBUFFER, fb); gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, t.tex, 0); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); gl.bindFramebuffer(gl.FRAMEBUFFER, prev); gl.deleteFramebuffer(fb); };
+
     /* sobe um canvas/imagem para uma textura do pool (de cabeça para baixo, para bater com a origem do canvas 2D); o tamanho vem da fonte */
     r.uploadCanvas = (src, unit) => {
       const t = r.textures.acquire({ w: src.width, h: src.height, usage: 'upload' });
-      r.bindTexture(t.tex, unit || 0); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true); gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, gl.RGBA, gl.UNSIGNED_BYTE, src); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false); return t;
+      r.bindForWrite(t.tex, unit || 0); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true); gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, gl.RGBA, gl.UNSIGNED_BYTE, src); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false); return t;
     };
 
     /* ---- métricas de desenvolvimento ---- */
     r.beginFrame = () => { r.t0 = performance.now(); r.mark = Object.assign({}, r.stats); };
-    r.endFrame = () => { r.frame++; r.stats.frameMs = performance.now() - (r.t0 || performance.now()); r.textures.trim(120); r.framebuffers.trim(120); };
+    r.endFrame = () => { r.frame++; r.stats.frameMs = performance.now() - (r.t0 || performance.now()); r.textures.trim(120); r.framebuffers.trim(120); r.arrays.trim(120); };
     r.metrics = () => { const s = r.stats, m = r.mark || s;
       return { frameMs: s.frameMs, passes: s.passes - m.passes, draws: s.draws - m.draws, shaderSwitches: s.shaderSwitches - m.shaderSwitches, textureAllocs: s.textureAllocs, framebufferAllocs: s.framebufferAllocs,
-        activeTextures: r.textures.active, pooledTextures: r.textures.total, activeFramebuffers: r.framebuffers.active, activeParticles: 0, estimatedVramBytes: r.textures.bytes + r.framebuffers.bytes, programs: r.progs.size }; };
+        activeTextures: r.textures.active, pooledTextures: r.textures.total, activeFramebuffers: r.framebuffers.active, activeParticles: 0, estimatedVramBytes: r.textures.bytes + r.framebuffers.bytes + r.arrays.bytes, activeArrays: r.arrays.active, programs: r.progs.size }; };
     return r;
   }
   return { create, support, legalize, COMPAT, COMPAT_LINES };
@@ -2444,6 +2500,7 @@ function pm(L) {
   const d = DEFCACHE[L.type] || (DEFCACHE[L.type] = defaults(L.type)), o = Object.assign({}, d, L.p);
   if (L.type === 'shader') { const s = SHADERS[o.preset]; if (s) ['p1', 'p2', 'p3', 'p4'].forEach((k, i) => { if (L.p[k] == null) o[k] = s.d[i]; }); }
   if (L.type === 'fx') { const s = FX[o.preset]; if (s) ['p1', 'p2', 'p3', 'p4'].forEach((k, i) => { if (L.p[k] == null) o[k] = s.d[i]; }); }
+  if (L.type === 'temporal') { const s = TM.PRESETS[o.preset]; if (s) ['p1', 'p2', 'p3', 'p4'].forEach((k, i) => { if (L.p[k] == null) o[k] = s.d[i]; }); }
   if (L.vars) for (const d of L.vars) if (o['v_' + d.k] === undefined) o['v_' + d.k] = d.d;
   return o;
 }
@@ -3023,6 +3080,7 @@ function selLayer(i) { ST.sel = i; $$('#lrows .lrow').forEach((r, k) => r.classL
 function paramGroups(L) {
   const g = GEN[L.type];
   let gp = g.params;
+  if (L.type === 'temporal') { const s = TM.presetOf(pm(L)); gp = gp.map(d => /^p[1-4]$/.test(d.k) ? Object.assign({}, d, { l: 'P' + d.k[1] + ' · ' + s.labels[+d.k[1] - 1], d: s.d[+d.k[1] - 1] }) : d); }
   if (L.type === 'fx') { const s = FX[pm(L).preset] || FX.PIXELATE; gp = gp.map(d => /^p[1-4]$/.test(d.k) ? Object.assign({}, d, { l: 'P' + d.k[1] + ' · ' + s.labels[+d.k[1] - 1], d: s.d[+d.k[1] - 1] }) : d); }
   if (L.type === 'shader') { const s = SHADERS[pm(L).preset] || SHADERS['CAMPO FBM']; gp = gp.map(d => /^p[1-4]$/.test(d.k) ? Object.assign({}, d, { l: 'P' + d.k[1] + ' · ' + s.labels[+d.k[1] - 1], d: s.d[+d.k[1] - 1] }) : d); }
   const vd = varDefs(L);
@@ -3039,6 +3097,7 @@ function paramPanel(host, L, title) {
     ${L.type === 'shader' ? `<div id="glErr"></div>` : ''}${LAYER_ERR.has(L) ? `<ul class="val"><li class="ERROR"><b>ERROR</b>${esc(LAYER_ERR.get(L))}</li></ul>` : ''}`;
   const set = (k, v) => {
     if (v === undefined) delete L.p[k]; else L.p[k] = v;
+    if (L.type === 'temporal' && k === 'preset') { const s = TM.PRESETS[v]; if (s) ['p1', 'p2', 'p3', 'p4'].forEach((q, i) => L.p[q] = s.d[i]); paramPanel(host, L, title); }
     if (L.type === 'fx' && k === 'preset') { const s = FX[v]; if (s) ['p1', 'p2', 'p3', 'p4'].forEach((q, i) => L.p[q] = s.d[i]); paramPanel(host, L, title); }
     if (L.type === 'shader' && k === 'preset') { const s = SHADERS[v]; if (s) ['p1', 'p2', 'p3', 'p4'].forEach((q, i) => L.p[q] = s.d[i]); paramPanel(host, L, title); }
     if (L.type === 'shader') showGlErr(L);
@@ -3226,6 +3285,7 @@ function validate(o) {
       if ((L.type === 'image' || L.type === 'video' || L.type === 'model') && !MEDIA[p.media]) add('ERROR', `${nm} · L${i} mídia ausente`, p.media ? `"${p.media}" não está carregada neste navegador. Importe na aba Mídia.` : 'Camada ligada sem arquivo.');
       if (L.type === 'isf') { try { const b = shaderBody({ src: isfLib(p.lib).src }); glProg(b); if (GL.err.get(b)) add('ERROR', `${nm} · L${i} ISF`, GL.err.get(b)); } catch (e) { add('ERROR', `${nm} · L${i} ISF`, e.message); } }
       if (L.type === 'synth') { try { const b = shaderBody({ src: synthSrc(p) }); glProg(b); if (GL.err.get(b)) add('ERROR', `${nm} · L${i} cadeia`, GL.err.get(b)); } catch (e) { add('ERROR', `${nm} · L${i} cadeia`, e.message); } }
+      if (L.type === 'temporal') { const b = TM.body(TM.presetOf(p).src); glProg(b); if (GL.err.get(b)) add('ERROR', `${nm} · L${i} tempo`, GL.err.get(b)); }
       if (L.type === 'fx') { const b = fxBody(fxOf(p).src); glProg(b); if (GL.err.get(b)) add('ERROR', `${nm} · L${i} efeito`, GL.err.get(b)); }
       if (L.type === 'shader') { const b = shaderBody(p); glProg(b); if (GL.err.get(b)) add('ERROR', `${nm} · L${i} shader`, GL.err.get(b)); if (!glInit()) add('ERROR', 'WebGL', 'WebGL indisponível.'); }
       if (L.type === 'organism' && (P.time.bars % +p.scanBars)) add('WARNING', `${nm} · L${i} varredura`, `A varredura de ${p.scanBars} compassos não divide o loop de ${P.time.bars}: ela salta no fim.`);
@@ -3326,22 +3386,18 @@ async function exportRun(info, bar) {
   try {
     await document.fonts.ready;
     for (const ci of ciList) {
+      TM.resetAll();
       const comp = P.compositions[ci], cn = pad(ci + 1, 2) + '_' + safe(comp.name);
       const onIdx = comp.layers.map((L, i) => i).filter(i => comp.layers[i].on);
       const tgt = single ? [clamp(EXP.layerSel, 0, comp.layers.length - 1)] : onIdx;
       for (let n = start; n <= end; n++) {
         if (CANCEL) throw new Error('Cancelado');
         const F = frameAt(n, comp); await prepMedia(comp, F);
-        cctx.setTransform(1, 0, 0, 1, 0, 0); cctx.globalCompositeOperation = 'source-over'; cctx.globalAlpha = 1; cctx.clearRect(0, 0, w, h);
-        if (!alpha && !onIdx.some(i => comp.layers[i].type === 'bg')) { cctx.fillStyle = col(comp, 'bg'); cctx.fillRect(0, 0, w, h); }
-        for (const i of tgt) {
-          const L = comp.layers[i];
-          if (alpha && L.type === 'bg' && !single) continue;
-          renderLayer(lctx, comp, L, i, F, EXP.scale, W, H, BELOW_TYPES.has(L.type) ? cmp : undefined);
-          if (EXP.luma) lumaKey(lctx, w, h);
-          if (perLayer || single) await put(`${PROJ}/LAYERS/${cn}/L${i}_${safe(L.name)}/${tag}${cn}_L${i}_${pad(n, 6)}.png`, lay);
-          cctx.globalAlpha = L.opacity; cctx.globalCompositeOperation = fxOp(L, (BLENDS[L.blend] || BLENDS.normal)[0]); cctx.drawImage(lay, 0, 0); cctx.globalAlpha = 1; cctx.globalCompositeOperation = 'source-over';
-        }
+        const pend = [];
+        composeFrame(comp, F, { target: cmp, scale: EXP.scale, W, H, bgFill: (!alpha && !onIdx.some(i => comp.layers[i].type === 'bg')) ? col(comp, 'bg') : null, only: single ? tgt : null,
+          vis: single ? () => true : undefined, skip: (i, L) => alpha && L.type === 'bg' && !single, luma: EXP.luma,
+          onLayer: (i, lc, L) => { if (perLayer || single) pend.push(put(`${PROJ}/LAYERS/${cn}/L${i}_${safe(L.name)}/${tag}${cn}_L${i}_${pad(n, 6)}.png`, lc)); } });
+        await Promise.all(pend);
         if (gains[ci] && gains[ci][n] < 0.999) { cctx.globalCompositeOperation = 'source-atop'; cctx.globalAlpha = 1 - FLASH.srgbFactor(gains[ci][n]); cctx.fillStyle = '#000'; cctx.fillRect(0, 0, w, h); cctx.globalCompositeOperation = 'source-over'; cctx.globalAlpha = 1; }   // dimensiona só onde já há pixel: o alpha não muda
         if (!single) await put(`${PROJ}/${alpha ? 'ALPHA' : 'COMPOSITIONS'}/${cn}/${tag}${cn}_${pad(n, 6)}.png`, cmp);
         if (n === start) { const pb = await new Promise(r => view(cmp).toBlob(r, 'image/png')); zip.file(`${PROJ}/PREVIEW/${cn}_frame0.png`, pb); }
@@ -5250,8 +5306,8 @@ const FX_NAMES = Object.keys(FX);
 function fxBody(src) { return FX_PRE + src.replace(/void\s+main\s*\(\s*\)/, 'void fxMain()') + ' void main(){ fxMain(); vec4 o=tx(gl_FragCoord.xy/uRes); gl_FragColor=mix(o,gl_FragColor,uMixK); }'; }
 const fxOf = p => FX[p.preset] || FX.PIXELATE;
 /* o efeito entra no lugar do que está abaixo: com opacidade cheia e blend normal ele substitui a imagem (copy); senão mistura */
-const fxOp = (L, op) => L.type === 'fx' && (L.opacity == null || L.opacity >= 0.999) && (!L.blend || L.blend === 'normal') ? 'copy' : op;
-const BELOW_TYPES = new Set(['fx', 'blobs']);   // camadas que leem a imagem das camadas abaixo
+const fxOp = (L, op) => (L.type === 'fx' || L.type === 'temporal') && (L.opacity == null || L.opacity >= 0.999) && (!L.blend || L.blend === 'normal') ? 'copy' : op;
+const BELOW_TYPES = new Set(['fx', 'blobs', 'temporal']);   // camadas que leem a imagem das camadas abaixo
 let FXS = null;   // canvas de rascunho para a imagem "abaixo" na viewport
 function fxLiveBelow(comp, i) {
   const src = DOM.layers[0] && DOM.layers[0].cv; if (!src) return null;
@@ -5505,6 +5561,174 @@ reg('blobs', 'Manchas · detectar e marcar (lê as camadas abaixo)', 'gen', [
   });
 });
 /*__BLOBS_END__*/
+/*__RENDERGRAPH_START__*/
+/* RenderGraph (fase 4): a pipeline de um quadro como grafo explícito de nós. Cada nó declara de quem depende; o grafo valida, ordena (estável: na ordem em que os nós
+   foram registrados, respeitando as dependências), executa e devolve cada recurso temporário ao pool quando o último consumidor termina.
+   Tipos de nó: Source, Generator, Shader, Effect, Mask, Composite, History, Feedback, Output (Scene3D, ParticleSystem e Camera entram nas fases 12 e 13).
+   O grafo não sabe de canvas, GPU nem projeto: o chamador dá funções run e um pool (acquire/release). Fonte de verdade: este arquivo;
+   node scripts/embed-modules.mjs embute no index.html. */
+const RG = (() => {
+  const NODE_TYPES = {
+    Source: 'produz a primeira imagem (fundo, cor de base)',
+    Generator: 'desenha uma camada sem ler as outras (formas, texto, mídia)',
+    Shader: 'camada de GPU sem entrada (shader, ISF, cadeia)',
+    Effect: 'lê a imagem acumulada abaixo (fx, manchas)',
+    Mask: 'recorta ou pondera outra imagem',
+    Composite: 'soma uma camada ao acumulado (blend e opacidade); reaproveita o acumulado',
+    History: 'lê quadros anteriores guardados (slit scan, deslocamento temporal)',
+    Feedback: 'lê a própria saída do quadro anterior (trilha, feedback)',
+    Output: 'o resultado do quadro; nunca é devolvido ao pool',
+  };
+
+  class Graph {
+    constructor(name) { this.name = name || 'graph'; this.nodes = []; this.byId = new Map(); this.plan = null; this.lastRun = null; }
+    /* run(inputs, ctx) devolve o recurso do nó. inplace: o nó devolve o primeiro dos inputs (ele fica com a posse). */
+    add(n) {
+      if (!n || !n.id || typeof n.run !== 'function') throw new Error('nó inválido: precisa de id e run');
+      if (!NODE_TYPES[n.type]) throw new Error(`nó ${n.id}: tipo desconhecido "${n.type}" (use ${Object.keys(NODE_TYPES).join(', ')})`);
+      if (this.byId.has(n.id)) throw new Error(`nó repetido: ${n.id}`);
+      const node = { id: n.id, type: n.type, deps: n.deps || [], run: n.run, inplace: !!n.inplace, index: this.nodes.length };
+      this.nodes.push(node); this.byId.set(node.id, node); this.plan = null; return node.id;
+    }
+    /* valida dependências, ordena (Kahn estável), conta consumidores de cada recurso */
+    compile() {
+      for (const n of this.nodes) for (const d of n.deps) if (!this.byId.has(d)) throw new Error(`nó ${n.id} depende de "${d}", que não existe`);
+      const left = new Map(this.nodes.map(n => [n.id, n.deps.length])), users = new Map(this.nodes.map(n => [n.id, []]));
+      for (const n of this.nodes) for (const d of n.deps) users.get(d).push(n.id);
+      const order = [], ready = this.nodes.filter(n => !n.deps.length).map(n => n.id), seen = new Set();
+      while (ready.length) {
+        ready.sort((a, b) => this.byId.get(a).index - this.byId.get(b).index);
+        const id = ready.shift(); if (seen.has(id)) continue; seen.add(id); order.push(id);
+        for (const u of users.get(id)) { left.set(u, left.get(u) - 1); if (left.get(u) === 0) ready.push(u); }
+      }
+      if (order.length !== this.nodes.length) throw new Error('ciclo no grafo: ' + this.nodes.filter(n => !seen.has(n.id)).map(n => n.id).join(', '));
+      const outputs = this.nodes.filter(n => n.type === 'Output');
+      if (outputs.length !== 1) throw new Error(`o grafo precisa de exatamente um Output (tem ${outputs.length})`);
+      this.plan = { order, consumers: new Map(this.nodes.map(n => [n.id, users.get(n.id).length])), output: outputs[0].id };
+      return this.plan;
+    }
+    /* executa o plano. pool: { release(recurso) } opcional. Devolve { output, order, released } */
+    execute(ctx, pool) {
+      const plan = this.plan || this.compile(), res = new Map(), refs = new Map(), released = []; ctx = ctx || {};
+      const drop = r => { if (r == null || !pool || !pool.release) return; pool.release(r); released.push(r); };
+      for (const id of plan.order) {
+        const n = this.byId.get(id), inputs = n.deps.map(d => res.get(d)), out = n.run(inputs, ctx, n);
+        res.set(id, out);
+        const consumers = plan.consumers.get(id);
+        if (out != null) refs.set(out, (refs.get(out) || 0) + (n.type === 'Output' ? 1e9 : consumers));
+        /* cada dependência perdeu um consumidor; se o nó devolveu o próprio input (inplace), a contagem já foi somada acima */
+        for (const d of n.deps) { const r = res.get(d); if (r == null) continue; const c = (refs.get(r) || 0) - 1; refs.set(r, c); if (c <= 0) drop(r); }
+        if (out != null && refs.get(out) <= 0) drop(out);   /* nó sem consumidores que não é o Output */
+      }
+      const output = res.get(plan.output); this.lastRun = { order: plan.order.slice(), released: released.length };
+      return { output, order: plan.order, released: released.length };
+    }
+  }
+
+  /* pool de canvas 2D por tamanho: o grafo da composição usa um canvas por camada em voo, não um por camada por quadro */
+  class CanvasPool {
+    constructor() { this.free = new Map(); this.stats = { allocs: 0, reuses: 0 }; }
+    acquire(w, h) { const k = w + 'x' + h, l = this.free.get(k); let c = l && l.pop(); if (c) this.stats.reuses++; else { c = document.createElement('canvas'); c.width = w; c.height = h; this.stats.allocs++; } c.__k = k; return c; }
+    release(c) { if (!c || !c.__k) return; if (!this.free.has(c.__k)) this.free.set(c.__k, []); this.free.get(c.__k).push(c); }
+    trim() { const keep = new Set(); this.free.forEach((l, k) => { if (l.length > 6) l.length = 6; }); return keep; }
+  }
+  return { NODE_TYPES, Graph, CanvasPool, create: name => new Graph(name) };
+})();
+/*__RENDERGRAPH_END__*/
+/*__TEMPORAL_START__*/
+/* Camada "temporal" (fase 4): efeitos que dependem de quadros anteriores, em GPU, sem relógio e sem estado escondido.
+   TRILHA e FEEDBACK leem a própria saída do quadro anterior (nós Feedback do grafo: dois buffers A/B, a saída vira histórico por copyTexSubImage2D, sem passe extra).
+   SLIT SCAN e DESLOCAR leem os últimos N quadros da entrada guardados num TEXTURE_2D_ARRAY (nós History).
+   DETERMINISMO: a saída de um quadro é função dos quadros anteriores, não do que aconteceu antes. Seguindo em ordem (quadro n depois de n-1) o histórico continua; num salto
+   (rolar a linha do tempo, abrir, exportar) o histórico é zerado e reconstruído renderizando os quadros anteriores (replay), com uma janela W em que a persistência cai
+   abaixo de 1/255 (cada passo perde 1,5/255, então chega a zero). Exportar duas vezes dá a mesma imagem; o loop fecha porque frameAt dá a volta no loop.
+   Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html. */
+const TM = (() => {
+  const PRE = 'precision highp sampler2DArray; uniform sampler2D uTex; uniform sampler2D uPrev; uniform sampler2DArray uHist; uniform float uMixK, uHead, uN; ' +
+    'vec4 tx(vec2 q){return texture2D(uTex,q);} vec4 pv(vec2 q){return texture2D(uPrev,q);} vec4 hs(vec2 q,float lag){float s=mod(uHead-lag+uN*2.,uN);return texture(uHist,vec3(q,s));} float fxLuma(vec3 c){return dot(c,vec3(.299,.587,.114));} ';
+  const EPS = 'vec4(1.5/255.)';
+  const PRESETS = {
+    TRILHA: { labels: ['Persistência', 'Brilho da trilha', '—', '—'], d: [0.8, 1, 0, 0], kind: 'Feedback', ring: 0, decay: 0, tag: 'trilha',
+      src: `void main(){ vec2 uv=gl_FragCoord.xy/uRes; vec4 c=tx(uv); vec4 p=max(pv(uv)*clamp(uP.x,0.,.96)*clamp(uP.y,0.,1.5)-${EPS},vec4(0.)); gl_FragColor=max(c,p); }` },
+    FEEDBACK: { labels: ['Persistência', 'Zoom', 'Rotação (°)', 'Deriva (px)'], d: [0.85, 1.02, 1, 2], kind: 'Feedback', ring: 0, decay: 0, tag: 'feedback',
+      src: `void main(){ vec2 uv=gl_FragCoord.xy/uRes; float asp=uRes.x/uRes.y, a=uP.z*.0174533; mat2 R=mat2(cos(a),-sin(a),sin(a),cos(a)); vec2 pp=(uv-.5)*vec2(asp,1.); pp=R*pp/max(.2,uP.y);
+  vec2 q=pp/vec2(asp,1.)+.5+vec2(uP.w,0.)/uRes; float inside=step(0.,q.x)*step(q.x,1.)*step(0.,q.y)*step(q.y,1.); vec4 c=tx(uv); vec4 f=max(pv(q)*inside*clamp(uP.x,0.,.96)-${EPS},vec4(0.)); gl_FragColor=max(c,f); }` },
+    'SLIT SCAN': { labels: ['Quadros (2 a 24)', 'Eixo (0 = X, 1 = Y)', 'Inverter (0 ou 1)', 'Curvatura'], d: [16, 0, 0, 0], kind: 'History', ring: 'p1', decay: 0, tag: 'tempo',
+      src: `void main(){ vec2 uv=gl_FragCoord.xy/uRes; float t=uP.y>.5?uv.y:uv.x; if(uP.z>.5) t=1.-t; t=pow(clamp(t,0.,1.),1.+max(-.8,uP.w)); float n=clamp(floor(uP.x+.5),2.,24.); float lag=floor(t*(n-1.)+.5); gl_FragColor=hs(uv,lag); }` },
+    DESLOCAR: { labels: ['Quantidade (px)', 'Ganho', '—', '—'], d: [12, 1.5, 0, 0], kind: 'History', ring: 2, decay: 0, tag: 'tempo',
+      src: 'void main(){ vec2 uv=gl_FragCoord.xy/uRes; vec4 c=tx(uv), b=hs(uv,1.); vec2 d=(b.rg-c.rg)*uP.y; gl_FragColor=tx(uv+d*uP.x/uRes); }' },
+  };
+  const NAMES = Object.keys(PRESETS);
+  const body = src => PRE + src.replace(/void\s+main\s*\(\s*\)/, 'void tmMain()') + ' void main(){ tmMain(); vec4 o=tx(gl_FragCoord.xy/uRes); gl_FragColor=mix(o,gl_FragColor,uMixK); }';
+  const presetOf = p => PRESETS[p.preset] || PRESETS.TRILHA;
+  const ringOf = (S, p) => S.ring === 'p1' ? Math.max(2, Math.min(24, Math.round(p.p1))) : (S.ring || 0);
+  /* quadros de replay: a persistência cai abaixo de 1/255 em ln(1/255)/ln(k); a perda fixa de 1,5/255 por passo garante o fim */
+  const replayOf = (S, p, n) => S.kind === 'Feedback' ? Math.max(1, Math.min(40, Math.ceil(Math.log(1 / 255) / Math.log(Math.max(0.05, Math.min(0.96, p.p1)))) )) : Math.max(1, n - 1);
+
+  const ALL = new Set(), BY = new WeakMap();
+  let replayDepth = 0;
+  function stateOf(L, w, h, sig, ringN) {
+    const slot = BY.get(L) || {}; BY.set(L, slot); const key = (replayDepth > 0 ? 'r' : 'm') + w + 'x' + h + '|' + sig + '|' + ringN; let st = slot[key];
+    const r = GL.r;
+    if (!st || st.dead) {
+      st = slot[key] = { slot, key, w, h, sig, ringN, last: null, head: 0, filled: 0, used: r.frame, prev: r.textures.acquire({ w, h, usage: 'history' }), out: r.textures.acquire({ w, h, usage: 'history' }),
+        arr: ringN ? r.arrays.acquire({ w, h, layers: ringN, usage: 'history' }) : null, scr: document.createElement('canvas') };
+      st.scr.width = w; st.scr.height = h; ALL.add(st);
+    }
+    return st;
+  }
+  function free(st) { if (!GL.r) return; GL.r.textures.release(st.prev); GL.r.textures.release(st.out); if (st.arr) GL.r.arrays.release(st.arr); ALL.delete(st); st.dead = true; if (st.slot && st.slot[st.key] === st) delete st.slot[st.key]; }
+  const reset = st => { st.last = null; st.head = 0; st.filled = 0; GL.r.clearTexture(st.prev); GL.r.clearTexture(st.out); };
+  /* libera o histórico das camadas que sumiram ou pararam (apagadas, desligadas) */
+  function sweep() { if (!GL.r) return; for (const st of [...ALL]) if (GL.r.frame - st.used > 90) free(st); }
+  function resetAll() { for (const st of [...ALL]) free(st); }
+
+  function draw(c, R) {
+    const { p, L, W, H, k, below, idx, comp } = R; if (!below) return;
+    const gl = glInit(); if (!gl) return;
+    const S = presetOf(p), prog = glProg(body(S.src)); if (!prog) return;
+    const r = GL.r, w = Math.max(2, Math.min(4096, Math.round(below.width * p.res))), h = Math.max(2, Math.min(4096, Math.round(below.height * p.res))), ringN = ringOf(S, p);
+    const st = stateOf(L, w, h, p.preset, ringN), raw = R.F.raw, LF = loopFrames(), cont = (st.last == null) ? false : P.time.loop ? ((st.last + 1) % LF) : st.last + 1;
+    st.used = r.frame;
+    const step = (src, advance) => {
+      const sx = st.scr.getContext('2d'); sx.setTransform(1, 0, 0, 1, 0, 0); sx.globalCompositeOperation = 'copy'; sx.drawImage(src, 0, 0, w, h);
+      if (ringN) { if (advance) { st.head = (st.head + 1) % ringN; st.filled = Math.min(ringN, st.filled + 1); } r.uploadSlice(st.arr, st.head, st.scr); }
+      if (S.kind === 'Feedback' && advance) { const t = st.prev; st.prev = st.out; st.out = t; }
+      r.resize(w, h); r.viewport(w, h); r.use(prog);
+      const tex = r.uploadCanvas(st.scr, 0); r.bindTexture(st.prev.tex, 1); if (ringN) r.bindArray(st.arr, 2);
+      for (const [n, v] of [['uTex', 0], ['uPrev', 1], ['uHist', 2]]) { const l = r.loc(prog, n); if (l) gl.uniform1i(l, v); }
+      { const l = r.loc(prog, 'uMixK'); if (l) gl.uniform1f(l, p.mix); const hd = r.loc(prog, 'uHead'); if (hd) gl.uniform1f(hd, st.head); const nn = r.loc(prog, 'uN'); if (nn) gl.uniform1f(nn, ringN || 1); }
+      glFrameUniforms(r, prog, frameContext(R, w, h), R, 1);
+      r.bindFramebuffer(null); r.clear(); r.drawFullscreen();
+      if (S.kind === 'Feedback') r.copyScreenTo(st.out, 0);
+      r.textures.release(tex);
+    };
+    let mode = raw === st.last ? 'redraw' : raw === cont ? 'advance' : 'reset';
+    if (mode === 'reset') {
+      reset(st);
+      if (replayDepth === 0) {   /* num replay interno a camada começa fria: o erro some dentro da janela da camada de cima */
+        const n = replayOf(S, p, ringN), cv = below.__tmScratch || (below.__tmScratch = document.createElement('canvas'));
+        replayDepth++;
+        try {
+          for (let j = n; j >= 1; j--) {
+            const rj = P.time.loop ? (((raw - j) % LF) + LF) % LF : raw - j; if (rj < 0) continue;
+            cv.width = below.width; cv.height = below.height;
+            renderBelow(comp, idx, frameAt(rj, comp), k, W, H, cv); step(cv, true);
+          }
+        } finally { replayDepth--; }
+      }
+      mode = 'advance';
+    }
+    step(below, mode === 'advance'); st.last = raw;
+    c.drawImage(GL.cv, 0, 0, w, h, 0, 0, W, H);
+  }
+  return { PRESETS, NAMES, PRE, body, presetOf, draw, resetAll, sweep, ringOf, replayOf, get replaying() { return replayDepth > 0; }, enterReplay() { replayDepth++; }, leaveReplay() { replayDepth--; } };
+})();
+reg('temporal', 'Tempo (trilha, feedback, slit scan)', 'gen', [
+  S('preset', 'Efeito', 'TRILHA', TM.NAMES), N('p1', 'P1', 0.8, -400, 400), N('p2', 'P2', 1, -400, 400), N('p3', 'P3', 0, -400, 400), N('p4', 'P4', 0, -400, 400),
+  N('mix', 'Mistura', 1, 0, 1), N('res', 'Resolução interna', 1, 0.25, 1), C('c1', 'Cor 1', 'primary'), C('c2', 'Cor 2', 'accent'), C('cbg', 'Fundo', 'bg'),
+], (c, R) => TM.draw(c, R));
+/*__TEMPORAL_END__*/
 /*__UX_START__*/
 /* UX (fase 3): modo Criativo/Avançado, ajuda de cada aba, atalhos (tecla ?) e tour guiado. Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html.
    Textos pela função T3 (gen-ui.js). O teste (ux_check.mjs) confere que todo atalho do teclado aparece na lista. */
@@ -5805,15 +6029,14 @@ function boot() {
   document.fonts && document.fonts.load('800 40px "Martian Mono"').catch(() => {});
   if (!embedded && !saved && !store.get('seenWiz', false)) openWiz();
   raf = requestAnimationFrame(tick);
-  window.AIVJ = { version: VERSION, get PAL() { return PAL; }, get RECIPES() { return RECIPES; }, addRecipe, addTestCards, recipeLayer, importFile, parseModel, setLang, setHow, undo, redo, evalExpr, applyTheme, layoutApply, setPanelOpen, setZoneDraw, get hist() { return ST.hist.length; }, get histLabels() { return ST.hl.slice(); }, surface: SC, specOf, applyCalc, renderSpec, specMarkdown, get project() { return P; }, get audio() { return AUD; }, pseudoAudio, synthTimes, applyMods, motionCurve, GENAI, EVALUATOR, flash: FLASH, ONSET, UX, fx: { FX, body: fxBody, op: fxOp }, synth: { SYN, src: synthSrc }, blobs: { X: BLOBX }, layerErrors: () => [...LAYER_ERR.values()], mp4: { X: MP4X, render: mp4Render, run: exportMp4Run }, isf: { X: ISFX, LIB: ISFLIB, lib: isfLib }, modUI: { render: modPanel, params: modNumericParams, sources: MOD_SOURCES }, expRun: exportRun, EXP, surfx: SURFX, region: regionRect, surUI: { state: SUR, applyPreset: surApplyPreset, render: renderSurface }, webgl: WEBGL, glProgram: body => glProg(body), glError: body => GL.err.get(body), glInfo: () => { glInit(); return GL.r ? { version: GL.r.version, context: GL.gl.constructor.name, glsl: GL.gl.getParameter(GL.gl.SHADING_LANGUAGE_VERSION), caps: GL.r.caps, stats: GL.r.stats } : { failure: GL.failure }; }, glMetrics: () => GL.r ? GL.r.metrics() : null, glr: () => GL.r, presets: SURFACE_PRESETS, GEN, FAMILIES, COMMON, modSources: () => MOD_SOURCES.map(x => x[0]), evaluate: lang => EVALUATOR.run(lang), shaderResolve, GLIB, specBins, simBake, parsePly, get LAYERERR() { return LAYER_ERR; }, setSeed, bpmWaves, get GLERR() { return GL.err; }, layerFrame, pm, importJson, frameAt, validate: o => validate(o), GEN, loopFrames, contactSheet, layerAudit, allowCode, loadAssets, toLogo, projectOut, get state() { return ST; }, geom, lintCode, compileCode, setCi(i) { ST.ci = i; refreshAll(); },
+  window.AIVJ = { version: VERSION, get PAL() { return PAL; }, get RECIPES() { return RECIPES; }, addRecipe, addTestCards, recipeLayer, importFile, parseModel, setLang, setHow, undo, redo, evalExpr, applyTheme, layoutApply, setPanelOpen, setZoneDraw, get hist() { return ST.hist.length; }, get histLabels() { return ST.hl.slice(); }, surface: SC, specOf, applyCalc, renderSpec, specMarkdown, get project() { return P; }, get audio() { return AUD; }, pseudoAudio, synthTimes, applyMods, motionCurve, GENAI, EVALUATOR, flash: FLASH, ONSET, UX, fx: { FX, body: fxBody, op: fxOp }, synth: { SYN, src: synthSrc }, blobs: { X: BLOBX }, layerErrors: () => [...LAYER_ERR.values()], mp4: { X: MP4X, render: mp4Render, run: exportMp4Run }, isf: { X: ISFX, LIB: ISFLIB, lib: isfLib }, modUI: { render: modPanel, params: modNumericParams, sources: MOD_SOURCES }, expRun: exportRun, EXP, surfx: SURFX, region: regionRect, surUI: { state: SUR, applyPreset: surApplyPreset, render: renderSurface }, RG, TM, composeFrame, buildComposeGraph: buildComposeGraph, frameAt, canvasPool: CANVAS_POOL, webgl: WEBGL, glProgram: body => glProg(body), glError: body => GL.err.get(body), glInfo: () => { glInit(); return GL.r ? { version: GL.r.version, context: GL.gl.constructor.name, glsl: GL.gl.getParameter(GL.gl.SHADING_LANGUAGE_VERSION), caps: GL.r.caps, stats: GL.r.stats } : { failure: GL.failure }; }, glMetrics: () => GL.r ? GL.r.metrics() : null, glr: () => GL.r, presets: SURFACE_PRESETS, GEN, FAMILIES, COMMON, modSources: () => MOD_SOURCES.map(x => x[0]), evaluate: lang => EVALUATOR.run(lang), shaderResolve, GLIB, specBins, simBake, parsePly, get LAYERERR() { return LAYER_ERR; }, setSeed, bpmWaves, get GLERR() { return GL.err; }, layerFrame, pm, importJson, frameAt, validate: o => validate(o), GEN, loopFrames, contactSheet, layerAudit, allowCode, loadAssets, toLogo, projectOut, get state() { return ST; }, geom, lintCode, compileCode, setCi(i) { ST.ci = i; refreshAll(); },
     /* gancho de teste: renderiza a composição ci no quadro n, determinístico, sem tocar no preview */
     renderFrame(ci, n, scale = 0.25, alpha = false) {
       const comp = P.compositions[ci], W = P.canvas.w, H = P.canvas.h, w = Math.round(W * scale), h = Math.round(H * scale);
       const a = document.createElement('canvas'); a.width = w; a.height = h; const ac = a.getContext('2d', { willReadFrequently: true });
-      const b = document.createElement('canvas'); b.width = w; b.height = h; const bc = b.getContext('2d');
-      const live = ST.live; ST.live = false; RENDER_ALPHA = alpha; EXPORTING = true; if (GL.r) GL.r.beginFrame();
-      try { const F = frameAt(n, comp); comp.layers.forEach((L, i) => { if (!L.on || (alpha && L.type === 'bg')) return; renderLayer(bc, comp, L, i, F, scale, W, H, BELOW_TYPES.has(L.type) ? a : undefined); ac.globalAlpha = L.opacity; ac.globalCompositeOperation = fxOp(L, (BLENDS[L.blend] || BLENDS.normal)[0]); ac.drawImage(b, 0, 0); ac.globalAlpha = 1; ac.globalCompositeOperation = 'source-over'; }); }
-      finally { ST.live = live; RENDER_ALPHA = false; EXPORTING = false; if (GL.r) GL.r.endFrame(); }
+      const live = ST.live; ST.live = false; RENDER_ALPHA = alpha; EXPORTING = true; TM.resetAll();
+      try { composeFrame(comp, frameAt(n, comp), { target: a, scale, W, H, skip: (i, L) => alpha && L.type === 'bg' }); }
+      finally { ST.live = live; RENDER_ALPHA = false; EXPORTING = false; }
       return ac.getImageData(0, 0, w, h);
     } };
 }

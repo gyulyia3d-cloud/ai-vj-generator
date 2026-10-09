@@ -445,6 +445,20 @@
    "maturity": "stable",
    "note": "The shader is picked, not written: use it as a ground or accent when a ready generator fits the concept. Credit and licence of each shader are in isf-library/README.md."
   },
+  "temporal": {
+   "family": "information",
+   "role": "effects that depend on earlier frames: trail, feedback, slit scan, temporal displacement (GPU history, deterministic)",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "high",
+   "maturity": "stable",
+   "note": "Reads the layers below like fx, so put it above what it should change. Slit scan keeps up to 24 frames in GPU memory: lower the internal resolution on very wide surfaces. A jump in time rebuilds the history by replaying earlier frames."
+  },
   "blobs": {
    "family": "information",
    "role": "detect and mark blobs in the image below (by brightness, contrast, colour or luminance zone): boxes, ids, links",

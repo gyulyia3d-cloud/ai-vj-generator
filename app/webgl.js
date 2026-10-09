@@ -34,7 +34,7 @@ const WEBGL = (() => {
     const r = {
       gl, canvas, version: 2, tick: 0,
       progs: new Map(), errors: new Map(), keyOf: new Map(),
-      stats: { compiles: 0, programs: 0, draws: 0, passes: 0, shaderSwitches: 0, textureAllocs: 0, textureReuses: 0, framebufferAllocs: 0, framebufferReuses: 0, stateChanges: 0, frameMs: 0 }, frame: 0,
+      stats: { compiles: 0, programs: 0, draws: 0, passes: 0, shaderSwitches: 0, textureAllocs: 0, textureReuses: 0, framebufferAllocs: 0, framebufferReuses: 0, arrayAllocs: 0, arrayReuses: 0, stateChanges: 0, frameMs: 0 }, frame: 0,
       state: { prog: null, vao: null, vw: 0, vh: 0, unit: -1, tex: new Map() },
       caps: {
         maxTextureSize: gl.getParameter(gl.MAX_TEXTURE_SIZE), maxDrawBuffers: gl.getParameter(gl.MAX_DRAW_BUFFERS), maxColorAttachments: gl.getParameter(gl.MAX_COLOR_ATTACHMENTS),
@@ -93,11 +93,14 @@ const WEBGL = (() => {
     r.bindFramebuffer = fb => { if (st.fbo === fb) return; gl.bindFramebuffer(gl.FRAMEBUFFER, fb); st.fbo = fb; st.vw = st.vh = 0; r.stats.stateChanges++; };
     r.bindTexture = (tex, unit) => { const u = unit || 0; if (st.units.get(u) === tex) return; if (st.unit !== u) { gl.activeTexture(gl.TEXTURE0 + u); st.unit = u; } gl.bindTexture(gl.TEXTURE_2D, tex); st.units.set(u, tex); r.stats.stateChanges++; };
 
+    /* upload e cópia agem na unidade ATIVA: ativa a unidade e liga a textura sempre (o cache de bindTexture só vale para amostragem) */
+    r.bindForWrite = (tex, unit) => { const u = unit || 0; gl.activeTexture(gl.TEXTURE0 + u); st.unit = u; gl.bindTexture(gl.TEXTURE_2D, tex); st.units.set(u, tex); };
+
     /* ---- formatos e VRAM estimada (o navegador não expõe o número real: largura x altura x bytes por pixel) ---- */
     const FMT = { rgba8: [gl.RGBA8, gl.RGBA, gl.UNSIGNED_BYTE, 4], rgba16f: [gl.RGBA16F, gl.RGBA, gl.HALF_FLOAT, 8], rgba32f: [gl.RGBA32F, gl.RGBA, gl.FLOAT, 16] };
-    const bytesOf = d => d.w * d.h * FMT[d.format][3] + (d.depth ? d.w * d.h * 4 : 0);
+    const bytesOf = d => d.w * d.h * FMT[d.format][3] * (d.layers || 1) + (d.depth ? d.w * d.h * 4 : 0);
     const norm = d => Object.assign({ format: 'rgba8', filter: 'linear', wrap: 'clamp', depth: false, usage: 'color' }, d);
-    const keyOf = d => [d.w, d.h, d.format, d.filter, d.wrap, d.depth ? 'z' : '', d.usage].join('|');
+    const keyOf = d => [d.w, d.h, d.format, d.filter, d.wrap, d.depth ? 'z' : '', d.layers || 1, d.usage].join('|');
     r.sampler = (tex, t) => { const f = t.filter === 'nearest' ? gl.NEAREST : gl.LINEAR, w = t.wrap === 'repeat' ? gl.REPEAT : t.wrap === 'mirror' ? gl.MIRRORED_REPEAT : gl.CLAMP_TO_EDGE;
       gl.bindTexture(gl.TEXTURE_2D, tex.tex || tex); st.units.delete(st.unit); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, f); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, f);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, w); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, w); };
@@ -124,18 +127,29 @@ const WEBGL = (() => {
       const ok = gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE; gl.bindFramebuffer(gl.FRAMEBUFFER, prev); if (!ok) throw new Error('framebuffer incompleto'); return { fb, tex: t.tex, w: d.w, h: d.h, format: d.format, rb }; },
       it => { gl.deleteFramebuffer(it.fb); gl.deleteTexture(it.tex); if (it.rb) gl.deleteRenderbuffer(it.rb); }, 'framebuffer');
 
+    /* arranjo de texturas (TEXTURE_2D_ARRAY): n camadas do mesmo tamanho; guarda os últimos n quadros de um efeito temporal */
+    r.arrays = makePool(d => { const f = FMT[d.format], tex = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D_ARRAY, tex); gl.texStorage3D(gl.TEXTURE_2D_ARRAY, 1, f[0], d.w, d.h, d.layers);
+      const fl = d.filter === 'nearest' ? gl.NEAREST : gl.LINEAR; gl.texParameteri(gl.TEXTURE_2D_ARRAY, gl.TEXTURE_MIN_FILTER, fl); gl.texParameteri(gl.TEXTURE_2D_ARRAY, gl.TEXTURE_MAG_FILTER, fl);
+      gl.texParameteri(gl.TEXTURE_2D_ARRAY, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D_ARRAY, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE); return { tex, w: d.w, h: d.h, layers: d.layers, format: d.format }; },
+      it => gl.deleteTexture(it.tex), 'array');
+    r.bindArray = (arr, unit) => { gl.activeTexture(gl.TEXTURE0 + (unit || 0)); st.unit = unit || 0; gl.bindTexture(gl.TEXTURE_2D_ARRAY, arr.tex); st.units.delete(st.unit); };
+    r.uploadSlice = (arr, slice, src) => { r.bindArray(arr, 0); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true); gl.texSubImage3D(gl.TEXTURE_2D_ARRAY, 0, 0, 0, slice, arr.w, arr.h, 1, gl.RGBA, gl.UNSIGNED_BYTE, src); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false); };
+    /* copia o que está no framebuffer de tela (o quadro recém-desenhado) para uma textura do pool, sem passe extra: é assim que a saída vira histórico */
+    r.copyScreenTo = (t, unit) => { r.bindFramebuffer(null); r.bindForWrite(t.tex, unit || 0); gl.copyTexSubImage2D(gl.TEXTURE_2D, 0, 0, 0, 0, 0, t.w, t.h); };
+    r.clearTexture = t => { const fb = gl.createFramebuffer(), prev = st.fbo; gl.bindFramebuffer(gl.FRAMEBUFFER, fb); gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, t.tex, 0); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); gl.bindFramebuffer(gl.FRAMEBUFFER, prev); gl.deleteFramebuffer(fb); };
+
     /* sobe um canvas/imagem para uma textura do pool (de cabeça para baixo, para bater com a origem do canvas 2D); o tamanho vem da fonte */
     r.uploadCanvas = (src, unit) => {
       const t = r.textures.acquire({ w: src.width, h: src.height, usage: 'upload' });
-      r.bindTexture(t.tex, unit || 0); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true); gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, gl.RGBA, gl.UNSIGNED_BYTE, src); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false); return t;
+      r.bindForWrite(t.tex, unit || 0); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true); gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, gl.RGBA, gl.UNSIGNED_BYTE, src); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false); return t;
     };
 
     /* ---- métricas de desenvolvimento ---- */
     r.beginFrame = () => { r.t0 = performance.now(); r.mark = Object.assign({}, r.stats); };
-    r.endFrame = () => { r.frame++; r.stats.frameMs = performance.now() - (r.t0 || performance.now()); r.textures.trim(120); r.framebuffers.trim(120); };
+    r.endFrame = () => { r.frame++; r.stats.frameMs = performance.now() - (r.t0 || performance.now()); r.textures.trim(120); r.framebuffers.trim(120); r.arrays.trim(120); };
     r.metrics = () => { const s = r.stats, m = r.mark || s;
       return { frameMs: s.frameMs, passes: s.passes - m.passes, draws: s.draws - m.draws, shaderSwitches: s.shaderSwitches - m.shaderSwitches, textureAllocs: s.textureAllocs, framebufferAllocs: s.framebufferAllocs,
-        activeTextures: r.textures.active, pooledTextures: r.textures.total, activeFramebuffers: r.framebuffers.active, activeParticles: 0, estimatedVramBytes: r.textures.bytes + r.framebuffers.bytes, programs: r.progs.size }; };
+        activeTextures: r.textures.active, pooledTextures: r.textures.total, activeFramebuffers: r.framebuffers.active, activeParticles: 0, estimatedVramBytes: r.textures.bytes + r.framebuffers.bytes + r.arrays.bytes, activeArrays: r.arrays.active, programs: r.progs.size }; };
     return r;
   }
   return { create, support, legalize, COMPAT, COMPAT_LINES };

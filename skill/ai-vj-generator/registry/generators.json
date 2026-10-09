@@ -5540,6 +5540,149 @@
    "deterministic": true,
    "surfaceAware": false,
    "performanceClass": "medium"
+  },
+  {
+   "id": "temporal",
+   "category": "Efeito",
+   "name": "Tempo",
+   "renderMode": "canvas2d",
+   "parameters": [
+    {
+     "id": "preset",
+     "type": "select",
+     "default": "TRILHA",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Efeito",
+     "options": [
+      "TRILHA",
+      "FEEDBACK",
+      "SLIT SCAN",
+      "DESLOCAR"
+     ],
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "p1",
+     "type": "number",
+     "default": 0.8,
+     "min": -400,
+     "max": 400,
+     "step": 0.01,
+     "label": "P1",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "p2",
+     "type": "number",
+     "default": 1,
+     "min": -400,
+     "max": 400,
+     "step": 0.01,
+     "label": "P2",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "p3",
+     "type": "number",
+     "default": 0,
+     "min": -400,
+     "max": 400,
+     "step": 0.01,
+     "label": "P3",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "p4",
+     "type": "number",
+     "default": 0,
+     "min": -400,
+     "max": 400,
+     "step": 0.01,
+     "label": "P4",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "mix",
+     "type": "number",
+     "default": 1,
+     "min": 0,
+     "max": 1,
+     "step": 0.01,
+     "label": "Mistura",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "res",
+     "type": "number",
+     "default": 1,
+     "min": 0.25,
+     "max": 1,
+     "step": 0.01,
+     "label": "Resolução interna",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "c1",
+     "type": "color",
+     "default": "primary",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Cor 1",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "c2",
+     "type": "color",
+     "default": "accent",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Cor 2",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "cbg",
+     "type": "color",
+     "default": "bg",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Fundo",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    }
+   ],
+   "audioRoles": [
+    "mass",
+    "body",
+    "detail",
+    "accent"
+   ],
+   "supportsAlpha": true,
+   "deterministic": true,
+   "surfaceAware": false,
+   "performanceClass": "medium"
   }
  ]
 }

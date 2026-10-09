@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.6.0 (09/10/2026) · Fase 4: render graph e efeitos temporais
+
+- **RenderGraph** (`app/rendergraph.js`): nós Source, Generator, Shader, Effect, Mask, Composite, History, Feedback e Output; compilação (dependências, ordem estável, ciclos, um Output), execução com devolução de recursos ao pool e `CanvasPool`. A composição de um quadro (`composeFrame`) roda por ele em `renderFrame`, exportação PNG, MP4 e replay; paridade de pixels com a versão anterior: 0,000 de 255 em 123 quadros.
+- **Camada `temporal`** (Efeito › Tempo): TRILHA, FEEDBACK, SLIT SCAN (até 24 quadros em `TEXTURE_2D_ARRAY`) e DESLOCAR, determinísticos: a saída depende só dos quadros anteriores, o histórico é reconstruído por replay depois de um salto, a exportação zera antes de começar e o loop fecha na emenda.
+- Correção no renderizador: upload e cópia de textura agora ativam a unidade certa (`bindForWrite`); o cache de `bindTexture` só vale para amostragem.
+- Teste novo `rendergraph_check.mjs`; `references/temporal-layer.md`; `docs/ARQUITETURA-RENDER.md` com o grafo.
+
 ## 3.5.0 (09/10/2026) · Fase 3: recursos de GPU
 
 - **Pools de textura e de framebuffer** com descritor (largura, altura, formato, filtro, wrap, profundidade, uso), adquirir/devolver/reaproveitar e descarte do que ficou parado; a textura do `fx` passa pelo pool (zero alocação por quadro depois do primeiro).
