@@ -13,7 +13,7 @@ ISF (Interactive Shader Format) is a GLSL fragment shader with a JSON header. Th
 - `p1..p4` drive the shader's first four `float` inputs, from 0 to 1 across the input's MIN..MAX range. `-1` keeps the ISF default.
 - Colours `c1`, `c2`, `cbg` connect to the project palette. The layer reacts to audio like any shader layer.
 - The conversion depends only on the ISF file, the loop bars and the BPM, so the frame stays a pure function of the project.
-- The **ISF** tab lists the library with search and filters; **Adicionar à composição** inserts an `isf` layer.
+- Add it from Camadas: category **Shader**, type **Biblioteca ISF**; the `lib` menu lists the 84 shaders.
 
 ## Import: ISF file → shader layer
 
@@ -22,7 +22,7 @@ python scripts/isf.py check  generator.fs      # importable? says why not
 python scripts/isf.py import generator.fs --project p.aivj.json --comp 0 --bars 4 --bpm 124
 ```
 
-The ISF tab does the same in the browser (**Importar arquivo .fs**) and the result is identical, tested on all 84 shaders. The result is a `shader` layer whose `src` holds the converted code.
+The browser converter (`ISFX.convert`) and `isf.py` give the same shader, tested on all 84. The result is a `shader` layer whose `src` holds the converted code.
 
 Supported: single-pass **generators** (no `inputImage`, no `audio`/`audioFFT`, no `PASSES`, no `IMG_*` calls). The first four `float` inputs become `p1..p4` (defaults kept; use `layer.mod` to play them), the first two `color` inputs become `c1`/`c2`, other inputs are fixed at their defaults. `TIME` becomes loop phase × loop seconds (it only loops if the shader's own period divides the loop: check with `loop_check.mjs`). An audio hook (`uBass/uMid/uHigh/uHit` brighten the output) is appended because every shader layer reads audio.
 

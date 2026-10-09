@@ -3,7 +3,7 @@
 Todos terminam no mesmo lugar: um arquivo `*.aivj.json` (esquema `ai-vj-generator/2`) que o motor abre, mostra e exporta em PNG sequence ou MP4. Escolha pelo que você tem à mão.
 
 ## Caminho A: só o navegador, sem IA e sem terminal
-Abra `app/index.html` (Chrome ou Edge), clique em **Gerar sem IA**, preencha o briefing, escolha o preset da superfície e clique em **Gerar e abrir**. Avalie, ajuste, confira a superfície e a legibilidade na aba Superfície e exporte. Passo a passo: [GUIA-SEM-IA.md](GUIA-SEM-IA.md).
+Abra `app/index.html` (Chrome ou Edge), carregue um projeto gerado por `brief_to_project.py` (ou escrito por uma IA), escolha o preset da superfície, ajuste confira a superfície e a legibilidade na aba Superfície e exporte. Passo a passo: [GUIA-SEM-IA.md](GUIA-SEM-IA.md).
 
 ## Caminho B: com qualquer IA (ChatGPT, Gemini, Claude, Codex, modelo local)
 1. Dê à IA o arquivo `skill/ai-vj-generator/portable/PROMPT.md`: cole como primeira mensagem, ou aponte a ferramenta para o `AGENTS.md`, `GEMINI.md` ou `CLAUDE.md` da raiz (todos apontam para ele). Detalhes por ferramenta: [AI-AGNOSTIC.md](AI-AGNOSTIC.md).

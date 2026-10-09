@@ -40,4 +40,4 @@ The hash is computed before the export changes fps or bars, so it identifies the
 
 ## Everything the phase 3 tests prove
 
-`genai_check` (browser generator equals the Python one for 28 briefs), `gen_ui_check` (Generate tab), `surface_check`, `export_check`, `audio_check`, `mod_ui_check`, `ux_check`, and `phase3_acceptance.mjs`, which walks the whole path of someone without Claude: open the engine, Generate without AI, fill the 4500x800 brief, evaluate, check the surface and legibility, tie the kick to a parameter, test flashes and export a sample, then open the ZIP.
+`genai_check` (browser generator equals the Python one for 28 briefs), `surface_check`, `export_check`, `audio_check`, `mod_ui_check`, `ux_check`, and `phase3_acceptance.mjs`, which walks the whole path of someone without Claude: open the engine, Generate without AI, fill the 4500x800 brief, evaluate, check the surface and legibility, tie the kick to a parameter, test flashes and export a sample, then open the ZIP.

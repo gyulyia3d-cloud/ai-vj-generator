@@ -78,12 +78,12 @@ Load only what the project needs.
 | LED, projection, mapping, folds, white-alpha, logos, fonts, code layer | `references/surface-model.md`, `references/walls-code-assets.md`, `references/output-targets.md` |
 | Deciding how much the music drives the picture (strategy none to full), band roles, section map, binding recipes | `references/audio-direction.md` |
 | The art bible (`meta.artBible`) written after the contract; how things move (motion profile, `layer.mod` spring); title + caption + data, reveal and text on a path (`typeset`); scoring a project before looking at it; picking a generator by family, surface and cost | `references/art-bible.md`, `references/motion-profiles.md`, `references/typography.md`, `references/evaluation.md` (`scripts/evaluate.mjs`), `references/families.md` (`scripts/families.py`) |
-| The Surface tab (presets, cuts, imported regions, legibility), region export, the export manifest and parts, flash analysis and limiter, the browser Generate tab, kick/onset/flux sources | `references/surface-and-export.md`, `references/audio-bus.md` (onset section), `docs/GUIA-SEM-IA.md` |
+| The Surface tab (presets, cuts, imported regions, legibility), region export, the export manifest and parts, flash analysis and limiter, kick/onset/flux sources | `references/surface-and-export.md`, `references/audio-bus.md` (onset section), `docs/GUIA-SEM-IA.md` |
 | A structured brief, the next questions to ask, or generating a project with no AI (rules, palette, tiers) | `scripts/brief_check.py`, `scripts/brief_to_project.py`, `schema/brief.schema.json` |
 | Working with another AI (ChatGPT, Gemini, Codex, local), or checking JSON structure without pip | `portable/PROMPT.md`, `scripts/schema_check.py`, `schema/project.schema.json` |
 | Audio, BPM, beat sync, integrated time, band transients, `layer.mod` modulation | `references/audio-bus.md` |
 | A still image with depth (2.5D parallax), a depth map, Gaussian splats or a point cloud (.ply) | `references/depth-and-splats.md`, `scripts/depth_estimate.py` |
-| ISF: the 84-shader library as the `isf` layer (menu in the layer parameters) and the ISF tab, importing `.fs` | `references/isf-layer.md`, `isf-library/README.md`, `scripts/isf.py` |
+| ISF: the 84-shader library as the `isf` layer (menu in the layer parameters) ; importing `.fs` with `scripts/isf.py import` | `references/isf-layer.md`, `isf-library/README.md`, `scripts/isf.py` |
 | Rendering: MP4 (H.264) or PNG sequence, by the Export tab or `node scripts/render.mjs`, never by screen capture | `references/render-cli.md` |
 | Maths, physics or a named form (attractor, orbit, wave, fractal, knot, pendulum, Chladni, quasicrystal) | `references/math-forms.md`, then `python scripts/recipes.py list` / `layer <id>` (tested recipes in `references/recipes/`) |
 | Perception, hierarchy, comfort, flicker, aliasing, photosensitivity, hierarchy problems | `references/perception-and-gestalt.md` |

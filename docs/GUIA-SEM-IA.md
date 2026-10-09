@@ -4,9 +4,11 @@ Este é o caminho da pessoa que baixou o repositório e não usa nenhuma IA. Voc
 
 ## 1. Abrir
 
-Abra o arquivo `app/index.html` no navegador (duplo clique). A tela inicial oferece três caminhos: **Gerar sem IA**, importar um JSON que alguma IA escreveu, ou abrir o STANDARD. Clique em **Gerar sem IA**.
+Abra o arquivo `app/index.html` no navegador (duplo clique). A tela inicial oferece dois caminhos: importar um JSON que alguma IA escreveu, ou abrir o STANDARD. Clique em **Gerar sem IA**.
 
-## 2. Preencher o briefing (aba Gerar)
+## 2. Preencher o briefing (arquivo JSON)
+
+Sem IA, o briefing é um arquivo JSON (modelo em `examples/briefs/`). Gere o projeto com `python skill/ai-vj-generator/scripts/brief_to_project.py brief.json --out projeto.aivj.json` e abra o resultado no motor com **Carregar**. Campos:
 
 | Campo | O que colocar |
 |---|---|
@@ -21,7 +23,7 @@ Abra o arquivo `app/index.html` no navegador (duplo clique). A tela inicial ofer
 | Cor | automática pelo clima, por matiz e esquema, ou 4 cores exatas |
 | Evento focal e banidos | a única coisa que domina a peça, e o que ela não pode ter |
 
-Clique em **Gerar e abrir**. O projeto abre na viewport. Se faltar algo, a aba diz o que, em português. **Ctrl+Z** volta ao projeto anterior. **Salvar briefing** guarda o formulário para depois (**Carregar briefing** devolve).
+Depois de **Carregar**, o projeto abre na viewport. **Ctrl+Z** volta ao projeto anterior. O script pode checar o briefing antes (`brief_check.py`); **Salvar briefing** guarda o formulário para depois (**Carregar briefing** devolve).
 
 O mesmo briefing sempre dá o mesmo projeto, e é idêntico ao que o `brief_to_project.py` gera (há um teste de paridade).
 

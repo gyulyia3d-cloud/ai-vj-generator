@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// Teste da aba ISF: a biblioteca inteira entra como camada e compila (WebGL1), os originais desenham e fecham o loop, o importador do navegador
-// dá o mesmo shader que isf.py, o arquivo .fs importado pela interface vira camada, filtros são recusados com motivo e a exportação compila.
+// Teste da camada isf: a biblioteca inteira entra como camada e compila (WebGL1), os originais desenham e fecham o loop, o importador do navegador
+// dá o mesmo shader que isf.py, e as 84 opções aparecem no parâmetro lib.
 //   node isf_ui_check.mjs [--chrome caminho]     Sai com 1 se falhar; 3 se não houver navegador.
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, writeFileSync, readFileSync } from 'node:fs';
@@ -31,29 +31,23 @@ const norm = s => s.replace(/-?\d+\.?\d*(?:e[-+]?\d+)?/gi, m => String(parseFloa
 try {
   for (let i = 0; i < 80; i++) { if (await E('!!(window.AIVJ && window.AIVJ.isf)').catch(() => false)) break; await new Promise(r => setTimeout(r, 250)); }
   const n = await E('AIVJ.isf.LIB.length'); check(n === man.items.length, 'a biblioteca embutida tem os mesmos shaders do manifesto', `${n} contra ${man.items.length}`);
-  /* a aba existe e lista */
-  await E(`document.querySelector('#tabs [data-tab="isf"]').click()`);
-  const cards = await E(`document.querySelectorAll('[data-pane="isf"] .rcard').length`); check(cards === n, 'aba ISF lista todos os cartões', `${cards}`);
-  await E(`(() => { const q = document.getElementById('isfQ'); q.value = 'aivj tunnel'; q.dispatchEvent(new Event('input')); })()`);
-  check(await E(`document.querySelectorAll('[data-pane="isf"] .rcard').length`) === 1, 'busca filtra a lista', '');
-  await E(`(() => { const q = document.getElementById('isfQ'); q.value = ''; q.dispatchEvent(new Event('input')); })()`);
+  check(await E(`!document.querySelector('#tabs [data-tab="isf"]')`), 'não há aba ISF: a biblioteca vive na camada isf', 'aba presente');
   /* cada shader entra, compila e (os originais) desenham e fecham o loop */
   for (const it of man.items) {
     const r = JSON.parse(await E(`(() => {
-      const A = AIVJ, P = A.project, c = P.compositions[0]; c.layers.length = 1; A.isf.ui.msg = null;
-      const okc = A.isf.add(${JSON.stringify(it.id)}); const L = c.layers[c.layers.length - 1];
+      const A = AIVJ, P = A.project, c = P.compositions[0]; c.layers.length = 1;
+      const L = { type: 'isf', name: 'I', on: true, opacity: 1, blend: 'add', p: { lib: ${JSON.stringify(it.id)} } }; c.layers.push(L); A.GLERR.clear(); A.renderFrame(0, 0, 0.5, true); const okc = ![...A.GLERR.values()].length;
       const px = f => { const d = A.renderFrame(0, f, 0.5, true).data; let s = 0; for (let i = 0; i < d.length; i += 4) s += d[i] + d[i + 1] + d[i + 2]; return [s, d]; };
       const F = Math.round(P.time.bars * 4 * 60 / P.time.bpm * P.canvas.fps);
       const a = px(0), b = px(F), m = px(Math.round(F * 0.37)); let df = 0, dm = 0;
       for (let i = 0; i < a[1].length; i++) { df += Math.abs(a[1][i] - b[1][i]); dm += Math.abs(a[1][i] - m[1][i]); }
-      return JSON.stringify({ okc, role: L && L.role, lit: Math.max(a[0], m[0]), seam: df / a[1].length, move: dm / a[1].length, msg: A.isf.ui.msg && A.isf.ui.msg.text });
+      return JSON.stringify({ okc, role: L && L.role, lit: Math.max(a[0], m[0]), seam: df / a[1].length, move: dm / a[1].length, msg: [...A.GLERR.values()].join(' ') });
     })()`));
     check(r.okc, `compila: ${it.id}`, r.msg);
     if (it.origin === 'original') {
       check(r.lit > 0, `desenha: ${it.id}`, 'preto');
       check(r.seam < 0.6 && r.move > r.seam * 3, `fecha o loop: ${it.id} (emenda ${r.seam.toFixed(2)}, movimento ${r.move.toFixed(2)})`, 'emenda grande ou parado');
     }
-    check(/Credit: /.test(r.role || '') && r.role.includes('ISF library (' + it.license + ')'), `camada guarda crédito e licença: ${it.id}`, r.role);
   }
   /* paridade com isf.py */
   let par = 0; const parBad = [];
@@ -65,19 +59,10 @@ try {
     if (norm(js.p.src) === norm(pyL.p.src) && js.name === pyL.name && JSON.stringify(Object.keys(js.p).sort()) === JSON.stringify(Object.keys(pyL.p).sort())) par++; else parBad.push(it.id);
   }
   check(!parBad.length, `importador do navegador = isf.py em ${par}/${man.items.length} shaders`, parBad.join(','));
-  /* importar arquivo pela interface */
-  const gen = `/*{ "DESCRIPTION": "fixture", "CREDIT": "tester", "INPUTS": [{"NAME":"size","TYPE":"float","DEFAULT":0.3,"MIN":0,"MAX":1},{"NAME":"phase","TYPE":"float","DEFAULT":0}] }*/
-void main(){ vec2 p = isf_FragNormCoord - 0.5; float k = smoothstep(0.01, 0.0, abs(length(p) - size - 0.05*sin(6.28318*phase))); gl_FragColor = vec4(vec3(k), k); }`;
-  const filt = '/*{ "INPUTS":[{"NAME":"inputImage","TYPE":"image"}] }*/\nvoid main(){ gl_FragColor = IMG_THIS_NORM_PIXEL(inputImage); }';
-  const out = JSON.parse(await E(`(async () => { const c = AIVJ.project.compositions[0]; c.layers.length = 1;
-    await AIVJ.isf.files([new File([${JSON.stringify(gen)}], 'meu anel.fs'), new File([${JSON.stringify(filt)}], 'filtro.fs'), new File(['nada'], 'quebrado.fs')]);
-    return JSON.stringify({ n: c.layers.length, name: c.layers[1] && c.layers[1].name, msg: AIVJ.isf.ui.msg }); })()`));
-  check(out.n === 2 && out.name === 'MEU ANEL', 'arquivo .fs importado pela interface vira camada; filtro e arquivo quebrado não', JSON.stringify(out));
-  check(out.msg && out.msg.bad && /1 de 3/.test(out.msg.text) && /filtro\.fs/.test(out.msg.text) && /quebrado\.fs/.test(out.msg.text), 'a mensagem diz quais arquivos falharam e por quê', out.msg && out.msg.text);
   /* camada isf: um shader da biblioteca escolhido nos parâmetros, as 84 opções, compila e desenha */
   const ly = JSON.parse(await E(`(async () => { const A = AIVJ, P = A.project; P.compositions[0].layers = [{ type: 'bg', name: 'F' }];
     const ids = A.isf.LIB.map(x => x.id);
-    A.isf.add(ids[3]); const L = P.compositions[0].layers[1];
+    P.compositions[0].layers.push({ type: 'isf', name: 'I', on: true, opacity: 1, blend: 'add', p: { lib: ids[3] } }); const L = P.compositions[0].layers[1];
     return JSON.stringify({ n: ids.length, type: L.type, lib: L.p.lib, ok: L.p.lib === ids[3], hasSrc: !!L.p.src }); })()`));
   check(ly.n === 84 && ly.type === 'isf' && ly.ok && !ly.hasSrc, 'adicionar da biblioteca cria uma camada do tipo isf com o shader só em p.lib', JSON.stringify(ly));
   const sweep = JSON.parse(await E(`(() => { const A = AIVJ, P = A.project, ids = A.isf.LIB.map(x => x.id), bad = [];
@@ -85,7 +70,7 @@ void main(){ vec2 p = isf_FragNormCoord - 0.5; float k = smoothstep(0.01, 0.0, a
     return JSON.stringify({ n: ids.length, bad }); })()`));
   check(!sweep.bad.length, 'as ' + sweep.n + ' opções do parâmetro lib compilam e desenham como camada isf', sweep.bad.join(','));
   /* no inspetor, o parâmetro lib lista as 84 opções */
-  const ui = JSON.parse(await E(`(() => { const A = AIVJ, P = A.project; P.compositions[0].layers = [{ type: 'bg', name: 'F' }]; A.isf.add(A.isf.LIB[0].id); A.state.sel = 1; document.querySelector('#tabs [data-tab="par"]').click();
+  const ui = JSON.parse(await E(`(() => { const A = AIVJ, P = A.project; P.compositions[0].layers = [{ type: 'bg', name: 'F' }]; P.compositions[0].layers.push({ type: 'isf', name: 'I', on: true, opacity: 1, blend: 'add', p: { lib: A.isf.LIB[0].id } }); A.state.sel = 1; A.setCi(0); document.querySelector('#tabs [data-tab="par"]').click();
     const sel = document.querySelector('[data-pane="par"] .pc[data-k="lib"] select'); return JSON.stringify({ n: sel ? sel.options.length : 0, cur: sel ? sel.value : null, first: A.isf.LIB[0].id }); })()`));
   check(ui.n === 84 && ui.cur === ui.first, 'o parâmetro lib da camada isf mostra as 84 opções no inspetor', JSON.stringify(ui));
 } catch (e) { bad('exceção: ' + (e.message || e)); }

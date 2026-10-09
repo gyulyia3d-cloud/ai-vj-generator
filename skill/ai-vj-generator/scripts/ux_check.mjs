@@ -25,9 +25,9 @@ const key = (k, extra = {}) => E(`document.dispatchEvent(new KeyboardEvent('keyd
 try {
   // 1) modo
   await E(`localStorage.removeItem('aivj-level'); AIVJ.UX.setLevel('creative', true)`);
-  const vis = JSON.parse(await E(`JSON.stringify(['gen','comp','lay','par','aud','sur','exp','txt','prj','rec','spc'].map(t => [t, document.querySelector('#tabs [data-tab="' + t + '"]').offsetParent !== null]))`));
+  const vis = JSON.parse(await E(`JSON.stringify(['comp','lay','par','aud','sur','exp','txt','prj','rec','spc'].map(t => [t, document.querySelector('#tabs [data-tab="' + t + '"]').offsetParent !== null]))`));
   const shown = Object.fromEntries(vis);
-  check(shown.gen && shown.comp && shown.lay && shown.par && shown.aud && shown.sur && shown.exp && !shown.txt && !shown.prj && !shown.rec && !shown.spc, 'modo Criativo mostra Gerar, Compor, Camadas, Parâm., Áudio, Superfície e Exportar e esconde Texto, Projeto, +Efeitos e Ficha', JSON.stringify(shown));
+  check(shown.comp && shown.lay && shown.par && shown.aud && shown.sur && shown.exp && !shown.txt && !shown.prj && !shown.rec && !shown.spc, 'modo Criativo mostra Compor, Camadas, Parâm., Áudio, Superfície e Exportar e esconde Texto, Projeto, +Efeitos e Ficha', JSON.stringify(shown));
   await E(`document.getElementById('lvlBtn').click()`);
   const adv = JSON.parse(await E(`JSON.stringify(['txt','prj','rec','spc'].map(t => document.querySelector('#tabs [data-tab="' + t + '"]').offsetParent !== null))`));
   check(adv.every(Boolean) && (await E(`localStorage.getItem('aivj-level')`)) === '"advanced"', 'o botão troca para Avançado: as quatro abas voltam e a escolha fica gravada', JSON.stringify(adv));
@@ -64,19 +64,19 @@ try {
 
   // 4) tour
   await E(`AIVJ.UX.startTour()`);
-  let st = JSON.parse(await E(`(() => { const hi = document.getElementById('tourHi').getBoundingClientRect(), t = document.querySelector('#tabs [data-tab="gen"]').getBoundingClientRect(); return JSON.stringify({ n: document.getElementById('tourBox').textContent.slice(0, 12), near: Math.abs(hi.left + 4 - t.left) < 2 && Math.abs(hi.top + 4 - t.top) < 2 }); })()`));
-  check(/1 \/ 7/.test(st.n) && st.near, 'o tour abre no passo 1 e o destaque cobre o elemento (aba Gerar)', JSON.stringify(st));
-  for (let i = 2; i <= 7; i++) {
+  let st = JSON.parse(await E(`(() => { const hi = document.getElementById('tourHi').getBoundingClientRect(), t = document.querySelector('#vp').getBoundingClientRect(); return JSON.stringify({ n: document.getElementById('tourBox').textContent.slice(0, 12), near: Math.abs(hi.left + 4 - t.left) < 2 && Math.abs(hi.top + 4 - t.top) < 2 }); })()`));
+  check(/1 \/ 6/.test(st.n) && st.near, 'o tour abre no passo 1 e o destaque cobre o elemento (a vista)', JSON.stringify(st));
+  for (let i = 2; i <= 6; i++) {
     await E(`document.getElementById('tourNext').click()`);
     const s = JSON.parse(await E(`(() => { const hi = document.getElementById('tourHi').getBoundingClientRect(); return JSON.stringify({ w: hi.width, h: hi.height, txt: document.getElementById('tourBox').textContent.slice(0, 10) }); })()`));
-    if (!(s.w > 20 && s.h > 10 && s.txt.startsWith(i + ' / 7'))) { bad(`passo ${i} do tour sem destaque ou fora de ordem :: ` + JSON.stringify(s)); break; }
-    if (i === 7) ok('os sete passos do tour destacam elementos visíveis, em ordem');
+    if (!(s.w > 20 && s.h > 10 && s.txt.startsWith(i + ' / 6'))) { bad(`passo ${i} do tour sem destaque ou fora de ordem :: ` + JSON.stringify(s)); break; }
+    if (i === 6) ok('os seis passos do tour destacam elementos visíveis, em ordem');
   }
   await E(`document.getElementById('tourPrev').click()`);
-  check(/6 \/ 7/.test(await E(`document.getElementById('tourBox').textContent`)), 'Voltar retorna ao passo anterior', await E(`document.getElementById('tourBox').textContent.slice(0, 20)`));
+  check(/5 \/ 6/.test(await E(`document.getElementById('tourBox').textContent`)), 'Voltar retorna ao passo anterior', await E(`document.getElementById('tourBox').textContent.slice(0, 20)`));
   await key('Escape');
   check(await E(`!document.getElementById('tourBox') && !document.getElementById('tourHi')`), 'Esc sai do tour e remove o destaque', 'sobrou elemento');
-  await E(`AIVJ.UX.startTour(); for (let i = 0; i < 7; i++) document.getElementById('tourNext').click();`);
+  await E(`AIVJ.UX.startTour(); for (let i = 0; i < 6; i++) document.getElementById('tourNext').click();`);
   check(await E(`!document.getElementById('tourBox') && localStorage.getItem('aivj-tourDone') === 'true'`), 'concluir o último passo encerra e grava que o tour foi feito', 'não encerrou');
   // passo com aba escondida (modo Criativo esconde Ficha, mas o tour não usa abas escondidas): nenhum passo aponta para elemento invisível
   const hidden = JSON.parse(await E(`JSON.stringify(AIVJ.UX.STEPS.filter(s => { const e = document.querySelector(s[0]); return !e || e.offsetParent === null; }).map(s => s[0]))`));

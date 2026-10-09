@@ -13,8 +13,8 @@ Entrada: um briefing (`skill/ai-vj-generator/schema/brief.schema.json`). Saída:
 | Codex, Cursor, Windsurf, Aider e outros agentes de código | leem o `AGENTS.md` da raiz, que aponta para o `PROMPT.md` |
 | Gemini CLI | lê o `GEMINI.md` da raiz |
 | Claude Code | lê o `CLAUDE.md` da raiz, ou instale os comandos `/vj` (`adapters/claude/INSTALL.md`) |
-| Modelos locais (Ollama, LM Studio) | `PROMPT.md` como mensagem de sistema; modelos pequenos costumam errar o esquema: gere com a aba **Gerar** e peça a eles só ajustes |
-| Nenhuma IA | aba **Gerar** do motor, ou `brief_to_project.py` (Caminho A e C do [QUICKSTART](QUICKSTART.md)) |
+| Modelos locais (Ollama, LM Studio) | `PROMPT.md` como mensagem de sistema; modelos pequenos costumam errar o esquema: gere com `brief_to_project.py` e peça a eles só ajustes |
+| Nenhuma IA | `brief_to_project.py` (Caminho A e C do [QUICKSTART](QUICKSTART.md)) |
 
 ## O que muda com ou sem ferramentas
 - **Com acesso a arquivos e terminal:** a IA roda `brief_check.py`, `palette.py`, `validate_project.py`, `contact_sheet.mjs` e `render.mjs`, olha as imagens e corrige.

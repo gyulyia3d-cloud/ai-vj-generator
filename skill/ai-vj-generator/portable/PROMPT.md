@@ -38,7 +38,7 @@ If something the concept needs is not in the menu, say so and write it (recipe, 
 - Never report a composition you have not seen rendered.
 
 ## No-AI path (for you to offer)
-If the user has no time for the interview: they open the **Gerar** tab of `app/index.html` (no install), or fill a brief and run `python scripts/brief_to_project.py brief.json`. Both write a valid project from rules (mood table, OKLCH palette, tiers, audio strategy). You then refine that file instead of starting blank.
+If the user has no time for the interview: they fill a brief and run `python scripts/brief_to_project.py brief.json`. Both write a valid project from rules (mood table, OKLCH palette, tiers, audio strategy). You then refine that file instead of starting blank.
 
 ## Checklist when you cannot run anything
 JSON parses · `schema` is `ai-vj-generator/2` · canvas w/h are the real pixels · fps is 24, 25, 30, 50 or 60 · every composition has at least 6 named layers with a `role` · at least one shader reads `uBass/uMid/uHigh/uHit` (or strategy none with a reason) · every layer type is in the generator list (`references/project-schema.md`) · an `fx` or `blobs` layer sits above what it should read · contract fields are specific, not generic · no random or time calls in code layers.

@@ -1,4 +1,4 @@
-# Roadmap oficial (v11, motor 3.1.0)
+# Roadmap oficial (v11, motor 3.2.0)
 
 Substitui o roadmap v10. Decidido pela autora em 08/10/2026.
 

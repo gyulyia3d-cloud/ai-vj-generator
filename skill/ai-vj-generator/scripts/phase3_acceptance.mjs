@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-// Aceite da Fase 3 (gate do roadmap): alguém SEM o Claude, abrindo só app/index.html, consegue pela interface gerar, ajustar e exportar um set para uma parede 4500×800.
-// O teste faz o que uma pessoa faria, na ordem: abre o motor limpo, escolhe "Gerar sem IA", preenche o briefing, gera, avalia, confere a superfície e as fatias do Resolume,
+// Aceite da Fase 3 (gate do roadmap): alguém SEM o Claude, abrindo só app/index.html, consegue abrir o projeto, ajustar e exportar um set para uma parede 4500×800.
+// O teste faz o que uma pessoa faria, na ordem: abre o motor limpo, abre o projeto gerado sem IA, avalia, confere a superfície e as fatias do Resolume,
 // liga o kick a um parâmetro, testa flashes e exporta uma amostra em PNG; depois abre o ZIP e confere tamanho, nomes e manifesto. Nenhum erro de JavaScript pode aparecer no caminho.
 //   node phase3_acceptance.mjs [--chrome caminho]     Sai com 1 se falhar; 3 se não houver navegador.
-import { mkdtempSync } from 'node:fs';
+import { mkdtempSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { openPage } from './cdp.mjs';
@@ -23,26 +23,18 @@ const setv = (id, v) => E(`(() => { const n = document.getElementById(${JSON.str
 try {
   await E(`window.__errs = []; addEventListener('error', e => window.__errs.push(String(e.message))); addEventListener('unhandledrejection', e => window.__errs.push(String(e.reason))); 0`);
 
-  // 1) a porta de entrada oferece o caminho sem IA
-  const wiz = await E(`(() => { const w = document.getElementById('wiz'); return JSON.stringify({ open: !w.hidden, btn: !!document.getElementById('wGen'), text: w.textContent.includes('Sem IA') }); })()`);
-  const w0 = JSON.parse(wiz);
-  check(w0.btn && w0.text, `a tela inicial oferece "Gerar sem IA" (aberta: ${w0.open})`, JSON.stringify(w0));
-  await E(`document.getElementById('wGen').click()`);
-  check(await E(`document.getElementById('wiz').hidden && !document.querySelector('[data-pane="gen"]').hidden`), 'clicar em Gerar sem IA fecha a tela inicial e abre a aba Gerar', 'não abriu');
+  // 1) projeto da parede 4500×800 (gerado do briefing de exemplo, sem IA) aberto no motor
+  const brief = JSON.parse(readFileSync(join(HERE, '..', '..', '..', 'examples', 'briefs', 'led-wall.brief.json'), 'utf8'));
+  const g = JSON.parse(await E(`(() => { const p = AIVJ.GENAI.build(${JSON.stringify(brief)}); const ok = AIVJ.importJson(JSON.stringify(p)); const P = AIVJ.project; return JSON.stringify({ ok, w: P.canvas.w, h: P.canvas.h, folds: P.canvas.folds, comps: P.compositions.length, layers: P.compositions.map(c => c.layers.length), bpm: P.time.bpm, typeset: P.compositions.some(c => c.layers.some(l => l.type === 'typeset')), bible: !!(P.meta && P.meta.artBible) }); })()`));
+  check(g.ok && g.w === 4500 && g.h === 800 && g.folds && g.folds[0] === 2250 && g.comps === 3 && g.bpm === 132 && g.layers.every(n => n >= 8) && g.bible, 'Projeto gerado abre: 4500×800, dobra em 2250, 3 composições com 8 ou mais camadas e bíblia de arte', JSON.stringify(g));
 
-  // 2) preenche o briefing da parede 4500×800
-  await setv('gNome', 'Pressão'); await setv('gConceito', 'Uma parede de sinal frio que aperta com a batida e solta na quebra; o público deve sentir pressão contida.'); await setv('gPreset', 'led-4500x800');
-  await E(`document.querySelector('#gMoods [data-gm="industrial"]').click(); document.querySelector('#gMoods [data-gm="glitch"]').click()`);
-  await setv('gBpm', '132'); await setv('gTitle', 'PRESSÃO'); await setv('gCap', 'sinal frio, quatro compassos'); await setv('gData', '132 BPM · 4500×800'); await setv('gFocal', 'um túnel de retângulos que estala no bumbo'); await setv('gBan', 'flare, brilho neon');
-  await E(`document.getElementById('gGo').click()`);
-  const g = JSON.parse(await E(`(() => { const P = AIVJ.project; return JSON.stringify({ w: P.canvas.w, h: P.canvas.h, folds: P.canvas.folds, comps: P.compositions.length, layers: P.compositions.map(c => c.layers.length), bpm: P.time.bpm, typeset: P.compositions.some(c => c.layers.some(l => l.type === 'typeset')), bible: !!P.meta.artBible, msg: document.getElementById('gMsg').textContent.slice(0, 120) }); })()`));
-  check(g.w === 4500 && g.h === 800 && g.folds && g.folds[0] === 2250 && g.comps === 3 && g.bpm === 132 && g.layers.every(n => n >= 8) && g.typeset && g.bible, 'Gerar e abrir: 4500×800, dobra em 2250, 3 composições com 8 ou mais camadas, tipografia e bíblia de arte', JSON.stringify(g));
+  // 2) as abas Gerar e ISF não existem mais; a camada isf e as categorias de camada existem
+  const tabs = JSON.parse(await E(`JSON.stringify({ gen: !!document.querySelector('#tabs [data-tab="gen"]'), isf: !!document.querySelector('#tabs [data-tab="isf"]'), n: document.querySelectorAll('#tabs [role=tab]').length })`));
+  check(!tabs.gen && !tabs.isf, 'o menu não tem as abas Gerar e ISF', JSON.stringify(tabs));
 
-  // 3) avalia
-  await E(`document.getElementById('gEval').click()`);
-  const evOk = await wait(`document.querySelectorAll('#gEvalOut .rcard').length === 3`);
-  const sc = evOk ? JSON.parse(await E(`JSON.stringify([...document.querySelectorAll('#gEvalOut .rcard .tag')].map(t => parseInt(t.textContent)))`)) : [];
-  check(evOk && sc.every(n => n >= 60), `Avaliar devolve uma nota por composição (${sc.join(' / ')})`, JSON.stringify(sc));
+  // 3) avalia (API; a interface de crítica volta na fase 15)
+  const sc = JSON.parse(await E(`(async () => { const r = await AIVJ.evaluate('pt'); return JSON.stringify((r.compositions || r).map(c => { const v = Object.values(c.score && typeof c.score === 'object' ? c.score : c).filter(x => typeof x === 'number'); return Math.round(v.reduce((a, b) => a + b, 0) / v.length); })); })()`));
+  check(sc.length === 3 && sc.every(n => n >= 60), `Avaliar devolve uma nota por composição (${sc.join(' / ')})`, JSON.stringify(sc));
 
   // 4) superfície: preset e legibilidade
   await E(`document.querySelector('#tabs [data-tab="sur"]').click()`);

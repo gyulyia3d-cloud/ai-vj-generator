@@ -1,4 +1,4 @@
-/* Aba "ISF" e camada "isf": biblioteca de 84 geradores ISF escolhidos nos parâmetros da camada, e importação de arquivos .fs como camada de shader.
+/* Camada "isf": biblioteca de 84 geradores ISF escolhidos nos parâmetros da camada. O conversor também importa um arquivo .fs (scripts/isf.py import).
    Porte do importador de skill/ai-vj-generator/scripts/isf.py (o teste isf_ui_check.mjs compara os dois na biblioteca inteira).
    Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html. A biblioteca (ISFLIB) é gerada por scripts/embed-isf.mjs. Textos pela função T3 (gen-ui.js). */
 const ISFX = (() => {
@@ -69,56 +69,6 @@ const ISFX = (() => {
 
   return { parse, blockers, convert, fnum };
 })();
-
-const ISFUI = { q: '', kind: 'todos', open: null, msg: null };
-function isfInsert(layer, notes) {
-  const comp = cur(), at = clamp(ST.sel + 1, 0, comp.layers.length); comp.layers.splice(at, 0, layer); ST.sel = at;
-  buildStage(); refreshAll(); commit(false, 'ISF ' + layer.name);
-  const body = shaderBody(layer.type === 'isf' ? { src: isfLib(layer.p.lib).src } : pm(layer)); glProg(body); const err = GL.err.get(body);
-  ISFUI.msg = err ? { bad: true, text: T3('A camada entrou, mas o shader não compilou no WebGL1: ', 'The layer was added, but the shader did not compile in WebGL1: ') + err.split('\n')[0] }
-    : { text: T3(`Camada "${layer.name.toLowerCase()}" adicionada. Ajuste em Parâm.`, `Layer "${layer.name.toLowerCase()}" added. Tune it in Params.`) + (notes.length ? ' ' + notes.join('; ') : '') };
-  toast(ISFUI.msg.text, 2600); if (ST.tab === 'isf') renderIsf();
-  return !err;
-}
-function isfAddLib(id) {
-  const it = ISFLIB.find(x => x.id === id); if (!it) return false;
-  try { isfLib(id); return isfInsert({ type: 'isf', name: it.name.toUpperCase().slice(0, 28), on: true, opacity: 1, blend: 'add', role: `ISF library (${it.license}). Credit: ${it.credit}.`, p: { lib: id } }, []); }
-  catch (e) { ISFUI.msg = { bad: true, text: e.message }; if (ST.tab === 'isf') renderIsf(); return false; }
-}
-async function isfImportFiles(files) {
-  const out = [];
-  for (const f of files) {
-    try { const r = ISFX.convert(await f.text(), f.name, P.time.bars, P.time.bpm); const ok = isfInsert(r.layer, r.notes); out.push({ name: f.name, ok }); }
-    catch (e) { out.push({ name: f.name, ok: false, why: e.message }); }
-  }
-  const bad = out.filter(o => !o.ok);
-  ISFUI.msg = { bad: bad.length > 0, text: T3(`${out.length - bad.length} de ${out.length} arquivo(s) importado(s).`, `${out.length - bad.length} of ${out.length} file(s) imported.`) + bad.map(o => ` ${o.name}: ${o.why || T3('não compilou', 'did not compile')}.`).join('') };
-  if (ST.tab === 'isf') renderIsf();
-}
-function renderIsf() {
-  const el = pane('isf'); if (!el) return;
-  const q = ISFUI.q.toLowerCase(), k = ISFUI.kind;
-  const list = ISFLIB.filter(x => (k === 'todos' || x.origin === k) && (!q || (x.name + ' ' + x.credit + ' ' + x.description).toLowerCase().includes(q)));
-  const chips = [['todos', T3('Todos', 'All')], ['original', T3('Originais do projeto', 'Project originals')], ['third-party', T3('De terceiros (MIT, CC0)', 'Third party (MIT, CC0)')]];
-  
-  el.innerHTML = `<h2 class="sec">ISF <span class="lbl">${ISFLIB.length} ${T3('na biblioteca', 'in the library')}</span></h2>
-    <p class="note">${T3('ISF é um formato de shader GLSL com cabeçalho JSON. Aqui você adiciona geradores da biblioteca como camadas (tipo ISF; o shader é escolhido nos parâmetros da camada) e importa os seus .fs.', 'ISF is a GLSL shader format with a JSON header. Add library generators as layers here (type ISF; the shader is chosen in the layer parameters) and import your own .fs.')}</p>
-    ${ISFUI.msg ? `<div class="${ISFUI.msg.bad ? 'val' : 'note'}" role="status"><p class="${ISFUI.msg.bad ? 'ERROR' : ''}">${esc(ISFUI.msg.text)}</p></div>` : ''}
-    <h2 class="sec">${T3('Importar arquivo .fs', 'Import .fs file')}</h2>
-    <div class="row"><input type="file" id="isfFile" accept=".fs,.frag,.txt" multiple aria-label="${T3('Arquivo ISF', 'ISF file')}"><span class="lbl">${T3('Só geradores de um passe (sem imagem de entrada, sem áudio como textura).', 'Single-pass generators only (no input image, no audio texture).')}</span></div>
-    <h2 class="sec">${T3('Biblioteca', 'Library')}</h2>
-    <div class="row"><input type="search" id="isfQ" placeholder="${T3('Buscar: spiral, noise, laser…', 'Search: spiral, noise, laser…')}" value="${esc(ISFUI.q)}" aria-label="${T3('Buscar shader ISF', 'Search ISF shader')}" style="flex:1;min-width:120px"></div>
-    <div class="row chips">${chips.map(([v, l]) => `<button data-isfk="${v}" aria-pressed="${k === v}">${l}</button>`).join('')}</div>
-    ${list.map(x => `<article class="rcard" data-isf="${esc(x.id)}"><header><b>${esc(x.name)}</b><span class="tag ${x.origin === 'original' ? 'd' : 'f'}">${x.origin === 'original' ? 'AIVJ' : esc(x.license)}</span></header>
-      ${x.thumb ? `<img class="rcprev" src="${x.thumb}" alt="" width="128" style="display:block;max-width:100%;height:auto;border-radius:4px">` : ''}
-      <p>${esc(x.description || '')}</p>
-      <dl class="kv"><dt>${T3('Autoria', 'Credit')}</dt><dd>${esc(x.credit)}</dd><dt>${T3('Licença', 'Licence')}</dt><dd>${esc(x.license)}</dd><dt>${T3('Origem', 'Source')}</dt><dd>${esc(x.source)}</dd></dl>
-      <div class="row"><button data-isfadd="${esc(x.id)}">${T3('Adicionar à composição', 'Add to composition')}</button></div></article>`).join('') || `<p class="note">${T3('Nenhum shader com esse termo.', 'No shader matches.')}</p>`}`;
-  $('#isfFile').onchange = e => { const f = [...e.target.files]; e.target.value = ''; if (f.length) isfImportFiles(f); };
-  $('#isfQ').oninput = e => { ISFUI.q = e.target.value; const pos = e.target.selectionStart; renderIsf(); const n = $('#isfQ'); n.focus(); n.setSelectionRange(pos, pos); };
-  $$('[data-isfk]', el).forEach(b => b.onclick = () => { ISFUI.kind = b.dataset.isfk; renderIsf(); });
-  $$('[data-isfadd]', el).forEach(b => b.onclick = () => isfAddLib(b.dataset.isfadd));
-}
 
 /* camada "isf": o shader da biblioteca é escolhido em lib; p1..p4 são as quatro primeiras entradas float do ISF, de 0 a 1 na faixa MIN..MAX da entrada (-1 = valor padrão do ISF).
    A conversão depende só do ISF, dos compassos e do BPM, então o quadro continua função pura do projeto. */

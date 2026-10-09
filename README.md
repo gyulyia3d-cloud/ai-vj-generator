@@ -10,7 +10,7 @@
 
 1. Baixe o repositório (**Code → Download ZIP**) e descompacte.
 2. Dê dois cliques em `app/index.html` (Chrome ou Edge).
-3. Clique em **Gerar sem IA**, preencha o briefing, escolha o preset da sua superfície (por exemplo "Parede LED em L · 4500×800") e **Gerar e abrir**.
+3. Sem IA: gere o projeto a partir de um briefing JSON com `python skill/ai-vj-generator/scripts/brief_to_project.py brief.json --out projeto.aivj.json` (exemplo de briefing em `examples/briefs/`), depois **Carregar** o JSON no motor. Depois escolha o preset da sua superfície na aba Superfície.
 4. Ajuste, avalie, exporte na aba **Exportar** (PNG sequence ou MP4).
 
 Passo a passo ilustrado em texto: [docs/GUIA-SEM-IA.md](docs/GUIA-SEM-IA.md). Para microfone e janela de saída o navegador exige `http://`: `node scripts/serve.mjs` e abra `http://localhost:5173`.
@@ -23,10 +23,10 @@ O núcleo é **um texto**: [`skill/ai-vj-generator/portable/PROMPT.md`](skill/ai
 
 | | |
 |---|---|
-| **Camadas** | 33 tipos: campos de shader (GLSL), cadeias de uma linha (`synth`), geradores 2D (formas, linhas, túnel, instrumentos, dados, HUD), tipografia, imagem, vídeo, objeto 3D, parallax, nuvem de pontos, flow, receitas matemáticas, camada de código. |
+| **Camadas** | 9 categorias (Fundo, Shader, Formas, Texto, Mídia, Dados, Partículas, Efeito, Código); o tipo dentro da categoria se escolhe nos parâmetros da camada (shader GLSL, biblioteca ISF, cadeia `synth`, formas, linhas, tipografia, imagem, vídeo, objeto 3D, parallax, partículas, filtros `fx`, manchas…). |
 | **`fx`: efeitos sobre a pilha** | 22 efeitos que leem as camadas abaixo: CRT, VHS, halftone, hachura, dither, bordas, Kuwahara, painel de LED, vidro líquido, bloom, aberração, espelho, polar, glitch… |
 | **`blobs`** | acha regiões da imagem abaixo (brilho, contraste, cor, zona) e as marca com caixas, números e ligações. |
-| **ISF** | camada do tipo ISF com 84 geradores (11 originais, MIT e CC0 com autoria) escolhidos nos parâmetros da camada; a aba ISF também importa arquivos `.fs`. |
+| **ISF** | camada do tipo ISF com 84 geradores (11 originais, MIT e CC0 com autoria) escolhidos nos parâmetros da camada. |
 | **Áudio** | microfone, arquivo ou fonte de teste; bandas, golpes, kick e onset com histórico, andamento por Kalman; `layer.mod` liga qualquer número a qualquer fonte. Sem áudio, tudo reage ao BPM de forma determinística. |
 | **Movimento** | perfis de mola, 13 formas de LFO, 16 transições, easings Penner. |
 | **Superfície** | 12 presets de LED, telas e torres, dobras, regiões importadas de CSV/PNG (só entrada), avisos de legibilidade; render do projeto completo ou de uma região. |
