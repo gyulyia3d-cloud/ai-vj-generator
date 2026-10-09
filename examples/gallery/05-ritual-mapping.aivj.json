@@ -639,6 +639,554 @@
         },
         "description": "the eye travels from the upper left to the lower right"
       }
+    ],
+    "animationIR": [
+      {
+        "version": 1,
+        "archetype": "orbit",
+        "archetypeSet": [
+          "orbit",
+          "breathe",
+          "surge"
+        ],
+        "axes": {
+          "energy": 0.5,
+          "elasticity": 0.3,
+          "anticipation": 0.65,
+          "continuity": 0.9,
+          "rhythm": 0.15
+        },
+        "timing": {
+          "bpm": 84,
+          "bars": 8,
+          "fps": 30,
+          "loopFrames": 686,
+          "cyclesPerLoop": 1,
+          "framesPerCycle": 686.0,
+          "beatsPerCycle": 32.0,
+          "sixteenthFrames": 5.36
+        },
+        "easing": {
+          "id": "linear-turn",
+          "description": "constant speed, a whole turn per cycle"
+        },
+        "spring": {
+          "zeta": 0.736,
+          "wn": 12.5,
+          "ta": 0.0,
+          "depth": 0.0,
+          "steps": 0,
+          "cycles": 1,
+          "amp": 0.35,
+          "overshoot": 0.0329
+        },
+        "anticipation": {
+          "fraction": 0.0,
+          "frames": 0.0
+        },
+        "settle": {
+          "fraction": 0.435,
+          "frames": 298.41
+        },
+        "hold": 0.0,
+        "hierarchy": {
+          "hero": {
+            "behavior": "lead",
+            "shape": "saw",
+            "cycles": 1,
+            "drive": "rot",
+            "amp": 0.35,
+            "spring": {
+              "zeta": 0.736,
+              "wn": 12.5,
+              "ta": 0.0,
+              "depth": 0.0,
+              "steps": 0
+            },
+            "lag": {
+              "steps": 0,
+              "lag": 0.0,
+              "frames": 0.0
+            }
+          },
+          "structure": {
+            "behavior": "counter",
+            "shape": "saw",
+            "cycles": 1,
+            "drive": "rot",
+            "amp": 0.175,
+            "spring": {
+              "zeta": 0.868,
+              "wn": 10.85,
+              "ta": 0,
+              "depth": 0,
+              "steps": 0
+            },
+            "lag": {
+              "steps": 0,
+              "lag": 0.0,
+              "frames": 0.0
+            }
+          },
+          "ground": {
+            "behavior": "ambient",
+            "lag": {
+              "steps": 4,
+              "lag": 0.0312,
+              "frames": 21.44
+            }
+          },
+          "instrument": {
+            "behavior": "accent"
+          },
+          "text": {
+            "behavior": "reveal"
+          }
+        },
+        "choreography": [
+          {
+            "name": "establish",
+            "at": 0.0,
+            "lead": "hero",
+            "energy": 1.0,
+            "transition": "morph"
+          },
+          {
+            "name": "develop",
+            "at": 0.2,
+            "lead": "hero",
+            "energy": 1.1,
+            "transition": "morph"
+          },
+          {
+            "name": "transform",
+            "at": 0.4,
+            "lead": "structure",
+            "energy": 1.0,
+            "transition": "morph"
+          },
+          {
+            "name": "peak",
+            "at": 0.6,
+            "lead": "hero",
+            "energy": 1.1,
+            "transition": "morph"
+          },
+          {
+            "name": "release",
+            "at": 0.8,
+            "lead": "ground",
+            "energy": 1.0,
+            "transition": "morph"
+          }
+        ],
+        "events": [
+          {
+            "name": "establish",
+            "phase": "establish",
+            "beat": 0,
+            "at": 0.0
+          },
+          {
+            "name": "build",
+            "phase": "develop",
+            "beat": 6,
+            "at": 0.1875
+          },
+          {
+            "name": "turn",
+            "phase": "transform",
+            "beat": 13,
+            "at": 0.4062
+          },
+          {
+            "name": "focal",
+            "phase": "peak",
+            "beat": 19,
+            "at": 0.5938
+          },
+          {
+            "name": "release",
+            "phase": "release",
+            "beat": 26,
+            "at": 0.8125
+          }
+        ],
+        "transitions": {
+          "phases": "morph",
+          "description": "phases flow into each other without a visible edge"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "seamless": true
+        },
+        "description": "the hero turns once per loop and the structure turns the other way"
+      },
+      {
+        "version": 1,
+        "archetype": "breathe",
+        "archetypeSet": [
+          "orbit",
+          "breathe",
+          "surge"
+        ],
+        "axes": {
+          "energy": 0.5,
+          "elasticity": 0.3,
+          "anticipation": 0.65,
+          "continuity": 0.9,
+          "rhythm": 0.15
+        },
+        "timing": {
+          "bpm": 84,
+          "bars": 8,
+          "fps": 30,
+          "loopFrames": 686,
+          "cyclesPerLoop": 4,
+          "framesPerCycle": 171.5,
+          "beatsPerCycle": 8.0,
+          "sixteenthFrames": 5.36
+        },
+        "easing": {
+          "id": "ease-in-out",
+          "description": "smooth start and stop"
+        },
+        "spring": {
+          "zeta": 0.736,
+          "wn": 12.5,
+          "ta": 0.0,
+          "depth": 0.0,
+          "steps": 0,
+          "cycles": 4,
+          "amp": 0.28,
+          "overshoot": 0.0329
+        },
+        "anticipation": {
+          "fraction": 0.0,
+          "frames": 0.0
+        },
+        "settle": {
+          "fraction": 0.435,
+          "frames": 74.6
+        },
+        "hold": 0.0,
+        "hierarchy": {
+          "hero": {
+            "behavior": "lead",
+            "shape": "sin",
+            "cycles": 4,
+            "drive": "target",
+            "amp": 0.28,
+            "spring": {
+              "zeta": 0.736,
+              "wn": 12.5,
+              "ta": 0.0,
+              "depth": 0.0,
+              "steps": 0
+            },
+            "lag": {
+              "steps": 0,
+              "lag": 0.0,
+              "frames": 0.0
+            }
+          },
+          "structure": {
+            "behavior": "follow",
+            "shape": "sin",
+            "cycles": 4,
+            "drive": "target",
+            "amp": 0.14,
+            "spring": {
+              "zeta": 0.868,
+              "wn": 10.85,
+              "ta": 0,
+              "depth": 0,
+              "steps": 0
+            },
+            "lag": {
+              "steps": 2,
+              "lag": 0.0156,
+              "frames": 10.72
+            }
+          },
+          "ground": {
+            "behavior": "ambient",
+            "lag": {
+              "steps": 4,
+              "lag": 0.0312,
+              "frames": 21.44
+            }
+          },
+          "instrument": {
+            "behavior": "accent"
+          },
+          "text": {
+            "behavior": "reveal"
+          }
+        },
+        "choreography": [
+          {
+            "name": "establish",
+            "at": 0.0,
+            "lead": "hero",
+            "energy": 1.0,
+            "transition": "morph"
+          },
+          {
+            "name": "develop",
+            "at": 0.2,
+            "lead": "ground",
+            "energy": 1.1,
+            "transition": "morph"
+          },
+          {
+            "name": "transform",
+            "at": 0.4,
+            "lead": "hero",
+            "energy": 1.0,
+            "transition": "morph"
+          },
+          {
+            "name": "peak",
+            "at": 0.6,
+            "lead": "hero",
+            "energy": 1.1,
+            "transition": "morph"
+          },
+          {
+            "name": "release",
+            "at": 0.8,
+            "lead": "ground",
+            "energy": 1.0,
+            "transition": "morph"
+          }
+        ],
+        "events": [
+          {
+            "name": "establish",
+            "phase": "establish",
+            "beat": 0,
+            "at": 0.0
+          },
+          {
+            "name": "build",
+            "phase": "develop",
+            "beat": 6,
+            "at": 0.1875
+          },
+          {
+            "name": "turn",
+            "phase": "transform",
+            "beat": 13,
+            "at": 0.4062
+          },
+          {
+            "name": "focal",
+            "phase": "peak",
+            "beat": 19,
+            "at": 0.5938
+          },
+          {
+            "name": "release",
+            "phase": "release",
+            "beat": 26,
+            "at": 0.8125
+          }
+        ],
+        "transitions": {
+          "phases": "morph",
+          "description": "phases flow into each other without a visible edge"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "seamless": true
+        },
+        "description": "one slow breath every two bars; nothing is hit"
+      },
+      {
+        "version": 1,
+        "archetype": "surge",
+        "archetypeSet": [
+          "orbit",
+          "breathe",
+          "surge"
+        ],
+        "axes": {
+          "energy": 0.5,
+          "elasticity": 0.3,
+          "anticipation": 0.65,
+          "continuity": 0.9,
+          "rhythm": 0.15
+        },
+        "timing": {
+          "bpm": 84,
+          "bars": 8,
+          "fps": 30,
+          "loopFrames": 686,
+          "cyclesPerLoop": 8,
+          "framesPerCycle": 85.75,
+          "beatsPerCycle": 4.0,
+          "sixteenthFrames": 5.36
+        },
+        "easing": {
+          "id": "ramp-drop",
+          "description": "a slow linear build that drops at the end of the cycle"
+        },
+        "spring": {
+          "zeta": 0.736,
+          "wn": 12.5,
+          "ta": 0.0,
+          "depth": 0.0,
+          "steps": 0,
+          "cycles": 8,
+          "amp": 0.42,
+          "overshoot": 0.0329
+        },
+        "anticipation": {
+          "fraction": 0.0,
+          "frames": 0.0
+        },
+        "settle": {
+          "fraction": 0.435,
+          "frames": 37.3
+        },
+        "hold": 0.0,
+        "hierarchy": {
+          "hero": {
+            "behavior": "lead",
+            "shape": "saw",
+            "cycles": 8,
+            "drive": "target",
+            "amp": 0.42,
+            "spring": {
+              "zeta": 0.736,
+              "wn": 12.5,
+              "ta": 0.0,
+              "depth": 0.0,
+              "steps": 0
+            },
+            "lag": {
+              "steps": 0,
+              "lag": 0.0,
+              "frames": 0.0
+            }
+          },
+          "structure": {
+            "behavior": "follow",
+            "shape": "saw",
+            "cycles": 8,
+            "drive": "target",
+            "amp": 0.21,
+            "spring": {
+              "zeta": 0.868,
+              "wn": 10.85,
+              "ta": 0,
+              "depth": 0,
+              "steps": 0
+            },
+            "lag": {
+              "steps": 1,
+              "lag": 0.0078,
+              "frames": 5.36
+            }
+          },
+          "ground": {
+            "behavior": "ambient",
+            "lag": {
+              "steps": 2,
+              "lag": 0.0156,
+              "frames": 10.72
+            }
+          },
+          "instrument": {
+            "behavior": "accent"
+          },
+          "text": {
+            "behavior": "reveal"
+          }
+        },
+        "choreography": [
+          {
+            "name": "establish",
+            "at": 0.0,
+            "lead": "ground",
+            "energy": 1.0,
+            "transition": "cut"
+          },
+          {
+            "name": "develop",
+            "at": 0.2,
+            "lead": "structure",
+            "energy": 1.1,
+            "transition": "cut"
+          },
+          {
+            "name": "transform",
+            "at": 0.4,
+            "lead": "hero",
+            "energy": 1.0,
+            "transition": "cut"
+          },
+          {
+            "name": "peak",
+            "at": 0.6,
+            "lead": "hero",
+            "energy": 1.1,
+            "transition": "cut"
+          },
+          {
+            "name": "release",
+            "at": 0.8,
+            "lead": "ground",
+            "energy": 1.0,
+            "transition": "cut"
+          }
+        ],
+        "events": [
+          {
+            "name": "establish",
+            "phase": "establish",
+            "beat": 0,
+            "at": 0.0
+          },
+          {
+            "name": "build",
+            "phase": "develop",
+            "beat": 6,
+            "at": 0.1875
+          },
+          {
+            "name": "turn",
+            "phase": "transform",
+            "beat": 13,
+            "at": 0.4062
+          },
+          {
+            "name": "focal",
+            "phase": "peak",
+            "beat": 19,
+            "at": 0.5938
+          },
+          {
+            "name": "release",
+            "phase": "release",
+            "beat": 26,
+            "at": 0.8125
+          }
+        ],
+        "transitions": {
+          "phases": "cut",
+          "description": "phases change on the beat, no blend"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "seamless": true
+        },
+        "description": "a slow build once per bar that drops at the end of the bar"
+      }
     ]
   },
   "canvas": {

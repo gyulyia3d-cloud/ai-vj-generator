@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Plan the intention and the composition of a piece: the Creative IR and one Composition IR per composition.
+"""Plan the intention, the composition and the movement of a piece: the Creative IR, one Composition IR and one Animation IR per composition.
 
   python plan_ir.py brief.json                       # prints both IRs as JSON (read them, then choose generators)
-  python plan_ir.py brief.json --apply project.json  # writes meta.creativeIR and meta.compositionIR into the project and, when the
-                                                     # Creative IR drives, places its layers (hero, structure, instrument, text) by it
+  python plan_ir.py brief.json --apply project.json  # writes meta.creativeIR, meta.compositionIR and meta.animationIR into the project and, when the
+                                                     # Creative IR drives, places and animates its layers (hero, structure, ground, instrument, text) by it
 
 IR = Intermediate Representation: a structured plan that sits between the briefing (words) and the generators (code). Instead of jumping from
 "cold, contemplative" to an effect, the piece is described first (concept, visual verbs, where things go, how they move) and the generators are
@@ -19,11 +19,13 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import creative_ir as cir  # noqa: E402
 import composition_ir as comp_ir  # noqa: E402
+import animation_ir as anim_ir  # noqa: E402
 
 
 def plan(brief, n):
     ir = cir.compile_ir(brief)
-    return ir, [comp_ir.compile_composition(brief, ir, i) for i in range(n)]
+    cs = [comp_ir.compile_composition(brief, ir, i) for i in range(n)]
+    return ir, cs, [anim_ir.compile_animation(brief, ir, cs[i], i) for i in range(n)]
 
 
 def main():
@@ -37,26 +39,28 @@ def main():
     target = args[args.index("--apply") + 1] if "--apply" in args else None
     if not target:
         n = int(brief.get("compositions", 3))
-        ir, cs = plan(brief, n)
-        print(json.dumps({"creativeIR": ir, "compositionIR": cs}, ensure_ascii=False, indent=1))
+        ir, cs, an = plan(brief, n)
+        print(json.dumps({"creativeIR": ir, "compositionIR": cs, "animationIR": an}, ensure_ascii=False, indent=1))
         return
     proj = json.load(open(target, encoding="utf-8"))
     comps = proj.get("compositions") or []
-    ir, cs = plan(brief, len(comps))
+    ir, cs, an = plan(brief, len(comps))
     ir["colorLogic"] = ir.get("colorLogic") or "one accent used for events only"
     proj.setdefault("meta", {})
     proj["meta"]["creativeIR"] = ir
     proj["meta"]["compositionIR"] = cs
+    proj["meta"]["animationIR"] = an
     placed = 0
     if ir["drives"]:
         W, H = proj["canvas"]["w"], proj["canvas"]["h"]
-        for c, ci in zip(comps, cs):
+        for c, ci, ai in zip(comps, cs, an):
             comp_ir.apply_composition(c["layers"], ci, W, H)
+            anim_ir.apply_animation(c["layers"], ai)
             placed += 1
     with open(target, "w", encoding="utf-8", newline="\n") as f:
         json.dump(proj, f, ensure_ascii=False, indent=2)
         f.write("\n")
-    print(f"wrote {target}: concept {ir['concept']}, verbs {', '.join(ir['visualVerbs']) or 'none'}, grammars {', '.join(c['grammar'] for c in cs)}; "
+    print(f"wrote {target}: concept {ir['concept']}, verbs {', '.join(ir['visualVerbs']) or 'none'}, grammars {', '.join(c['grammar'] for c in cs)}, archetypes {', '.join(a['archetype'] for a in an)}; "
           + (f"{placed} composition(s) placed by the plan" if ir["drives"] else "the plan does not drive (no recognised concept or verbs): recorded only, nothing moved"))
     if not ir["drives"]:
         print("tip: add `verbs` to the brief (registry/creative.json lists the 32) or use the words of the concept lexicon, then run again")

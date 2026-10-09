@@ -229,6 +229,7 @@ const GENAI = (() => {
     { const mt = tags.length ? new Set(MOODS[tags[0]].hero.map(h => h[0])) : new Set(), hh = ir.hierarchy.hero; ir.novelty = tags.length ? pyRound(1 - hh.filter(t => mt.has(t)).length / hh.length, 2) : 1.0; }
     const profs = Array.from({ length: n }, (_, i) => makeProfile(brief, tags.length ? tags[i % tags.length] : null, e, bars, ir));
     const cirs = Array.from({ length: n }, (_, i) => COMPOSITION.compile(brief, ir, i));
+    const anis = Array.from({ length: n }, (_, i) => ANIMATION.compile(brief, ir, cirs[i], i, profs[i].axes));
     const comps = profs.map((pr, i) => buildComp(i, n, brief, tags.length ? MOODS[tags[i % tags.length]] : null, strat, pr, ir, cirs[i])), prof0 = profs[0], pt = brief.lang === 'pt';
     const contract = {
       concept: brief.concept, audienceEffect: (pt ? 'O público deve sentir ' : 'The audience should feel ') + brief.concept.slice(0, 100),
@@ -249,13 +250,15 @@ const GENAI = (() => {
     };
     /* Composition IR: uma por composição; só é aplicada às camadas quando o Creative IR conduz (senão fica apenas registrada) */
     if (drv) comps.forEach((c, i) => COMPOSITION.apply(c.layers, cirs[i], sf.w, sf.h));
+    /* Animation IR: uma por composição, aplicada depois da composição (curvas em layer.mod e atrasos em p.phase); só quando o Creative IR conduz */
+    if (drv) { comps.forEach((c, i) => ANIMATION.apply(c.layers, anis[i])); contract.motionLanguage += ` Animation IR archetypes: ${anis.map(x => x.archetype).join(', ')} (${anis[0].description}).`; }
     const artBible = makeArtBible(brief, tags, contract, prof0, strat, led, ir);
     if (strat === 'none') contract.audioStrategyReason = (brief.audio || {}).reason || 'The brief asks for a silent, music-independent piece.';
     const spec = { archetype: [ARCH[surf] || 'clip-pack'], confirmed: { pixelMap: [sf.w, sf.h] }, assumed: [{ field: 'surface', why: "generated from the brief without AI; the facts are the brief's own", risk: 'confirm the pixel map and distances with the venue before delivery' }] };
     if (sf.pitchMm) spec.confirmed.pitchMm = sf.pitchMm; if (sf.viewingDistanceM) spec.confirmed.viewingDistanceM = sf.viewingDistanceM;
     const canvas = { w: sf.w, h: sf.h, fps: sf.fps || 30, target: ['screen', 'led', 'projection', 'mapping', 'multi'].includes(surf) ? surf : 'screen' }; if (sf.folds) canvas.folds = sf.folds;
     const id = String(brief.name).toLowerCase().split('').map(c => /[\p{L}\p{N}]/u.test(c) ? c : '-').join('').replace(/^-+|-+$/g, '') || 'project';
-    return { schema: 'ai-vj-generator/2', id, seed, meta: { name: String(brief.name).toUpperCase(), lang: brief.lang || 'en', brief: brief.concept, contract, artBible, spec, creativeIR: ir, compositionIR: cirs }, canvas,
+    return { schema: 'ai-vj-generator/2', id, seed, meta: { name: String(brief.name).toUpperCase(), lang: brief.lang || 'en', brief: brief.concept, contract, artBible, spec, creativeIR: ir, compositionIR: cirs, animationIR: anis }, canvas,
       time: { bpm: tm.bpm, bars, loop: true, seamless: true, mode: 'loop', transition: prof0.axes.continuity >= 0.5 ? 'fade' : 'wipe' }, audio: { reactive: strat !== 'none', sens: 1, smooth: 0.7, strategy: strat },
       palette: Object.assign({}, pal, (brief.output || {}).mode === 'white-alpha' ? { mode: 'white-alpha' } : {}), compositions: comps };
   }

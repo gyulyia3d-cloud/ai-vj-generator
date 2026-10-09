@@ -47,6 +47,9 @@ const creativeJsPath = join(ROOT, 'app', 'creative-data.js');
 const composition = rd(join(REG, 'composition.json'));
 const compositionJs = '/* Gerado de skill/ai-vj-generator/registry/composition.json por node scripts/registry.mjs --write. Não edite. */\nconst COMPOSITION_DATA = ' + JSON.stringify(composition) + ';\n';
 const compositionJsPath = join(ROOT, 'app', 'composition-data.js');
+const animation = rd(join(REG, 'animation.json'));
+const animationJs = '/* Gerado de skill/ai-vj-generator/registry/animation.json por node scripts/registry.mjs --write. Não edite. */\nconst ANIMATION_DATA = ' + JSON.stringify(animation) + ';\n';
+const animationJsPath = join(ROOT, 'app', 'animation-data.js');
 const verbIds = creative.verbs.map(v => v.id);
 
 if (mode === 'write') {
@@ -58,7 +61,9 @@ if (mode === 'write') {
   writeFileSync(schemaPath, s);
   writeFileSync(creativeJsPath, creativeJs);
   writeFileSync(compositionJsPath, compositionJs);
+  writeFileSync(animationJsPath, animationJs);
   let b = rd(briefSchemaPath); b.properties.verbs = { type: 'array', items: { type: 'string', enum: verbIds }, description: 'Optional: visual verbs the author wants (the Creative IR adds them with extra weight). See registry/creative.json.' };
+  b.properties.motionArchetype = { type: 'string', enum: animation.archetypeOrder, description: 'Optional: force the motion archetype of the first composition (Animation IR). See registry/animation.json.' };
   writeFileSync(briefSchemaPath, JSON.stringify(b, null, 2) + '\n');
   console.log(`registry gravado: ${generators.generators.length} geradores, ${parameters.groups.reduce((a, g) => a + g.parameters.length, 0)} parâmetros comuns, ${mod.sources.length} fontes de modulação`);
   process.exit(0);
@@ -100,8 +105,16 @@ const GI = composition.grammarOrder;
 check(GI.length === 12 && composition.grammars.every(g => ['hero', 'secondary', 'support', 'text', 'negative'].every(k => Array.isArray(g[k])) && ['x', 'y', 'diag', 'radial'].includes(g.axis)), 'as 12 gramáticas espaciais definem herói, secundário, apoio, texto, espaço negativo e eixo de movimento', '');
 check(Object.keys(composition.verbGrammars).every(v => verbIds.includes(v) && Object.keys(composition.verbGrammars[v]).every(g => GI.includes(g))) && verbIds.every(v => composition.verbGrammars[v]), 'todo verbo do Creative IR aponta para gramáticas que existem', verbIds.filter(v => !composition.verbGrammars[v]).join(','));
 check(Object.values(composition.aspectClasses).every(c => Object.keys(c).every(g => GI.includes(g))) && Object.values(creative.verbs.reduce((o, v) => (o[v.arc] = 1, o), {})).length === Object.keys(composition.phaseProfiles).length && Object.keys(creative.arcs).every(a => composition.phaseProfiles[a]), 'proporções e arcos do Creative IR têm gramática e perfil de fases', '');
+/* Animation IR: dados únicos, copiados para o navegador, coerentes entre si */
+check(readFileSync(animationJsPath, 'utf8').replace(/\r\n/g, '\n') === animationJs, 'animation.json = app/animation-data.js (dados do Animation IR no navegador)', 'rode node scripts/registry.mjs --write');
+const AO = animation.archetypeOrder, ASHAPES = ['spring', 'sin', 'tri', 'saw', 'rubber', 'bounce', 'jello', 'swing', 'wobble', 'pulse', 'heartbeat', 'tada', 'shake'];
+check(AO.length === 8 && AO.every(a => animation.archetypes[a]) && Object.keys(animation.archetypes).length === 8, 'os 8 arquétipos de movimento estão definidos', AO.join());
+check(AO.every(a => { const x = animation.archetypes[a]; return ASHAPES.includes(x.shape) && animation.easings[x.easing] && animation.transitions[x.transition] && animation.behaviors[x.structure] && animation.behaviors[x.ground] && x.phaseLead.length === 5 && ['profile', 'one', 'bar', 'half'].includes(x.cycles) && ['target', 'rot'].includes(x.drive) && Number.isInteger(x.lag.structure) && Number.isInteger(x.lag.ground); }), 'todo arquétipo define curva, easing, transição, comportamentos de estrutura e chão, atrasos em semicolcheias e quem lidera cada fase', '');
+check(verbIds.every(v => animation.verbArchetypes[v] && Object.keys(animation.verbArchetypes[v]).every(a => AO.includes(a))) && AO.every(a => verbIds.some(v => animation.verbArchetypes[v][a])), 'todo verbo do Creative IR aponta para arquétipos que existem e todo arquétipo é pedido por algum verbo', verbIds.filter(v => !animation.verbArchetypes[v]).join());
+check(Object.keys(animation.heroTarget).every(t => generators.generators.some(g => g.id === t)) && Object.keys(animation.structTarget).every(t => generators.generators.some(g => g.id === t)) && animation.events.length === 5, 'alvos de herói e estrutura são tipos de camada que existem; cinco eventos', '');
+check(bs.properties.motionArchetype && same(bs.properties.motionArchetype.enum, AO), 'brief.schema.json aceita os 8 arquétipos em motionArchetype', 'rode --write');
 /* o PROMPT.md (qualquer IA) ensina o vocabulário inteiro */
 const promptDoc = readFileSync(join(SK, 'portable', 'PROMPT.md'), 'utf8');
-check(verbIds.every(v => new RegExp('\\b' + v + '\\b').test(promptDoc)) && GI.every(g => promptDoc.includes(g)) && /plan_ir\.py/.test(promptDoc) && /meta\.creativeIR/.test(promptDoc) && /meta\.compositionIR/.test(promptDoc), 'PROMPT.md cita os 32 verbos, as 12 gramáticas, plan_ir.py e os dois campos do projeto', [...verbIds.filter(v => !new RegExp('\\b' + v + '\\b').test(promptDoc)), ...GI.filter(g => !promptDoc.includes(g))].join(','));
+check(verbIds.every(v => new RegExp('\\b' + v + '\\b').test(promptDoc)) && GI.every(g => promptDoc.includes(g)) && /plan_ir\.py/.test(promptDoc) && /meta\.creativeIR/.test(promptDoc) && /meta\.compositionIR/.test(promptDoc) && /meta\.animationIR/.test(promptDoc) && AO.every(a => new RegExp('\\b' + a + '\\b').test(promptDoc)), 'PROMPT.md cita os 32 verbos, as 12 gramáticas, os 8 arquétipos, plan_ir.py e os três campos do projeto', [...verbIds.filter(v => !new RegExp('\\b' + v + '\\b').test(promptDoc)), ...GI.filter(g => !promptDoc.includes(g)), ...AO.filter(a => !new RegExp('\\b' + a + '\\b').test(promptDoc))].join(','));
 console.log(fail ? `\n${fail} deriva(s).` : '\nregistry ok.');
 process.exit(fail ? 1 : 0);

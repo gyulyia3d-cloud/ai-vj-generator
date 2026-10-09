@@ -276,6 +276,44 @@ def check_composition_ir(meta, out):
                 e.append(f"meta.compositionIR[{i}].zones.{k}: x, y, w, h must be numbers in 0..1")
 
 
+def check_animation_ir(P, out):
+    """Phase 7: meta.animationIR is a list with one Animation IR per composition (references/animation-ir.md). Cycles are whole, lags and events sit on the loop, the loop closes."""
+    e, w = out["errors"], out["warnings"]
+    an = P.get("meta", {}).get("animationIR")
+    if an is None:
+        return
+    if not isinstance(an, list):
+        e.append("meta.animationIR must be a list (one entry per composition)")
+        return
+    ncomp = len(P.get("compositions") or [])
+    if len(an) != ncomp:
+        w.append(f"meta.animationIR has {len(an)} entries for {ncomp} compositions")
+    archetypes = set(_registry("animation.json")["archetypeOrder"])
+    for i, a in enumerate(an):
+        pre = f"meta.animationIR[{i}]"
+        if not isinstance(a, dict) or a.get("archetype") not in archetypes:
+            w.append(f"{pre}.archetype: unknown archetype (registry/animation.json)")
+            continue
+        t = a.get("timing") or {}
+        if not isinstance(t.get("cyclesPerLoop"), int) or t["cyclesPerLoop"] < 1:
+            e.append(f"{pre}.timing.cyclesPerLoop: must be a whole number of at least 1 or the loop does not close")
+        for tier in ("hero", "structure", "ground"):
+            h = (a.get("hierarchy") or {}).get(tier) or {}
+            lg = (h.get("lag") or {}).get("lag", 0)
+            if not (isinstance(lg, (int, float)) and 0 <= lg < 1):
+                e.append(f"{pre}.hierarchy.{tier}.lag.lag: must be a fraction of the loop in 0..1")
+            if "cycles" in h and (not isinstance(h["cycles"], int) or h["cycles"] < 1):
+                e.append(f"{pre}.hierarchy.{tier}.cycles: must be a whole number of at least 1")
+        beats, last = t.get("bars", 0) * 4, -1
+        for ev in a.get("events") or []:
+            b = ev.get("beat")
+            if not isinstance(b, int) or b < 0 or b >= max(beats, 1) or b < last:
+                e.append(f"{pre}.events: '{ev.get('name')}' must land on a whole beat inside the loop, in order")
+            last = b if isinstance(b, int) else last
+        if (a.get("loop") or {}).get("closes") is not True:
+            e.append(f"{pre}.loop.closes: must be true")
+
+
 def check_creative_ir(meta, out):
     """Phase 5: meta.creativeIR (references/creative-ir.md). Verbs and generator types must exist in the registry."""
     e, w = out["errors"], out["warnings"]
@@ -521,6 +559,7 @@ def validate(path, extra_assets=()):
         check_art_bible(P.get("meta", {}), out)
         check_creative_ir(P.get("meta", {}), out)
         check_composition_ir(P.get("meta", {}), out)
+        check_animation_ir(P, out)
         check_capabilities(P.get("capabilities"), out)
     cv, tm = P.get("canvas", {}), P.get("time", {})
     if v2:

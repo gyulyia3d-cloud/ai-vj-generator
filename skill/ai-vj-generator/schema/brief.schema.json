@@ -338,6 +338,20 @@
         ]
       },
       "description": "Optional: visual verbs the author wants (the Creative IR adds them with extra weight). See registry/creative.json."
+    },
+    "motionArchetype": {
+      "type": "string",
+      "enum": [
+        "pulse",
+        "breathe",
+        "glide",
+        "surge",
+        "stutter",
+        "orbit",
+        "ripple",
+        "settle"
+      ],
+      "description": "Optional: force the motion archetype of the first composition (Animation IR). See registry/animation.json."
     }
   }
 }

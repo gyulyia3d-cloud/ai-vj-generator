@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.10.0 (09/10/2026) · Fase 7: Animation IR
+
+- **Animation IR** (`animation_ir.py`, `app/animation.js`, dados em `registry/animation.json`): uma por composição, em `meta.animationIR`. Diz como as coisas se movem, em tempo musical: arquétipo, relógio (`loopFrames`, ciclos por loop, quadros por ciclo, semicolcheia em quadros), easing, antecipação e assentamento medidos em quadros, quem lidera e quem segue e quantas semicolcheias atrasado (herói, estrutura, chão, instrumento, texto), coreografia das cinco fases, cinco eventos na grade de batidas e o contrato do loop.
+- **8 arquétipos de movimento** (pulse, breathe, glide, surge, stutter, orbit, ripple, settle). Os 32 verbos do Creative IR votam; sem verbos os eixos escolhem; cada composição de um set usa um arquétipo diferente; `brief.motionArchetype` força o primeiro.
+- **Aplicado às camadas** quando o Creative IR conduz: a curva do arquétipo no parâmetro-alvo do herói (ou na rotação, no orbit), a estrutura segue, contra-gira ou fica parada, e o atraso vai em `p.phase`. Só as curvas `lfo` próprias nas chaves conduzidas são trocadas (aplicar duas vezes não empilha); as fases `env` e a modulação por áudio ficam. Todos os ciclos são inteiros: o movimento se repete a cada loop e emenda sem salto, exceto a queda declarada do `surge`.
+- O Animation IR é aplicado depois do Composition IR no gerador do navegador, no `brief_to_project.py` e no `plan_ir.py` (que agora grava os três IR). Validador: `meta.animationIR` (ciclos inteiros, atrasos e eventos dentro do loop, `loop.closes`). A galeria foi regenerada.
+- Teste novo `animation_check.mjs` (Python = navegador no IR em 23 casos e nas camadas em 32 combinações; conceito escolhe o arquétipo; 4 arquétipos fazem 4 movimentos diferentes dos mesmos geradores; periodicidade; atraso; antecipação e assentamento; eventos; só aplica quando conduz; IR quebrado é recusado; trocar o arquétipo troca a imagem); `references/animation-ir.md`.
+
 ## 3.9.0 (09/10/2026) · Os dois IR para qualquer IA
 
 - **`PROMPT.md` v3.1** (passo 2b): ensina qualquer IA, com ou sem ferramentas, a planejar a peça antes da técnica. IR = Representação Intermediária, um plano estruturado entre o briefing (palavras) e os geradores (código): o **Creative IR** (conceito, verbos visuais, motivos, hierarquia, comportamento) e um **Composition IR** por composição (gramática espacial, zonas, espaço negativo, fases). Lista os 32 verbos, as 12 gramáticas, os campos de `meta.creativeIR` e `meta.compositionIR`, a forma `env` e a regra de que o `role` de cada camada começa com o seu tier.

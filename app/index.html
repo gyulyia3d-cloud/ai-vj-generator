@@ -582,7 +582,7 @@ html.stagemode #toast,html.stagemode #hint{display:none!important}
    função pura de (parâmetros, quadro) → o mesmo código desenha o preview,
    o export PNG alpha e a gravação.
    ===================================================================== */
-const VERSION = '3.9.0';
+const VERSION = '3.10.0';
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const TAU = Math.PI * 2, GA = Math.PI * (3 - Math.sqrt(5));
 const clamp = (v, a, b) => v < a ? a : v > b ? b : v, lerp = (a, b, t) => a + (b - a) * t;
@@ -4522,6 +4522,7 @@ const GENAI = (() => {
     { const mt = tags.length ? new Set(MOODS[tags[0]].hero.map(h => h[0])) : new Set(), hh = ir.hierarchy.hero; ir.novelty = tags.length ? pyRound(1 - hh.filter(t => mt.has(t)).length / hh.length, 2) : 1.0; }
     const profs = Array.from({ length: n }, (_, i) => makeProfile(brief, tags.length ? tags[i % tags.length] : null, e, bars, ir));
     const cirs = Array.from({ length: n }, (_, i) => COMPOSITION.compile(brief, ir, i));
+    const anis = Array.from({ length: n }, (_, i) => ANIMATION.compile(brief, ir, cirs[i], i, profs[i].axes));
     const comps = profs.map((pr, i) => buildComp(i, n, brief, tags.length ? MOODS[tags[i % tags.length]] : null, strat, pr, ir, cirs[i])), prof0 = profs[0], pt = brief.lang === 'pt';
     const contract = {
       concept: brief.concept, audienceEffect: (pt ? 'O público deve sentir ' : 'The audience should feel ') + brief.concept.slice(0, 100),
@@ -4542,19 +4543,126 @@ const GENAI = (() => {
     };
     /* Composition IR: uma por composição; só é aplicada às camadas quando o Creative IR conduz (senão fica apenas registrada) */
     if (drv) comps.forEach((c, i) => COMPOSITION.apply(c.layers, cirs[i], sf.w, sf.h));
+    /* Animation IR: uma por composição, aplicada depois da composição (curvas em layer.mod e atrasos em p.phase); só quando o Creative IR conduz */
+    if (drv) { comps.forEach((c, i) => ANIMATION.apply(c.layers, anis[i])); contract.motionLanguage += ` Animation IR archetypes: ${anis.map(x => x.archetype).join(', ')} (${anis[0].description}).`; }
     const artBible = makeArtBible(brief, tags, contract, prof0, strat, led, ir);
     if (strat === 'none') contract.audioStrategyReason = (brief.audio || {}).reason || 'The brief asks for a silent, music-independent piece.';
     const spec = { archetype: [ARCH[surf] || 'clip-pack'], confirmed: { pixelMap: [sf.w, sf.h] }, assumed: [{ field: 'surface', why: "generated from the brief without AI; the facts are the brief's own", risk: 'confirm the pixel map and distances with the venue before delivery' }] };
     if (sf.pitchMm) spec.confirmed.pitchMm = sf.pitchMm; if (sf.viewingDistanceM) spec.confirmed.viewingDistanceM = sf.viewingDistanceM;
     const canvas = { w: sf.w, h: sf.h, fps: sf.fps || 30, target: ['screen', 'led', 'projection', 'mapping', 'multi'].includes(surf) ? surf : 'screen' }; if (sf.folds) canvas.folds = sf.folds;
     const id = String(brief.name).toLowerCase().split('').map(c => /[\p{L}\p{N}]/u.test(c) ? c : '-').join('').replace(/^-+|-+$/g, '') || 'project';
-    return { schema: 'ai-vj-generator/2', id, seed, meta: { name: String(brief.name).toUpperCase(), lang: brief.lang || 'en', brief: brief.concept, contract, artBible, spec, creativeIR: ir, compositionIR: cirs }, canvas,
+    return { schema: 'ai-vj-generator/2', id, seed, meta: { name: String(brief.name).toUpperCase(), lang: brief.lang || 'en', brief: brief.concept, contract, artBible, spec, creativeIR: ir, compositionIR: cirs, animationIR: anis }, canvas,
       time: { bpm: tm.bpm, bars, loop: true, seamless: true, mode: 'loop', transition: prof0.axes.continuity >= 0.5 ? 'fade' : 'wipe' }, audio: { reactive: strat !== 'none', sens: 1, smooth: 0.7, strategy: strat },
       palette: Object.assign({}, pal, (brief.output || {}).mode === 'white-alpha' ? { mode: 'white-alpha' } : {}), compositions: comps };
   }
   return { build, checkBrief, compileIR: CREATIVE.compile, profile, toMod, moodProfile, pyRound, crc32, MOODS: MOOD_NAMES, MOOD_TABLE: MOODS };
 })();
 /*__GENAI_END__*/
+/*__ANIMATIONDATA_START__*/
+/* Gerado de skill/ai-vj-generator/registry/animation.json por node scripts/registry.mjs --write. Não edite. */
+const ANIMATION_DATA = {"note":"Single source of the Animation IR (phase 7): 8 motion archetypes, which verbs ask for which, who leads and who follows, lags in sixteenth notes, easings, transitions. Python (scripts/animation_ir.py) and the browser (app/animation.js) read this file; app/animation-data.js is a copy made by node scripts/registry.mjs --write.","weights":{"verb":10,"setSize":3,"ampFloor":0.04},"archetypeOrder":["pulse","breathe","glide","surge","stutter","orbit","ripple","settle"],"behaviors":{"lead":"carries the move; everything else is read against it","follow":"the same move, softer and a few sixteenth notes late (follow-through)","counter":"the same move turning the other way","ambient":"slow matter that moves a little after the hero and never accents","accent":"does not move on its own; it shows the signal that moves the others","reveal":"enters on the build and clears before the loop ends","hold":"stays where it is so the eye has something that does not move"},"easings":{"spring":"kick and ring: fast out, rings down (motion_profiles.py)","steps":"the phase is quantised: hard, interface-like steps","ease-in-out":"smooth start and stop","ramp-drop":"a slow linear build that drops at the end of the cycle","linear-turn":"constant speed, a whole turn per cycle","damped":"one entrance that settles without ringing"},"transitions":{"cut":"phases change on the beat, no blend","ease":"phases blend with a smooth ease","morph":"phases flow into each other without a visible edge","hold":"one phase holds while the others change"},"fallback":{"stepped":"stutter","springy":"pulse","smooth":"breathe"},"heroTarget":{"tunnel":"size","lines":"weight","shape":"size","organism":"breathe","flow":"amp","typewall":"fill"},"structTarget":{"tunnel":"size","lines":"weight","shape":"size"},"targetDefault":{"size":1,"weight":2,"breathe":0.5,"amp":0.12,"fill":0.82},"shapeSizeDefault":160,"groundTypes":["shader","isf","synth","fx"],"archetypes":{"pulse":{"description":"the hero is hit on the beat and rings out; the structure answers a sixteenth later","shape":"spring","cycles":"profile","drive":"target","ampMul":1,"steps":0,"zetaMin":0,"taMul":1,"hold":0,"easing":"spring","transition":"ease","structure":"follow","ground":"ambient","lag":{"structure":1,"ground":2},"phaseLead":["hero","hero","structure","hero","ground"]},"breathe":{"description":"one slow breath every two bars; nothing is hit","shape":"sin","cycles":"half","drive":"target","ampMul":0.8,"steps":0,"zetaMin":0,"taMul":0,"hold":0,"easing":"ease-in-out","transition":"morph","structure":"follow","ground":"ambient","lag":{"structure":2,"ground":4},"phaseLead":["hero","ground","hero","hero","ground"]},"glide":{"description":"one continuous move per loop at a steady pace; no accent","shape":"tri","cycles":"one","drive":"target","ampMul":0.6,"steps":0,"zetaMin":0,"taMul":0,"hold":0,"easing":"ease-in-out","transition":"morph","structure":"follow","ground":"ambient","lag":{"structure":4,"ground":8},"phaseLead":["ground","hero","hero","structure","ground"]},"surge":{"description":"a slow build once per bar that drops at the end of the bar","shape":"saw","cycles":"bar","drive":"target","ampMul":1.2,"steps":0,"zetaMin":0,"taMul":0,"hold":0,"easing":"ramp-drop","transition":"cut","structure":"follow","ground":"ambient","lag":{"structure":1,"ground":2},"phaseLead":["ground","structure","hero","hero","ground"]},"stutter":{"description":"quantised, hard steps on the beat; everything moves together, nothing rings","shape":"spring","cycles":"profile","drive":"target","ampMul":1,"steps":6,"zetaMin":1,"taMul":0,"hold":0,"easing":"steps","transition":"cut","structure":"follow","ground":"hold","lag":{"structure":0,"ground":0},"phaseLead":["hero","all","hero","all","hero"]},"orbit":{"description":"the hero turns once per loop and the structure turns the other way","shape":"saw","cycles":"one","drive":"rot","ampMul":1,"steps":0,"zetaMin":0,"taMul":0,"hold":0,"easing":"linear-turn","transition":"morph","structure":"counter","ground":"ambient","lag":{"structure":0,"ground":4},"phaseLead":["hero","hero","structure","hero","ground"]},"ripple":{"description":"a damped wobble that travels outward: hero first, then structure, then ground","shape":"rubber","cycles":"profile","drive":"target","ampMul":1,"steps":0,"zetaMin":0,"taMul":0,"hold":0,"easing":"spring","transition":"ease","structure":"follow","ground":"ambient","lag":{"structure":2,"ground":4},"phaseLead":["hero","structure","ground","hero","ground"]},"settle":{"description":"one entrance per loop that lands and holds; the rest stays still","shape":"spring","cycles":"one","drive":"target","ampMul":1,"steps":0,"zetaMin":0.9,"taMul":0,"hold":0.4,"easing":"damped","transition":"hold","structure":"hold","ground":"hold","lag":{"structure":0,"ground":0},"phaseLead":["hero","hero","hero","hero","hero"]}},"verbArchetypes":{"grow":{"settle":2,"surge":1},"contract":{"surge":2,"pulse":1},"accumulate":{"surge":2,"glide":1},"fracture":{"stutter":3,"pulse":1},"drift":{"glide":3},"orbit":{"orbit":3},"breathe":{"breathe":3},"pulse":{"pulse":3},"erode":{"stutter":1,"settle":1,"glide":1},"bloom":{"ripple":2,"settle":1},"collapse":{"surge":2,"settle":1},"stretch":{"glide":2,"breathe":1},"fold":{"orbit":1,"ripple":1,"breathe":1},"scatter":{"stutter":2,"ripple":1},"converge":{"surge":2,"pulse":1},"oscillate":{"breathe":2,"pulse":1},"morph":{"breathe":2,"glide":1},"repel":{"pulse":2,"ripple":1},"attract":{"surge":1,"breathe":1,"orbit":1},"trace":{"glide":2,"orbit":1},"flow":{"glide":3},"hesitate":{"stutter":2,"settle":1},"freeze":{"settle":3},"release":{"ripple":2,"settle":1},"compress":{"surge":2,"pulse":1},"expand":{"ripple":2,"settle":1},"fragment":{"stutter":3},"assemble":{"settle":2,"surge":1},"dissolve":{"breathe":1,"glide":1,"settle":1},"emerge":{"settle":3},"sink":{"settle":1,"glide":1,"breathe":1},"rise":{"surge":2,"glide":1}},"events":[{"name":"establish","phase":0},{"name":"build","phase":1},{"name":"turn","phase":2},{"name":"focal","phase":3},{"name":"release","phase":4}]};
+/*__ANIMATIONDATA_END__*/
+/*__ANIMATION_START__*/
+/* Animation IR (fase 7): porta de skill/ai-vj-generator/scripts/animation_ir.py. Como as coisas se movem: o comportamento de cada camada ao longo do loop, em tempo musical.
+   Lê o Creative IR (verbos e os cinco eixos de movimento), o Composition IR (as cinco fases) e o relógio (bpm, compassos, fps). Os dados (8 arquétipos de movimento, voto dos verbos,
+   quem lidera e quem segue, atrasos em semicolcheias, easings, transições) vêm de registry/animation.json, copiados para app/animation-data.js por node scripts/registry.mjs --write.
+   Python e navegador dão o mesmo IR (scripts/animation_check.mjs). O IR é aplicado às camadas (apply): curvas em layer.mod e atrasos em p.phase, sempre em ciclos inteiros, então o loop fecha.
+   Gerador, composição e animação são independentes: trocar o arquétipo muda como as mesmas figuras, nos mesmos lugares, se movem.
+   Depende de GENAI (profile, pyRound) só em tempo de execução: este módulo é embutido depois do GENAI.
+   Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html. */
+const ANIMATION = (() => {
+  const D = ANIMATION_DATA, ARCH = D.archetypes, AXES = ['energy', 'elasticity', 'anticipation', 'continuity', 'rhythm'];
+  const R = (x, nd) => GENAI.pyRound(x, nd), r2 = x => R(x, 2), r3 = x => R(x, 3), r4 = x => R(x, 4);
+  const overshoot = z => z >= 1 ? 0 : r4(Math.exp(-Math.PI * z / Math.sqrt(1 - z * z)));
+  function rankArchetypes(ir, axes, forced) {
+    const order = D.archetypeOrder, acc = {}; order.forEach(a => { acc[a] = 0; });
+    let total = 0; for (const v of ir.visualVerbs || []) total += ir.verbScores[v];
+    for (const v of ir.visualVerbs || []) for (const [a, w] of Object.entries(D.verbArchetypes[v] || {})) acc[a] += ir.verbScores[v] * w;
+    const scores = {}; order.forEach(a => { scores[a] = total ? D.weights.verb * acc[a] / total : 0; });
+    let ranked = order.filter(a => scores[a] > 0).sort((a, b) => (scores[b] - scores[a]) || (order.indexOf(a) - order.indexOf(b)));
+    if (!ranked.length) { const fb = D.fallback; ranked = [axes.continuity < 0.5 ? fb.stepped : axes.elasticity >= 0.3 ? fb.springy : fb.smooth]; }
+    if (forced && ARCH[forced]) ranked = [forced].concat(ranked.filter(a => a !== forced));
+    return ranked;
+  }
+  const cyclesOf = (rule, prof, bars) => rule === 'profile' ? prof.cycles : rule === 'one' ? 1 : rule === 'bar' ? Math.trunc(bars) : Math.max(1, Math.trunc(bars / 2));
+  const adjust = (prof, a, cycles) => ({ zeta: Math.max(prof.zeta, a.zetaMin), wn: prof.wn, ta: r4(prof.ta * a.taMul), depth: r4(prof.depth * a.taMul), steps: a.steps || prof.steps, cycles });
+
+  function compile(brief, ir, cmp, i, axes) {
+    const tm = brief.time || {}, bpm = tm.bpm === undefined ? 120 : tm.bpm, bars = tm.bars === undefined ? 4 : tm.bars, fps = (brief.surface || {}).fps === undefined ? 30 : brief.surface.fps;
+    const ax = Object.assign({}, axes || ir.motion.axes), prof = GENAI.profile(ax.energy, ax.elasticity, ax.anticipation, ax.continuity, ax.rhythm, bars);
+    const top = rankArchetypes(ir, ax, brief.motionArchetype).slice(0, D.weights.setSize), aid = top[i % top.length], a = ARCH[aid];
+    const cyc = cyclesOf(a.cycles, prof, bars), sp = adjust(prof, a, cyc), amp = Math.max(D.weights.ampFloor, r4(prof.amp * a.ampMul));
+    sp.amp = amp; sp.overshoot = overshoot(sp.zeta);
+    const loopFrames = R(bars * 240 * fps / bpm), sixteenths = bars * 16, fpc = r2(loopFrames / cyc), settle = r3(Math.min(1.0, 4 / (sp.zeta * sp.wn)));
+    const lag = steps => ({ steps, lag: r4(steps / sixteenths), frames: r2(steps * loopFrames / sixteenths) });
+    const soft = GENAI.profile(ax.energy * 0.7, ax.elasticity * 0.5, 0, ax.continuity, ax.rhythm, 1), ssp = adjust(soft, a, cyc);
+    const hStruct = { behavior: a.structure, shape: a.shape, cycles: cyc, drive: a.structure === 'counter' ? 'rot' : a.drive, amp: r4(amp * 0.5), spring: { zeta: ssp.zeta, wn: ssp.wn, ta: 0, depth: 0, steps: ssp.steps }, lag: lag(a.structure !== 'counter' ? a.lag.structure : 0) };
+    const phases = cmp.temporal.phases, choreo = phases.map((ph, k) => ({ name: ph.name, at: ph.at, lead: a.phaseLead[k], energy: ph.motion, transition: a.transition }));
+    const events = D.events.map(ev => { const beat = R(ev.phase / 5 * bars * 4); return { name: ev.name, phase: phases[ev.phase].name, beat, at: r4(beat / (bars * 4)) }; });
+    return {
+      version: 1, archetype: aid, archetypeSet: top, axes: Object.fromEntries(AXES.map(k => [k, ax[k]])),
+      timing: { bpm, bars, fps, loopFrames, cyclesPerLoop: cyc, framesPerCycle: fpc, beatsPerCycle: r3(bars * 4 / cyc), sixteenthFrames: r2(loopFrames / sixteenths) },
+      easing: { id: a.easing, description: D.easings[a.easing] },
+      spring: sp,
+      anticipation: { fraction: sp.ta, frames: r2(sp.ta * fpc) },
+      settle: { fraction: settle, frames: r2(settle * fpc) },
+      hold: a.hold,
+      hierarchy: {
+        hero: { behavior: 'lead', shape: a.shape, cycles: cyc, drive: a.drive, amp, spring: { zeta: sp.zeta, wn: sp.wn, ta: sp.ta, depth: sp.depth, steps: sp.steps }, lag: lag(0) },
+        structure: hStruct,
+        ground: { behavior: a.ground, lag: lag(a.lag.ground) },
+        instrument: { behavior: 'accent' },
+        text: { behavior: 'reveal' },
+      },
+      choreography: choreo, events,
+      transitions: { phases: a.transition, description: D.transitions[a.transition] },
+      loop: { closes: true, wholeCycles: true, seamless: true },
+      description: a.description,
+    };
+  }
+  /* hero e estrutura como no Composition IR; chão = os campos de shader (nome CAMPO / ATMOSFERA, ou role que começa com ground / atmosphere) */
+  function tierOf(L) {
+    const nm = String(L.name || '').toUpperCase(), role = String(L.role || '').trim().toLowerCase();
+    if (nm.startsWith('HER') || role.startsWith('hero')) return 'hero';
+    if (nm.startsWith('ESTRUTURA') || role.startsWith('structure')) return 'structure';
+    if (D.groundTypes.includes(L.type) && (nm.startsWith('CAMPO') || nm.startsWith('ATMOSFERA') || role.startsWith('ground') || role.startsWith('atmosphere'))) return 'ground';
+    return null;
+  }
+  function makeMod(key, spec, rotSign) {
+    const mode = key === 'rot' ? 'add' : 'mul', lo = key === 'rot' ? 0 : 1.0, hi = key === 'rot' ? 360 * rotSign : r4(1.0 + spec.amp);
+    if (spec.shape === 'spring') {
+      const sp = spec.spring, m = { k: key, src: 'lfo', shape: 'spring', cycles: spec.cycles, zeta: sp.zeta, wn: sp.wn, min: lo, max: hi, mode };
+      if (sp.ta) { m.ta = sp.ta; m.depth = sp.depth; }
+      if (sp.steps) m.steps = sp.steps;
+      return m;
+    }
+    return { k: key, src: 'lfo', shape: spec.shape, cycles: spec.cycles, min: lo, max: hi, mode };
+  }
+  const own = (m, keys) => m.src === 'lfo' && m.shape !== 'env' && keys.includes(m.k);
+  function apply(layers, an) {
+    const H = an.hierarchy; let heroType = null;
+    for (const L of layers) if (tierOf(L) === 'hero') { heroType = L.type; break; }
+    for (const L of layers) {
+      const t = L.type, tier = tierOf(L);
+      if (tier !== 'hero' && tier !== 'structure' && tier !== 'ground') continue;
+      L.p = L.p || {}; const p = L.p;
+      if (tier === 'ground') { if (H.ground.lag.lag > 0) p.phase = H.ground.lag.lag; continue; }
+      if (!Array.isArray(L.mod)) L.mod = [];
+      const spec = H[tier], tgt = (tier === 'hero' ? D.heroTarget : D.structTarget)[t], key = spec.drive === 'rot' ? 'rot' : tgt;
+      L.mod = L.mod.filter(m => !own(m, [tgt, 'rot']));
+      if (tier === 'structure' && spec.behavior === 'hold') continue;
+      if (tier === 'structure' && spec.behavior === 'follow' && t === heroType) continue;
+      if (key === undefined || key === null) continue;
+      if (key === 'rot') { if (p.rot === undefined) p.rot = 0; }
+      else if (!(key in p)) p[key] = (t === 'shape' && key === 'size') ? D.shapeSizeDefault : D.targetDefault[key];
+      L.mod.push(makeMod(key, spec, spec.behavior === 'counter' ? -1 : 1));
+      if (tier === 'structure' && spec.lag.lag > 0) p.phase = spec.lag.lag;
+    }
+    return layers;
+  }
+  return { compile, apply, rankArchetypes, tierOf, makeMod, DATA: D };
+})();
+/*__ANIMATION_END__*/
 /*__EVAL_START__*/
 /* Avaliador estrutural (fase 2, no motor desde a fase 3): nota de 0 a 100 por composição, a partir de quadros reais.
    A CLI (scripts/evaluate.mjs) e a aba Gerar chamam a mesma função: AIVJ.evaluate(lang). Edite este arquivo; node scripts/embed-modules.mjs embute no index.html.
@@ -6218,7 +6326,7 @@ function boot() {
   document.fonts && document.fonts.load('800 40px "Martian Mono"').catch(() => {});
   if (!embedded && !saved && !store.get('seenWiz', false)) openWiz();
   raf = requestAnimationFrame(tick);
-  window.AIVJ = { version: VERSION, get PAL() { return PAL; }, get RECIPES() { return RECIPES; }, addRecipe, addTestCards, recipeLayer, importFile, parseModel, setLang, setHow, undo, redo, evalExpr, applyTheme, layoutApply, setPanelOpen, setZoneDraw, get hist() { return ST.hist.length; }, get histLabels() { return ST.hl.slice(); }, surface: SC, specOf, applyCalc, renderSpec, specMarkdown, get project() { return P; }, get audio() { return AUD; }, pseudoAudio, synthTimes, applyMods, motionCurve, GENAI, EVALUATOR, flash: FLASH, ONSET, UX, fx: { FX, body: fxBody, op: fxOp }, synth: { SYN, src: synthSrc }, blobs: { X: BLOBX }, layerErrors: () => [...LAYER_ERR.values()], mp4: { X: MP4X, render: mp4Render, run: exportMp4Run }, isf: { X: ISFX, LIB: ISFLIB, lib: isfLib }, modUI: { render: modPanel, params: modNumericParams, sources: MOD_SOURCES }, expRun: exportRun, EXP, surfx: SURFX, region: regionRect, surUI: { state: SUR, applyPreset: surApplyPreset, render: renderSurface }, COMPOSITION, CREATIVE, applyMods, RG, TM, composeFrame, buildComposeGraph: buildComposeGraph, frameAt, canvasPool: CANVAS_POOL, webgl: WEBGL, glProgram: body => glProg(body), glError: body => GL.err.get(body), glInfo: () => { glInit(); return GL.r ? { version: GL.r.version, context: GL.gl.constructor.name, glsl: GL.gl.getParameter(GL.gl.SHADING_LANGUAGE_VERSION), caps: GL.r.caps, stats: GL.r.stats } : { failure: GL.failure }; }, glMetrics: () => GL.r ? GL.r.metrics() : null, glr: () => GL.r, presets: SURFACE_PRESETS, GEN, FAMILIES, COMMON, modSources: () => MOD_SOURCES.map(x => x[0]), evaluate: lang => EVALUATOR.run(lang), shaderResolve, GLIB, specBins, simBake, parsePly, get LAYERERR() { return LAYER_ERR; }, setSeed, bpmWaves, get GLERR() { return GL.err; }, layerFrame, pm, importJson, frameAt, validate: o => validate(o), GEN, loopFrames, contactSheet, layerAudit, allowCode, loadAssets, toLogo, projectOut, get state() { return ST; }, geom, lintCode, compileCode, setCi(i) { ST.ci = i; refreshAll(); },
+  window.AIVJ = { version: VERSION, get PAL() { return PAL; }, get RECIPES() { return RECIPES; }, addRecipe, addTestCards, recipeLayer, importFile, parseModel, setLang, setHow, undo, redo, evalExpr, applyTheme, layoutApply, setPanelOpen, setZoneDraw, get hist() { return ST.hist.length; }, get histLabels() { return ST.hl.slice(); }, surface: SC, specOf, applyCalc, renderSpec, specMarkdown, get project() { return P; }, get audio() { return AUD; }, pseudoAudio, synthTimes, applyMods, motionCurve, GENAI, EVALUATOR, flash: FLASH, ONSET, UX, fx: { FX, body: fxBody, op: fxOp }, synth: { SYN, src: synthSrc }, blobs: { X: BLOBX }, layerErrors: () => [...LAYER_ERR.values()], mp4: { X: MP4X, render: mp4Render, run: exportMp4Run }, isf: { X: ISFX, LIB: ISFLIB, lib: isfLib }, modUI: { render: modPanel, params: modNumericParams, sources: MOD_SOURCES }, expRun: exportRun, EXP, surfx: SURFX, region: regionRect, surUI: { state: SUR, applyPreset: surApplyPreset, render: renderSurface }, COMPOSITION, ANIMATION, CREATIVE, applyMods, RG, TM, composeFrame, buildComposeGraph: buildComposeGraph, frameAt, canvasPool: CANVAS_POOL, webgl: WEBGL, glProgram: body => glProg(body), glError: body => GL.err.get(body), glInfo: () => { glInit(); return GL.r ? { version: GL.r.version, context: GL.gl.constructor.name, glsl: GL.gl.getParameter(GL.gl.SHADING_LANGUAGE_VERSION), caps: GL.r.caps, stats: GL.r.stats } : { failure: GL.failure }; }, glMetrics: () => GL.r ? GL.r.metrics() : null, glr: () => GL.r, presets: SURFACE_PRESETS, GEN, FAMILIES, COMMON, modSources: () => MOD_SOURCES.map(x => x[0]), evaluate: lang => EVALUATOR.run(lang), shaderResolve, GLIB, specBins, simBake, parsePly, get LAYERERR() { return LAYER_ERR; }, setSeed, bpmWaves, get GLERR() { return GL.err; }, layerFrame, pm, importJson, frameAt, validate: o => validate(o), GEN, loopFrames, contactSheet, layerAudit, allowCode, loadAssets, toLogo, projectOut, get state() { return ST; }, geom, lintCode, compileCode, setCi(i) { ST.ci = i; refreshAll(); },
     /* gancho de teste: renderiza a composição ci no quadro n, determinístico, sem tocar no preview */
     renderFrame(ci, n, scale = 0.25, alpha = false) {
       const comp = P.compositions[ci], W = P.canvas.w, H = P.canvas.h, w = Math.round(W * scale), h = Math.round(H * scale);

@@ -15,7 +15,7 @@
       "materialLanguage": "Light on a dark ground: lamp, signal; pendulum, wave.",
       "colorLogic": "complement scheme, OKLCH hue 60 (sodium yellow against dark asphalt); one accent used for events only.",
       "spatialLogic": "Canvas 540x1920 (led); the hero sits on the focal zone, structure on the grid, information at the edge.",
-      "motionLanguage": "Profile: smooth, eased; springy (zeta 0.7624, 2% overshoot); with a wind-up dip before each hit; 16 move(s) per loop of 4 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py).",
+      "motionLanguage": "Profile: smooth, eased; springy (zeta 0.7624, 2% overshoot); with a wind-up dip before each hit; 16 move(s) per loop of 4 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py). Animation IR archetypes: pulse, glide, breathe (the hero is hit on the beat and rings out; the structure answers a sixteenth later).",
       "typographyLanguage": "Uppercase, one family; text only when the brief supplies exact words.",
       "temporalArc": "a figure that returns to where it began; on every beat; over 4 bars per composition, the set follows establish, turn, turn.",
       "loopGrammar": "cyclic: the loop closes on whole bars and every layer moves in whole cycles",
@@ -30,7 +30,7 @@
       "thesis": "Faixas e palavras gritadas em uma torre estreita de LED, como sinal de rua à noite.",
       "material": "Light on a dark ground (urban, aggressive); lamp, signal; pendulum, wave; no fake materials, no gradients that pretend to be objects.",
       "space": "Read from far away: heavy strokes, large forms, the hero on the focal third, information at the edge.",
-      "motion": "Profile: smooth, eased; springy (zeta 0.7624, 2% overshoot); with a wind-up dip before each hit; 16 move(s) per loop of 4 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py).",
+      "motion": "Profile: smooth, eased; springy (zeta 0.7624, 2% overshoot); with a wind-up dip before each hit; 16 move(s) per loop of 4 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py). Animation IR archetypes: pulse, glide, breathe (the hero is hit on the beat and rings out; the structure answers a sixteenth later).",
       "dramaturgy": "a figure that returns to where it began; on every beat; over 4 bars per composition, the set follows establish, turn, turn. Tension: assertive; one dominant figure per composition; the ground field is the release.",
       "color": "complement scheme, OKLCH hue 60 (sodium yellow against dark asphalt); one accent used for events only.",
       "typography": "Uppercase, one family, exact words from the brief only; a calm hierarchy: title, caption at 0.4x, data at 0.16x; revealed by glyph on the build and cleared before the loop ends.",
@@ -645,6 +645,554 @@
         },
         "description": "mirrored halves around a central figure"
       }
+    ],
+    "animationIR": [
+      {
+        "version": 1,
+        "archetype": "pulse",
+        "archetypeSet": [
+          "pulse",
+          "glide",
+          "breathe"
+        ],
+        "axes": {
+          "energy": 0.645,
+          "elasticity": 0.27,
+          "anticipation": 0.407,
+          "continuity": 0.513,
+          "rhythm": 0.611
+        },
+        "timing": {
+          "bpm": 140,
+          "bars": 4,
+          "fps": 30,
+          "loopFrames": 206,
+          "cyclesPerLoop": 16,
+          "framesPerCycle": 12.88,
+          "beatsPerCycle": 1.0,
+          "sixteenthFrames": 3.22
+        },
+        "easing": {
+          "id": "spring",
+          "description": "kick and ring: fast out, rings down (motion_profiles.py)"
+        },
+        "spring": {
+          "zeta": 0.7624,
+          "wn": 14.095,
+          "ta": 0.057,
+          "depth": 0.1221,
+          "steps": 18,
+          "cycles": 16,
+          "amp": 0.4225,
+          "overshoot": 0.0247
+        },
+        "anticipation": {
+          "fraction": 0.057,
+          "frames": 0.73
+        },
+        "settle": {
+          "fraction": 0.372,
+          "frames": 4.79
+        },
+        "hold": 0.0,
+        "hierarchy": {
+          "hero": {
+            "behavior": "lead",
+            "shape": "spring",
+            "cycles": 16,
+            "drive": "target",
+            "amp": 0.4225,
+            "spring": {
+              "zeta": 0.7624,
+              "wn": 14.095,
+              "ta": 0.057,
+              "depth": 0.1221,
+              "steps": 18
+            },
+            "lag": {
+              "steps": 0,
+              "lag": 0.0,
+              "frames": 0.0
+            }
+          },
+          "structure": {
+            "behavior": "follow",
+            "shape": "spring",
+            "cycles": 16,
+            "drive": "target",
+            "amp": 0.2112,
+            "spring": {
+              "zeta": 0.8812,
+              "wn": 11.966,
+              "ta": 0,
+              "depth": 0,
+              "steps": 18
+            },
+            "lag": {
+              "steps": 1,
+              "lag": 0.0156,
+              "frames": 3.22
+            }
+          },
+          "ground": {
+            "behavior": "ambient",
+            "lag": {
+              "steps": 2,
+              "lag": 0.0312,
+              "frames": 6.44
+            }
+          },
+          "instrument": {
+            "behavior": "accent"
+          },
+          "text": {
+            "behavior": "reveal"
+          }
+        },
+        "choreography": [
+          {
+            "name": "establish",
+            "at": 0.0,
+            "lead": "hero",
+            "energy": 1.0,
+            "transition": "ease"
+          },
+          {
+            "name": "develop",
+            "at": 0.2,
+            "lead": "hero",
+            "energy": 1.1,
+            "transition": "ease"
+          },
+          {
+            "name": "transform",
+            "at": 0.4,
+            "lead": "structure",
+            "energy": 1.0,
+            "transition": "ease"
+          },
+          {
+            "name": "peak",
+            "at": 0.6,
+            "lead": "hero",
+            "energy": 1.1,
+            "transition": "ease"
+          },
+          {
+            "name": "release",
+            "at": 0.8,
+            "lead": "ground",
+            "energy": 1.0,
+            "transition": "ease"
+          }
+        ],
+        "events": [
+          {
+            "name": "establish",
+            "phase": "establish",
+            "beat": 0,
+            "at": 0.0
+          },
+          {
+            "name": "build",
+            "phase": "develop",
+            "beat": 3,
+            "at": 0.1875
+          },
+          {
+            "name": "turn",
+            "phase": "transform",
+            "beat": 6,
+            "at": 0.375
+          },
+          {
+            "name": "focal",
+            "phase": "peak",
+            "beat": 10,
+            "at": 0.625
+          },
+          {
+            "name": "release",
+            "phase": "release",
+            "beat": 13,
+            "at": 0.8125
+          }
+        ],
+        "transitions": {
+          "phases": "ease",
+          "description": "phases blend with a smooth ease"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "seamless": true
+        },
+        "description": "the hero is hit on the beat and rings out; the structure answers a sixteenth later"
+      },
+      {
+        "version": 1,
+        "archetype": "glide",
+        "archetypeSet": [
+          "pulse",
+          "glide",
+          "breathe"
+        ],
+        "axes": {
+          "energy": 0.645,
+          "elasticity": 0.323,
+          "anticipation": 0.495,
+          "continuity": 0.478,
+          "rhythm": 0.699
+        },
+        "timing": {
+          "bpm": 140,
+          "bars": 4,
+          "fps": 30,
+          "loopFrames": 206,
+          "cyclesPerLoop": 1,
+          "framesPerCycle": 206.0,
+          "beatsPerCycle": 16.0,
+          "sixteenthFrames": 3.22
+        },
+        "easing": {
+          "id": "ease-in-out",
+          "description": "smooth start and stop"
+        },
+        "spring": {
+          "zeta": 0.7158,
+          "wn": 14.095,
+          "ta": 0.0,
+          "depth": 0.0,
+          "steps": 17,
+          "cycles": 1,
+          "amp": 0.2535,
+          "overshoot": 0.0399
+        },
+        "anticipation": {
+          "fraction": 0.0,
+          "frames": 0.0
+        },
+        "settle": {
+          "fraction": 0.396,
+          "frames": 81.58
+        },
+        "hold": 0.0,
+        "hierarchy": {
+          "hero": {
+            "behavior": "lead",
+            "shape": "tri",
+            "cycles": 1,
+            "drive": "target",
+            "amp": 0.2535,
+            "spring": {
+              "zeta": 0.7158,
+              "wn": 14.095,
+              "ta": 0.0,
+              "depth": 0.0,
+              "steps": 17
+            },
+            "lag": {
+              "steps": 0,
+              "lag": 0.0,
+              "frames": 0.0
+            }
+          },
+          "structure": {
+            "behavior": "follow",
+            "shape": "tri",
+            "cycles": 1,
+            "drive": "target",
+            "amp": 0.1268,
+            "spring": {
+              "zeta": 0.8579,
+              "wn": 11.966,
+              "ta": 0,
+              "depth": 0,
+              "steps": 17
+            },
+            "lag": {
+              "steps": 4,
+              "lag": 0.0625,
+              "frames": 12.88
+            }
+          },
+          "ground": {
+            "behavior": "ambient",
+            "lag": {
+              "steps": 8,
+              "lag": 0.125,
+              "frames": 25.75
+            }
+          },
+          "instrument": {
+            "behavior": "accent"
+          },
+          "text": {
+            "behavior": "reveal"
+          }
+        },
+        "choreography": [
+          {
+            "name": "establish",
+            "at": 0.0,
+            "lead": "ground",
+            "energy": 1.0,
+            "transition": "morph"
+          },
+          {
+            "name": "develop",
+            "at": 0.2,
+            "lead": "hero",
+            "energy": 1.1,
+            "transition": "morph"
+          },
+          {
+            "name": "transform",
+            "at": 0.4,
+            "lead": "hero",
+            "energy": 1.0,
+            "transition": "morph"
+          },
+          {
+            "name": "peak",
+            "at": 0.6,
+            "lead": "structure",
+            "energy": 1.1,
+            "transition": "morph"
+          },
+          {
+            "name": "release",
+            "at": 0.8,
+            "lead": "ground",
+            "energy": 1.0,
+            "transition": "morph"
+          }
+        ],
+        "events": [
+          {
+            "name": "establish",
+            "phase": "establish",
+            "beat": 0,
+            "at": 0.0
+          },
+          {
+            "name": "build",
+            "phase": "develop",
+            "beat": 3,
+            "at": 0.1875
+          },
+          {
+            "name": "turn",
+            "phase": "transform",
+            "beat": 6,
+            "at": 0.375
+          },
+          {
+            "name": "focal",
+            "phase": "peak",
+            "beat": 10,
+            "at": 0.625
+          },
+          {
+            "name": "release",
+            "phase": "release",
+            "beat": 13,
+            "at": 0.8125
+          }
+        ],
+        "transitions": {
+          "phases": "morph",
+          "description": "phases flow into each other without a visible edge"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "seamless": true
+        },
+        "description": "one continuous move per loop at a steady pace; no accent"
+      },
+      {
+        "version": 1,
+        "archetype": "breathe",
+        "archetypeSet": [
+          "pulse",
+          "glide",
+          "breathe"
+        ],
+        "axes": {
+          "energy": 0.645,
+          "elasticity": 0.27,
+          "anticipation": 0.407,
+          "continuity": 0.513,
+          "rhythm": 0.611
+        },
+        "timing": {
+          "bpm": 140,
+          "bars": 4,
+          "fps": 30,
+          "loopFrames": 206,
+          "cyclesPerLoop": 2,
+          "framesPerCycle": 103.0,
+          "beatsPerCycle": 8.0,
+          "sixteenthFrames": 3.22
+        },
+        "easing": {
+          "id": "ease-in-out",
+          "description": "smooth start and stop"
+        },
+        "spring": {
+          "zeta": 0.7624,
+          "wn": 14.095,
+          "ta": 0.0,
+          "depth": 0.0,
+          "steps": 18,
+          "cycles": 2,
+          "amp": 0.338,
+          "overshoot": 0.0247
+        },
+        "anticipation": {
+          "fraction": 0.0,
+          "frames": 0.0
+        },
+        "settle": {
+          "fraction": 0.372,
+          "frames": 38.32
+        },
+        "hold": 0.0,
+        "hierarchy": {
+          "hero": {
+            "behavior": "lead",
+            "shape": "sin",
+            "cycles": 2,
+            "drive": "target",
+            "amp": 0.338,
+            "spring": {
+              "zeta": 0.7624,
+              "wn": 14.095,
+              "ta": 0.0,
+              "depth": 0.0,
+              "steps": 18
+            },
+            "lag": {
+              "steps": 0,
+              "lag": 0.0,
+              "frames": 0.0
+            }
+          },
+          "structure": {
+            "behavior": "follow",
+            "shape": "sin",
+            "cycles": 2,
+            "drive": "target",
+            "amp": 0.169,
+            "spring": {
+              "zeta": 0.8812,
+              "wn": 11.966,
+              "ta": 0,
+              "depth": 0,
+              "steps": 18
+            },
+            "lag": {
+              "steps": 2,
+              "lag": 0.0312,
+              "frames": 6.44
+            }
+          },
+          "ground": {
+            "behavior": "ambient",
+            "lag": {
+              "steps": 4,
+              "lag": 0.0625,
+              "frames": 12.88
+            }
+          },
+          "instrument": {
+            "behavior": "accent"
+          },
+          "text": {
+            "behavior": "reveal"
+          }
+        },
+        "choreography": [
+          {
+            "name": "establish",
+            "at": 0.0,
+            "lead": "hero",
+            "energy": 1.0,
+            "transition": "morph"
+          },
+          {
+            "name": "develop",
+            "at": 0.2,
+            "lead": "ground",
+            "energy": 1.1,
+            "transition": "morph"
+          },
+          {
+            "name": "transform",
+            "at": 0.4,
+            "lead": "hero",
+            "energy": 1.0,
+            "transition": "morph"
+          },
+          {
+            "name": "peak",
+            "at": 0.6,
+            "lead": "hero",
+            "energy": 1.1,
+            "transition": "morph"
+          },
+          {
+            "name": "release",
+            "at": 0.8,
+            "lead": "ground",
+            "energy": 1.0,
+            "transition": "morph"
+          }
+        ],
+        "events": [
+          {
+            "name": "establish",
+            "phase": "establish",
+            "beat": 0,
+            "at": 0.0
+          },
+          {
+            "name": "build",
+            "phase": "develop",
+            "beat": 3,
+            "at": 0.1875
+          },
+          {
+            "name": "turn",
+            "phase": "transform",
+            "beat": 6,
+            "at": 0.375
+          },
+          {
+            "name": "focal",
+            "phase": "peak",
+            "beat": 10,
+            "at": 0.625
+          },
+          {
+            "name": "release",
+            "phase": "release",
+            "beat": 13,
+            "at": 0.8125
+          }
+        ],
+        "transitions": {
+          "phases": "morph",
+          "description": "phases flow into each other without a visible edge"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "seamless": true
+        },
+        "description": "one slow breath every two bars; nothing is hit"
+      }
     ]
   },
   "canvas": {
@@ -706,7 +1254,8 @@
             "c1": "secondary",
             "c2": "secondary",
             "res": 0.5,
-            "alphaMode": "alpha"
+            "alphaMode": "alpha",
+            "phase": 0.0312
           }
         },
         {
@@ -725,7 +1274,8 @@
             "c1": "accent",
             "c2": "accent",
             "res": 0.5,
-            "alphaMode": "alpha"
+            "alphaMode": "alpha",
+            "phase": 0.0312
           }
         },
         {
@@ -746,20 +1296,6 @@
             "speed": 1
           },
           "mod": [
-            {
-              "k": "weight",
-              "src": "lfo",
-              "shape": "spring",
-              "cycles": 16,
-              "zeta": 0.7624,
-              "wn": 14.095,
-              "min": 1.0,
-              "max": 1.4225,
-              "mode": "mul",
-              "ta": 0.057,
-              "depth": 0.1221,
-              "steps": 18
-            },
             {
               "k": "contrast",
               "src": "lfo",
@@ -807,6 +1343,20 @@
                 1.0,
                 0.0
               ]
+            },
+            {
+              "k": "weight",
+              "src": "lfo",
+              "shape": "spring",
+              "cycles": 16,
+              "zeta": 0.7624,
+              "wn": 14.095,
+              "min": 1.0,
+              "max": 1.4225,
+              "mode": "mul",
+              "ta": 0.057,
+              "depth": 0.1221,
+              "steps": 18
             }
           ]
         },
@@ -821,7 +1371,8 @@
             "dir": "v",
             "count": 14,
             "weight": 4
-          }
+          },
+          "mod": []
         },
         {
           "type": "instrument",
@@ -900,7 +1451,8 @@
             "c1": "secondary",
             "c2": "secondary",
             "res": 0.5,
-            "alphaMode": "alpha"
+            "alphaMode": "alpha",
+            "phase": 0.125
           }
         },
         {
@@ -919,7 +1471,8 @@
             "c1": "accent",
             "c2": "accent",
             "res": 0.5,
-            "alphaMode": "alpha"
+            "alphaMode": "alpha",
+            "phase": 0.125
           }
         },
         {
@@ -946,20 +1499,6 @@
             "speed": 1
           },
           "mod": [
-            {
-              "k": "size",
-              "src": "lfo",
-              "shape": "spring",
-              "cycles": 16,
-              "zeta": 0.7158,
-              "wn": 14.095,
-              "min": 1.0,
-              "max": 1.4225,
-              "mode": "mul",
-              "ta": 0.0693,
-              "depth": 0.1485,
-              "steps": 17
-            },
             {
               "k": "sx",
               "src": "lfo",
@@ -1055,6 +1594,15 @@
                 1.0,
                 0.0
               ]
+            },
+            {
+              "k": "size",
+              "src": "lfo",
+              "shape": "tri",
+              "cycles": 1,
+              "min": 1.0,
+              "max": 1.2535,
+              "mode": "mul"
             }
           ]
         },
@@ -1075,20 +1623,18 @@
             "x": 0,
             "y": 614,
             "sx": 0.5,
-            "sy": 0.5
+            "sy": 0.5,
+            "phase": 0.0625
           },
           "mod": [
             {
               "k": "size",
               "src": "lfo",
-              "shape": "spring",
-              "cycles": 16,
-              "zeta": 0.8579,
-              "wn": 11.966,
+              "shape": "tri",
+              "cycles": 1,
               "min": 1.0,
-              "max": 1.2112,
-              "mode": "mul",
-              "steps": 17
+              "max": 1.1268,
+              "mode": "mul"
             }
           ]
         },
@@ -1169,7 +1715,8 @@
             "c1": "secondary",
             "c2": "secondary",
             "res": 0.5,
-            "alphaMode": "alpha"
+            "alphaMode": "alpha",
+            "phase": 0.0625
           }
         },
         {
@@ -1188,7 +1735,8 @@
             "c1": "accent",
             "c2": "accent",
             "res": 0.5,
-            "alphaMode": "alpha"
+            "alphaMode": "alpha",
+            "phase": 0.0625
           }
         },
         {
@@ -1210,20 +1758,6 @@
             "speed": 1
           },
           "mod": [
-            {
-              "k": "amp",
-              "src": "lfo",
-              "shape": "spring",
-              "cycles": 16,
-              "zeta": 0.7624,
-              "wn": 14.095,
-              "min": 1.0,
-              "max": 1.4225,
-              "mode": "mul",
-              "ta": 0.057,
-              "depth": 0.1221,
-              "steps": 18
-            },
             {
               "k": "contrast",
               "src": "lfo",
@@ -1271,6 +1805,15 @@
                 1.0,
                 0.0
               ]
+            },
+            {
+              "k": "amp",
+              "src": "lfo",
+              "shape": "sin",
+              "cycles": 2,
+              "min": 1.0,
+              "max": 1.338,
+              "mode": "mul"
             }
           ]
         },
@@ -1286,20 +1829,18 @@
             "count": 14,
             "weight": 4,
             "audio": 0.5,
-            "band": "high"
+            "band": "high",
+            "phase": 0.0312
           },
           "mod": [
             {
               "k": "weight",
               "src": "lfo",
-              "shape": "spring",
-              "cycles": 16,
-              "zeta": 0.8812,
-              "wn": 11.966,
+              "shape": "sin",
+              "cycles": 2,
               "min": 1.0,
-              "max": 1.2112,
-              "mode": "mul",
-              "steps": 18
+              "max": 1.169,
+              "mode": "mul"
             }
           ]
         },

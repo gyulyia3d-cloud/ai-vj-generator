@@ -15,7 +15,7 @@
       "materialLanguage": "Light on a dark ground: dense matte metal; thread, magnet.",
       "colorLogic": "split scheme, OKLCH hue 290 (deep violet and a cold accent); one accent used for events only.",
       "spatialLogic": "Canvas 1080x1920 (screen); the hero sits on the focal zone, structure on the grid, information at the edge.",
-      "motionLanguage": "Profile: smooth, eased; springy (zeta 0.7158, 4% overshoot); with a wind-up dip before each hit; 8 move(s) per loop of 4 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py).",
+      "motionLanguage": "Profile: smooth, eased; springy (zeta 0.7158, 4% overshoot); with a wind-up dip before each hit; 8 move(s) per loop of 4 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py). Animation IR archetypes: surge, pulse, stutter (a slow build once per bar that drops at the end of the bar).",
       "typographyLanguage": "Uppercase, one family; text only when the brief supplies exact words.",
       "temporalArc": "calm, compress, hold, break, release; slow build to the peak; over 4 bars per composition, the set follows calm, compress, hold.",
       "loopGrammar": "cyclic: the loop closes on whole bars and every layer moves in whole cycles",
@@ -30,7 +30,7 @@
       "thesis": "Uma queda lenta por um poço de estrelas em uma tela vertical; vertigem suave, sem pressa.",
       "material": "Light on a dark ground (cosmic); dense matte metal; thread, magnet; no fake materials, no gradients that pretend to be objects.",
       "space": "Read at arm's length: fine detail allowed, the hero on the focal third, information at the edge.",
-      "motion": "Profile: smooth, eased; springy (zeta 0.7158, 4% overshoot); with a wind-up dip before each hit; 8 move(s) per loop of 4 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py).",
+      "motion": "Profile: smooth, eased; springy (zeta 0.7158, 4% overshoot); with a wind-up dip before each hit; 8 move(s) per loop of 4 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py). Animation IR archetypes: surge, pulse, stutter (a slow build once per bar that drops at the end of the bar).",
       "dramaturgy": "calm, compress, hold, break, release; slow build to the peak; over 4 bars per composition, the set follows calm, compress, hold. Tension: balanced; one dominant figure per composition; the ground field is the release.",
       "color": "split scheme, OKLCH hue 290 (deep violet and a cold accent); one accent used for events only.",
       "typography": "No text unless the brief supplies exact words; if added: uppercase, one family, three sizes at most.",
@@ -646,6 +646,554 @@
         },
         "description": "one figure on the centre, quiet outer bands"
       }
+    ],
+    "animationIR": [
+      {
+        "version": 1,
+        "archetype": "surge",
+        "archetypeSet": [
+          "surge",
+          "pulse",
+          "stutter"
+        ],
+        "axes": {
+          "energy": 0.457,
+          "elasticity": 0.323,
+          "anticipation": 0.515,
+          "continuity": 0.771,
+          "rhythm": 0.268
+        },
+        "timing": {
+          "bpm": 90,
+          "bars": 4,
+          "fps": 30,
+          "loopFrames": 320,
+          "cyclesPerLoop": 4,
+          "framesPerCycle": 80.0,
+          "beatsPerCycle": 4.0,
+          "sixteenthFrames": 5.0
+        },
+        "easing": {
+          "id": "ramp-drop",
+          "description": "a slow linear build that drops at the end of the cycle"
+        },
+        "spring": {
+          "zeta": 0.7158,
+          "wn": 12.027,
+          "ta": 0.0,
+          "depth": 0.0,
+          "steps": 26,
+          "cycles": 4,
+          "amp": 0.3942,
+          "overshoot": 0.0399
+        },
+        "anticipation": {
+          "fraction": 0.0,
+          "frames": 0.0
+        },
+        "settle": {
+          "fraction": 0.465,
+          "frames": 37.2
+        },
+        "hold": 0.0,
+        "hierarchy": {
+          "hero": {
+            "behavior": "lead",
+            "shape": "saw",
+            "cycles": 4,
+            "drive": "target",
+            "amp": 0.3942,
+            "spring": {
+              "zeta": 0.7158,
+              "wn": 12.027,
+              "ta": 0.0,
+              "depth": 0.0,
+              "steps": 26
+            },
+            "lag": {
+              "steps": 0,
+              "lag": 0.0,
+              "frames": 0.0
+            }
+          },
+          "structure": {
+            "behavior": "follow",
+            "shape": "saw",
+            "cycles": 4,
+            "drive": "target",
+            "amp": 0.1971,
+            "spring": {
+              "zeta": 0.8579,
+              "wn": 10.519,
+              "ta": 0,
+              "depth": 0,
+              "steps": 26
+            },
+            "lag": {
+              "steps": 1,
+              "lag": 0.0156,
+              "frames": 5.0
+            }
+          },
+          "ground": {
+            "behavior": "ambient",
+            "lag": {
+              "steps": 2,
+              "lag": 0.0312,
+              "frames": 10.0
+            }
+          },
+          "instrument": {
+            "behavior": "accent"
+          },
+          "text": {
+            "behavior": "reveal"
+          }
+        },
+        "choreography": [
+          {
+            "name": "establish",
+            "at": 0.0,
+            "lead": "ground",
+            "energy": 0.8,
+            "transition": "cut"
+          },
+          {
+            "name": "develop",
+            "at": 0.2,
+            "lead": "structure",
+            "energy": 1.0,
+            "transition": "cut"
+          },
+          {
+            "name": "transform",
+            "at": 0.4,
+            "lead": "hero",
+            "energy": 1.2,
+            "transition": "cut"
+          },
+          {
+            "name": "peak",
+            "at": 0.6,
+            "lead": "hero",
+            "energy": 1.6,
+            "transition": "cut"
+          },
+          {
+            "name": "release",
+            "at": 0.8,
+            "lead": "ground",
+            "energy": 0.9,
+            "transition": "cut"
+          }
+        ],
+        "events": [
+          {
+            "name": "establish",
+            "phase": "establish",
+            "beat": 0,
+            "at": 0.0
+          },
+          {
+            "name": "build",
+            "phase": "develop",
+            "beat": 3,
+            "at": 0.1875
+          },
+          {
+            "name": "turn",
+            "phase": "transform",
+            "beat": 6,
+            "at": 0.375
+          },
+          {
+            "name": "focal",
+            "phase": "peak",
+            "beat": 10,
+            "at": 0.625
+          },
+          {
+            "name": "release",
+            "phase": "release",
+            "beat": 13,
+            "at": 0.8125
+          }
+        ],
+        "transitions": {
+          "phases": "cut",
+          "description": "phases change on the beat, no blend"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "seamless": true
+        },
+        "description": "a slow build once per bar that drops at the end of the bar"
+      },
+      {
+        "version": 1,
+        "archetype": "pulse",
+        "archetypeSet": [
+          "surge",
+          "pulse",
+          "stutter"
+        ],
+        "axes": {
+          "energy": 0.457,
+          "elasticity": 0.323,
+          "anticipation": 0.515,
+          "continuity": 0.771,
+          "rhythm": 0.268
+        },
+        "timing": {
+          "bpm": 90,
+          "bars": 4,
+          "fps": 30,
+          "loopFrames": 320,
+          "cyclesPerLoop": 8,
+          "framesPerCycle": 40.0,
+          "beatsPerCycle": 2.0,
+          "sixteenthFrames": 5.0
+        },
+        "easing": {
+          "id": "spring",
+          "description": "kick and ring: fast out, rings down (motion_profiles.py)"
+        },
+        "spring": {
+          "zeta": 0.7158,
+          "wn": 12.027,
+          "ta": 0.0721,
+          "depth": 0.1545,
+          "steps": 26,
+          "cycles": 8,
+          "amp": 0.3285,
+          "overshoot": 0.0399
+        },
+        "anticipation": {
+          "fraction": 0.0721,
+          "frames": 2.88
+        },
+        "settle": {
+          "fraction": 0.465,
+          "frames": 18.6
+        },
+        "hold": 0.0,
+        "hierarchy": {
+          "hero": {
+            "behavior": "lead",
+            "shape": "spring",
+            "cycles": 8,
+            "drive": "target",
+            "amp": 0.3285,
+            "spring": {
+              "zeta": 0.7158,
+              "wn": 12.027,
+              "ta": 0.0721,
+              "depth": 0.1545,
+              "steps": 26
+            },
+            "lag": {
+              "steps": 0,
+              "lag": 0.0,
+              "frames": 0.0
+            }
+          },
+          "structure": {
+            "behavior": "follow",
+            "shape": "spring",
+            "cycles": 8,
+            "drive": "target",
+            "amp": 0.1643,
+            "spring": {
+              "zeta": 0.8579,
+              "wn": 10.519,
+              "ta": 0,
+              "depth": 0,
+              "steps": 26
+            },
+            "lag": {
+              "steps": 1,
+              "lag": 0.0156,
+              "frames": 5.0
+            }
+          },
+          "ground": {
+            "behavior": "ambient",
+            "lag": {
+              "steps": 2,
+              "lag": 0.0312,
+              "frames": 10.0
+            }
+          },
+          "instrument": {
+            "behavior": "accent"
+          },
+          "text": {
+            "behavior": "reveal"
+          }
+        },
+        "choreography": [
+          {
+            "name": "establish",
+            "at": 0.0,
+            "lead": "hero",
+            "energy": 0.8,
+            "transition": "ease"
+          },
+          {
+            "name": "develop",
+            "at": 0.2,
+            "lead": "hero",
+            "energy": 1.0,
+            "transition": "ease"
+          },
+          {
+            "name": "transform",
+            "at": 0.4,
+            "lead": "structure",
+            "energy": 1.2,
+            "transition": "ease"
+          },
+          {
+            "name": "peak",
+            "at": 0.6,
+            "lead": "hero",
+            "energy": 1.6,
+            "transition": "ease"
+          },
+          {
+            "name": "release",
+            "at": 0.8,
+            "lead": "ground",
+            "energy": 0.9,
+            "transition": "ease"
+          }
+        ],
+        "events": [
+          {
+            "name": "establish",
+            "phase": "establish",
+            "beat": 0,
+            "at": 0.0
+          },
+          {
+            "name": "build",
+            "phase": "develop",
+            "beat": 3,
+            "at": 0.1875
+          },
+          {
+            "name": "turn",
+            "phase": "transform",
+            "beat": 6,
+            "at": 0.375
+          },
+          {
+            "name": "focal",
+            "phase": "peak",
+            "beat": 10,
+            "at": 0.625
+          },
+          {
+            "name": "release",
+            "phase": "release",
+            "beat": 13,
+            "at": 0.8125
+          }
+        ],
+        "transitions": {
+          "phases": "ease",
+          "description": "phases blend with a smooth ease"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "seamless": true
+        },
+        "description": "the hero is hit on the beat and rings out; the structure answers a sixteenth later"
+      },
+      {
+        "version": 1,
+        "archetype": "stutter",
+        "archetypeSet": [
+          "surge",
+          "pulse",
+          "stutter"
+        ],
+        "axes": {
+          "energy": 0.457,
+          "elasticity": 0.323,
+          "anticipation": 0.515,
+          "continuity": 0.771,
+          "rhythm": 0.268
+        },
+        "timing": {
+          "bpm": 90,
+          "bars": 4,
+          "fps": 30,
+          "loopFrames": 320,
+          "cyclesPerLoop": 8,
+          "framesPerCycle": 40.0,
+          "beatsPerCycle": 2.0,
+          "sixteenthFrames": 5.0
+        },
+        "easing": {
+          "id": "steps",
+          "description": "the phase is quantised: hard, interface-like steps"
+        },
+        "spring": {
+          "zeta": 1.0,
+          "wn": 12.027,
+          "ta": 0.0,
+          "depth": 0.0,
+          "steps": 6,
+          "cycles": 8,
+          "amp": 0.3285,
+          "overshoot": 0.0
+        },
+        "anticipation": {
+          "fraction": 0.0,
+          "frames": 0.0
+        },
+        "settle": {
+          "fraction": 0.333,
+          "frames": 13.32
+        },
+        "hold": 0.0,
+        "hierarchy": {
+          "hero": {
+            "behavior": "lead",
+            "shape": "spring",
+            "cycles": 8,
+            "drive": "target",
+            "amp": 0.3285,
+            "spring": {
+              "zeta": 1.0,
+              "wn": 12.027,
+              "ta": 0.0,
+              "depth": 0.0,
+              "steps": 6
+            },
+            "lag": {
+              "steps": 0,
+              "lag": 0.0,
+              "frames": 0.0
+            }
+          },
+          "structure": {
+            "behavior": "follow",
+            "shape": "spring",
+            "cycles": 8,
+            "drive": "target",
+            "amp": 0.1643,
+            "spring": {
+              "zeta": 1.0,
+              "wn": 10.519,
+              "ta": 0,
+              "depth": 0,
+              "steps": 6
+            },
+            "lag": {
+              "steps": 0,
+              "lag": 0.0,
+              "frames": 0.0
+            }
+          },
+          "ground": {
+            "behavior": "hold",
+            "lag": {
+              "steps": 0,
+              "lag": 0.0,
+              "frames": 0.0
+            }
+          },
+          "instrument": {
+            "behavior": "accent"
+          },
+          "text": {
+            "behavior": "reveal"
+          }
+        },
+        "choreography": [
+          {
+            "name": "establish",
+            "at": 0.0,
+            "lead": "hero",
+            "energy": 0.8,
+            "transition": "cut"
+          },
+          {
+            "name": "develop",
+            "at": 0.2,
+            "lead": "all",
+            "energy": 1.0,
+            "transition": "cut"
+          },
+          {
+            "name": "transform",
+            "at": 0.4,
+            "lead": "hero",
+            "energy": 1.2,
+            "transition": "cut"
+          },
+          {
+            "name": "peak",
+            "at": 0.6,
+            "lead": "all",
+            "energy": 1.6,
+            "transition": "cut"
+          },
+          {
+            "name": "release",
+            "at": 0.8,
+            "lead": "hero",
+            "energy": 0.9,
+            "transition": "cut"
+          }
+        ],
+        "events": [
+          {
+            "name": "establish",
+            "phase": "establish",
+            "beat": 0,
+            "at": 0.0
+          },
+          {
+            "name": "build",
+            "phase": "develop",
+            "beat": 3,
+            "at": 0.1875
+          },
+          {
+            "name": "turn",
+            "phase": "transform",
+            "beat": 6,
+            "at": 0.375
+          },
+          {
+            "name": "focal",
+            "phase": "peak",
+            "beat": 10,
+            "at": 0.625
+          },
+          {
+            "name": "release",
+            "phase": "release",
+            "beat": 13,
+            "at": 0.8125
+          }
+        ],
+        "transitions": {
+          "phases": "cut",
+          "description": "phases change on the beat, no blend"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "seamless": true
+        },
+        "description": "quantised, hard steps on the beat; everything moves together, nothing rings"
+      }
     ]
   },
   "canvas": {
@@ -707,7 +1255,8 @@
             "c1": "secondary",
             "c2": "secondary",
             "res": 1,
-            "alphaMode": "alpha"
+            "alphaMode": "alpha",
+            "phase": 0.0312
           }
         },
         {
@@ -726,7 +1275,8 @@
             "c1": "accent",
             "c2": "accent",
             "res": 0.5,
-            "alphaMode": "alpha"
+            "alphaMode": "alpha",
+            "phase": 0.0312
           }
         },
         {
@@ -747,20 +1297,6 @@
             "speed": 1
           },
           "mod": [
-            {
-              "k": "weight",
-              "src": "lfo",
-              "shape": "spring",
-              "cycles": 8,
-              "zeta": 0.7158,
-              "wn": 12.027,
-              "min": 1.0,
-              "max": 1.3285,
-              "mode": "mul",
-              "ta": 0.0721,
-              "depth": 0.1545,
-              "steps": 26
-            },
             {
               "k": "contrast",
               "src": "lfo",
@@ -808,6 +1344,15 @@
                 1.0,
                 0.1818
               ]
+            },
+            {
+              "k": "weight",
+              "src": "lfo",
+              "shape": "saw",
+              "cycles": 4,
+              "min": 1.0,
+              "max": 1.3942,
+              "mode": "mul"
             }
           ]
         },
@@ -828,20 +1373,18 @@
             "x": 0,
             "y": 421,
             "sx": 0.79,
-            "sy": 0.79
+            "sy": 0.79,
+            "phase": 0.0156
           },
           "mod": [
             {
               "k": "size",
               "src": "lfo",
-              "shape": "spring",
-              "cycles": 8,
-              "zeta": 0.8579,
-              "wn": 10.519,
+              "shape": "saw",
+              "cycles": 4,
               "min": 1.0,
-              "max": 1.1643,
-              "mode": "mul",
-              "steps": 26
+              "max": 1.1971,
+              "mode": "mul"
             }
           ]
         },
@@ -919,7 +1462,8 @@
             "c1": "secondary",
             "c2": "secondary",
             "res": 1,
-            "alphaMode": "alpha"
+            "alphaMode": "alpha",
+            "phase": 0.0312
           }
         },
         {
@@ -938,7 +1482,8 @@
             "c1": "accent",
             "c2": "accent",
             "res": 0.5,
-            "alphaMode": "alpha"
+            "alphaMode": "alpha",
+            "phase": 0.0312
           }
         },
         {
@@ -964,20 +1509,6 @@
             "speed": 1
           },
           "mod": [
-            {
-              "k": "size",
-              "src": "lfo",
-              "shape": "spring",
-              "cycles": 8,
-              "zeta": 0.7158,
-              "wn": 12.027,
-              "min": 1.0,
-              "max": 1.3285,
-              "mode": "mul",
-              "ta": 0.0721,
-              "depth": 0.1545,
-              "steps": 26
-            },
             {
               "k": "sx",
               "src": "lfo",
@@ -1073,6 +1604,20 @@
                 1.0,
                 0.1818
               ]
+            },
+            {
+              "k": "size",
+              "src": "lfo",
+              "shape": "spring",
+              "cycles": 8,
+              "zeta": 0.7158,
+              "wn": 12.027,
+              "min": 1.0,
+              "max": 1.3285,
+              "mode": "mul",
+              "ta": 0.0721,
+              "depth": 0.1545,
+              "steps": 26
             }
           ]
         },
@@ -1088,7 +1633,8 @@
             "count": 18,
             "weight": 2,
             "audio": 0.5,
-            "band": "high"
+            "band": "high",
+            "phase": 0.0156
           },
           "mod": [
             {
@@ -1226,20 +1772,6 @@
           },
           "mod": [
             {
-              "k": "size",
-              "src": "lfo",
-              "shape": "spring",
-              "cycles": 8,
-              "zeta": 0.7158,
-              "wn": 12.027,
-              "min": 1.0,
-              "max": 1.3285,
-              "mode": "mul",
-              "ta": 0.0721,
-              "depth": 0.1545,
-              "steps": 26
-            },
-            {
               "k": "sx",
               "src": "lfo",
               "shape": "env",
@@ -1334,6 +1866,18 @@
                 1.0,
                 0.1818
               ]
+            },
+            {
+              "k": "size",
+              "src": "lfo",
+              "shape": "spring",
+              "cycles": 8,
+              "zeta": 1.0,
+              "wn": 12.027,
+              "min": 1.0,
+              "max": 1.3285,
+              "mode": "mul",
+              "steps": 6
             }
           ]
         },
@@ -1362,12 +1906,12 @@
               "src": "lfo",
               "shape": "spring",
               "cycles": 8,
-              "zeta": 0.8579,
+              "zeta": 1.0,
               "wn": 10.519,
               "min": 1.0,
               "max": 1.1643,
               "mode": "mul",
-              "steps": 26
+              "steps": 6
             }
           ]
         },

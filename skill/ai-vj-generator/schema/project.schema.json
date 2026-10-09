@@ -17,6 +17,7 @@
         "brief": { "type": "string" },
         "contract": { "type": "object" },
         "compositionIR": { "type": "array", "description": "One Composition IR per composition (references/composition-ir.md): grammar, zones, negative space, focal point, mass, balance, movement axis, density map, phases." },
+        "animationIR": { "type": "array", "description": "One Animation IR per composition (references/animation-ir.md): archetype, timing in musical time, who leads and who follows and how late, easing, anticipation, settle, phase choreography, events on the beat grid." },
         "creativeIR": { "type": "object", "description": "Creative IR compiled from the brief (references/creative-ir.md): concept, visual verbs, motifs, hierarchy, behaviours." },
         "artBible": {
           "type": "object",

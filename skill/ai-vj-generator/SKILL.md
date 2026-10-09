@@ -49,7 +49,7 @@ INTAKE → ATTACHMENT ANALYSIS → DIAGNOSE (ledger, archetype) → INTERVIEW �
 → MUTATE → RE-VALIDATE → DELIVER
 ```
 
-**The two IRs.** *IR* = Intermediate Representation, a structured plan between the briefing and the generators. After the compositions theses and before choosing any generator, run `python scripts/plan_ir.py brief.json` (brief = concept, mood, `surface`, optional `verbs`). The Creative IR names the concept, 3-4 visual verbs, motifs, the hero/structure/ground types, motion axes and the arc; each Composition IR gives the spatial grammar, zones, negative space, movement axis and the five phases. Build the layers from them (start each layer `role` with its tier: `hero:`, `structure:`...), then `plan_ir.py brief.json --apply project.json` records both in `meta.creativeIR` / `meta.compositionIR` and places the layers. Details: `references/creative-ir.md`, `references/composition-ir.md`.
+**The three IRs.** *IR* = Intermediate Representation, a structured plan between the briefing and the generators. After the compositions theses and before choosing any generator, run `python scripts/plan_ir.py brief.json` (brief = concept, mood, `surface`, optional `verbs`). The Creative IR names the concept, 3-4 visual verbs, motifs, the hero/structure/ground types, motion axes and the arc; each Composition IR gives the spatial grammar, zones, negative space, movement axis and the five phases; each Animation IR gives the motion archetype (pulse, breathe, glide, surge, stutter, orbit, ripple, settle), who leads and who follows and how late, and the events on the beat grid. Build the layers from them (start each layer `role` with its tier: `hero:`, `structure:`...), then `plan_ir.py brief.json --apply project.json` records the three in `meta.creativeIR` / `meta.compositionIR` / `meta.animationIR`, places the layers and plays the movement on them. Details: `references/creative-ir.md`, `references/composition-ir.md`, `references/animation-ir.md`.
 
 The full protocol, with the files each step writes, is `references/briefing-flow.md`. Read it at the start of every project.
 
@@ -86,6 +86,7 @@ Load only what the project needs.
 | Audio, BPM, beat sync, integrated time, band transients, `layer.mod` modulation | `references/audio-bus.md` |
 | A still image with depth (2.5D parallax), a depth map, Gaussian splats or a point cloud (.ply) | `references/depth-and-splats.md`, `scripts/depth_estimate.py` |
 | Where things go: the 12 spatial grammars, zones, negative space, the five phases (`meta.compositionIR`, `env` modulation) | `references/composition-ir.md` |
+| How things move: the 8 motion archetypes, lags in sixteenth notes, events on the beat (`meta.animationIR`) | `references/animation-ir.md` |
 | Intention before technique: concept, 32 visual verbs, motifs, arc (`meta.creativeIR`, `brief.verbs`) | `references/creative-ir.md` |
 | Effects over time (trail, feedback, slit scan, displacement): the `temporal` layer | `references/temporal-layer.md` |
 | ISF: the 84-shader library as the `isf` layer (menu in the layer parameters) ; importing `.fs` with `scripts/isf.py import` | `references/isf-layer.md`, `isf-library/README.md`, `scripts/isf.py` |

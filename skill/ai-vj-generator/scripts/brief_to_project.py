@@ -24,6 +24,7 @@ import schema_check  # noqa: E402
 import motion_profiles as mp  # noqa: E402
 import creative_ir as cir  # noqa: E402
 import composition_ir as comp_ir  # noqa: E402
+import animation_ir as anim_ir  # noqa: E402
 
 # mood -> hue, scheme, motion, hero generators (type, params), shader presets, structure, whether a data/HUD tier suits
 MOODS = {
@@ -296,6 +297,7 @@ def build(brief):
     ir["novelty"] = round(1 - len([t for t in hh if t in mood_types]) / len(hh), 2) if tags else 1.0
     profs = [make_profile(brief, tags[i % len(tags)] if tags else None, e, bars, ir) for i in range(n)]
     cirs = [comp_ir.compile_composition(brief, ir, i) for i in range(n)]
+    anis = [anim_ir.compile_animation(brief, ir, cirs[i], i, profs[i]["axes"]) for i in range(n)]
     comps = [build_comp(i, n, brief, MOODS[tags[i % len(tags)]] if tags else None, strat, rnd, profs[i], ir, cirs[i]) for i in range(n)]
     prof0 = profs[0]
     pt = brief.get("lang") == "pt"
@@ -325,6 +327,11 @@ def build(brief):
     if drv:
         for i, c in enumerate(comps):
             comp_ir.apply_composition(c["layers"], cirs[i], sf["w"], sf["h"])
+    # Animation IR: one per composition, applied after the composition (curves in layer.mod and lags in p.phase); only when the Creative IR drives
+    if drv:
+        for i, c in enumerate(comps):
+            anim_ir.apply_animation(c["layers"], anis[i])
+        contract["motionLanguage"] += f" Animation IR archetypes: {', '.join(x['archetype'] for x in anis)} ({anis[0]['description']})."
     art_bible = make_art_bible(brief, tags, contract, prof0, strat, led=surf in ("led", "multi", "projection", "mapping"), ir=ir)
     if strat == "none":
         contract["audioStrategyReason"] = (brief.get("audio") or {}).get("reason") or "The brief asks for a silent, music-independent piece."
@@ -337,7 +344,7 @@ def build(brief):
     if sf.get("folds"):
         canvas["folds"] = sf["folds"]
     proj = {"schema": "ai-vj-generator/2", "id": "".join(c if c.isalnum() else "-" for c in str(brief["name"]).lower()).strip("-") or "project", "seed": seed,
-            "meta": {"name": str(brief["name"]).upper(), "lang": brief.get("lang", "en"), "brief": brief["concept"], "contract": contract, "artBible": art_bible, "spec": spec, "creativeIR": ir, "compositionIR": cirs},
+            "meta": {"name": str(brief["name"]).upper(), "lang": brief.get("lang", "en"), "brief": brief["concept"], "contract": contract, "artBible": art_bible, "spec": spec, "creativeIR": ir, "compositionIR": cirs, "animationIR": anis},
             "canvas": canvas, "time": {"bpm": tm["bpm"], "bars": bars, "loop": True, "seamless": True, "mode": "loop", "transition": "fade" if prof0["axes"]["continuity"] >= 0.5 else "wipe"},
             "audio": {"reactive": strat != "none", "sens": 1, "smooth": 0.7, "strategy": strat},
             "palette": {**pal, **({"mode": "white-alpha"} if (brief.get("output") or {}).get("mode") == "white-alpha" else {})}, "compositions": comps}
