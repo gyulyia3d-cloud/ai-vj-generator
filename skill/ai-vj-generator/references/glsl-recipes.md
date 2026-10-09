@@ -1,6 +1,6 @@
 # GLSL recipes (compile-tested in the engine)
 
-Vocabulary, not presets. Each recipe is a complete `shader.p.src` body (WebGL 1, GLSL ES 1.00) that compiles in this engine. Use it to learn the move, then write a shader for **this** briefing: change the topology, the numbers, the palette roles and the audio mapping. Never ship a recipe unchanged, and never start a composition from one.
+Vocabulary, not presets. Each recipe is a complete `shader.p.src` body (authoring dialect GLSL ES 1.00, compiled as ES 3.00 on WebGL2) that compiles in this engine. Use it to learn the move, then write a shader for **this** briefing: change the topology, the numbers, the palette roles and the audio mapping. Never ship a recipe unchanged, and never start a composition from one.
 
 More compile-tested shaders (Chladni figures, quasicrystal, domain colouring, Julia on an orbit) live in `recipes/shader/`; list and build them with `python scripts/recipes.py` (`math-forms.md`).
 

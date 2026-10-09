@@ -7,6 +7,7 @@
 | Usar com ChatGPT, Gemini, Codex, Claude ou modelo local | [AI-AGNOSTIC.md](AI-AGNOSTIC.md) e [../adapters/README.md](../adapters/README.md) |
 | Saber o que falta e a ordem sugerida | [PROXIMOS-PASSOS.md](PROXIMOS-PASSOS.md) |
 | Ver o roadmap e as decisões de escopo | [ROADMAP.md](ROADMAP.md) |
+| Render: pipeline, WebGL2 e decisões | [ARQUITETURA-RENDER.md](ARQUITETURA-RENDER.md) |
 | Notas da versão | [../CHANGELOG.md](../CHANGELOG.md) |
 | Entender as instruções que a IA segue | [../skill/ai-vj-generator/portable/PROMPT.md](../skill/ai-vj-generator/portable/PROMPT.md) |
 | O que o motor já sabe fazer, por necessidade | `skill/ai-vj-generator/references/vocabulary.md` |

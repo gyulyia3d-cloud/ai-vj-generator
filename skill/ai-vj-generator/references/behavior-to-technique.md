@@ -21,7 +21,7 @@ Generators, shaders and libraries are **verbs**, not presets. Only the behavior 
 
 Use a shader **only if** at least one is true: the concept is a field; the effect is pixel-parallel; it depends on procedural texture or material; thousands of elements share one rule; feedback or per-pixel distortion is central. Otherwise take the simpler implementation.
 
-The bundled engine is a Canvas2D + WebGL1 layer compositor. SVG, p5, PixiJS, regl, Three.js and WebGL2 are not bundled; they appear in `library-matrix.md` as a vocabulary of what each is good at, and as options when the user explicitly takes the work to another runtime. Inside this engine the equivalent is a generator, a `code` layer or a shader layer.
+The bundled engine is a Canvas2D + WebGL2 layer compositor. SVG, p5, PixiJS, regl and Three.js are not bundled; they appear in `library-matrix.md` as a vocabulary of what each is good at, and as options when the user explicitly takes the work to another runtime. Inside this engine the equivalent is a generator, a `code` layer or a shader layer.
 
 ## Behavior vocabulary
 

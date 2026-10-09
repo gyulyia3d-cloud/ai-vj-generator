@@ -57,7 +57,7 @@ const ISFX = (() => {
     const before = body; body = body.replace(/\bvoid\s+main\s*\(\s*(?:void)?\s*\)/, 'void isfMain()');
     if (body === before) throw Object.assign(new Error(T3('o ISF não tem main()', 'no main() in the ISF')), { why: [] });
     if (!/\bgl_FragCoord\b/.test(body) && !body.includes('uRes')) notes.push(T3('o shader não lê a posição do pixel', 'shader does not read the pixel position'));
-    if (/\bfor\s*\([^;]*;[^;]*[<>=]\s*[A-Za-z_]/.test(body)) notes.push(T3('o limite de um `for` pode ser variável: o WebGL1 exige constante; o validador avisa', 'a `for` loop bound may be a variable: WebGL1 needs constant bounds; the validator will tell'));
+    if (/\bfor\s*\([^;]*;[^;]*[<>=]\s*[A-Za-z_]/.test(body)) notes.push(T3('o limite de um `for` pode ser variável: o GLSL pode exigir constante; o validador avisa', 'a `for` loop bound may be a variable: WebGL1 needs constant bounds; the validator will tell'));
     const hook = '\nvoid main(){ ' + setv.join(' ') + ' isfMain(); float a=1.0+.25*uBass+.12*uMid+.1*uHigh+.2*uHit; gl_FragColor.rgb*=a; }\n';
     const src = decl.join('\n') + '\n' + body + hook, credit = (h.CREDIT || 'unknown author').trim();
     const base = String(fileName || 'ISF').replace(/^.*[\\/]/, '').replace(/\.[^.]+$/, '');

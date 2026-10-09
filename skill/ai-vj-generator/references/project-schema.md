@@ -181,7 +181,7 @@ How it closes the loop: it warms up one loop, records two, and cross-fades them 
 | ANÉIS SDF | rings 9 | cycles 1 | thickness 0.35 | distortion 0.5 |
 | FAIXAS | lines 14 | cycles 1 | duty 0.55 | glitch 0.5 |
 
-**Custom GLSL contract** (WebGL 1, GLSL ES 1.00). Write only `void main(){…}` plus your own functions. Provided:
+**Custom GLSL contract** (authoring dialect GLSL ES 1.00; the engine compiles it as GLSL ES 3.00 on WebGL2 through a `#define` header, so `gl_FragColor` and `texture2D` keep working. Do not write `#version`, `in` or `out`). Write only `void main(){…}` plus your own functions. Provided:
 
 - audio uniforms (always live or BPM-locked synthetic, so every shader reacts): `uBass` `uMid` `uHigh` `uRms` (0–1.5 bands, scaled by the layer response) · `uHit` (bass transient, decays in ~150 ms) · `uAud` (the band chosen in the layer's AUDIO panel). **Every shader must read at least one and give each a role.**
 - V7 uniforms (same rules, all deterministic): `uMidHit` `uHighHit` (band transients) · `uPres` (presence) · `uBassT` `uMidT` `uHighT` `uAudT` (**integrated time**, `bars` units per loop in synthetic mode: use `sin(uBassT*TAU)`/`fract`) · `uOnBeat` · `uBSin` `uBSin2` `uBSin4` `uBTri` (BPM waves) · `uBpm` (BPM/100). Meaning and roles: `audio-bus.md` (Extended vocabulary).

@@ -107,26 +107,15 @@ reg('fx', 'Efeito sobre as camadas abaixo', 'gen', [
   S('preset', 'Efeito', 'PIXELATE', FX_NAMES), N('p1', 'P1', 14, -400, 400), N('p2', 'P2', 0.3, -400, 400), N('p3', 'P3', 0, -400, 400), N('p4', 'P4', 0, -400, 400),
   N('mix', 'Mistura', 1, 0, 1), N('res', 'Resolução interna', 1, 0.25, 1), C('c1', 'Cor 1', 'primary'), C('c2', 'Cor 2', 'accent'), C('cbg', 'Fundo', 'bg'),
 ], (c, R) => {
-  const { p, F, comp, W, H, k, below } = R; if (!below) return;
+  const { p, W, H, k, below } = R; if (!below) return;
   const gl = glInit(); if (!gl) return;
   const prog = glProg(fxBody(fxOf(p).src)); if (!prog) return;
-  const w = Math.max(2, Math.min(4096, Math.round(W * k * p.res))), h = Math.max(2, Math.min(4096, Math.round(H * k * p.res)));
-  if (GL.cv.width !== w || GL.cv.height !== h) { GL.cv.width = w; GL.cv.height = h; }
-  gl.viewport(0, 0, w, h); gl.useProgram(prog);
-  gl.bindBuffer(gl.ARRAY_BUFFER, GL.buf); const al = gl.getAttribLocation(prog, 'a'); gl.enableVertexAttribArray(al); gl.vertexAttribPointer(al, 2, gl.FLOAT, false, 0, 0);
-  if (!GL.fxTex) GL.fxTex = gl.createTexture();
-  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, GL.fxTex); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, below); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-  const U = n => gl.getUniformLocation(prog, n), rgb = h2 => hexRgb(h2).map(v => v / 255);
-  gl.uniform1i(U('uTex'), 0); gl.uniform1f(U('uMixK'), p.mix);
-  gl.uniform2f(U('uRes'), w, h); gl.uniform1f(U('uPh'), F.lph); gl.uniform1f(U('uT'), F.t); gl.uniform1f(U('uBeat'), Math.floor(F.bF)); gl.uniform1f(U('uBp'), F.lbp);
-  gl.uniform1f(U('uPulse'), F.pulse); gl.uniform1f(U('uAud'), F.a); gl.uniform1f(U('uBass'), F.bands.bass); gl.uniform1f(U('uMid'), F.bands.mid); gl.uniform1f(U('uHigh'), F.bands.high); gl.uniform1f(U('uRms'), F.bands.rms); gl.uniform1f(U('uHit'), F.bands.hit);
-  for (const [n, v] of [['uMidHit', 'mhit'], ['uHighHit', 'hhit'], ['uBassT', 'bt'], ['uMidT', 'mt'], ['uHighT', 'ht'], ['uAudT', 'at'], ['uPres', 'pres'], ['uOnBeat', 'onbeat'], ['uBSin', 'bsin'], ['uBTri', 'btri'], ['uBSin2', 'bsin2'], ['uBSin4', 'bsin4'], ['uBpm', 'bpm']]) gl.uniform1f(U(n), F.bands[v]);
-  gl.uniform1f(U('uAlpha'), 1); gl.uniform1f(U('uSeed'), (SEED % 997) * 0.173);
-  gl.uniform3fv(U('uC1'), rgb(col(comp, p.c1))); gl.uniform3fv(U('uC2'), rgb(col(comp, p.c2))); gl.uniform3fv(U('uBg'), rgb(col(comp, p.cbg)));
-  gl.uniform4f(U('uP'), p.p1, p.p2, p.p3, p.p4);
-  gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); gl.drawArrays(gl.TRIANGLES, 0, 3);
+  const r = GL.r, w = Math.max(2, Math.min(4096, Math.round(W * k * p.res))), h = Math.max(2, Math.min(4096, Math.round(H * k * p.res)));
+  r.resize(w, h); r.viewport(w, h); r.use(prog);
+  if (!GL.fxTex) GL.fxTex = {};
+  r.uploadCanvas(GL.fxTex, below, 0);
+  { const l = r.loc(prog, 'uTex'); if (l) gl.uniform1i(l, 0); const m = r.loc(prog, 'uMixK'); if (m) gl.uniform1f(m, p.mix); }
+  glFrameUniforms(r, prog, frameContext(R, w, h), R, 1);
+  r.clear(); r.drawFullscreen();
   c.drawImage(GL.cv, 0, 0, w, h, 0, 0, W, H);
 });

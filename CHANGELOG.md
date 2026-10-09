@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.4.0 (08/10/2026) · Fase 2: fundação WebGL2
+
+- **Renderizador WebGL2** (`app/webgl.js`, `WEBGL.create`): contexto `webgl2`, programas em cache com esquema de uniforms e último uso, primitiva de tela cheia em VAO fixo, viewport e programa sem troca redundante, texturas e framebuffers como interface, detecção de capacidades (instancing, transform feedback, 3D, MRT, float). Sem WebGL2 o motor mostra um aviso técnico e não volta ao WebGL1.
+- **GLSL ES 3.00 sem reescrever shader**: os projetos, receitas e a biblioteca ISF continuam no dialeto ES 1.00; o renderizador compila tudo como `#version 300 es` com um cabeçalho de `#define` (`gl_FragColor`, `texture2D`, `varying`). Funções embutidas redeclaradas por shaders de terceiros (`sign`, `round`) são tratadas.
+- **FrameContext** (`frameContext`) e **uniforms por grupo** (`glFrameUniforms`: frame, audio, appearance, project): o render lê só o contexto do quadro, nunca relógio, `Date.now` ou `Math.random`.
+- `scripts/gl_parity.mjs` compara a imagem do WebGL1 com a do WebGL2 em 123 quadros (galeria, shaders, filtros, cadeias, ISF): diferença média 0,000 de 255. Teste novo `webgl2_check.mjs`. ADR e mapa do render em `docs/ARQUITETURA-RENDER.md`.
+
 ## 3.3.0 (08/10/2026) · Fase 1: registry
 
 - **`skill/ai-vj-generator/registry/`**: `generators.json` (34 tipos: categoria, renderMode, parâmetros, audioRoles, supportsAlpha, deterministic, surfaceAware, performanceClass), `parameters.json` (parâmetros comuns com unidade e papel), `modulation.json` (17 fontes), `capabilities.json` e `versions.json` (esquema atual, legados, migração e campos obsoletos).
