@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.5.0 (09/10/2026) · Fase 3: recursos de GPU
+
+- **Pools de textura e de framebuffer** com descritor (largura, altura, formato, filtro, wrap, profundidade, uso), adquirir/devolver/reaproveitar e descarte do que ficou parado; a textura do `fx` passa pelo pool (zero alocação por quadro depois do primeiro).
+- **Estado da GPU** sem chamadas redundantes (blend, depth, scissor, framebuffer, textura por unidade, além de programa, viewport e VAO).
+- **Métricas de desenvolvimento** `AIVJ.glMetrics()`: tempo de quadro, passes, desenhos, trocas de shader, alocações, texturas ativas, partículas ativas e VRAM estimada.
+- Teste novo `gpu_resources_check.mjs`; `docs/ARQUITETURA-RENDER.md` atualizado.
+
 ## 3.4.0 (08/10/2026) · Fase 2: fundação WebGL2
 
 - **Renderizador WebGL2** (`app/webgl.js`, `WEBGL.create`): contexto `webgl2`, programas em cache com esquema de uniforms e último uso, primitiva de tela cheia em VAO fixo, viewport e programa sem troca redundante, texturas e framebuffers como interface, detecção de capacidades (instancing, transform feedback, 3D, MRT, float). Sem WebGL2 o motor mostra um aviso técnico e não volta ao WebGL1.

@@ -112,10 +112,9 @@ reg('fx', 'Efeito sobre as camadas abaixo', 'gen', [
   const prog = glProg(fxBody(fxOf(p).src)); if (!prog) return;
   const r = GL.r, w = Math.max(2, Math.min(4096, Math.round(W * k * p.res))), h = Math.max(2, Math.min(4096, Math.round(H * k * p.res)));
   r.resize(w, h); r.viewport(w, h); r.use(prog);
-  if (!GL.fxTex) GL.fxTex = {};
-  r.uploadCanvas(GL.fxTex, below, 0);
+  const tex = r.uploadCanvas(below, 0);
   { const l = r.loc(prog, 'uTex'); if (l) gl.uniform1i(l, 0); const m = r.loc(prog, 'uMixK'); if (m) gl.uniform1f(m, p.mix); }
   glFrameUniforms(r, prog, frameContext(R, w, h), R, 1);
-  r.clear(); r.drawFullscreen();
+  r.clear(); r.drawFullscreen(); r.textures.release(tex);
   c.drawImage(GL.cv, 0, 0, w, h, 0, 0, W, H);
 });

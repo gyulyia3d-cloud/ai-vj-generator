@@ -582,7 +582,7 @@ html.stagemode #toast,html.stagemode #hint{display:none!important}
    função pura de (parâmetros, quadro) → o mesmo código desenha o preview,
    o export PNG alpha e a gravação.
    ===================================================================== */
-const VERSION = '3.4.0';
+const VERSION = '3.5.0';
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const TAU = Math.PI * 2, GA = Math.PI * (3 - Math.sqrt(5));
 const clamp = (v, a, b) => v < a ? a : v > b ? b : v, lerp = (a, b, t) => a + (b - a) * t;
@@ -1466,7 +1466,7 @@ const WEBGL = (() => {
     const r = {
       gl, canvas, version: 2, tick: 0,
       progs: new Map(), errors: new Map(), keyOf: new Map(),
-      stats: { compiles: 0, programs: 0, draws: 0, shaderSwitches: 0, textureAllocs: 0, framebufferAllocs: 0 },
+      stats: { compiles: 0, programs: 0, draws: 0, passes: 0, shaderSwitches: 0, textureAllocs: 0, textureReuses: 0, framebufferAllocs: 0, framebufferReuses: 0, stateChanges: 0, frameMs: 0 }, frame: 0,
       state: { prog: null, vao: null, vw: 0, vh: 0, unit: -1, tex: new Map() },
       caps: {
         maxTextureSize: gl.getParameter(gl.MAX_TEXTURE_SIZE), maxDrawBuffers: gl.getParameter(gl.MAX_DRAW_BUFFERS), maxColorAttachments: gl.getParameter(gl.MAX_COLOR_ATTACHMENTS),
@@ -1515,29 +1515,59 @@ const WEBGL = (() => {
     r.viewport = (w, h) => { if (r.state.vw !== w || r.state.vh !== h) { gl.viewport(0, 0, w, h); r.state.vw = w; r.state.vh = h; } };
     r.resize = (w, h) => { if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; r.state.vw = r.state.vh = 0; } };
     r.clear = () => { gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); };
-    r.drawFullscreen = () => { if (r.state.vao !== vao) { gl.bindVertexArray(vao); r.state.vao = vao; } gl.drawArrays(gl.TRIANGLES, 0, 3); r.stats.draws++; r.tick++; };
+    r.drawFullscreen = () => { if (r.state.vao !== vao) { gl.bindVertexArray(vao); r.state.vao = vao; } gl.drawArrays(gl.TRIANGLES, 0, 3); r.stats.draws++; r.stats.passes++; r.tick++; };
 
-    /* texturas e framebuffers (interfaces para as fases 3 e 4; hoje a camada fx usa uploadCanvas) */
-    r.texture = (w, h, o) => {
-      const t = Object.assign({ format: 'rgba8', filter: 'linear', wrap: 'clamp' }, o || {}), tex = gl.createTexture();
-      const fmt = { rgba8: [gl.RGBA8, gl.RGBA, gl.UNSIGNED_BYTE], rgba16f: [gl.RGBA16F, gl.RGBA, gl.HALF_FLOAT], rgba32f: [gl.RGBA32F, gl.RGBA, gl.FLOAT] }[t.format];
-      if (!fmt) throw new Error('formato de textura desconhecido: ' + t.format);
-      if (t.format !== 'rgba8' && !r.caps.colorBufferFloat) throw new Error('formato ' + t.format + ' indisponível neste dispositivo (EXT_color_buffer_float)');
-      gl.bindTexture(gl.TEXTURE_2D, tex); gl.texStorage2D(gl.TEXTURE_2D, 1, fmt[0], w, h); r.sampler(tex, t); r.stats.textureAllocs++;
-      return { tex, w, h, format: t.format };
-    };
+    /* ---- estado da GPU: só chama o GL quando o valor muda ---- */
+    const st = r.state; Object.assign(st, { blend: null, depth: false, scissor: false, fbo: null, units: new Map(), unit: 0 });
+    r.setBlend = mode => { if (st.blend === mode) return; if (mode) { gl.enable(gl.BLEND); gl.blendFunc(mode === 'add' ? gl.ONE : gl.SRC_ALPHA, mode === 'add' ? gl.ONE : gl.ONE_MINUS_SRC_ALPHA); } else gl.disable(gl.BLEND); st.blend = mode; r.stats.stateChanges++; };
+    r.setDepth = on => { if (st.depth === on) return; on ? gl.enable(gl.DEPTH_TEST) : gl.disable(gl.DEPTH_TEST); st.depth = on; r.stats.stateChanges++; };
+    r.setScissor = rect => { const on = !!rect; if (on !== st.scissor) { on ? gl.enable(gl.SCISSOR_TEST) : gl.disable(gl.SCISSOR_TEST); st.scissor = on; r.stats.stateChanges++; } if (on) gl.scissor(rect[0], rect[1], rect[2], rect[3]); };
+    r.bindFramebuffer = fb => { if (st.fbo === fb) return; gl.bindFramebuffer(gl.FRAMEBUFFER, fb); st.fbo = fb; st.vw = st.vh = 0; r.stats.stateChanges++; };
+    r.bindTexture = (tex, unit) => { const u = unit || 0; if (st.units.get(u) === tex) return; if (st.unit !== u) { gl.activeTexture(gl.TEXTURE0 + u); st.unit = u; } gl.bindTexture(gl.TEXTURE_2D, tex); st.units.set(u, tex); r.stats.stateChanges++; };
+
+    /* ---- formatos e VRAM estimada (o navegador não expõe o número real: largura x altura x bytes por pixel) ---- */
+    const FMT = { rgba8: [gl.RGBA8, gl.RGBA, gl.UNSIGNED_BYTE, 4], rgba16f: [gl.RGBA16F, gl.RGBA, gl.HALF_FLOAT, 8], rgba32f: [gl.RGBA32F, gl.RGBA, gl.FLOAT, 16] };
+    const bytesOf = d => d.w * d.h * FMT[d.format][3] + (d.depth ? d.w * d.h * 4 : 0);
+    const norm = d => Object.assign({ format: 'rgba8', filter: 'linear', wrap: 'clamp', depth: false, usage: 'color' }, d);
+    const keyOf = d => [d.w, d.h, d.format, d.filter, d.wrap, d.depth ? 'z' : '', d.usage].join('|');
     r.sampler = (tex, t) => { const f = t.filter === 'nearest' ? gl.NEAREST : gl.LINEAR, w = t.wrap === 'repeat' ? gl.REPEAT : t.wrap === 'mirror' ? gl.MIRRORED_REPEAT : gl.CLAMP_TO_EDGE;
-      gl.bindTexture(gl.TEXTURE_2D, tex.tex || tex); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, f); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, f);
+      gl.bindTexture(gl.TEXTURE_2D, tex.tex || tex); st.units.delete(st.unit); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, f); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, f);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, w); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, w); };
-    /* sobe um canvas/imagem para uma textura (de cabeça para baixo, para bater com a origem do canvas 2D); realoca só quando o tamanho muda */
-    r.uploadCanvas = (slot, src, unit) => {
-      if (!slot.tex) { slot.tex = gl.createTexture(); r.stats.textureAllocs++; slot.w = slot.h = 0; }
-      gl.activeTexture(gl.TEXTURE0 + (unit || 0)); gl.bindTexture(gl.TEXTURE_2D, slot.tex);
-      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
-      r.sampler(slot, { filter: 'linear', wrap: 'clamp' }); slot.w = src.width; slot.h = src.height; return slot;
+
+    /* ---- pools: adquirir, usar, devolver, reaproveitar. Chave: largura, altura, formato, filtro, wrap, profundidade e uso ---- */
+    const makePool = (create, destroy, kind) => {
+      const free = new Map(), all = new Set();
+      return {
+        acquire(desc) { const d = norm(desc), k = keyOf(d), list = free.get(k); let it = list && list.pop();
+          if (it) r.stats[kind + 'Reuses']++; else { it = create(d); it.key = k; it.d = d; it.bytes = bytesOf(d); all.add(it); r.stats[kind + 'Allocs']++; }
+          it.busy = true; it.last = r.frame; return it; },
+        release(it) { if (!it || !it.busy) return; it.busy = false; it.last = r.frame; if (!free.has(it.key)) free.set(it.key, []); free.get(it.key).push(it); },
+        /* libera só o que ficou parado por mais de maxAge quadros; nada em uso é destruído */
+        trim(maxAge) { for (const [k, list] of free) { for (let i = list.length - 1; i >= 0; i--) { if (r.frame - list[i].last > maxAge) { destroy(list[i]); all.delete(list[i]); list.splice(i, 1); } } if (!list.length) free.delete(k); } },
+        get active() { let n = 0; all.forEach(x => { if (x.busy) n++; }); return n; }, get total() { return all.size; }, get bytes() { let b = 0; all.forEach(x => { b += x.bytes; }); return b; },
+      };
     };
-    r.framebuffer = t => { const fb = gl.createFramebuffer(); gl.bindFramebuffer(gl.FRAMEBUFFER, fb); gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, t.tex, 0);
-      const ok = gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE; gl.bindFramebuffer(gl.FRAMEBUFFER, null); if (!ok) throw new Error('framebuffer incompleto'); r.stats.framebufferAllocs++; return fb; };
+    const mkTex = d => { const f = FMT[d.format]; if (!f) throw new Error('formato de textura desconhecido: ' + d.format);
+      if (d.format !== 'rgba8' && !r.caps.colorBufferFloat) throw new Error('formato ' + d.format + ' indisponível neste dispositivo (EXT_color_buffer_float)');
+      const tex = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, tex); gl.texStorage2D(gl.TEXTURE_2D, 1, f[0], d.w, d.h); r.sampler(tex, d); return { tex, w: d.w, h: d.h, format: d.format }; };
+    r.textures = makePool(mkTex, it => gl.deleteTexture(it.tex), 'texture');
+    r.framebuffers = makePool(d => { const t = mkTex(d), fb = gl.createFramebuffer(), prev = st.fbo; gl.bindFramebuffer(gl.FRAMEBUFFER, fb); gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, t.tex, 0);
+      let rb = null; if (d.depth) { rb = gl.createRenderbuffer(); gl.bindRenderbuffer(gl.RENDERBUFFER, rb); gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT24, d.w, d.h); gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, rb); }
+      const ok = gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE; gl.bindFramebuffer(gl.FRAMEBUFFER, prev); if (!ok) throw new Error('framebuffer incompleto'); return { fb, tex: t.tex, w: d.w, h: d.h, format: d.format, rb }; },
+      it => { gl.deleteFramebuffer(it.fb); gl.deleteTexture(it.tex); if (it.rb) gl.deleteRenderbuffer(it.rb); }, 'framebuffer');
+
+    /* sobe um canvas/imagem para uma textura do pool (de cabeça para baixo, para bater com a origem do canvas 2D); o tamanho vem da fonte */
+    r.uploadCanvas = (src, unit) => {
+      const t = r.textures.acquire({ w: src.width, h: src.height, usage: 'upload' });
+      r.bindTexture(t.tex, unit || 0); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true); gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, gl.RGBA, gl.UNSIGNED_BYTE, src); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false); return t;
+    };
+
+    /* ---- métricas de desenvolvimento ---- */
+    r.beginFrame = () => { r.t0 = performance.now(); r.mark = Object.assign({}, r.stats); };
+    r.endFrame = () => { r.frame++; r.stats.frameMs = performance.now() - (r.t0 || performance.now()); r.textures.trim(120); r.framebuffers.trim(120); };
+    r.metrics = () => { const s = r.stats, m = r.mark || s;
+      return { frameMs: s.frameMs, passes: s.passes - m.passes, draws: s.draws - m.draws, shaderSwitches: s.shaderSwitches - m.shaderSwitches, textureAllocs: s.textureAllocs, framebufferAllocs: s.framebufferAllocs,
+        activeTextures: r.textures.active, pooledTextures: r.textures.total, activeFramebuffers: r.framebuffers.active, activeParticles: 0, estimatedVramBytes: r.textures.bytes + r.framebuffers.bytes, programs: r.progs.size }; };
     return r;
   }
   return { create, support, legalize, COMPAT, COMPAT_LINES };
@@ -2772,8 +2802,10 @@ function tick(now) {
   ST.n = liveFrame(now);
   const comp = cur(), F = frameAt(ST.n, comp), W = P.canvas.w, H = P.canvas.h;
   ST.F = F;
+  if (GL.r) GL.r.beginFrame();
   /* explodido: camadas desligadas aparecem como fantasma e atualizam a cada 6 quadros para poupar a GPU */
   comp.layers.forEach((L, i) => { const D = DOM.layers[i]; if (D && (isVis(i) || (ST.exploded && thumbTick % 6 === i % 6))) renderLayer(D.ctx, comp, L, i, F, ST.ps, W, H, BELOW_TYPES.has(L.type) ? fxLiveBelow(comp, i) : undefined); });
+  if (GL.r) GL.r.endFrame();
   if (ST.manEv != null && F.beatF > ST.manEv + 32) ST.manEv = null;
   if (F.beat !== ST.lastBeat) { ST.lastBeat = F.beat; $$('#dots i').forEach((d, i) => d.classList.toggle('on', i === F.beat % 4)); }
   if (!scrubbing) { const s = $('#scrub'); s.max = F.LF - 1; s.value = F.n; }
@@ -5236,11 +5268,10 @@ reg('fx', 'Efeito sobre as camadas abaixo', 'gen', [
   const prog = glProg(fxBody(fxOf(p).src)); if (!prog) return;
   const r = GL.r, w = Math.max(2, Math.min(4096, Math.round(W * k * p.res))), h = Math.max(2, Math.min(4096, Math.round(H * k * p.res)));
   r.resize(w, h); r.viewport(w, h); r.use(prog);
-  if (!GL.fxTex) GL.fxTex = {};
-  r.uploadCanvas(GL.fxTex, below, 0);
+  const tex = r.uploadCanvas(below, 0);
   { const l = r.loc(prog, 'uTex'); if (l) gl.uniform1i(l, 0); const m = r.loc(prog, 'uMixK'); if (m) gl.uniform1f(m, p.mix); }
   glFrameUniforms(r, prog, frameContext(R, w, h), R, 1);
-  r.clear(); r.drawFullscreen();
+  r.clear(); r.drawFullscreen(); r.textures.release(tex);
   c.drawImage(GL.cv, 0, 0, w, h, 0, 0, W, H);
 });
 /*__FX_END__*/
@@ -5774,15 +5805,15 @@ function boot() {
   document.fonts && document.fonts.load('800 40px "Martian Mono"').catch(() => {});
   if (!embedded && !saved && !store.get('seenWiz', false)) openWiz();
   raf = requestAnimationFrame(tick);
-  window.AIVJ = { version: VERSION, get PAL() { return PAL; }, get RECIPES() { return RECIPES; }, addRecipe, addTestCards, recipeLayer, importFile, parseModel, setLang, setHow, undo, redo, evalExpr, applyTheme, layoutApply, setPanelOpen, setZoneDraw, get hist() { return ST.hist.length; }, get histLabels() { return ST.hl.slice(); }, surface: SC, specOf, applyCalc, renderSpec, specMarkdown, get project() { return P; }, get audio() { return AUD; }, pseudoAudio, synthTimes, applyMods, motionCurve, GENAI, EVALUATOR, flash: FLASH, ONSET, UX, fx: { FX, body: fxBody, op: fxOp }, synth: { SYN, src: synthSrc }, blobs: { X: BLOBX }, layerErrors: () => [...LAYER_ERR.values()], mp4: { X: MP4X, render: mp4Render, run: exportMp4Run }, isf: { X: ISFX, LIB: ISFLIB, lib: isfLib }, modUI: { render: modPanel, params: modNumericParams, sources: MOD_SOURCES }, expRun: exportRun, EXP, surfx: SURFX, region: regionRect, surUI: { state: SUR, applyPreset: surApplyPreset, render: renderSurface }, webgl: WEBGL, glProgram: body => glProg(body), glError: body => GL.err.get(body), glInfo: () => { glInit(); return GL.r ? { version: GL.r.version, context: GL.gl.constructor.name, glsl: GL.gl.getParameter(GL.gl.SHADING_LANGUAGE_VERSION), caps: GL.r.caps, stats: GL.r.stats } : { failure: GL.failure }; }, presets: SURFACE_PRESETS, GEN, FAMILIES, COMMON, modSources: () => MOD_SOURCES.map(x => x[0]), evaluate: lang => EVALUATOR.run(lang), shaderResolve, GLIB, specBins, simBake, parsePly, get LAYERERR() { return LAYER_ERR; }, setSeed, bpmWaves, get GLERR() { return GL.err; }, layerFrame, pm, importJson, frameAt, validate: o => validate(o), GEN, loopFrames, contactSheet, layerAudit, allowCode, loadAssets, toLogo, projectOut, get state() { return ST; }, geom, lintCode, compileCode, setCi(i) { ST.ci = i; refreshAll(); },
+  window.AIVJ = { version: VERSION, get PAL() { return PAL; }, get RECIPES() { return RECIPES; }, addRecipe, addTestCards, recipeLayer, importFile, parseModel, setLang, setHow, undo, redo, evalExpr, applyTheme, layoutApply, setPanelOpen, setZoneDraw, get hist() { return ST.hist.length; }, get histLabels() { return ST.hl.slice(); }, surface: SC, specOf, applyCalc, renderSpec, specMarkdown, get project() { return P; }, get audio() { return AUD; }, pseudoAudio, synthTimes, applyMods, motionCurve, GENAI, EVALUATOR, flash: FLASH, ONSET, UX, fx: { FX, body: fxBody, op: fxOp }, synth: { SYN, src: synthSrc }, blobs: { X: BLOBX }, layerErrors: () => [...LAYER_ERR.values()], mp4: { X: MP4X, render: mp4Render, run: exportMp4Run }, isf: { X: ISFX, LIB: ISFLIB, lib: isfLib }, modUI: { render: modPanel, params: modNumericParams, sources: MOD_SOURCES }, expRun: exportRun, EXP, surfx: SURFX, region: regionRect, surUI: { state: SUR, applyPreset: surApplyPreset, render: renderSurface }, webgl: WEBGL, glProgram: body => glProg(body), glError: body => GL.err.get(body), glInfo: () => { glInit(); return GL.r ? { version: GL.r.version, context: GL.gl.constructor.name, glsl: GL.gl.getParameter(GL.gl.SHADING_LANGUAGE_VERSION), caps: GL.r.caps, stats: GL.r.stats } : { failure: GL.failure }; }, glMetrics: () => GL.r ? GL.r.metrics() : null, glr: () => GL.r, presets: SURFACE_PRESETS, GEN, FAMILIES, COMMON, modSources: () => MOD_SOURCES.map(x => x[0]), evaluate: lang => EVALUATOR.run(lang), shaderResolve, GLIB, specBins, simBake, parsePly, get LAYERERR() { return LAYER_ERR; }, setSeed, bpmWaves, get GLERR() { return GL.err; }, layerFrame, pm, importJson, frameAt, validate: o => validate(o), GEN, loopFrames, contactSheet, layerAudit, allowCode, loadAssets, toLogo, projectOut, get state() { return ST; }, geom, lintCode, compileCode, setCi(i) { ST.ci = i; refreshAll(); },
     /* gancho de teste: renderiza a composição ci no quadro n, determinístico, sem tocar no preview */
     renderFrame(ci, n, scale = 0.25, alpha = false) {
       const comp = P.compositions[ci], W = P.canvas.w, H = P.canvas.h, w = Math.round(W * scale), h = Math.round(H * scale);
       const a = document.createElement('canvas'); a.width = w; a.height = h; const ac = a.getContext('2d', { willReadFrequently: true });
       const b = document.createElement('canvas'); b.width = w; b.height = h; const bc = b.getContext('2d');
-      const live = ST.live; ST.live = false; RENDER_ALPHA = alpha; EXPORTING = true;
+      const live = ST.live; ST.live = false; RENDER_ALPHA = alpha; EXPORTING = true; if (GL.r) GL.r.beginFrame();
       try { const F = frameAt(n, comp); comp.layers.forEach((L, i) => { if (!L.on || (alpha && L.type === 'bg')) return; renderLayer(bc, comp, L, i, F, scale, W, H, BELOW_TYPES.has(L.type) ? a : undefined); ac.globalAlpha = L.opacity; ac.globalCompositeOperation = fxOp(L, (BLENDS[L.blend] || BLENDS.normal)[0]); ac.drawImage(b, 0, 0); ac.globalAlpha = 1; ac.globalCompositeOperation = 'source-over'; }); }
-      finally { ST.live = live; RENDER_ALPHA = false; EXPORTING = false; }
+      finally { ST.live = live; RENDER_ALPHA = false; EXPORTING = false; if (GL.r) GL.r.endFrame(); }
       return ac.getImageData(0, 0, w, h);
     } };
 }

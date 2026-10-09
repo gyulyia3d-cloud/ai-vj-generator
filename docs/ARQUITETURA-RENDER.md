@@ -1,4 +1,4 @@
-# Arquitetura de render (motor 3.4.0)
+# Arquitetura de render (motor 3.5.0)
 
 ## Caminho de um quadro
 ```
@@ -18,15 +18,20 @@ Todo o render é função do projeto e do número do quadro. Relógio, `Date.now
 3. **Um módulo, só GPU.** `app/webgl.js` não conhece projeto, interface nem IR. O motor fala com ele por `glInit`, `glProg` e `glFrameUniforms`.
 4. **FrameContext** reúne o que um quadro pode ler: `frameIndex fps frameTime normalizedTime loopPhase seed bpm beatPhase audio surface resolution`. Os uniforms `u*` mantêm os nomes de sempre, agora enviados por grupo.
 
+## Recursos de GPU (fase 3)
+- **Pools** (`r.textures`, `r.framebuffers`): `acquire(descritor)` e `release(item)`. Descritor: largura, altura, formato (`rgba8`, `rgba16f`, `rgba32f`), filtro, wrap, profundidade e uso; a chave é a combinação deles. Item devolvido é reaproveitado; o que fica parado mais de 120 quadros é destruído (`trim`), e nada em uso é destruído.
+- **Estado** (`setBlend`, `setDepth`, `setScissor`, `bindFramebuffer`, `bindTexture`, programa, viewport, VAO): só chama o GL quando o valor muda.
+- **Métricas de desenvolvimento** (`AIVJ.glMetrics()`): tempo de quadro, passes, desenhos, trocas de shader, alocações de textura e framebuffer, texturas ativas e no pool, partículas ativas (0 até a fase 13) e VRAM estimada (largura x altura x bytes do formato; o navegador não expõe o número real). Não existe modo ao vivo: é diagnóstico.
+- **Primeiro uso real:** a textura de entrada do `fx` vem do pool; depois do primeiro quadro, vários filtros não alocam nada.
+- **Decidido não fazer agora:** desenhar as camadas de GPU em framebuffer em vez do canvas WebGL compartilhado. Hoje cada camada custa uma cópia para o canvas 2D; o ganho só aparece com o render graph (fase 4), onde as camadas de GPU encadeiam sem voltar ao canvas 2D.
+
 ## O que existe e o que não existe ainda
 | Item | Estado |
 |---|---|
-| WebGL2, GLSL ES 3.00, VAO fixo, cache de programas com último uso e despejo do menos usado | feito |
-| localização de uniforms em cache, sem troca redundante de programa e viewport | feito |
-| interfaces de textura, framebuffer, formatos float, capacidades | feitas; sem uso real além da textura do fx |
-| pools de textura e framebuffer, métricas de VRAM | fase 3 |
-| render graph, histórico, feedback | fase 4 |
+| WebGL2, GLSL ES 3.00, VAO fixo, cache de programas | feito (fase 2) |
+| pools de textura e framebuffer, estado sem troca redundante, métricas, VRAM estimada | feito (fase 3) |
+| render graph, histórico, feedback, camadas de GPU em framebuffer | fase 4 |
 | instancing, transform feedback, MRT | detectados; usados nas fases 12 e 13 |
 
 ## Testes
-`scripts/gl_parity.mjs --save|--compare` (paridade de pixels entre motores, tolerância: média ≤ 1,5 de 255 e ≤ 2% dos pixels com diferença > 24) e `webgl2_check.mjs` (contexto, cache, linha do erro, sem WebGL1).
+`scripts/gl_parity.mjs --save|--compare` (paridade de pixels, tolerância: média <= 1,5 de 255 e <= 2% dos pixels com diferença > 24), `webgl2_check.mjs` (contexto, cache, linha do erro, sem WebGL1) e `gpu_resources_check.mjs` (pools, estado, métricas, zero alocação por quadro).
