@@ -16,7 +16,7 @@ Both languages are kept in sync. Present only the language the user chose.
 
 **What you get.** The project JSON, a single HTML engine file with the project loaded (open it in a browser, or as an Artifact), contact sheets, and a production spec. Run `node scripts/output_viewer.mjs <folder>` to build `OUTPUT.html`: a clickable page that lists and previews every generated file.
 
-**Inside the engine.** Tabs: Compose, Layers, Params, Text, Media, Audio, Project, Sheet, +Effects, Export, Guide. Type numbers or use sliders; Ctrl+Z undoes anything; the menu resizes or minimises (G); the colour button under the view switches palette (alpha, standard, custom, briefing); preview and export PNG, loops, WebM. The language switch (EN / PT-BR) is in the header.
+**Inside the engine.** Tabs: Compose, Layers, Params, Text, Media, Audio, Project, Sheet, Export, Guide. Type numbers or use sliders; Ctrl+Z undoes anything; the menu resizes or minimises (G); the colour button under the view switches palette (alpha, standard, custom, briefing); preview and export PNG, loops, WebM. The language switch (EN / PT-BR) is in the header.
 
 **Tips.** Give the real pixel map. Say what the performer or the audience sees. Name feelings, not effects. Everything is generated from your briefing; nothing is a preset.
 
@@ -34,6 +34,6 @@ Both languages are kept in sync. Present only the language the user chose.
 
 **O que você recebe.** O JSON do projeto, um HTML único com o motor e o projeto carregado (abra no navegador ou como Artifact), folhas de contato e a ficha de produção. Rode `node scripts/output_viewer.mjs <pasta> --lang pt` para gerar o `OUTPUT.html`: uma página clicável que lista e mostra cada arquivo gerado.
 
-**Dentro do motor.** Abas: Compor, Camadas, Parâm., Texto, Mídia, Áudio, Projeto, Ficha, +Efeitos, Exportar, Guia. Digite números ou use sliders; Ctrl+Z desfaz qualquer coisa; o menu muda de tamanho ou minimiza (G); o botão de cor sob a vista troca a paleta (alpha, standard, personalizada, briefing); preview e exportação de PNG, loops e WebM. O seletor de idioma (EN / PT-BR) fica no cabeçalho.
+**Dentro do motor.** Abas: Compor, Camadas, Parâm., Texto, Mídia, Áudio, Projeto, Ficha, Exportar, Guia. Digite números ou use sliders; Ctrl+Z desfaz qualquer coisa; o menu muda de tamanho ou minimiza (G); o botão de cor sob a vista troca a paleta (alpha, standard, personalizada, briefing); preview e exportação de PNG, loops e WebM. O seletor de idioma (EN / PT-BR) fica no cabeçalho.
 
 **Dicas.** Informe o pixel map real. Diga o que o performer ou o público vê. Nomeie sensações, não efeitos. Tudo nasce do seu briefing; nada é preset.

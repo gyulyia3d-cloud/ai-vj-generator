@@ -198,10 +198,10 @@ try {
 // receitas embutidas no motor = references/recipes
 try { execFileSync(process.execPath, [join(ROOT, 'scripts', 'embed-recipes.mjs'), '--check'], { stdio: 'pipe' }); ok('receitas embutidas no motor em dia'); }
 catch (e) { bad('receitas embutidas: ' + String(e.stderr || e.stdout).trim().slice(0, 160)); }
-// V6: botão Cor, menu na linha do divisor, +Efeitos com prévia, ajuda, idioma EN/PT-BR e objeto 3D
+// V6: botão Cor, menu na linha do divisor, ajuda, idioma EN/PT-BR e objeto 3D
 try {
   execFileSync(process.execPath, [join(SKILL, 'scripts', 'features_check.mjs')], { stdio: 'pipe' });
-  ok('interface: paletas, +Efeitos, ajuda, idioma e objeto 3D');
+  ok('interface: paletas, ajuda, idioma e objeto 3D');
 } catch (e) {
   e.status === 3 ? console.log('  --   features_check pulado (sem navegador)') : bad('features_check: ' + String(e.stdout).split('\n').filter(l => /ERRO/.test(l)).slice(0, 4).join(' | '));
 }

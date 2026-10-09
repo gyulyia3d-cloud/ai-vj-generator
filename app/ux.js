@@ -1,18 +1,18 @@
 /* UX (fase 3): modo Criativo/Avançado, ajuda de cada aba, atalhos (tecla ?) e tour guiado. Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html.
    Textos pela função T3 (gen-ui.js). O teste (ux_check.mjs) confere que todo atalho do teclado aparece na lista. */
 const UX = (() => {
-  /* modo: Criativo esconde o que só o trabalho técnico precisa (Texto, Projeto, +Efeitos, Ficha); Avançado mostra tudo. Esconder uma aba não remove nada do projeto. */
-  const ADV_TABS = ['txt', 'prj', 'rec', 'spc'];
+  /* modo: Criativo esconde o que só o trabalho técnico precisa (Texto, Projeto, Ficha); Avançado mostra tudo. Esconder uma aba não remove nada do projeto. */
+  const ADV_TABS = ['txt', 'prj', 'spc'];
   let level = store.get('level', 'creative');
   const css = document.createElement('style'); css.id = 'uxCss';
-  css.textContent = `body[data-level="creative"] #tabs [data-tab="txt"],body[data-level="creative"] #tabs [data-tab="prj"],body[data-level="creative"] #tabs [data-tab="rec"],body[data-level="creative"] #tabs [data-tab="spc"]{display:none}
+  css.textContent = `body[data-level="creative"] #tabs [data-tab="txt"],body[data-level="creative"] #tabs [data-tab="prj"],body[data-level="creative"] #tabs [data-tab="spc"]{display:none}
 #tabHelp{margin:6px 10px 2px;color:var(--dim);font-size:var(--fs-s);line-height:1.5}#tabHelp b{color:var(--fg)}#tabHelp button{padding:0 8px;margin-left:6px}
 #keysBox,#tourBox{position:fixed;z-index:60;background:var(--panel,#111);color:var(--fg);border:1px solid var(--g500,#777);padding:14px 16px;max-width:min(520px,92vw)}
 #keysBox{left:50%;top:50%;transform:translate(-50%,-50%);max-height:84vh;overflow:auto}#keysBox h2{margin:0 0 8px}#keysBox dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:0}#keysBox dt{font-family:var(--font-mono,monospace)}#keysBox dd{margin:0;color:var(--dim)}
 #tourDim{position:fixed;inset:0;z-index:58;pointer-events:none}#tourHi{position:fixed;z-index:59;pointer-events:none;border:2px solid #fff;box-shadow:0 0 0 9999px rgba(0,0,0,.62);transition:all .18s}
 #tourBox p{margin:0 0 10px;line-height:1.55}#tourBox .row{justify-content:space-between}`;
   document.head.appendChild(css);
-  function setLevel(l, quiet) { level = l === 'advanced' ? 'advanced' : 'creative'; document.body.dataset.level = level; store.set('level', level); const b = document.getElementById('lvlBtn'); if (b) { b.textContent = level === 'creative' ? T3('Criativo', 'Creative') : T3('Avançado', 'Advanced'); b.setAttribute('aria-pressed', level === 'advanced'); b.title = T3('Criativo esconde as abas técnicas (Texto, Projeto, +Efeitos, Ficha). Avançado mostra tudo.', 'Creative hides the technical tabs (Text, Project, +Effects, Sheet). Advanced shows everything.'); }
+  function setLevel(l, quiet) { level = l === 'advanced' ? 'advanced' : 'creative'; document.body.dataset.level = level; store.set('level', level); const b = document.getElementById('lvlBtn'); if (b) { b.textContent = level === 'creative' ? T3('Criativo', 'Creative') : T3('Avançado', 'Advanced'); b.setAttribute('aria-pressed', level === 'advanced'); b.title = T3('Criativo esconde as abas técnicas (Texto, Projeto, Ficha). Avançado mostra tudo.', 'Creative hides the technical tabs (Text, Project, +Effects, Sheet). Advanced shows everything.'); }
     if (level === 'creative' && ADV_TABS.includes(ST.tab)) { const t = document.querySelector('#tabs [data-tab="comp"]'); if (t) t.click(); }
     if (!quiet) toast(level === 'creative' ? T3('Modo Criativo: abas técnicas escondidas', 'Creative mode: technical tabs hidden') : T3('Modo Avançado: todas as abas', 'Advanced mode: all tabs'), 1600); }
   /* ajuda de cada aba: uma linha sempre à vista sob a barra de abas */
@@ -32,7 +32,7 @@ const UX = (() => {
   };
   function renderHelp() {
     let h = document.getElementById('tabHelp'); const tabs = document.getElementById('tabs'); if (!h) { h = document.createElement('div'); h.id = 'tabHelp'; h.setAttribute('role', 'note'); (tabs.closest('#panelHead') || tabs).insertAdjacentElement('afterend', h); }
-    const t = HELP[ST.tab]; h.hidden = !t || store.get('helpOff', false); if (t) h.innerHTML = `<b>${esc(({ comp: T3('Compor', 'Compose'), lay: T3('Camadas', 'Layers'), par: T3('Parâmetros', 'Parameters'), txt: T3('Texto', 'Text'), med: T3('Mídia', 'Media'), aud: T3('Áudio', 'Audio'), prj: T3('Projeto', 'Project'), sur: T3('Superfície', 'Surface'), rec: '+' + T3('Efeitos', 'Effects'), isf: 'ISF', spc: T3('Ficha', 'Sheet'), exp: T3('Exportar', 'Export'), gui: T3('Guia', 'Guide') })[ST.tab] || '')}.</b> ${esc(T3(t[0], t[1]))}${level === 'creative' ? ' <span class="lbl">' + esc(T3('Modo Criativo: Texto, Projeto, +Efeitos e Ficha estão escondidas; o botão Criativo, no topo, mostra tudo.', 'Creative mode: Text, Project, +Effects and Sheet are hidden; the Creative button at the top shows everything.')) + '</span>' : ''} <button id="helpHide" title="${esc(T3('Esconder esta linha de ajuda', 'Hide this help line'))}">×</button>`;
+    const t = HELP[ST.tab]; h.hidden = !t || store.get('helpOff', false); if (t) h.innerHTML = `<b>${esc(({ comp: T3('Compor', 'Compose'), lay: T3('Camadas', 'Layers'), par: T3('Parâmetros', 'Parameters'), txt: T3('Texto', 'Text'), med: T3('Mídia', 'Media'), aud: T3('Áudio', 'Audio'), prj: T3('Projeto', 'Project'), sur: T3('Superfície', 'Surface'), isf: 'ISF', spc: T3('Ficha', 'Sheet'), exp: T3('Exportar', 'Export'), gui: T3('Guia', 'Guide') })[ST.tab] || '')}.</b> ${esc(T3(t[0], t[1]))}${level === 'creative' ? ' <span class="lbl">' + esc(T3('Modo Criativo: Texto, Projeto, +Efeitos e Ficha estão escondidas; o botão Criativo, no topo, mostra tudo.', 'Creative mode: Text, Project, +Effects and Sheet are hidden; the Creative button at the top shows everything.')) + '</span>' : ''} <button id="helpHide" title="${esc(T3('Esconder esta linha de ajuda', 'Hide this help line'))}">×</button>`;
     const hb = document.getElementById('helpHide'); if (hb) hb.onclick = () => { store.set('helpOff', true); renderHelp(); toast(T3('Ajuda escondida. A aba Guia a traz de volta.', 'Help hidden. The Guide tab brings it back.'), 2200); };
   }
   /* atalhos: a lista abaixo é conferida contra o código do teclado por ux_check.mjs */

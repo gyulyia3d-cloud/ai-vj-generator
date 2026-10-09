@@ -25,11 +25,11 @@ const key = (k, extra = {}) => E(`document.dispatchEvent(new KeyboardEvent('keyd
 try {
   // 1) modo
   await E(`localStorage.removeItem('aivj-level'); AIVJ.UX.setLevel('creative', true)`);
-  const vis = JSON.parse(await E(`JSON.stringify(['comp','lay','par','aud','sur','exp','txt','prj','rec','spc'].map(t => [t, document.querySelector('#tabs [data-tab="' + t + '"]').offsetParent !== null]))`));
+  const vis = JSON.parse(await E(`JSON.stringify(['comp','lay','par','aud','sur','exp','txt','prj','spc'].map(t => [t, document.querySelector('#tabs [data-tab="' + t + '"]').offsetParent !== null]))`));
   const shown = Object.fromEntries(vis);
-  check(shown.comp && shown.lay && shown.par && shown.aud && shown.sur && shown.exp && !shown.txt && !shown.prj && !shown.rec && !shown.spc, 'modo Criativo mostra Compor, Camadas, Parâm., Áudio, Superfície e Exportar e esconde Texto, Projeto, +Efeitos e Ficha', JSON.stringify(shown));
+  check(shown.comp && shown.lay && shown.par && shown.aud && shown.sur && shown.exp && !shown.txt && !shown.prj && !shown.spc, 'modo Criativo mostra Compor, Camadas, Parâm., Áudio, Superfície e Exportar e esconde Texto, Projeto e Ficha', JSON.stringify(shown));
   await E(`document.getElementById('lvlBtn').click()`);
-  const adv = JSON.parse(await E(`JSON.stringify(['txt','prj','rec','spc'].map(t => document.querySelector('#tabs [data-tab="' + t + '"]').offsetParent !== null))`));
+  const adv = JSON.parse(await E(`JSON.stringify(['txt','prj','spc'].map(t => document.querySelector('#tabs [data-tab="' + t + '"]').offsetParent !== null))`));
   check(adv.every(Boolean) && (await E(`localStorage.getItem('aivj-level')`)) === '"advanced"', 'o botão troca para Avançado: as quatro abas voltam e a escolha fica gravada', JSON.stringify(adv));
   await E(`document.querySelector('#tabs [data-tab="prj"]').click(); document.getElementById('lvlBtn').click()`);
   check((await E(`AIVJ.state.tab`)) !== 'prj' && (await E(`document.querySelector('[data-pane="prj"]').hidden`)), 'ao voltar para Criativo estando numa aba escondida, a interface vai para Compor', await E(`AIVJ.state.tab`));

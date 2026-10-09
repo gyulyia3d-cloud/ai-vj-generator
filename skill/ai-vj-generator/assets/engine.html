@@ -500,7 +500,6 @@ html.stagemode #toast,html.stagemode #hint{display:none!important}
       <button role="tab" data-tab="aud" aria-selected="false">Áudio</button>
       <button role="tab" data-tab="prj" aria-selected="false">Projeto</button>
       <button role="tab" data-tab="sur" aria-selected="false">Superfície</button>
-      <button role="tab" data-tab="rec" aria-selected="false">+Efeitos</button>
       <button role="tab" data-tab="spc" aria-selected="false">Ficha</button>
       <button role="tab" data-tab="exp" aria-selected="false">Exportar</button>
       <button role="tab" data-tab="gui" aria-selected="false">Guia</button>
@@ -515,7 +514,6 @@ html.stagemode #toast,html.stagemode #hint{display:none!important}
       <section class="pane" data-pane="aud" hidden></section>
       <section class="pane" data-pane="prj" hidden></section>
       <section class="pane" data-pane="sur" hidden></section>
-      <section class="pane" data-pane="rec" hidden></section>
       <section class="pane" data-pane="spc" hidden></section>
       <section class="pane" data-pane="exp" hidden></section>
       <section class="pane" data-pane="gui" hidden></section>
@@ -2780,7 +2778,7 @@ function setCtlValue(root, k, v) { const row = root.querySelector(`.pc[data-k="$
 
 /* ---------- painéis ---------- */
 const pane = n => $(`.pane[data-pane="${n}"]`);
-function refreshAll() { fit(); buildStage(); renderTop(); renderBar(); renderComp(); renderLayers(); renderParams(); renderText(); renderMedia(); renderAudio(); renderProject(); renderSpec(); renderExport(); if (ST.tab === 'rec') renderRecipes(); if ($('#palPop') && !$('#palPop').hidden) renderPop(); }
+function refreshAll() { fit(); buildStage(); renderTop(); renderBar(); renderComp(); renderLayers(); renderParams(); renderText(); renderMedia(); renderAudio(); renderProject(); renderSpec(); renderExport(); if ($('#palPop') && !$('#palPop').hidden) renderPop(); }
 function renderTop() {
   $('#projName').textContent = P.meta.name + ' · ' + cur().name;
   $('#mStd').setAttribute('aria-pressed', ST.mode === 'standard'); $('#mBrief').setAttribute('aria-pressed', ST.mode === 'briefing');
@@ -2879,6 +2877,7 @@ function paramPanel(host, L, title) {
   el.innerHTML = `<h2 class="sec">${esc(title)} <span class="lbl">L${comp.layers.indexOf(L)} · ${esc(L.type)}</span></h2>
     <div class="row"><button data-pa="on" aria-pressed="${L.on}">${L.on ? 'Ligada' : 'Desligada'}</button><button data-pa="copy">Copiar</button><button data-pa="paste" ${ST.clip ? '' : 'disabled'}>Colar</button><button data-pa="reset">Reset</button></div>
     <div class="row"><span class="lbl">Categoria</span><select id="pCat" aria-label="Categoria">${FAMILIES.map(f => `<option value="${f[0]}" ${famOf(L.type) === f ? 'selected' : ''}>${esc(f[0])}</option>`).join('')}</select><span class="lbl">Tipo</span><select id="pTyp" aria-label="Tipo">${(famOf(L.type) || FAMILIES[0])[1].map(x => `<option value="${x[0]}" ${x[0] === L.type ? 'selected' : ''}>${esc(x[1])}</option>`).join('')}</select></div>
+    ${L.type === 'code' || L.type === 'shader' ? `<div class="row"><span class="lbl">Receita</span><select id="pRec" aria-label="Receita"><option value="">—</option>${RECIPES.filter(r => r.kind === L.type).map(r => `<option value="${esc(r.id)}">${esc(r.title)}${r.tier === 'tool' ? ' (ferramenta)' : ''}</option>`).join('')}</select></div>` : ''}
     ${groups.map(([name, defs, open]) => `<details class="grp" ${open ? 'open' : ''}><summary>${esc(name)}</summary>${defs.map(d => ctlHtml(d, p[d.k])).join('')}</details>`).join('')}
     ${L.type === 'shader' ? `<div id="glErr"></div>` : ''}${LAYER_ERR.has(L) ? `<ul class="val"><li class="ERROR"><b>ERROR</b>${esc(LAYER_ERR.get(L))}</li></ul>` : ''}`;
   const set = (k, v) => {
@@ -2892,6 +2891,7 @@ function paramPanel(host, L, title) {
   el.querySelector('[data-pa="on"]').onclick = () => { toggleLayer(comp.layers.indexOf(L)); paramPanel(host, L, title); };
   const swap = t => { if (t === L.type) return; const keep = {}; COMMON_FLAT.forEach(d => { if (L.p && d.k in L.p) keep[d.k] = L.p[d.k]; }); if (L.name === typeLabel(L.type).toUpperCase()) L.name = typeLabel(t).toUpperCase(); L.type = t; L.p = keep; commit(true, 'Tipo ' + typeLabel(t)); refreshAll(); };
   el.querySelector('#pTyp').onchange = e => swap(e.target.value);
+  const pr = el.querySelector('#pRec'); if (pr) pr.onchange = e => { const r = recipeById(e.target.value); if (!r) return; const wasOk = ST.codeAllow, N = recipeLayer(r); L.p = N.p; if (N.vars) L.vars = N.vars; else delete L.vars; L.role = N.role; L.name = N.name; if (r.kind === 'code') trustBundledCode(wasOk); commit(true, 'Receita ' + r.title); refreshAll(); paramPanel(host, L, title); };
   el.querySelector('#pCat').onchange = e => swap(FAMILIES.find(f => f[0] === e.target.value)[1][0][0]);
   el.querySelector('[data-pa="copy"]').onclick = () => { ST.clip = { type: L.type, p: clone(L.p) }; toast('Parâmetros copiados'); paramPanel(host, L, title); renderLayers(); };
   el.querySelector('[data-pa="paste"]').onclick = () => pasteParams(L, () => paramPanel(host, L, title));
@@ -3864,59 +3864,6 @@ function addTestCards() {
   P.compositions.push(cc); trustBundledCode(wasOk); ST.ci = P.compositions.length - 1; ST.sel = 1;
   buildStage(); refreshAll(); commit(false, 'Cartões de teste'); toast('Composição de cartões de teste criada', 2000);
 }
-/* prévia leve: um quadro ao passar o mouse, ou animação de baixa resolução (10 fps, 200 px) por até 8 s */
-const RPV = { timer: null, id: null };
-function stopRecPreview() {
-  clearInterval(RPV.timer); RPV.timer = null; RPV.id = null;
-  $$('[data-rprev]').forEach(b => b.setAttribute('aria-pressed', 'false'));
-  $$('.rcprev').forEach(c => { if (!c.dataset.hover) c.hidden = true; });
-}
-function drawRecipePreview(id, cv, n, wpx) {
-  const r = recipeById(id); if (!r) return; const W = P.canvas.w, H = P.canvas.h, w = wpx || 200, h = Math.max(24, Math.round(w * H / W)), k = w / W;
-  if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
-  const c = cv.getContext('2d'), L = recipeLayer(r), comp = { id: 'prev', name: 'PREVIA', motion: 'step', layers: [mk('bg', 'FUNDO', true, { grain: 0 }), L] };
-  const scr = document.createElement('canvas'); scr.width = w; scr.height = h; const sc = scr.getContext('2d');
-  const was = ST.codeAllow; ST.codeAllow = true;   /* receitas embutidas são código do próprio motor */
-  try {
-    const F = frameAt(n == null ? ST.n : n, comp); c.fillStyle = '#000'; c.fillRect(0, 0, w, h);
-    comp.layers.forEach((LL, i) => { sc.clearRect(0, 0, w, h); renderLayer(sc, comp, LL, i, F, k, W, H); c.globalAlpha = LL.opacity; c.globalCompositeOperation = (BLENDS[LL.blend] || BLENDS.normal)[0]; c.drawImage(scr, 0, 0); });
-    c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
-  } catch (e) { c.fillStyle = '#000'; c.fillRect(0, 0, w, h); c.fillStyle = '#fff'; c.font = '11px monospace'; c.fillText('Falha na prévia', 8, 18); }
-  finally { ST.codeAllow = was; }
-}
-function playRecPreview(id, cv, btn) {
-  const same = RPV.id === id; stopRecPreview(); if (same) return;
-  RPV.id = id; cv.hidden = false; btn.setAttribute('aria-pressed', 'true'); let n = ST.n, ticks = 0, step = Math.max(1, Math.round(P.canvas.fps / 10));
-  const go = () => { if (document.hidden || ++ticks > 80) return ticks > 80 ? stopRecPreview() : null; drawRecipePreview(id, cv, n, 200); n += step; };
-  go(); RPV.timer = setInterval(go, 100);
-}
-function renderRecipes() {
-  stopRecPreview();
-  const el = pane('rec'), q = (ST.recQ || '').toLowerCase(), kinds = ST.recK || 'todos';
-  const list = RECIPES.filter(r => (kinds === 'todos' || r.kind === kinds || (kinds === 'ferramenta' && r.tier === 'tool')) && (!q || (r.title + ' ' + r.principle + ' ' + r.means.join(' ') + ' ' + r.tier).toLowerCase().includes(q)));
-  el.innerHTML = `<h2 class="sec">+Efeitos <span class="lbl">${RECIPES.length} testados</span></h2>
-    <p class="note">Vocabulário, não preset. Adicione uma camada, depois mude os números, a paleta e o áudio para o briefing. Todos fecham o loop.</p>
-    <div class="row"><input type="search" id="rcQ" placeholder="Buscar: onda, órbita, caos, som…" value="${esc(ST.recQ || '')}" aria-label="Buscar efeito" style="flex:1;min-width:120px"></div>
-    <div class="row chips">${['todos', 'code', 'shader', 'ferramenta'].map(k => `<button data-rk="${k}" aria-pressed="${kinds === k}">${{ todos: 'Todos', code: 'Código', shader: 'Shader', ferramenta: 'Ferramentas' }[k]}</button>`).join('')}</div>
-    <div class="row"><button id="rcTest">Adicionar composição de cartões de teste</button></div>
-    ${list.map(r => `<article class="rcard" data-rc="${esc(r.id)}"><header><b>${esc(r.title)}</b><span class="tag ${r.kind === 'shader' ? 'd' : 'f'}">${r.kind === 'shader' ? 'SHADER' : r.tier === 'tool' ? 'FERRAMENTA' : 'CÓDIGO'}</span></header>
-      <p>${esc(r.principle)}</p>
-      <dl class="kv"><dt>Significa</dt><dd>${esc(r.means.join(' · '))}</dd><dt>Camada</dt><dd>${esc(r.tier)}</dd><dt>Loop</dt><dd>${esc(r.loop)}</dd><dt>Custo</dt><dd>${esc(r.cost)}</dd><dt>Prévia</dt><dd><button data-rprev="${esc(r.id)}" aria-pressed="false" title="Passe o mouse para ver um quadro; clique para animar em baixa resolução">Visualizar</button></dd></dl>
-      ${r.usage ? `<p class="note">${esc(r.usage)}</p>` : ''}
-      <canvas class="rcprev" hidden></canvas>
-      <div class="row"><button data-radd="${esc(r.id)}">Adicionar à composição</button></div></article>`).join('') || '<p class="note">Nenhum efeito com esse termo. Tente "onda", "órbita" ou "caos".</p>'}`;
-  $('#rcQ').oninput = e => { ST.recQ = e.target.value; const pos = e.target.selectionStart; renderRecipes(); const n = $('#rcQ'); n.focus(); n.setSelectionRange(pos, pos); };
-  $$('[data-rk]', el).forEach(b => b.onclick = () => { ST.recK = b.dataset.rk; renderRecipes(); });
-  $$('[data-radd]', el).forEach(b => b.onclick = () => addRecipe(b.dataset.radd));
-  $$('.rcard', el).forEach(card => {
-    const id = card.dataset.rc, cv = card.querySelector('canvas'), btn = card.querySelector('[data-rprev]');
-    btn.onclick = () => playRecPreview(id, cv, btn);
-    card.onpointerenter = e => { if (e.pointerType === 'touch' || RPV.id === id) return; cv.dataset.hover = '1'; cv.hidden = false; drawRecipePreview(id, cv, ST.n, 160); };
-    card.onpointerleave = () => { delete cv.dataset.hover; if (RPV.id !== id) cv.hidden = true; };
-  });
-  $('#rcTest').onclick = addTestCards;
-}
-
 /* paleta perceptual: porte de scripts/palette.py (o teste de paridade compara os dois) */
 const PAL = (() => {
   const SURF = { led: { bg_l: 0.12, primary_l: 0.95, min_cr: 7.0 }, projection: { bg_l: 0.10, primary_l: 0.97, min_cr: 7.0 }, screen: { bg_l: 0.20, primary_l: 0.98, min_cr: 4.5 } };
@@ -4601,6 +4548,9 @@ function renderSurface() {
     <h2 class="sec">${T3('Regiões importadas (entrada)', 'Imported regions (input)')} <span class="lbl">${disp.length} ${T3('módulo(s)', 'module(s)')}${disp.length ? ' · ' + (SURFX.activePixels(disp) / (c.w * c.h) * 100).toFixed(1) + '% ' + T3('do canvas', 'of the canvas') : ''}</span></h2>
     <p class="note">${T3('Importe as regiões que já existem na sua superfície: CSV (nome,x,y,largura,altura, em pixels do canvas) ou uma imagem PNG em que o que não é preto é pixel ativo (a imagem é esticada ao canvas). As regiões aparecem na vista e podem ser renderizadas uma a uma na aba Exportar.', 'Import the regions that already exist on your surface: CSV (name,x,y,width,height, in canvas pixels) or a PNG image where anything not black is an active pixel (the image is stretched to the canvas). The regions show in the view and can be rendered one by one in the Export tab.')}</p>
     <div class="row"><label class="filebtn">${T3('Importar CSV ou PNG', 'Import CSV or PNG')}<input type="file" id="sMapFile" accept=".csv,.txt,image/png,.png"></label><button id="sMapClear" ${disp.length ? '' : 'disabled'}>${T3('Limpar mapa', 'Clear map')}</button></div>
+    <h2 class="sec">${T3('Cartões de teste', 'Test cards')}</h2>
+    <div class="row"><button id="sTest">${T3('Adicionar composição de cartões de teste', 'Add a test-card composition')}</button></div>
+    <p class="note">${T3('Grade, rampas, barras e quadrado em movimento para conferir a superfície antes do conteúdo.', 'Grid, ramps, bars and a moving square to check the surface before the content.')}</p>
     <h2 class="sec">${T3('Legibilidade', 'Legibility')}</h2>${surLegHtml()}
     <div id="sMsg" class="note" role="status" aria-live="polite">${SUR.err.length ? '<b>' + T3('Atenção:', 'Warning:') + '</b><br>' + SUR.err.map(esc).join('<br>') : esc(SUR.msg)}</div>`;
   surBind(el);
@@ -4613,6 +4563,7 @@ function surBind(el) {
   on('sCutGo', 'click', () => { const x = Math.round(evalExpr(q('sCut').value)); if (!(x > 0 && x < c.w)) { SUR.err = [T3(`O corte precisa estar entre 1 e ${c.w - 1} px.`, `The cut must be between 1 and ${c.w - 1} px.`)]; renderSurface(); return; } SUR.err = []; setFolds([...(c.folds || []), x]); });
   on('sCutHalf', 'click', () => setFolds([...(c.folds || []), Math.round(c.w / 2)]));
   on('sCutClear', 'click', () => setFolds([]));
+  on('sTest', 'click', () => addTestCards());
   on('sLegGo', 'click', () => { SUR.pitch = q('sLegP').value; SUR.dist = q('sLegD').value; renderSurface(); });
   on('sMapClear', 'click', () => { c.displays = []; commit(true, 'Regiões'); drawOverlay(); renderSurface(); });
   on('sMapFile', 'change', async e => {
@@ -5413,18 +5364,18 @@ reg('blobs', 'Manchas · detectar e marcar (lê as camadas abaixo)', 'gen', [
 /* UX (fase 3): modo Criativo/Avançado, ajuda de cada aba, atalhos (tecla ?) e tour guiado. Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html.
    Textos pela função T3 (gen-ui.js). O teste (ux_check.mjs) confere que todo atalho do teclado aparece na lista. */
 const UX = (() => {
-  /* modo: Criativo esconde o que só o trabalho técnico precisa (Texto, Projeto, +Efeitos, Ficha); Avançado mostra tudo. Esconder uma aba não remove nada do projeto. */
-  const ADV_TABS = ['txt', 'prj', 'rec', 'spc'];
+  /* modo: Criativo esconde o que só o trabalho técnico precisa (Texto, Projeto, Ficha); Avançado mostra tudo. Esconder uma aba não remove nada do projeto. */
+  const ADV_TABS = ['txt', 'prj', 'spc'];
   let level = store.get('level', 'creative');
   const css = document.createElement('style'); css.id = 'uxCss';
-  css.textContent = `body[data-level="creative"] #tabs [data-tab="txt"],body[data-level="creative"] #tabs [data-tab="prj"],body[data-level="creative"] #tabs [data-tab="rec"],body[data-level="creative"] #tabs [data-tab="spc"]{display:none}
+  css.textContent = `body[data-level="creative"] #tabs [data-tab="txt"],body[data-level="creative"] #tabs [data-tab="prj"],body[data-level="creative"] #tabs [data-tab="spc"]{display:none}
 #tabHelp{margin:6px 10px 2px;color:var(--dim);font-size:var(--fs-s);line-height:1.5}#tabHelp b{color:var(--fg)}#tabHelp button{padding:0 8px;margin-left:6px}
 #keysBox,#tourBox{position:fixed;z-index:60;background:var(--panel,#111);color:var(--fg);border:1px solid var(--g500,#777);padding:14px 16px;max-width:min(520px,92vw)}
 #keysBox{left:50%;top:50%;transform:translate(-50%,-50%);max-height:84vh;overflow:auto}#keysBox h2{margin:0 0 8px}#keysBox dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:0}#keysBox dt{font-family:var(--font-mono,monospace)}#keysBox dd{margin:0;color:var(--dim)}
 #tourDim{position:fixed;inset:0;z-index:58;pointer-events:none}#tourHi{position:fixed;z-index:59;pointer-events:none;border:2px solid #fff;box-shadow:0 0 0 9999px rgba(0,0,0,.62);transition:all .18s}
 #tourBox p{margin:0 0 10px;line-height:1.55}#tourBox .row{justify-content:space-between}`;
   document.head.appendChild(css);
-  function setLevel(l, quiet) { level = l === 'advanced' ? 'advanced' : 'creative'; document.body.dataset.level = level; store.set('level', level); const b = document.getElementById('lvlBtn'); if (b) { b.textContent = level === 'creative' ? T3('Criativo', 'Creative') : T3('Avançado', 'Advanced'); b.setAttribute('aria-pressed', level === 'advanced'); b.title = T3('Criativo esconde as abas técnicas (Texto, Projeto, +Efeitos, Ficha). Avançado mostra tudo.', 'Creative hides the technical tabs (Text, Project, +Effects, Sheet). Advanced shows everything.'); }
+  function setLevel(l, quiet) { level = l === 'advanced' ? 'advanced' : 'creative'; document.body.dataset.level = level; store.set('level', level); const b = document.getElementById('lvlBtn'); if (b) { b.textContent = level === 'creative' ? T3('Criativo', 'Creative') : T3('Avançado', 'Advanced'); b.setAttribute('aria-pressed', level === 'advanced'); b.title = T3('Criativo esconde as abas técnicas (Texto, Projeto, Ficha). Avançado mostra tudo.', 'Creative hides the technical tabs (Text, Project, +Effects, Sheet). Advanced shows everything.'); }
     if (level === 'creative' && ADV_TABS.includes(ST.tab)) { const t = document.querySelector('#tabs [data-tab="comp"]'); if (t) t.click(); }
     if (!quiet) toast(level === 'creative' ? T3('Modo Criativo: abas técnicas escondidas', 'Creative mode: technical tabs hidden') : T3('Modo Avançado: todas as abas', 'Advanced mode: all tabs'), 1600); }
   /* ajuda de cada aba: uma linha sempre à vista sob a barra de abas */
@@ -5444,7 +5395,7 @@ const UX = (() => {
   };
   function renderHelp() {
     let h = document.getElementById('tabHelp'); const tabs = document.getElementById('tabs'); if (!h) { h = document.createElement('div'); h.id = 'tabHelp'; h.setAttribute('role', 'note'); (tabs.closest('#panelHead') || tabs).insertAdjacentElement('afterend', h); }
-    const t = HELP[ST.tab]; h.hidden = !t || store.get('helpOff', false); if (t) h.innerHTML = `<b>${esc(({ comp: T3('Compor', 'Compose'), lay: T3('Camadas', 'Layers'), par: T3('Parâmetros', 'Parameters'), txt: T3('Texto', 'Text'), med: T3('Mídia', 'Media'), aud: T3('Áudio', 'Audio'), prj: T3('Projeto', 'Project'), sur: T3('Superfície', 'Surface'), rec: '+' + T3('Efeitos', 'Effects'), isf: 'ISF', spc: T3('Ficha', 'Sheet'), exp: T3('Exportar', 'Export'), gui: T3('Guia', 'Guide') })[ST.tab] || '')}.</b> ${esc(T3(t[0], t[1]))}${level === 'creative' ? ' <span class="lbl">' + esc(T3('Modo Criativo: Texto, Projeto, +Efeitos e Ficha estão escondidas; o botão Criativo, no topo, mostra tudo.', 'Creative mode: Text, Project, +Effects and Sheet are hidden; the Creative button at the top shows everything.')) + '</span>' : ''} <button id="helpHide" title="${esc(T3('Esconder esta linha de ajuda', 'Hide this help line'))}">×</button>`;
+    const t = HELP[ST.tab]; h.hidden = !t || store.get('helpOff', false); if (t) h.innerHTML = `<b>${esc(({ comp: T3('Compor', 'Compose'), lay: T3('Camadas', 'Layers'), par: T3('Parâmetros', 'Parameters'), txt: T3('Texto', 'Text'), med: T3('Mídia', 'Media'), aud: T3('Áudio', 'Audio'), prj: T3('Projeto', 'Project'), sur: T3('Superfície', 'Surface'), isf: 'ISF', spc: T3('Ficha', 'Sheet'), exp: T3('Exportar', 'Export'), gui: T3('Guia', 'Guide') })[ST.tab] || '')}.</b> ${esc(T3(t[0], t[1]))}${level === 'creative' ? ' <span class="lbl">' + esc(T3('Modo Criativo: Texto, Projeto, +Efeitos e Ficha estão escondidas; o botão Criativo, no topo, mostra tudo.', 'Creative mode: Text, Project, +Effects and Sheet are hidden; the Creative button at the top shows everything.')) + '</span>' : ''} <button id="helpHide" title="${esc(T3('Esconder esta linha de ajuda', 'Hide this help line'))}">×</button>`;
     const hb = document.getElementById('helpHide'); if (hb) hb.onclick = () => { store.set('helpOff', true); renderHelp(); toast(T3('Ajuda escondida. A aba Guia a traz de volta.', 'Help hidden. The Guide tab brings it back.'), 2200); };
   }
   /* atalhos: a lista abaixo é conferida contra o código do teclado por ux_check.mjs */
@@ -5503,7 +5454,7 @@ $('#tabs').addEventListener('click', e => {
   const b = e.target.closest('[data-tab]'); if (!b) return;
   ST.tab = b.dataset.tab; $$('#tabs [data-tab]').forEach(x => x.setAttribute('aria-selected', x === b));
   $$('.pane').forEach(p => p.hidden = p.dataset.pane !== ST.tab);
-  if (ST.tab === 'sur') renderSurface(); if (ST.tab === 'exp') renderExport(); if (ST.tab === 'aud') renderAudio(); if (ST.tab === 'comp') renderComp(); if (ST.tab === 'spc') renderSpec(); if (ST.tab === 'rec') renderRecipes(); else stopRecPreview(); if (ST.tab === 'isf') renderIsf();
+  if (ST.tab === 'sur') renderSurface(); if (ST.tab === 'exp') renderExport(); if (ST.tab === 'aud') renderAudio(); if (ST.tab === 'comp') renderComp(); if (ST.tab === 'spc') renderSpec();  if (ST.tab === 'isf') renderIsf();
   store.set('tab', ST.tab);
 });
 $('#mStd').onclick = () => setMode('standard');

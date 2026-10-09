@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Teste automático dos recursos V6 do motor: botão Cor (paletas), menu na linha do divisor, rodapé, +Efeitos com prévia,
+// Teste automático dos recursos V6 do motor: botão Cor (paletas), menu na linha do divisor, rodapé,
 // pop-up de ajuda, idioma EN/PT-BR e objeto 3D (OBJ, GLB; shader, wireframe, nuvem de pontos).
 //   node features_check.mjs [--chrome caminho]     Sai com 1 se algo falhar; 3 se não houver navegador.
 import { execFileSync } from 'node:child_process';
@@ -86,17 +86,6 @@ try {
   await E(`document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })); 1`); await sleep(100);
   check(await E(`document.querySelector('#palPop').hidden`), 'Esc fecha a janela de paletas', '');
 
-  /* +Efeitos */
-  await E(`document.querySelector('#tabs [data-tab="rec"]').click(); 1`); await sleep(150);
-  check(await E(`document.querySelector('#tabs [data-tab="rec"]').textContent.trim()`) === '+Efeitos', 'a aba virou +Efeitos', '');
-  check(await E(`(dt => dt.map(x => x.textContent).join('|'))([...document.querySelectorAll('.rcard')[0].querySelectorAll('dt')])`).then(s => /Custo\|Prévia$/.test(s)), 'o botão Visualizar vem depois de Custo', '');
-  await E(`document.querySelector('[data-rprev="chladni"]').click(); 1`); await sleep(500);
-  const a1 = await E(`document.querySelector('[data-rc="chladni"] canvas').toDataURL().length`); await sleep(500);
-  const a2 = await E(`document.querySelector('[data-rc="chladni"] canvas').toDataURL()`);
-  check(await E(`document.querySelector('[data-rc="chladni"] canvas').width`) <= 200, 'a prévia é de baixa resolução (≤ 200 px)', '');
-  await E(`document.querySelector('[data-rprev="chladni"]').click(); 1`); await sleep(200);
-  const a3 = await E(`document.querySelector('[data-rc="chladni"] canvas').hidden`);
-  check(a3 && a1 > 500 && a2.length > 500, 'a prévia anima e desliga ao clicar de novo', `${a1} ${a3}`);
 
   /* ajuda e idioma */
   await E(`document.querySelector('#helpBtn').click(); 1`); await sleep(150);
@@ -105,8 +94,8 @@ try {
   check(await E(`document.querySelector('#howto').hidden`), 'o X fecha o pop-up', '');
   await E(`document.querySelector('#langBtn').click(); 1`); await sleep(300);
   check(await E(`document.querySelector('#tabs [data-tab="comp"]').textContent.trim()`) === 'Compose' && await E(`document.querySelector('#undoBtn').textContent.trim()`) === 'Undo', 'EN traduz abas e botões', await E(`document.querySelector('#tabs [data-tab="comp"]').textContent`));
-  await E(`document.querySelector('#tabs [data-tab="rec"]').click(); 1`); await sleep(200);
-  check(await E(`document.querySelector('[data-radd]').textContent.trim()`) === 'Add to composition', 'EN traduz o que é criado depois (aba redesenhada)', await E(`document.querySelector('[data-radd]').textContent`));
+  await E(`document.querySelector('#tabs [data-tab="sur"]').click(); 1`); await sleep(200);
+  check(await E(`document.querySelector('#sTest').textContent.trim()`) === 'Add a test-card composition', 'EN traduz o que é criado depois (aba redesenhada)', await E(`document.querySelector('#sTest').textContent`));
   check(await E(`document.documentElement.lang`) === 'en', 'html lang = en', '');
   await E(`document.querySelector('#langBtn').click(); 1`); await sleep(300);
   check(await E(`document.querySelector('#tabs [data-tab="comp"]').textContent.trim()`) === 'Compor' && await E(`document.querySelector('#undoBtn').textContent.trim()`) === 'Desfazer', 'PT-BR volta ao original sem sobras', '');

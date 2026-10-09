@@ -49,18 +49,10 @@ try {
   const drift = man.filter((m, i) => emb[i] && emb[i].src !== readFileSync(join(HERE, '..', 'references', 'recipes', m.file), 'utf8').replace(/\r\n/g, '\n')).map(m => m.id);
   check(!drift.length, 'fontes embutidas = arquivos de references/recipes', drift.join(','));
 
-  /* 2. aba receitas */
-  await E(`document.querySelector('#tabs [data-tab="rec"]').click(); 1`); await sleep(150);
-  check(await E(`document.querySelectorAll('.rcard').length`) === man.length, 'a aba lista todas as receitas', await E(`document.querySelectorAll('.rcard').length`));
-  await E(`(q => { q.value = 'chladni'; q.dispatchEvent(new Event('input', { bubbles: true })); })(document.querySelector('#rcQ')); 1`); await sleep(100);
-  const filtered = await E(`document.querySelectorAll('.rcard').length`);
-  check(filtered >= 1 && filtered < man.length, 'a busca filtra', String(filtered));
-  await E(`(q => { q.value = ''; q.dispatchEvent(new Event('input', { bubbles: true })); })(document.querySelector('#rcQ')); document.querySelector('[data-rk="shader"]').click(); 1`); await sleep(100);
-  check(await E(`[...document.querySelectorAll('.rcard')].length`) === man.filter(m => m.kind === 'shader').length, 'o filtro Shader mostra só shaders', '');
-  await E(`document.querySelector('[data-rk="todos"]').click(); 1`);
-
+  /* 2. receitas como opção das camadas shader e código (sem aba) */
+  check(await E(`!document.querySelector('#tabs [data-tab="rec"]')`), 'não há aba +Efeitos: as receitas vivem nos parâmetros das camadas shader e código', 'aba presente');
   const l0 = await nl(), h0 = await hist();
-  await E(`document.querySelector('[data-radd="chladni"]').click(); 1`); await sleep(500);
+  await E(`AIVJ.addRecipe('chladni'); 1`); await sleep(500);
   check(await nl() === l0 + 1 && await hist() === h0 + 1, 'adicionar receita de shader cria 1 camada e 1 passo de histórico', `${l0}->${await nl()} / ${h0}->${await hist()}`);
   check(await E(`AIVJ.project.compositions[AIVJ.state.ci].layers[AIVJ.state.sel].type`) === 'shader', 'a camada nova fica selecionada', '');
   await E(`AIVJ.undo(); 1`); await sleep(150);
@@ -68,22 +60,24 @@ try {
   await E(`AIVJ.redo(); 1`); await sleep(150);
   check(await nl() === l0 + 1, 'Refazer devolve a camada', String(await nl()));
 
-  await E(`AIVJ.state.codeAllow = true; document.querySelector('[data-radd="clifford"]').click(); 1`); await sleep(500);
+  /* o seletor Receita nos parâmetros troca o conteúdo da camada atual */
+  const opts = JSON.parse(await E(`(() => { document.querySelector('#tabs [data-tab="par"]').click(); const s = document.getElementById('pRec'); return JSON.stringify(s ? [...s.options].map(o => o.value).filter(Boolean) : []); })()`));
+  check(opts.length === man.filter(m => m.kind === 'shader').length && opts.includes('chladni'), 'o seletor Receita de uma camada shader lista as receitas de shader', JSON.stringify(opts));
+  const sw = JSON.parse(await E(`(() => { const s = document.getElementById('pRec'); s.value = 'julia-orbit'; s.dispatchEvent(new Event('change', { bubbles: true })); const L = AIVJ.project.compositions[AIVJ.state.ci].layers[AIVJ.state.sel]; return JSON.stringify({ type: L.type, name: L.name, src: (L.p.src || '').includes('julia') || (L.p.src || '').length > 50 }); })()`));
+  check(sw.type === 'shader' && /JULIA/.test(sw.name) && sw.src, 'escolher outra receita troca o código e o nome da camada', JSON.stringify(sw));
+
+  await E(`AIVJ.state.codeAllow = true; AIVJ.addRecipe('clifford'); 1`); await sleep(500);
   check(await E(`AIVJ.state.codeAllow`) === true && await E(`AIVJ.project.compositions[AIVJ.state.ci].layers[AIVJ.state.sel].type`) === 'code', 'receita de código entra autorizada quando o código já era autorizado', '');
-  await E(`AIVJ.state.codeAllow = false; document.querySelector('[data-radd="clifford"]').click(); 1`); await sleep(500);
+  await E(`AIVJ.state.codeAllow = false; AIVJ.addRecipe('clifford'); 1`); await sleep(500);
   check(await E(`AIVJ.state.codeAllow`) === false, 'receita de código NÃO se autoriza sozinha quando o código estava bloqueado', 'codeAllow ligou sozinho');
   await E(`AIVJ.state.codeAllow = true; 1`);
 
   const c0 = await E(`AIVJ.project.compositions.length`), h1 = await hist();
-  await E(`document.querySelector('#rcTest').click(); 1`); await sleep(600);
-  check(await E(`AIVJ.project.compositions.length`) === c0 + 1 && await hist() === h1 + 1, 'cartões de teste criam 1 composição e 1 passo', '');
+  await E(`document.querySelector('#tabs [data-tab="sur"]').click(); document.querySelector('#sTest').click(); 1`); await sleep(600);
+  check(await E(`AIVJ.project.compositions.length`) === c0 + 1 && await hist() === h1 + 1, 'cartões de teste (aba Superfície) criam 1 composição e 1 passo', '');
   check(await E(`AIVJ.project.compositions.at(-1).layers[1].p.v_card === undefined && AIVJ.project.compositions.at(-1).layers[1].type`) === 'code', 'a composição de teste usa a receita testcard', '');
   await E(`AIVJ.undo(); 1`); await sleep(150);
   check(await E(`AIVJ.project.compositions.length`) === c0, 'Desfazer remove a composição de teste', '');
-
-  await E(`document.querySelector('#tabs [data-tab="rec"]').click(); document.querySelector('[data-rprev="quasicrystal"]').click(); 1`); await sleep(400);
-  const lit = await E(`(cv => { const d = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data; let s = 0; for (let i = 0; i < d.length; i += 4) s += d[i] + d[i + 1] + d[i + 2]; return s; })(document.querySelector('[data-rc="quasicrystal"] canvas'))`);
-  check(lit > 5000, 'a prévia desenha pixels (não é preta)', String(lit));
 
   /* 3. paleta */
   const combos = [[250, 'complement', 'led'], [30, 'mono', 'projection'], [145, 'triad', 'screen'], [330, 'tetrad', 'led'], [195, 'split', 'projection'], [265, 'analogous', 'screen'], [0, 'complement', 'led'], [359, 'mono', 'screen']];
@@ -116,11 +110,6 @@ try {
   const g = JSON.parse(await E(`JSON.stringify(AIVJ.project.palette)`));
   const ref = havePy ? py('scheme', '--hue', '250', '--scheme', 'complement', '--surface', await E(`document.querySelector('#palSurf').value`)) : null;
   check(!ref || (g.bg === ref.bg.hex && g.accent === ref.accent.hex && g.field === ref.field.hex), 'Gerar esquema aplica o mesmo resultado do palette.py (inclui o campo)', JSON.stringify(g));
-
-  /* 4. segurança */
-  await E(`document.querySelector('#tabs [data-tab="rec"]').click(); 1`); await sleep(100);
-  await E(`window.__x = 0; (q => { q.value = '<img src=x onerror="window.__x=1">'; q.dispatchEvent(new Event('input', { bubbles: true })); })(document.querySelector('#rcQ')); 1`); await sleep(300);
-  check(await E(`window.__x === 0 && !document.querySelector('.pane[data-pane="rec"] img')`), 'a busca não injeta HTML', '');
 } finally { await page.close(); }
 
 console.log(fail ? `\n${fail} problema(s).` : '\nTudo certo.');

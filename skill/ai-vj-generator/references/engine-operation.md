@@ -292,6 +292,6 @@ Teste: `node scripts/ui_check.mjs` compara as calculadoras JS com o Python, perc
 
 - **Botão Cor** (sob a vista, depois de Áudio): Alpha (branco α), Standard (6 esquemas OKLCH a partir de um matiz, ajustados à superfície), Personalizada (seletor, RGB e HEX) e Briefing (restaura `meta.briefPalette`, que o motor grava ao carregar o projeto). Cada troca é um passo do histórico.
 - **Objeto 3D:** Mídia > Objeto 3D (`.obj`, `.glb` sem compressão, `.stl`), ou arraste para a vista. A camada fixa `OBJETO 3D` liga sozinha; em Parâm. escolha `shader` (faces sombreadas), `wireframe` ou `pointcloud`, o giro Y (voltas inteiras por loop, fecha o loop), a inclinação, a perspectiva e a luz. O modelo é centrado e normalizado; o arquivo viaja em `assets` (`kind: model`). Limite de 400 mil triângulos; o shader desenha até 30 mil faces por quadro.
-- **+Efeitos:** o botão Visualizar mostra uma prévia leve; passar o mouse mostra um quadro.
+- **Receitas:** nas camadas `shader` e `code`, o seletor Receita (em Parâm.) troca o conteúdo da camada por uma receita testada. Os cartões de teste ficam na aba Superfície.
 - **Idioma:** botão EN / PT-BR no cabeçalho; `meta.lang` define o idioma ao abrir. Textos longos de ajuda e notas seguem em português; rótulos, botões, abas e avisos curtos são traduzidos.
 - **Ajuda:** o botão `?` reabre o pop-up; "Não mostrar ao abrir" o silencia.

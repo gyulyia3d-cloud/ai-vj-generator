@@ -32,6 +32,9 @@ function renderSurface() {
     <h2 class="sec">${T3('Regiões importadas (entrada)', 'Imported regions (input)')} <span class="lbl">${disp.length} ${T3('módulo(s)', 'module(s)')}${disp.length ? ' · ' + (SURFX.activePixels(disp) / (c.w * c.h) * 100).toFixed(1) + '% ' + T3('do canvas', 'of the canvas') : ''}</span></h2>
     <p class="note">${T3('Importe as regiões que já existem na sua superfície: CSV (nome,x,y,largura,altura, em pixels do canvas) ou uma imagem PNG em que o que não é preto é pixel ativo (a imagem é esticada ao canvas). As regiões aparecem na vista e podem ser renderizadas uma a uma na aba Exportar.', 'Import the regions that already exist on your surface: CSV (name,x,y,width,height, in canvas pixels) or a PNG image where anything not black is an active pixel (the image is stretched to the canvas). The regions show in the view and can be rendered one by one in the Export tab.')}</p>
     <div class="row"><label class="filebtn">${T3('Importar CSV ou PNG', 'Import CSV or PNG')}<input type="file" id="sMapFile" accept=".csv,.txt,image/png,.png"></label><button id="sMapClear" ${disp.length ? '' : 'disabled'}>${T3('Limpar mapa', 'Clear map')}</button></div>
+    <h2 class="sec">${T3('Cartões de teste', 'Test cards')}</h2>
+    <div class="row"><button id="sTest">${T3('Adicionar composição de cartões de teste', 'Add a test-card composition')}</button></div>
+    <p class="note">${T3('Grade, rampas, barras e quadrado em movimento para conferir a superfície antes do conteúdo.', 'Grid, ramps, bars and a moving square to check the surface before the content.')}</p>
     <h2 class="sec">${T3('Legibilidade', 'Legibility')}</h2>${surLegHtml()}
     <div id="sMsg" class="note" role="status" aria-live="polite">${SUR.err.length ? '<b>' + T3('Atenção:', 'Warning:') + '</b><br>' + SUR.err.map(esc).join('<br>') : esc(SUR.msg)}</div>`;
   surBind(el);
@@ -44,6 +47,7 @@ function surBind(el) {
   on('sCutGo', 'click', () => { const x = Math.round(evalExpr(q('sCut').value)); if (!(x > 0 && x < c.w)) { SUR.err = [T3(`O corte precisa estar entre 1 e ${c.w - 1} px.`, `The cut must be between 1 and ${c.w - 1} px.`)]; renderSurface(); return; } SUR.err = []; setFolds([...(c.folds || []), x]); });
   on('sCutHalf', 'click', () => setFolds([...(c.folds || []), Math.round(c.w / 2)]));
   on('sCutClear', 'click', () => setFolds([]));
+  on('sTest', 'click', () => addTestCards());
   on('sLegGo', 'click', () => { SUR.pitch = q('sLegP').value; SUR.dist = q('sLegD').value; renderSurface(); });
   on('sMapClear', 'click', () => { c.displays = []; commit(true, 'Regiões'); drawOverlay(); renderSurface(); });
   on('sMapFile', 'change', async e => {
