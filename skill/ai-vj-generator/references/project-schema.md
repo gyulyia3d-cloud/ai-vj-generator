@@ -205,6 +205,12 @@ How it closes the loop: it warms up one loop, records two, and cross-fades them 
 
 **Positioning.** The text block is vertically centered on the canvas. Its horizontal anchor depends on `align`: `left` → 6% of the width, `center` → 50%, `right` → 94%. Common `x`/`y` are **offsets in canvas pixels from that anchor**, not absolute positions. Examples at 1920×1080: a flush-left caption in the bottom-left corner is `align: left, x: 0, y: 420`; top-right is `align: right, x: 0, y: -420`. Never use large negative `x` with `align: left`: it pushes the text off the canvas.
 
+### `model`, `isf`, `fx`, `synth`, `blobs` — later layer types
+- `model`: 3D object (media slot). `isf`: one of the 84 library generators, chosen by `p.lib` (`isf-layer.md`). `fx`: one-pass effect over the layers below (`fx-layer.md`). `synth`: one-line chain compiled to a shader (`synth-chain.md`). `blobs`: detect and mark regions of the image below (`blob-layer.md`).
+
+### Layer categories (interface)
+The interface groups the types in nine categories of at most two words: Fundo, Shader, Formas, Texto, Mídia, Dados, Partículas, Efeito, Código. The category is not stored: the project keeps `layer.type`. `registry/generators.json` lists every type with its category, render mode, parameters and cost class; `schema/project.schema.json` restricts `layer.type` to that list.
+
 ## Minimal composition example
 
 ```json

@@ -1,4 +1,4 @@
-# Roadmap oficial (v11, motor 3.2.0)
+# Roadmap oficial (v11, motor 3.3.0)
 
 Substitui o roadmap v10. Decidido pela autora em 08/10/2026.
 
@@ -16,7 +16,7 @@ Referências antigas a isso ficam apenas no `CHANGELOG.md`.
 | Fase | Foco | Estado |
 |---|---|---|
 | 0 | Limpeza de escopo | **feita (3.1.0)** |
-| 1 | Fonte única da verdade (registry de geradores, parâmetros, modulação, capabilities) | pendente |
+| 1 | Fonte única da verdade (registry de geradores, parâmetros, modulação, capabilities) | **feita (3.3.0)**; o motor ainda declara os parâmetros no código e o registry é conferido contra ele (a geração motor ← registry fica na Fase 18) |
 | 2 | Fundação WebGL2 (GLSL ES 3.00, VAO, FrameContext determinístico) | pendente |
 | 3 | Recursos de GPU (pools de textura e framebuffer, métricas) | pendente |
 | 4 | Render graph (History, Feedback, FX temporais) | pendente |

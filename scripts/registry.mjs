@@ -1,0 +1,79 @@
+#!/usr/bin/env node
+// Registry (fase 1): fonte única de geradores, parâmetros, modulação e capacidades, em skill/ai-vj-generator/registry/.
+//   node scripts/registry.mjs --write   regenera generators.json e parameters.json a partir do motor e grava os enums no esquema
+//   node scripts/registry.mjs --check   confere motor, esquema, validador e docs contra o registry (sai com 1 se houver deriva)
+// modulation.json, capabilities.json e versions.json são escritos à mão (são a decisão); generators.json e parameters.json vêm do motor,
+// porque os parâmetros são declarados no código das camadas. O teste de deriva garante que nunca divergem.
+import { readFileSync, writeFileSync } from 'node:fs';
+import { join, dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { openPage } from '../skill/ai-vj-generator/scripts/cdp.mjs';
+
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..'), SK = join(ROOT, 'skill', 'ai-vj-generator'), REG = join(SK, 'registry');
+const rd = f => JSON.parse(readFileSync(f, 'utf8')), wr = (f, o) => writeFileSync(f, JSON.stringify(o, null, 1) + '\n');
+const mode = process.argv.includes('--write') ? 'write' : 'check';
+let fail = 0;
+const ok = m => console.log('  ok   ' + m), bad = m => { fail++; console.log('  ERRO ' + m); };
+const check = (c, good, why) => c ? ok(good) : bad(good + ' :: ' + why);
+
+const RENDER = { shader: 'shader', isf: 'shader', synth: 'shader', fx: 'shader', flow: 'particle', sim: 'particle', model: '3d', splat: '3d', parallax: '3d' };
+const fam = rd(join(SK, 'references', 'families.json'));
+
+/* 1) o que o motor declara */
+const page = await openPage(join(ROOT, 'app', 'index.html'), { waitFor: '!!(window.AIVJ && window.AIVJ.GEN && window.AIVJ.modSources)' });
+const eng = JSON.parse(await page.evaluate(`(() => { const A = AIVJ, TY = { n: 'number', s: 'select', c: 'color', b: 'boolean', t: 'text' };
+  const pd = d => ({ id: d.k, type: TY[d.t] || d.t, default: d.d === undefined ? null : d.d, min: d.min ?? null, max: d.max ?? null, step: d.step ?? null, label: d.l, options: d.opts || null });
+  const gens = Object.values(A.GEN).map(g => { const f = A.FAMILIES.find(x => x[1].some(y => y[0] === g.type)); const src = String(g.draw);
+    return { id: g.type, category: f ? f[0] : null, name: f ? f[1].find(y => y[0] === g.type)[1] : g.label, parameters: g.params.map(pd), surfaceAware: /\\bfolds\\b|\\bdisplays\\b/.test(src) }; });
+  const common = Object.entries(A.COMMON).map(([grp, defs]) => ({ group: grp, parameters: defs.map(pd) }));
+  return JSON.stringify({ gens, common, mods: A.modSources() }); })()`));
+await page.close();
+
+const ROLE = { 'TRANSFORM': 'transform', 'APARÊNCIA': 'appearance', 'MOVIMENTO': 'motion', 'ÁUDIO': 'audio' };
+const unitOf = l => /°/.test(l) ? 'deg' : /px/.test(l) ? 'px' : /%/.test(l) ? 'percent' : /quadros/.test(l) ? 'frames' : null;
+const generators = {
+  note: 'Gerado de app/index.html por scripts/registry.mjs --write. Não edite à mão.',
+  generators: eng.gens.map(g => ({
+    id: g.id, category: g.category, name: g.name, renderMode: RENDER[g.id] || 'canvas2d',
+    parameters: g.parameters.map(p => ({ ...p, unit: unitOf(p.label || ''), semanticRole: 'generator' })),
+    audioRoles: ['mass', 'body', 'detail', 'accent'], supportsAlpha: true, deterministic: true, surfaceAware: g.surfaceAware, performanceClass: (fam[g.id] || {}).cost || 'medium' })),
+};
+const parameters = { note: 'Parâmetros comuns a toda camada (transformação, aparência, movimento, áudio). Gerado por scripts/registry.mjs --write.',
+  groups: eng.common.map(c => ({ role: ROLE[c.group] || c.group.toLowerCase(), parameters: c.parameters.map(p => ({ ...p, unit: unitOf(p.label || ''), semanticRole: ROLE[c.group] || c.group.toLowerCase() })) })) };
+const mod = rd(join(REG, 'modulation.json')), cap = rd(join(REG, 'capabilities.json'));
+const schemaPath = join(SK, 'schema', 'project.schema.json');
+
+if (mode === 'write') {
+  wr(join(REG, 'generators.json'), generators); wr(join(REG, 'parameters.json'), parameters);
+  let s = readFileSync(schemaPath, 'utf8');
+  const srcEnum = JSON.stringify(mod.sources.map(x => x.id)), typeEnum = JSON.stringify(generators.generators.map(g => g.id));
+  s = s.replace(/("src": \{ "type": "string", "enum": )\[[^\]]*\]/, `$1${srcEnum}`);
+  s = s.replace(/("type": \{ "type": "string", )(?:"minLength": 1|"enum": \[[^\]]*\]) \},(\s*"name": \{ "type": "string" \},\s*"role")/, `$1"enum": ${typeEnum} },$2`);
+  writeFileSync(schemaPath, s);
+  console.log(`registry gravado: ${generators.generators.length} geradores, ${parameters.groups.reduce((a, g) => a + g.parameters.length, 0)} parâmetros comuns, ${mod.sources.length} fontes de modulação`);
+  process.exit(0);
+}
+
+/* 2) conferência */
+const gOld = rd(join(REG, 'generators.json')), pOld = rd(join(REG, 'parameters.json'));
+check(JSON.stringify(gOld) === JSON.stringify(generators), `generators.json = motor (${generators.generators.length} tipos de camada)`, 'rode node scripts/registry.mjs --write');
+check(JSON.stringify(pOld) === JSON.stringify(parameters), 'parameters.json = parâmetros comuns do motor', 'rode node scripts/registry.mjs --write');
+const ids = mod.sources.map(x => x.id), same = (a, b) => JSON.stringify([...a].sort()) === JSON.stringify([...b].sort());
+check(same(ids, eng.mods), `modulação: interface do motor = registry (${ids.length} fontes)`, `motor ${eng.mods.join(',')}`);
+const schema = rd(schemaPath), find = (o, k) => { if (o && typeof o === 'object') { if (k in o) return o[k]; for (const v of Object.values(o)) { const r = find(v, k); if (r) return r; } } return null; };
+const lay = schema.properties.compositions.items.properties.layers.items.properties;
+check(same(ids, lay.mod.items.properties.src.enum || []), 'modulação: esquema (enum de layer.mod.src) = registry', `esquema ${(lay.mod.items.properties.src.enum || []).join(',')}`);
+check(same(lay.type.enum || [], generators.generators.map(g => g.id)), 'camadas: esquema (enum de layer.type) = registry', 'enum diferente ou ausente: rode --write');
+const py = readFileSync(join(SK, 'scripts', 'validate_project.py'), 'utf8');
+check(/modulation\.json/.test(py) && !/MOD_SRC = \{"bass"/.test(py), 'modulação: o validador lê o registry (sem lista própria)', 'validate_project.py ainda tem lista fixa');
+const word = (txt, w) => new RegExp('\\b' + w + '\\b').test(txt);
+const audioDoc = readFileSync(join(SK, 'references', 'audio-bus.md'), 'utf8');
+check(ids.every(i => word(audioDoc, i)), 'modulação: audio-bus.md cita todas as fontes', ids.filter(i => !word(audioDoc, i)).join(','));
+const schemaDoc = readFileSync(join(SK, 'references', 'project-schema.md'), 'utf8');
+check(generators.generators.every(g => word(schemaDoc, g.id)), 'camadas: project-schema.md cita todos os tipos', generators.generators.filter(g => !word(schemaDoc, g.id)).map(g => g.id).join(','));
+const inScope = ['supported', 'exportable', 'inputOnly'].flatMap(k => cap.items[k].map(y => y.toLowerCase()));
+check(cap.labels.length === 4 && !cap.outOfScope.some(x => inScope.includes(x)), 'capabilities: nenhum item fora de escopo em supported, exportable ou inputOnly', inScope.filter(x => cap.outOfScope.includes(x)).join(','));
+const capDoc = readFileSync(join(SK, 'references', 'capabilities.md'), 'utf8');
+check(cap.labels.every(l => capDoc.includes(l)) && Object.keys(cap.legacyLabels).every(l => py.includes(l)), 'capabilities: capabilities.md e o validador usam os rótulos do registry', '');
+console.log(fail ? `\n${fail} deriva(s).` : '\nregistry ok.');
+process.exit(fail ? 1 : 0);

@@ -227,8 +227,17 @@ def check_param(reg_def, key, val, where, out):
 
 SCHEMAS = ("ai-vj-generator/1", "ai-vj-generator/2")
 AUDIO_UNIFORMS = re.compile(r"\b(uBass|uMid|uHigh|uRms|uHit|uAud|uMidHit|uHighHit|uBassT|uMidT|uHighT|uAudT|uPres|uOnBeat|uBSin|uBSin2|uBSin4|uBTri)\b")
-MOD_SRC = {"bass", "mid", "high", "rms", "hit", "mhit", "hhit", "pres", "kick", "onset", "flux", "onbeat", "bsin", "bsin2", "bsin4", "btri", "lfo"}
-MOD_FREE = {"lfo", "onbeat", "bsin", "bsin2", "bsin4", "btri"}
+def _registry(name):
+    """registry/<name>.json: the single source of truth for modulation sources, layer types and capability labels."""
+    import json as _j
+    here = os.path.dirname(os.path.abspath(__file__))
+    with open(os.path.join(here, "..", "registry", name), encoding="utf-8") as f:
+        return _j.load(f)
+
+
+_MOD = _registry("modulation.json")["sources"]
+MOD_SRC = {m["id"] for m in _MOD}
+MOD_FREE = {m["id"] for m in _MOD if m.get("free")}
 DEFAULT_LAYER_NAMES = {"SHADER", "FORMA", "TEXTO", "IMAGEM", "VÍDEO", "VIDEO", "FUNDO", "LAYER", "CAMADA", "SHAPE", "TEXT", "IMAGE"}
 CONTRACT_KEYS = ("concept", "audienceEffect", "semioticIntent", "visualLanguage", "formLanguage", "materialLanguage",
                  "colorLogic", "spatialLogic", "motionLanguage", "typographyLanguage", "temporalArc", "loopGrammar",

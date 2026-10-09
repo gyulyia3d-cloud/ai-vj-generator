@@ -1,0 +1,68 @@
+{
+ "note": "Rótulos de capacidade (references/capabilities.md). Itens fora de escopo nunca entram em supported, exportable ou inputOnly.",
+ "labels": [
+  "supported",
+  "exportable",
+  "inputOnly",
+  "notSupported"
+ ],
+ "legacyLabels": {
+  "requiresBridge": "notSupported",
+  "conceptual": "notSupported"
+ },
+ "outOfScope": [
+  "osc",
+  "ndi",
+  "spout",
+  "syphon",
+  "sdi",
+  "midi",
+  "websocket",
+  "hap",
+  "mapping",
+  "projectionmapping",
+  "pixelmapgeneration",
+  "blueprintgeneration"
+ ],
+ "items": {
+  "supported": [
+   "preview",
+   "fullscreenPreview",
+   "audioInput",
+   "audioAnalysis",
+   "surfaceAnalysis",
+   "projectJson"
+  ],
+  "exportable": [
+   "pngSequence",
+   "pngSequenceAlpha",
+   "pngSequenceWhiteAlpha",
+   "mp4",
+   "webm",
+   "contactSheet",
+   "manifest",
+   "region",
+   "perLayer"
+  ],
+  "inputOnly": [
+   "surfaceBitmap",
+   "blueprint",
+   "plan",
+   "pixelMap",
+   "photograph",
+   "mask",
+   "referenceImage"
+  ],
+  "notSupported": [
+   "midi",
+   "osc",
+   "ndi",
+   "spout",
+   "syphon",
+   "sdi",
+   "websocket",
+   "mapping",
+   "projectionMapping"
+  ]
+ }
+}

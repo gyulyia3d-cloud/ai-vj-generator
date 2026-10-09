@@ -221,6 +221,9 @@ for (const [f, label] of [['v7_check.mjs', 'áudio V7 (tempo integrado fecha o l
   try { execFileSync(process.execPath, [join(SKILL, 'scripts', f)], { stdio: 'pipe' }); ok(label); }
   catch (e) { e.status === 3 ? console.log(`  --   ${f} pulado (sem navegador)`) : bad(`${f}: ` + String(e.stdout).split(NL).filter(l => /ERRO/.test(l)).slice(0, 4).join(' | ')); }
 }
+// fase 1: registry (geradores, parâmetros, modulação, capacidades) sem deriva entre motor, esquema, validador e docs
+try { execFileSync(process.execPath, [join(ROOT, 'scripts', 'registry.mjs'), '--check'], { stdio: 'pipe' }); ok('registry: motor, esquema, validador e docs batem com registry/*.json'); }
+catch (e) { e.status === 3 ? console.log('  --   registry pulado (sem navegador)') : bad('registry: ' + String(e.stdout).split(NL).filter(l => /ERRO/.test(l)).slice(0, 4).join(' | ')); }
 // fase 2: famílias da biblioteca e galeria de referência
 try { execFileSync('python', [join(SKILL, 'scripts', 'families.py'), 'check'], { stdio: 'pipe' }); ok('famílias: o manifesto cobre todos os geradores, receitas e módulos GLSL'); }
 catch (e) { bad('families: ' + String(e.stdout || e.stderr).trim().slice(0, 200)); }

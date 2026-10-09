@@ -1,0 +1,37 @@
+{
+ "note": "Versões de esquema e caminho de migração (fase 19 formaliza o pipeline).",
+ "current": "ai-vj-generator/2",
+ "legacy": [
+  "ai-vj-generator/1"
+ ],
+ "migration": {
+  "ai-vj-generator/1": "abre sem mudança; campos novos recebem padrão no carregamento (normalize)"
+ },
+ "deprecated": [
+  {
+   "field": "capabilities.requiresBridge",
+   "replacement": "capabilities.notSupported",
+   "since": "3.1.0"
+  },
+  {
+   "field": "capabilities.conceptual",
+   "replacement": "capabilities.notSupported",
+   "since": "3.1.0"
+  },
+  {
+   "field": "meta.spec.archetype=object-mapping",
+   "replacement": "installation",
+   "since": "3.1.0"
+  },
+  {
+   "field": "meta.spec.archetype=immersive",
+   "replacement": "none (fora de escopo)",
+   "since": "3.1.0"
+  },
+  {
+   "field": "meta.spec.archetype=dooh",
+   "replacement": "none (fora de escopo)",
+   "since": "3.1.0"
+  }
+ ]
+}

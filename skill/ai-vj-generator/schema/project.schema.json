@@ -89,7 +89,7 @@
               "type": "object",
               "required": ["type"],
               "properties": {
-                "type": { "type": "string", "minLength": 1 },
+                "type": { "type": "string", "enum": ["bg","organism","structure","measure","data","hud","event","post","lines","instrument","bitfield","sim","parallax","splat","flow","tunnel","typewall","shader","image","video","model","shape","text","typeset","code","pixeltext","symbols","hazard","blocks","logo","isf","fx","synth","blobs"] },
                 "name": { "type": "string" },
                 "role": { "type": "string" },
                 "on": { "type": "boolean" },
@@ -103,7 +103,7 @@
                     "required": ["k", "src"],
                     "properties": {
                       "k": { "type": "string" },
-                      "src": { "type": "string", "enum": ["bass", "mid", "high", "rms", "hit", "mhit", "hhit", "pres", "onbeat", "bsin", "bsin2", "bsin4", "btri", "lfo"] },
+                      "src": { "type": "string", "enum": ["bass","mid","high","rms","hit","mhit","hhit","kick","onset","flux","pres","onbeat","bsin","bsin2","bsin4","btri","lfo"] },
                       "min": { "type": "number" }, "max": { "type": "number" },
                       "mode": { "type": "string", "enum": ["set", "add", "mul"] },
                       "cycles": { "type": "integer", "minimum": 1 },

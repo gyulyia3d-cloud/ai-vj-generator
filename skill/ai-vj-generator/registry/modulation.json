@@ -1,0 +1,154 @@
+{
+ "note": "Fonte única das fontes de modulação (layer.mod[].src). Engine, interface, esquema, validador e docs são conferidos contra este arquivo por scripts/registry.mjs --check.",
+ "sources": [
+  {
+   "id": "bass",
+   "role": "mass",
+   "label": {
+    "pt": "grave",
+    "en": "bass"
+   }
+  },
+  {
+   "id": "mid",
+   "role": "body",
+   "label": {
+    "pt": "médio",
+    "en": "mid"
+   }
+  },
+  {
+   "id": "high",
+   "role": "detail",
+   "label": {
+    "pt": "agudo",
+    "en": "high"
+   }
+  },
+  {
+   "id": "rms",
+   "role": "mass",
+   "label": {
+    "pt": "volume",
+    "en": "volume"
+   }
+  },
+  {
+   "id": "hit",
+   "role": "accent",
+   "label": {
+    "pt": "golpe do grave",
+    "en": "bass hit"
+   }
+  },
+  {
+   "id": "mhit",
+   "role": "accent",
+   "label": {
+    "pt": "golpe do médio",
+    "en": "mid hit"
+   }
+  },
+  {
+   "id": "hhit",
+   "role": "accent",
+   "label": {
+    "pt": "golpe do agudo",
+    "en": "high hit"
+   }
+  },
+  {
+   "id": "kick",
+   "role": "accent",
+   "label": {
+    "pt": "kick (detector com histórico)",
+    "en": "kick (detector with history)"
+   }
+  },
+  {
+   "id": "onset",
+   "role": "accent",
+   "label": {
+    "pt": "ataque (qualquer)",
+    "en": "onset (any)"
+   }
+  },
+  {
+   "id": "flux",
+   "role": "detail",
+   "label": {
+    "pt": "fluxo espectral",
+    "en": "spectral flux"
+   }
+  },
+  {
+   "id": "pres",
+   "role": "body",
+   "label": {
+    "pt": "presença",
+    "en": "presence"
+   }
+  },
+  {
+   "id": "onbeat",
+   "role": "time",
+   "free": true,
+   "label": {
+    "pt": "onda: no beat",
+    "en": "wave: on the beat"
+   }
+  },
+  {
+   "id": "bsin",
+   "role": "time",
+   "free": true,
+   "label": {
+    "pt": "onda: seno por beat",
+    "en": "wave: sine per beat"
+   }
+  },
+  {
+   "id": "bsin2",
+   "role": "time",
+   "free": true,
+   "label": {
+    "pt": "onda: seno por 2 beats",
+    "en": "wave: sine per 2 beats"
+   }
+  },
+  {
+   "id": "bsin4",
+   "role": "time",
+   "free": true,
+   "label": {
+    "pt": "onda: seno por 4 beats",
+    "en": "wave: sine per 4 beats"
+   }
+  },
+  {
+   "id": "btri",
+   "role": "time",
+   "free": true,
+   "label": {
+    "pt": "onda: triângulo por beat",
+    "en": "wave: triangle per beat"
+   }
+  },
+  {
+   "id": "lfo",
+   "role": "time",
+   "free": true,
+   "label": {
+    "pt": "LFO (ciclos inteiros por loop)",
+    "en": "LFO (whole cycles per loop)"
+   }
+  }
+ ],
+ "roles": {
+  "mass": "escala, peso, brilho de base",
+  "body": "corpo e presença",
+  "detail": "detalhe fino",
+  "accent": "acento e golpe",
+  "time": "não depende de áudio; vale sem fonte conectada"
+ }
+}
