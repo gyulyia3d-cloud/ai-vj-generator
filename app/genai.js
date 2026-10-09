@@ -81,12 +81,17 @@ const GENAI = (() => {
   const POOL_HERO = {}, POOL_STRUCT = {};
   for (const mm of Object.values(MOODS)) { for (const [t, pp] of mm.hero) if (!(t in POOL_HERO)) POOL_HERO[t] = pp; for (const [t, pp] of mm.structure) if (!(t in POOL_STRUCT)) POOL_STRUCT[t] = pp; }
   POOL_STRUCT.structure = POOL_STRUCT.structure || { grid: 100 };
+  /* fase 8: campo e glifos não estão em nenhuma tabela de humor; entram só pelo conceito (verbos) */
+  POOL_HERO.field = { kind: 'ISOLINHAS' }; POOL_HERO.glyphs = { source: 'noise', cell: 18 };
+  const pickBy = (ir, map, i, dflt) => ir.visualVerbs.length ? (map[ir.visualVerbs[i % ir.visualVerbs.length]] || dflt) : dflt;
+  /* a rampa dos glifos vem do título: ' ' + as letras sem repetir, na ordem em que aparecem */
+  const glyphRamp = brief => { const t = Array.from(String((brief.text || {}).title || '').toUpperCase().replace(/\s+/g, '')), u = []; for (const ch of t) if (!u.includes(ch)) u.push(ch); return u.length ? ' ' + u.join('') : null; };
   const QUIET = { 'GRADE SDF': [5, 1, 0.3, 0.06], FAIXAS: [8, 1, 0.35, 0.15], 'INTERFERÊNCIA': [6, 1, 0.25, 0.3], 'CÉLULAS': [4, 1, 0.25, 0.08], 'ANÉIS SDF': [6, 1, 0.2, 0.35], KALEIDO: [6, 2.5, 0.4, 0.3], 'CAMPO FBM': [1.6, 0.5, 0.7, 1.0], 'FLUXO WARP': [1.2, 0.8, 0.4, 1.0] };
   const INSTR = { low: ['rings', 'radar', 'scope'], high: ['bars', 'radial', 'heat'] };
   const ARC = ['ESTABLISH', 'BUILD', 'PEAK', 'RELEASE', 'TURN', 'CODA'], ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
   const ARCH = { led: 'stage-led', projection: 'facade-mapping', mapping: 'installation', multi: 'led-architecture', screen: 'clip-pack' };
-  const HERO_TARGET = { tunnel: 'size', lines: 'weight', shape: 'size', organism: 'breathe', flow: 'amp', typewall: 'fill' }, STRUCT_TARGET = { tunnel: 'size', lines: 'weight', shape: 'size' };
-  const TARGET_DEFAULT = { size: 1, weight: 2, breathe: 0.5, amp: 0.12, fill: 0.82 };
+  const HERO_TARGET = { tunnel: 'size', lines: 'weight', shape: 'size', organism: 'breathe', flow: 'amp', typewall: 'fill', field: 'gain', glyphs: 'gain' }, STRUCT_TARGET = { tunnel: 'size', lines: 'weight', shape: 'size' };
+  const TARGET_DEFAULT = { size: 1, weight: 2, breathe: 0.5, amp: 0.12, fill: 0.82, gain: 1 };
   const AUDIO_LINE = { none: 'the picture ignores the music.', subtle: 'the music only breathes the ground.', structural: 'the music drives structure and scale, never every hit.', rhythmic: 'kick drives the hero, hats drive the structure, at most three reactive layers.', full: 'the music drives most layers; the instrument layer shows the signal.' };
   const tension = e => e < 0.35 ? 'relaxed' : (e < 0.7 ? 'balanced' : 'assertive');
 
@@ -112,7 +117,9 @@ const GENAI = (() => {
     const surf = (brief.surface || {}).type || 'screen', led = ['led', 'multi', 'projection', 'mapping'].includes(surf), m = mood || MOODS.minimal;
     const moods = brief.mood || [], tag = (moods.length ? moods[i % Math.max(1, moods.length)] : 'composition').toUpperCase(), reactive = strat !== 'none';
     let [heroT, heroP] = m.hero[i % m.hero.length]; heroP = Object.assign({}, heroP);
-    if (drv) { heroT = ir.hierarchy.hero[i % ir.hierarchy.hero.length]; const mine = m.hero.find(h => h[0] === heroT); heroP = Object.assign({}, mine ? mine[1] : (POOL_HERO[heroT] || {})); if (heroT === 'lines' && COMPOSITION.lineDir(cmp)) heroP.dir = COMPOSITION.lineDir(cmp); }
+    if (drv) { heroT = ir.hierarchy.hero[i % ir.hierarchy.hero.length]; const mine = m.hero.find(h => h[0] === heroT); heroP = Object.assign({}, mine ? mine[1] : (POOL_HERO[heroT] || {})); if (heroT === 'lines' && COMPOSITION.lineDir(cmp)) heroP.dir = COMPOSITION.lineDir(cmp);
+      if (heroT === 'field') heroP.kind = pickBy(ir, CREATIVE.DATA.fieldKinds, i, 'ISOLINHAS');
+      if (heroT === 'glyphs') { heroP.source = pickBy(ir, CREATIVE.DATA.glyphSources, i, 'noise'); const rp = glyphRamp(brief); if (rp) heroP.ramp = rp; } }
     let texture = null;
     if (heroT === 'bitfield') {
       texture = heroP; const alt = m.hero.filter(h => h[0] !== 'bitfield');

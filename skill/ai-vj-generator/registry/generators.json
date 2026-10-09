@@ -5683,6 +5683,413 @@
    "deterministic": true,
    "surfaceAware": false,
    "performanceClass": "medium"
+  },
+  {
+   "id": "field",
+   "category": "Shader",
+   "name": "Campo",
+   "renderMode": "canvas2d",
+   "parameters": [
+    {
+     "id": "kind",
+     "type": "select",
+     "default": "ISOLINHAS",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Regra",
+     "options": [
+      "ISOLINHAS",
+      "CORRENTES",
+      "CELULAS",
+      "TRUCHET",
+      "PONTOS",
+      "MOIRE",
+      "METABOLAS",
+      "INTERFERENCIA",
+      "PONTILHADO",
+      "RELEVO",
+      "GRADE DEFORMADA",
+      "POLAR"
+     ],
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "media",
+     "type": "select",
+     "default": "",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Imagem-fonte (vazio = campo de ruído)",
+     "options": [],
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "fit",
+     "type": "select",
+     "default": "cover",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Encaixe da imagem",
+     "options": [
+      "cover",
+      "contain",
+      "fill"
+     ],
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "invert",
+     "type": "boolean",
+     "default": false,
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Inverter o campo",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "gain",
+     "type": "number",
+     "default": 1,
+     "min": 0,
+     "max": 4,
+     "step": 0.01,
+     "label": "Contraste do campo",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "p1",
+     "type": "number",
+     "default": 3,
+     "min": -400,
+     "max": 400,
+     "step": 0.01,
+     "label": "P1",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "p2",
+     "type": "number",
+     "default": 10,
+     "min": -400,
+     "max": 400,
+     "step": 0.01,
+     "label": "P2",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "p3",
+     "type": "number",
+     "default": 0.16,
+     "min": -400,
+     "max": 400,
+     "step": 0.01,
+     "label": "P3",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "p4",
+     "type": "number",
+     "default": 0.5,
+     "min": -400,
+     "max": 400,
+     "step": 0.01,
+     "label": "P4",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "alphaMode",
+     "type": "select",
+     "default": "alpha",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Saída",
+     "options": [
+      "alpha",
+      "opaque"
+     ],
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "res",
+     "type": "number",
+     "default": 1,
+     "min": 0.25,
+     "max": 1,
+     "step": 0.01,
+     "label": "Resolução interna",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "c1",
+     "type": "color",
+     "default": "primary",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Cor 1",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "c2",
+     "type": "color",
+     "default": "accent",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Cor 2",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "cbg",
+     "type": "color",
+     "default": "bg",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Fundo",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    }
+   ],
+   "audioRoles": [
+    "mass",
+    "body",
+    "detail",
+    "accent"
+   ],
+   "supportsAlpha": true,
+   "deterministic": true,
+   "surfaceAware": false,
+   "performanceClass": "medium"
+  },
+  {
+   "id": "glyphs",
+   "category": "Texto",
+   "name": "Glifos",
+   "renderMode": "canvas2d",
+   "parameters": [
+    {
+     "id": "source",
+     "type": "select",
+     "default": "noise",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Campo",
+     "options": [
+      "noise",
+      "radial",
+      "wave",
+      "spiral",
+      "image"
+     ],
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "ramp",
+     "type": "text",
+     "default": " .:-=+*#%@",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Rampa de caracteres (do mais vazio ao mais cheio)",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "cell",
+     "type": "number",
+     "default": 18,
+     "min": 6,
+     "max": 160,
+     "step": 1,
+     "label": "Célula (px a 1080)",
+     "options": null,
+     "unit": "px",
+     "semanticRole": "generator"
+    },
+    {
+     "id": "font",
+     "type": "select",
+     "default": "mono",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Fonte",
+     "options": [
+      "archivo",
+      "bebas",
+      "mono",
+      "helvetica"
+     ],
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "weight",
+     "type": "number",
+     "default": 700,
+     "min": 100,
+     "max": 900,
+     "step": 100,
+     "label": "Peso",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "scale",
+     "type": "number",
+     "default": 3,
+     "min": 0.5,
+     "max": 20,
+     "step": 0.01,
+     "label": "Escala do campo",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "cycles",
+     "type": "number",
+     "default": 1,
+     "min": 0,
+     "max": 8,
+     "step": 1,
+     "label": "Voltas por loop",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "gain",
+     "type": "number",
+     "default": 1,
+     "min": 0,
+     "max": 4,
+     "step": 0.01,
+     "label": "Contraste do campo",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "invert",
+     "type": "boolean",
+     "default": false,
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Inverter",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "shuffle",
+     "type": "number",
+     "default": 0,
+     "min": 0,
+     "max": 1,
+     "step": 0.01,
+     "label": "Embaralhar (passos por loop)",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "media",
+     "type": "select",
+     "default": "",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Imagem-fonte (campo = image)",
+     "options": [],
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "fit",
+     "type": "select",
+     "default": "cover",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Encaixe da imagem",
+     "options": [
+      "cover",
+      "contain",
+      "fill"
+     ],
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "c1",
+     "type": "color",
+     "default": "secondary",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Cor dos valores baixos",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "c2",
+     "type": "color",
+     "default": "primary",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Cor dos valores altos",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    }
+   ],
+   "audioRoles": [
+    "mass",
+    "body",
+    "detail",
+    "accent"
+   ],
+   "supportsAlpha": true,
+   "deterministic": true,
+   "surfaceAware": false,
+   "performanceClass": "medium"
   }
  ]
 }

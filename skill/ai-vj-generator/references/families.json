@@ -472,6 +472,34 @@
    "cost": "low",
    "maturity": "stable",
    "note": "Reads the stack below it like fx. Stateless: ids follow area order, not identity over time."
+  },
+  "field": {
+   "family": "figure",
+   "role": "scalar field drawn by one of 12 rules (isolines, flow lines, cells, Truchet, dots, moire, metaballs, interference, stipple, relief, warped grid, polar); an image can be the source of the field",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "medium",
+   "maturity": "stable",
+   "note": "Without an image the field is noise that walks a closed circle per loop. With `media` the same rule draws the image. Heavy on LED walls at full resolution: use `res` 0.5."
+  },
+  "glyphs": {
+   "family": "information",
+   "role": "generative typography: a grid of characters chosen from a ramp by a field (noise, radial, wave, spiral or an image)",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "medium",
+   "maturity": "stable",
+   "note": "The ramp is any string, from emptiest to fullest; the brief title becomes the ramp when the concept picks it. Cell size is in px at 1080 high."
   }
  },
  "recipes": {

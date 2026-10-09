@@ -205,6 +205,9 @@ How it closes the loop: it warms up one loop, records two, and cross-fades them 
 
 **Positioning.** The text block is vertically centered on the canvas. Its horizontal anchor depends on `align`: `left` → 6% of the width, `center` → 50%, `right` → 94%. Common `x`/`y` are **offsets in canvas pixels from that anchor**, not absolute positions. Examples at 1920×1080: a flush-left caption in the bottom-left corner is `align: left, x: 0, y: 420`; top-right is `align: right, x: 0, y: -420`. Never use large negative `x` with `align: left`: it pushes the text off the canvas.
 
+### `field` and `glyphs` — fields, topologies and generative typography (phase 8)
+- `field`: `p.kind` (12 rules: `ISOLINHAS`, `CORRENTES`, `CELULAS`, `TRUCHET`, `PONTOS`, `MOIRE`, `METABOLAS`, `INTERFERENCIA`, `PONTILHADO`, `RELEVO`, `GRADE DEFORMADA`, `POLAR`), `p.p1..p4` by rule, `p.gain`, `p.invert`, `p.media` (an image as the field; empty = noise), `p.fit`. `glyphs`: `p.source` (`noise`, `radial`, `wave`, `spiral`, `image`), `p.ramp` (characters from emptiest to fullest), `p.cell`, `p.cycles`, `p.shuffle`, `p.media`. Both close the loop. See `field-layer.md`.
+
 ### `model`, `isf`, `fx`, `synth`, `blobs` — later layer types
 - `model`: 3D object (media slot). `isf`: one of the 84 library generators, chosen by `p.lib` (`isf-layer.md`). `fx`: one-pass effect over the layers below (`fx-layer.md`). `synth`: one-line chain compiled to a shader (`synth-chain.md`). `blobs`: detect and mark regions of the image below (`blob-layer.md`).
 

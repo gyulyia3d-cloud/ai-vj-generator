@@ -93,6 +93,14 @@
   "lines": {
    "ms": 5.09,
    "firstMs": 6.7
+  },
+  "field": {
+   "ms": 8.31,
+   "firstMs": 30
+  },
+  "glyphs": {
+   "ms": 10.81,
+   "firstMs": 12
   }
  }
 }

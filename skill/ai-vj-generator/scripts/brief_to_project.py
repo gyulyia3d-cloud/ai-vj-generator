@@ -77,13 +77,32 @@ for _m in MOODS.values():
     for _t, _p in _m["structure"]:
         POOL_STRUCT.setdefault(_t, _p)
 POOL_STRUCT.setdefault("structure", {"grid": 100})
+# phase 8: field and glyphs are in no mood table; they enter only through the concept (verbs)
+POOL_HERO["field"] = {"kind": "ISOLINHAS"}
+POOL_HERO["glyphs"] = {"source": "noise", "cell": 18}
+
+
+def pick_by(ir, mapping, i, dflt):
+    vs = ir["visualVerbs"]
+    return mapping.get(vs[i % len(vs)], dflt) if vs else dflt
+
+
+def glyph_ramp(brief):
+    """The ramp of the glyphs comes from the title: a space and its letters without repeats, in order of appearance."""
+    seen = []
+    for ch in "".join(str((brief.get("text") or {}).get("title", "")).upper().split()):
+        if ch not in seen:
+            seen.append(ch)
+    return " " + "".join(seen) if seen else None
+
+
 ARC = ["ESTABLISH", "BUILD", "PEAK", "RELEASE", "TURN", "CODA"]
 ROMAN = ["I", "II", "III", "IV", "V", "VI"]
 ARCH = {"led": "stage-led", "projection": "facade-mapping", "mapping": "installation", "multi": "led-architecture", "screen": "clip-pack"}
 # parameter the motion profile plays on, per generator (all numeric, default > 0, so a 'mul' modulation scales them)
-HERO_TARGET = {"tunnel": "size", "lines": "weight", "shape": "size", "organism": "breathe", "flow": "amp", "typewall": "fill"}
+HERO_TARGET = {"tunnel": "size", "lines": "weight", "shape": "size", "organism": "breathe", "flow": "amp", "typewall": "fill", "field": "gain", "glyphs": "gain"}
 STRUCT_TARGET = {"tunnel": "size", "lines": "weight", "shape": "size"}
-TARGET_DEFAULT = {"size": 1, "weight": 2, "breathe": 0.5, "amp": 0.12, "fill": 0.82}  # engine defaults, written into p so the modulation base is explicit
+TARGET_DEFAULT = {"size": 1, "weight": 2, "breathe": 0.5, "amp": 0.12, "fill": 0.82, "gain": 1}  # engine defaults, written into p so the modulation base is explicit
 TENSION = lambda e: "relaxed" if e < 0.35 else ("balanced" if e < 0.7 else "assertive")
 
 
@@ -139,6 +158,13 @@ def build_comp(i, n, brief, mood, strat, rnd, prof=None, ir=None, cmp=None):
         hero_p = dict(mine[1] if mine else POOL_HERO.get(hero_t, {}))
         if hero_t == "lines" and comp_ir.line_dir(cmp):
             hero_p["dir"] = comp_ir.line_dir(cmp)
+        if hero_t == "field":
+            hero_p["kind"] = pick_by(ir, cir.DATA["fieldKinds"], i, "ISOLINHAS")
+        if hero_t == "glyphs":
+            hero_p["source"] = pick_by(ir, cir.DATA["glyphSources"], i, "noise")
+            rp = glyph_ramp(brief)
+            if rp:
+                hero_p["ramp"] = rp
     texture = None
     if hero_t == "bitfield":
         # a bit field fills about half of the frame by nature: it is texture, not a figure. It takes the structure slot and the next generator becomes the hero.

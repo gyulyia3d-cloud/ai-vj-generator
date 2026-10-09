@@ -33,7 +33,7 @@ try {
   const s = JSON.parse(await E(`(() => { const t = document.getElementById('pTyp'); t.value = 'measure'; t.dispatchEvent(new Event('change', { bubbles: true })); const L = AIVJ.project.compositions[0].layers[1]; return JSON.stringify({ type: L.type, x: L.p.x, keys: Object.keys(L.p) }); })()`));
   check(s.type === 'measure' && s.x === 10 && s.keys.join() === 'x', 'trocar o tipo nos parâmetros muda L.type, guarda a posição e zera o resto', JSON.stringify(s));
   const c2 = JSON.parse(await E(`(() => { const c = document.getElementById('pCat'); c.value = 'Shader'; c.dispatchEvent(new Event('change', { bubbles: true })); const L = AIVJ.project.compositions[0].layers[1]; return JSON.stringify({ type: L.type, opts: [...document.getElementById('pTyp').options].map(o => o.value) }); })()`));
-  check(c2.type === 'shader' && c2.opts.join() === 'shader,isf,synth', 'trocar a categoria vai para o primeiro tipo dela e lista os tipos irmãos (shader, isf, synth)', JSON.stringify(c2));
+  check(c2.type === 'shader' && c2.opts.join() === 'shader,isf,synth,field', 'trocar a categoria vai para o primeiro tipo dela e lista os tipos irmãos (shader, isf, synth, field)', JSON.stringify(c2));
 } catch (e) { bad('exceção: ' + (e.message || e)); }
 await page.close();
 console.log(fail ? `\n${fail} falha(s).` : '\ncamadas ok.');

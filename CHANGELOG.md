@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.11.0 (09/10/2026) · Fase 8: 2D generativo avançado
+
+- **Camada `field`** (GPU, `app/field.js`): um campo escalar (ruído que anda numa volta fechada por loop, ou a luminância de uma imagem do projeto em `p.media`) desenhado por uma de **12 regras**: isolinhas, correntes (linhas de fluxo), células (Voronoi), Truchet, pontos em favo, moiré, metabolas, interferência, pontilhado, relevo, grade deformada e polar. `p.gain` (contraste do campo) e `p.invert`. Imagem como fonte: a mesma regra desenha outra origem.
+- **Camada `glyphs`** (tipografia generativa em grade): cada célula escolhe um caractere de uma rampa (`p.ramp`, do mais vazio ao mais cheio) segundo um campo (`noise`, `radial`, `wave`, `spiral` ou `image`) e uma cor entre `c1` e `c2`; `shuffle` embaralha em 8 passos por loop, de forma determinística. É auditada para determinismo como as outras camadas de canvas 2D.
+- **Entram pelo conceito:** `field` e `glyphs` são tipos de herói do Creative IR (`heroTypes`, pesos nos verbos); `fieldKinds` e `glyphSources` ligam cada um dos 32 verbos a uma regra e a um campo (`drift` e `flow` pedem CORRENTES, `fragment` e `assemble` pedem TRUCHET...). A rampa dos glifos vem do título do briefing. O Animation IR toca o arquétipo em `gain`. Gerador do navegador e `brief_to_project.py` iguais.
+- Editor: rótulos de P1 a P4 por regra, troca de regra carrega os padrões, validação (imagem-fonte ausente é erro, shader compila), categorias Shader › Campo e Texto › Glifos. `families.json` e `families-cost.json` com as duas camadas.
+- Teste novo `field_check.mjs` (12 regras diferentes entre si, determinismo, loop fecha nas 16 combinações, imagem conduz com resposta conhecida, inversão, rampa, embaralhar, validador, Python = navegador, controle negativo); `references/field-layer.md`.
+
 ## 3.10.0 (09/10/2026) · Fase 7: Animation IR
 
 - **Animation IR** (`animation_ir.py`, `app/animation.js`, dados em `registry/animation.json`): uma por composição, em `meta.animationIR`. Diz como as coisas se movem, em tempo musical: arquétipo, relógio (`loopFrames`, ciclos por loop, quadros por ciclo, semicolcheia em quadros), easing, antecipação e assentamento medidos em quadros, quem lidera e quem segue e quantas semicolcheias atrasado (herói, estrutura, chão, instrumento, texto), coreografia das cinco fases, cinco eventos na grade de batidas e o contrato do loop.
