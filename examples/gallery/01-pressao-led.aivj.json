@@ -190,7 +190,7 @@
             "h": 0.55
           },
           "support": {
-            "x": 0.473,
+            "x": 0.427,
             "y": 0.7,
             "w": 0.053,
             "h": 0.3
@@ -209,6 +209,13 @@
             "w": 1,
             "h": 0.18,
             "why": "left empty on purpose: nothing is placed here"
+          },
+          {
+            "x": 0.488,
+            "y": 0,
+            "w": 0.024,
+            "h": 1,
+            "why": "fold seam: nothing straddles it"
           }
         ],
         "focalPoint": {
@@ -223,7 +230,7 @@
         "balance": {
           "type": "asymmetric",
           "centre": {
-            "x": 0.45,
+            "x": 0.441,
             "y": 0.57
           }
         },
@@ -319,7 +326,18 @@
             }
           ]
         },
-        "description": "a band that reads left to right"
+        "description": "a band that reads left to right",
+        "surface": {
+          "hard": [
+            "foldBands:EXPLICIT"
+          ],
+          "adjusted": [
+            {
+              "zone": "support",
+              "rule": "foldBands"
+            }
+          ]
+        }
       },
       {
         "version": 1,
@@ -343,7 +361,7 @@
         },
         "zones": {
           "hero": {
-            "x": 0.456,
+            "x": 0.52,
             "y": 0.25,
             "w": 0.089,
             "h": 0.5
@@ -374,10 +392,17 @@
             "w": 0.2,
             "h": 0.3,
             "why": "left empty on purpose: nothing is placed here"
+          },
+          {
+            "x": 0.488,
+            "y": 0,
+            "w": 0.024,
+            "h": 1,
+            "why": "fold seam: nothing straddles it"
           }
         ],
         "focalPoint": {
-          "x": 0.501,
+          "x": 0.565,
           "y": 0.5
         },
         "visualMass": {
@@ -388,7 +413,7 @@
         "balance": {
           "type": "balanced",
           "centre": {
-            "x": 0.458,
+            "x": 0.48,
             "y": 0.5
           }
         },
@@ -402,7 +427,7 @@
           ],
           [
             0.55,
-            0.9,
+            0.25,
             0.25
           ],
           [
@@ -430,7 +455,7 @@
         },
         "edgeBehavior": "bleed",
         "textAnchor": {
-          "cx": 0.5,
+          "cx": 0.25,
           "cy": 0.85,
           "align": "center"
         },
@@ -484,7 +509,22 @@
             }
           ]
         },
-        "description": "the weight is shared across the whole width"
+        "description": "the weight is shared across the whole width",
+        "surface": {
+          "hard": [
+            "foldBands:EXPLICIT"
+          ],
+          "adjusted": [
+            {
+              "zone": "hero",
+              "rule": "foldBands"
+            },
+            {
+              "zone": "text",
+              "rule": "foldBands"
+            }
+          ]
+        }
       },
       {
         "version": 1,
@@ -539,6 +579,13 @@
             "w": 0.4,
             "h": 0.45,
             "why": "left empty on purpose: nothing is placed here"
+          },
+          {
+            "x": 0.488,
+            "y": 0,
+            "w": 0.024,
+            "h": 1,
+            "why": "fold seam: nothing straddles it"
           }
         ],
         "focalPoint": {
@@ -649,7 +696,13 @@
             }
           ]
         },
-        "description": "the figure sits off centre and the open third answers it"
+        "description": "the figure sits off centre and the open third answers it",
+        "surface": {
+          "hard": [
+            "foldBands:EXPLICIT"
+          ],
+          "adjusted": []
+        }
       }
     ],
     "animationIR": [
@@ -1199,7 +1252,178 @@
         },
         "description": "quantised, hard steps on the beat; everything moves together, nothing rings"
       }
-    ]
+    ],
+    "surfaceIR": {
+      "version": 1,
+      "canvas": {
+        "w": 4500,
+        "h": 800,
+        "aspect": 5.625,
+        "aspectClass": "ultrawide",
+        "orientation": "wide"
+      },
+      "facts": [
+        {
+          "id": "size",
+          "value": [
+            4500,
+            800
+          ],
+          "confidence": "EXPLICIT",
+          "basis": "declared canvas size in pixels"
+        },
+        {
+          "id": "aspect",
+          "value": 5.625,
+          "confidence": "EXPLICIT",
+          "basis": "exact arithmetic on the declared size"
+        },
+        {
+          "id": "walls",
+          "value": 2,
+          "confidence": "EXPLICIT",
+          "basis": "folds declared by the author"
+        },
+        {
+          "id": "activeArea",
+          "value": 1.0,
+          "confidence": "INFERRED",
+          "basis": "no regions given: the whole canvas is treated as surface"
+        },
+        {
+          "id": "layout",
+          "value": null,
+          "confidence": "UNKNOWN",
+          "basis": "no regions to measure"
+        },
+        {
+          "id": "symmetry",
+          "value": null,
+          "confidence": "UNKNOWN",
+          "basis": "no regions to measure"
+        },
+        {
+          "id": "readingAxis",
+          "value": "x",
+          "confidence": "INFERRED",
+          "basis": "the long side of the canvas is where the eye travels"
+        },
+        {
+          "id": "pitch",
+          "value": 3.9,
+          "confidence": "EXPLICIT",
+          "basis": "declared by the author"
+        },
+        {
+          "id": "viewingDistance",
+          "value": 40,
+          "confidence": "EXPLICIT",
+          "basis": "declared by the author (the farthest viewer)"
+        },
+        {
+          "id": "legibility",
+          "value": {
+            "capPx": 54,
+            "linePx": 9
+          },
+          "confidence": "INFERRED",
+          "basis": "visual-angle rules of thumb applied to the declared pitch and distance"
+        }
+      ],
+      "walls": [
+        {
+          "from": 0.0,
+          "to": 0.5
+        },
+        {
+          "from": 0.5,
+          "to": 1.0
+        }
+      ],
+      "regions": null,
+      "grid": null,
+      "constraints": [
+        {
+          "id": "foldBands",
+          "kind": "seam",
+          "strength": "hard",
+          "confidence": "EXPLICIT",
+          "bands": [
+            {
+              "at": 0.5,
+              "from": 0.488,
+              "to": 0.512
+            }
+          ],
+          "rule": "hero, structure and support zones do not straddle a fold; text keeps off the fold"
+        },
+        {
+          "id": "safeArea",
+          "kind": "margin",
+          "strength": "soft",
+          "confidence": "INFERRED",
+          "value": {
+            "x": 0.05,
+            "y": 0.05,
+            "w": 0.9,
+            "h": 0.9
+          },
+          "rule": "default margin: no regions to measure"
+        },
+        {
+          "id": "readingAxis",
+          "kind": "advice",
+          "strength": "soft",
+          "confidence": "INFERRED",
+          "value": "x",
+          "rule": "movement along the long side reads better than across it"
+        },
+        {
+          "id": "legibility",
+          "kind": "advice",
+          "strength": "soft",
+          "confidence": "INFERRED",
+          "value": {
+            "capPx": 54,
+            "linePx": 9
+          },
+          "rule": "smallest text and stroke that read, in pixels (rules of thumb)"
+        }
+      ],
+      "unknowns": [
+        {
+          "id": "depth",
+          "why": "a imagem 2D não diz se a superfície tem relevo ou profundidade",
+          "ask": "A superfície é plana ou tem relevo (volumes, recortes)?"
+        },
+        {
+          "id": "curvature",
+          "why": "curvatura não aparece em largura e altura",
+          "ask": "A superfície é plana, côncava, convexa ou em cilindro?"
+        },
+        {
+          "id": "ambientLight",
+          "why": "a luz do local muda contraste e cor percebidos",
+          "ask": "O local é escuro, penumbra ou com luz do dia?"
+        },
+        {
+          "id": "material",
+          "why": "o acabamento do painel muda brilho e moiré",
+          "ask": "Qual o acabamento (LED, tela, parede branca, outro)?"
+        },
+        {
+          "id": "regions",
+          "why": "sem as regiões ativas o canvas inteiro é tratado como superfície",
+          "ask": "Importe um CSV ou uma máscara PNG: há partes do canvas que não existem fisicamente?"
+        }
+      ],
+      "summary": {
+        "EXPLICIT": 5,
+        "DETECTED": 0,
+        "INFERRED": 3,
+        "UNKNOWN": 2
+      }
+    }
   },
   "canvas": {
     "w": 4500,
@@ -1414,7 +1638,7 @@
           "p": {
             "kind": "bars",
             "size": 0.28,
-            "cx": 0.5,
+            "cx": 0.45,
             "cy": 0.85,
             "n": 36,
             "weight": 3
@@ -1517,7 +1741,7 @@
             "audio": 0.75,
             "band": "bass",
             "size": 1,
-            "x": 2,
+            "x": 290,
             "y": 0,
             "sx": 0.71,
             "sy": 0.71,

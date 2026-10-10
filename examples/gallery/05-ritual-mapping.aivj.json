@@ -1187,7 +1187,156 @@
         },
         "description": "a slow build once per bar that drops at the end of the bar"
       }
-    ]
+    ],
+    "surfaceIR": {
+      "version": 1,
+      "canvas": {
+        "w": 1920,
+        "h": 1080,
+        "aspect": 1.778,
+        "aspectClass": "wide",
+        "orientation": "wide"
+      },
+      "facts": [
+        {
+          "id": "size",
+          "value": [
+            1920,
+            1080
+          ],
+          "confidence": "EXPLICIT",
+          "basis": "declared canvas size in pixels"
+        },
+        {
+          "id": "aspect",
+          "value": 1.778,
+          "confidence": "EXPLICIT",
+          "basis": "exact arithmetic on the declared size"
+        },
+        {
+          "id": "walls",
+          "value": 1,
+          "confidence": "INFERRED",
+          "basis": "no folds declared: one wall is assumed"
+        },
+        {
+          "id": "activeArea",
+          "value": 1.0,
+          "confidence": "INFERRED",
+          "basis": "no regions given: the whole canvas is treated as surface"
+        },
+        {
+          "id": "layout",
+          "value": null,
+          "confidence": "UNKNOWN",
+          "basis": "no regions to measure"
+        },
+        {
+          "id": "symmetry",
+          "value": null,
+          "confidence": "UNKNOWN",
+          "basis": "no regions to measure"
+        },
+        {
+          "id": "readingAxis",
+          "value": "x",
+          "confidence": "INFERRED",
+          "basis": "the long side of the canvas is where the eye travels"
+        },
+        {
+          "id": "pitch",
+          "value": null,
+          "confidence": "UNKNOWN",
+          "basis": "sem o passo do LED não há como saber o menor traço legível"
+        },
+        {
+          "id": "viewingDistance",
+          "value": null,
+          "confidence": "UNKNOWN",
+          "basis": "sem a distância do espectador mais distante não há como saber o menor texto legível"
+        },
+        {
+          "id": "legibility",
+          "value": null,
+          "confidence": "UNKNOWN",
+          "basis": "needs the LED pitch and the viewing distance"
+        }
+      ],
+      "walls": [
+        {
+          "from": 0.0,
+          "to": 1.0
+        }
+      ],
+      "regions": null,
+      "grid": null,
+      "constraints": [
+        {
+          "id": "safeArea",
+          "kind": "margin",
+          "strength": "soft",
+          "confidence": "INFERRED",
+          "value": {
+            "x": 0.05,
+            "y": 0.05,
+            "w": 0.9,
+            "h": 0.9
+          },
+          "rule": "default margin: no regions to measure"
+        },
+        {
+          "id": "readingAxis",
+          "kind": "advice",
+          "strength": "soft",
+          "confidence": "INFERRED",
+          "value": "x",
+          "rule": "movement along the long side reads better than across it"
+        }
+      ],
+      "unknowns": [
+        {
+          "id": "depth",
+          "why": "a imagem 2D não diz se a superfície tem relevo ou profundidade",
+          "ask": "A superfície é plana ou tem relevo (volumes, recortes)?"
+        },
+        {
+          "id": "curvature",
+          "why": "curvatura não aparece em largura e altura",
+          "ask": "A superfície é plana, côncava, convexa ou em cilindro?"
+        },
+        {
+          "id": "ambientLight",
+          "why": "a luz do local muda contraste e cor percebidos",
+          "ask": "O local é escuro, penumbra ou com luz do dia?"
+        },
+        {
+          "id": "material",
+          "why": "o acabamento do painel muda brilho e moiré",
+          "ask": "Qual o acabamento (LED, tela, parede branca, outro)?"
+        },
+        {
+          "id": "pitch",
+          "why": "sem o passo do LED não há como saber o menor traço legível",
+          "ask": "Qual o passo do pixel em mm?"
+        },
+        {
+          "id": "viewingDistance",
+          "why": "sem a distância do espectador mais distante não há como saber o menor texto legível",
+          "ask": "A que distância fica o espectador mais longe, em metros?"
+        },
+        {
+          "id": "regions",
+          "why": "sem as regiões ativas o canvas inteiro é tratado como superfície",
+          "ask": "Importe um CSV ou uma máscara PNG: há partes do canvas que não existem fisicamente?"
+        }
+      ],
+      "summary": {
+        "EXPLICIT": 2,
+        "DETECTED": 0,
+        "INFERRED": 3,
+        "UNKNOWN": 5
+      }
+    }
   },
   "canvas": {
     "w": 1920,

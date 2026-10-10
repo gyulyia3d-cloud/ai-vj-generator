@@ -87,6 +87,7 @@ Load only what the project needs.
 | Audio, BPM, beat sync, integrated time, band transients, `layer.mod` modulation | `references/audio-bus.md` |
 | A still image with depth (2.5D parallax), a depth map, Gaussian splats or a point cloud (.ply) | `references/depth-and-splats.md`, `scripts/depth_estimate.py` |
 | Where things go: the 12 spatial grammars, zones, negative space, the five phases (`meta.compositionIR`, `env` modulation) | `references/composition-ir.md` |
+| What is known about the surface and how sure: EXPLICIT / DETECTED / INFERRED / UNKNOWN, hard and soft constraints (`meta.surfaceIR`) | `references/surface-ir.md` |
 | How things move: the 8 motion archetypes, lags in sixteenth notes, events on the beat (`meta.animationIR`) | `references/animation-ir.md` |
 | Intention before technique: concept, 32 visual verbs, motifs, arc (`meta.creativeIR`, `brief.verbs`) | `references/creative-ir.md` |
 | Effects over time (trail, feedback, slit scan, displacement): the `temporal` layer | `references/temporal-layer.md` |

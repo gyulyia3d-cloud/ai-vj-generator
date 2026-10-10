@@ -19,6 +19,21 @@ function surLegHtml() {
   return inputs + `<dl class="kv"><dt>${T3('Altura mínima de letra', 'Minimum letter height')}</dt><dd>${lim.cap_height_min.px} px (${lim.cap_height_min.mm} mm)</dd><dt>${T3('Altura confortável', 'Comfortable height')}</dt><dd>${lim.cap_height_comfortable.px} px</dd><dt>${T3('Traço mínimo', 'Minimum stroke')}</dt><dd>${lim.line_weight_min_px} px</dd></dl>`
     + (r.warnings.length ? `<ul class="val">${r.warnings.map(w => `<li class="WARNING">${esc(w)}</li>`).join('')}</ul>` : `<p class="note">${T3('Nenhum texto ou traço abaixo do mínimo legível neste projeto.', 'No text or stroke below the readable minimum in this project.')}</p>`);
 }
+/* Surface IR: o que se sabe da superfície e com que confiança. EXPLICIT (declarado) e DETECTED (medido) restringem de verdade; INFERRED só aconselha; UNKNOWN vira pergunta. */
+const SUR_FACT = { size: ['Tamanho', 'Size'], aspect: ['Proporção', 'Aspect'], walls: ['Paredes', 'Walls'], activeArea: ['Área ativa', 'Active area'], layout: ['Arranjo das regiões', 'Region layout'], symmetry: ['Simetria', 'Symmetry'], readingAxis: ['Eixo de leitura', 'Reading axis'], pitch: ['Passo do LED (mm)', 'LED pitch (mm)'], viewingDistance: ['Distância máx. (m)', 'Max distance (m)'], legibility: ['Menor texto e traço (px)', 'Smallest text and stroke (px)'] };
+function surFactVal(f) {
+  const v = f.value; if (v === null || v === undefined) return '—';
+  if (f.id === 'size') return v[0] + '×' + v[1]; if (f.id === 'activeArea') return Math.round(v * 100) + '%'; if (f.id === 'symmetry') return 'H ' + v.h + ' · V ' + v.v; if (f.id === 'legibility') return v.capPx + ' / ' + v.linePx;
+  return String(v);
+}
+function surIrHtml() {
+  const sx = SURFACEIR.compile(SURFACEIR.fromProject(P)), en = ST.lang === 'en';
+  const rows = sx.facts.map(f => `<tr><td>${esc(SUR_FACT[f.id] ? T3(SUR_FACT[f.id][0], SUR_FACT[f.id][1]) : f.id)}</td><td>${esc(surFactVal(f))}</td><td><b class="conf conf-${f.confidence}">${f.confidence}</b></td><td class="note">${esc(f.basis)}</td></tr>`).join('');
+  const hard = sx.constraints.filter(c => c.strength === 'hard').map(c => c.id + ' (' + c.confidence + ')'), soft = sx.constraints.filter(c => c.strength === 'soft').map(c => c.id);
+  return `<table class="irt" id="sIr"><thead><tr><th>${T3('Fato', 'Fact')}</th><th>${T3('Valor', 'Value')}</th><th>${T3('Confiança', 'Confidence')}</th><th>${T3('Base', 'Basis')}</th></tr></thead><tbody>${rows}</tbody></table>
+    <p class="note" id="sIrCons"><b>${T3('Restringem (duras):', 'Constrain (hard):')}</b> ${esc(hard.join(', ') || T3('nenhuma', 'none'))}<br><b>${T3('Só aconselham (soft):', 'Advice only (soft):')}</b> ${esc(soft.join(', ') || T3('nenhuma', 'none'))}</p>
+    <details id="sIrUnk"><summary>${T3('Em aberto (UNKNOWN)', 'Open questions (UNKNOWN)')} · ${sx.unknowns.length}</summary><ul>${sx.unknowns.map(u => `<li><b>${esc(u.id)}</b>: ${esc(u.ask)}</li>`).join('')}</ul></details>`;
+}
 function renderSurface() {
   const el = pane('sur'); if (!el) return; const c = P.canvas, en = ST.lang === 'en', disp = c.displays || [];
   const cur = (SURFACE_PRESETS.find(q => q.type === c.target && q.w === c.w && q.h === c.h) || { id: '' }).id;
@@ -36,6 +51,7 @@ function renderSurface() {
     <div class="row"><button id="sTest">${T3('Adicionar composição de cartões de teste', 'Add a test-card composition')}</button></div>
     <p class="note">${T3('Grade, rampas, barras e quadrado em movimento para conferir a superfície antes do conteúdo.', 'Grid, ramps, bars and a moving square to check the surface before the content.')}</p>
     <h2 class="sec">${T3('Legibilidade', 'Legibility')}</h2>${surLegHtml()}
+    <h2 class="sec">${T3('Análise da superfície (Surface IR)', 'Surface analysis (Surface IR)')}</h2>${surIrHtml()}
     <div id="sMsg" class="note" role="status" aria-live="polite">${SUR.err.length ? '<b>' + T3('Atenção:', 'Warning:') + '</b><br>' + SUR.err.map(esc).join('<br>') : esc(SUR.msg)}</div>`;
   surBind(el);
 }
@@ -61,7 +77,7 @@ function surBind(el) {
       } else res = SURFX.parseCsv(await f.text(), c.w, c.h);
       SUR.err = res.errs;
       if (!res.rects.length) { SUR.err.push(T3('Nenhum módulo válido no arquivo.', 'No valid module in the file.')); renderSurface(); return; }
-      c.displays = res.rects.map(r => ({ x: r.x, y: r.y, w: r.w, h: r.h, name: r.name })); commit(true, 'Regiões'); drawOverlay();
+      c.displays = res.rects.map(r => Object.assign({ x: r.x, y: r.y, w: r.w, h: r.h, name: r.name }, res.activeShare !== undefined ? { source: 'mask' } : {})); commit(true, 'Regiões'); drawOverlay();
       SUR.msg = T3(`${res.rects.length} módulo(s) importado(s). Desfazer (Ctrl+Z) volta ao mapa anterior.`, `${res.rects.length} module(s) imported. Undo (Ctrl+Z) returns to the previous map.`); renderSurface();
     } catch (err) { SUR.err = [T3('Não consegui ler o arquivo: ', 'Could not read the file: ') + err.message]; renderSurface(); }
   });

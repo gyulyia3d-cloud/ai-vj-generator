@@ -173,13 +173,13 @@
         },
         "zones": {
           "hero": {
-            "x": 0.214,
+            "x": 0.182,
             "y": 0.15,
             "w": 0.131,
             "h": 0.7
           },
           "secondary": {
-            "x": 0.648,
+            "x": 0.687,
             "y": 0.225,
             "w": 0.103,
             "h": 0.55
@@ -204,10 +204,24 @@
             "w": 1,
             "h": 0.18,
             "why": "left empty on purpose: nothing is placed here"
+          },
+          {
+            "x": 0.321,
+            "y": 0,
+            "w": 0.024,
+            "h": 1,
+            "why": "fold seam: nothing straddles it"
+          },
+          {
+            "x": 0.655,
+            "y": 0,
+            "w": 0.024,
+            "h": 1,
+            "why": "fold seam: nothing straddles it"
           }
         ],
         "focalPoint": {
-          "x": 0.279,
+          "x": 0.247,
           "y": 0.5
         },
         "visualMass": {
@@ -218,7 +232,7 @@
         "balance": {
           "type": "asymmetric",
           "centre": {
-            "x": 0.45,
+            "x": 0.445,
             "y": 0.57
           }
         },
@@ -260,7 +274,7 @@
         },
         "edgeBehavior": "bleed",
         "textAnchor": {
-          "cx": 0.7,
+          "cx": 0.83,
           "cy": 0.5,
           "align": "left"
         },
@@ -314,7 +328,26 @@
             }
           ]
         },
-        "description": "a band that reads left to right"
+        "description": "a band that reads left to right",
+        "surface": {
+          "hard": [
+            "foldBands:EXPLICIT"
+          ],
+          "adjusted": [
+            {
+              "zone": "hero",
+              "rule": "foldBands"
+            },
+            {
+              "zone": "secondary",
+              "rule": "foldBands"
+            },
+            {
+              "zone": "text",
+              "rule": "foldBands"
+            }
+          ]
+        }
       },
       {
         "version": 1,
@@ -338,19 +371,19 @@
         },
         "zones": {
           "hero": {
-            "x": 0.265,
+            "x": 0.353,
             "y": 0.12,
             "w": 0.15,
             "h": 0.8
           },
           "secondary": {
-            "x": 0.653,
+            "x": 0.687,
             "y": 0.17,
             "w": 0.094,
             "h": 0.5
           },
           "support": {
-            "x": 0.672,
+            "x": 0.687,
             "y": 0.7,
             "w": 0.056,
             "h": 0.3
@@ -369,10 +402,24 @@
             "w": 0.4,
             "h": 0.45,
             "why": "left empty on purpose: nothing is placed here"
+          },
+          {
+            "x": 0.321,
+            "y": 0,
+            "w": 0.024,
+            "h": 1,
+            "why": "fold seam: nothing straddles it"
+          },
+          {
+            "x": 0.655,
+            "y": 0,
+            "w": 0.024,
+            "h": 1,
+            "why": "fold seam: nothing straddles it"
           }
         ],
         "focalPoint": {
-          "x": 0.34,
+          "x": 0.428,
           "y": 0.52
         },
         "visualMass": {
@@ -383,7 +430,7 @@
         "balance": {
           "type": "asymmetric",
           "centre": {
-            "x": 0.484,
+            "x": 0.547,
             "y": 0.549
           }
         },
@@ -392,17 +439,17 @@
         "densityMap": [
           [
             0.25,
-            0.25,
+            0.9,
             0.25
           ],
           [
             0.25,
-            0.25,
+            0.9,
             0.25
           ],
           [
             0.25,
-            0.25,
+            0.9,
             0.05
           ]
         ],
@@ -425,7 +472,7 @@
         },
         "edgeBehavior": "contain",
         "textAnchor": {
-          "cx": 0.68,
+          "cx": 0.83,
           "cy": 0.5,
           "align": "left"
         },
@@ -479,7 +526,30 @@
             }
           ]
         },
-        "description": "the figure sits off centre and the open third answers it"
+        "description": "the figure sits off centre and the open third answers it",
+        "surface": {
+          "hard": [
+            "foldBands:EXPLICIT"
+          ],
+          "adjusted": [
+            {
+              "zone": "hero",
+              "rule": "foldBands"
+            },
+            {
+              "zone": "secondary",
+              "rule": "foldBands"
+            },
+            {
+              "zone": "support",
+              "rule": "foldBands"
+            },
+            {
+              "zone": "text",
+              "rule": "foldBands"
+            }
+          ]
+        }
       },
       {
         "version": 1,
@@ -534,6 +604,20 @@
             "w": 0.2,
             "h": 0.3,
             "why": "left empty on purpose: nothing is placed here"
+          },
+          {
+            "x": 0.321,
+            "y": 0,
+            "w": 0.024,
+            "h": 1,
+            "why": "fold seam: nothing straddles it"
+          },
+          {
+            "x": 0.655,
+            "y": 0,
+            "w": 0.024,
+            "h": 1,
+            "why": "fold seam: nothing straddles it"
           }
         ],
         "focalPoint": {
@@ -644,7 +728,13 @@
             }
           ]
         },
-        "description": "the weight is shared across the whole width"
+        "description": "the weight is shared across the whole width",
+        "surface": {
+          "hard": [
+            "foldBands:EXPLICIT"
+          ],
+          "adjusted": []
+        }
       }
     ],
     "animationIR": [
@@ -1194,7 +1284,178 @@
         },
         "description": "one continuous move per loop at a steady pace; no accent"
       }
-    ]
+    ],
+    "surfaceIR": {
+      "version": 1,
+      "canvas": {
+        "w": 5760,
+        "h": 1080,
+        "aspect": 5.333,
+        "aspectClass": "ultrawide",
+        "orientation": "wide"
+      },
+      "facts": [
+        {
+          "id": "size",
+          "value": [
+            5760,
+            1080
+          ],
+          "confidence": "EXPLICIT",
+          "basis": "declared canvas size in pixels"
+        },
+        {
+          "id": "aspect",
+          "value": 5.333,
+          "confidence": "EXPLICIT",
+          "basis": "exact arithmetic on the declared size"
+        },
+        {
+          "id": "walls",
+          "value": 3,
+          "confidence": "EXPLICIT",
+          "basis": "folds declared by the author"
+        },
+        {
+          "id": "activeArea",
+          "value": 1.0,
+          "confidence": "INFERRED",
+          "basis": "no regions given: the whole canvas is treated as surface"
+        },
+        {
+          "id": "layout",
+          "value": null,
+          "confidence": "UNKNOWN",
+          "basis": "no regions to measure"
+        },
+        {
+          "id": "symmetry",
+          "value": null,
+          "confidence": "UNKNOWN",
+          "basis": "no regions to measure"
+        },
+        {
+          "id": "readingAxis",
+          "value": "x",
+          "confidence": "INFERRED",
+          "basis": "the long side of the canvas is where the eye travels"
+        },
+        {
+          "id": "pitch",
+          "value": 2.5,
+          "confidence": "EXPLICIT",
+          "basis": "declared by the author"
+        },
+        {
+          "id": "viewingDistance",
+          "value": null,
+          "confidence": "UNKNOWN",
+          "basis": "sem a distância do espectador mais distante não há como saber o menor texto legível"
+        },
+        {
+          "id": "legibility",
+          "value": null,
+          "confidence": "UNKNOWN",
+          "basis": "needs the LED pitch and the viewing distance"
+        }
+      ],
+      "walls": [
+        {
+          "from": 0.0,
+          "to": 0.333
+        },
+        {
+          "from": 0.333,
+          "to": 0.667
+        },
+        {
+          "from": 0.667,
+          "to": 1.0
+        }
+      ],
+      "regions": null,
+      "grid": null,
+      "constraints": [
+        {
+          "id": "foldBands",
+          "kind": "seam",
+          "strength": "hard",
+          "confidence": "EXPLICIT",
+          "bands": [
+            {
+              "at": 0.333,
+              "from": 0.321,
+              "to": 0.345
+            },
+            {
+              "at": 0.667,
+              "from": 0.655,
+              "to": 0.679
+            }
+          ],
+          "rule": "hero, structure and support zones do not straddle a fold; text keeps off the fold"
+        },
+        {
+          "id": "safeArea",
+          "kind": "margin",
+          "strength": "soft",
+          "confidence": "INFERRED",
+          "value": {
+            "x": 0.05,
+            "y": 0.05,
+            "w": 0.9,
+            "h": 0.9
+          },
+          "rule": "default margin: no regions to measure"
+        },
+        {
+          "id": "readingAxis",
+          "kind": "advice",
+          "strength": "soft",
+          "confidence": "INFERRED",
+          "value": "x",
+          "rule": "movement along the long side reads better than across it"
+        }
+      ],
+      "unknowns": [
+        {
+          "id": "depth",
+          "why": "a imagem 2D não diz se a superfície tem relevo ou profundidade",
+          "ask": "A superfície é plana ou tem relevo (volumes, recortes)?"
+        },
+        {
+          "id": "curvature",
+          "why": "curvatura não aparece em largura e altura",
+          "ask": "A superfície é plana, côncava, convexa ou em cilindro?"
+        },
+        {
+          "id": "ambientLight",
+          "why": "a luz do local muda contraste e cor percebidos",
+          "ask": "O local é escuro, penumbra ou com luz do dia?"
+        },
+        {
+          "id": "material",
+          "why": "o acabamento do painel muda brilho e moiré",
+          "ask": "Qual o acabamento (LED, tela, parede branca, outro)?"
+        },
+        {
+          "id": "viewingDistance",
+          "why": "sem a distância do espectador mais distante não há como saber o menor texto legível",
+          "ask": "A que distância fica o espectador mais longe, em metros?"
+        },
+        {
+          "id": "regions",
+          "why": "sem as regiões ativas o canvas inteiro é tratado como superfície",
+          "ask": "Importe um CSV ou uma máscara PNG: há partes do canvas que não existem fisicamente?"
+        }
+      ],
+      "summary": {
+        "EXPLICIT": 4,
+        "DETECTED": 0,
+        "INFERRED": 2,
+        "UNKNOWN": 4
+      }
+    }
   },
   "canvas": {
     "w": 5760,
@@ -1292,7 +1553,7 @@
             "kind": "circle",
             "layout": "single",
             "size": 220,
-            "x": -1270,
+            "x": -1454,
             "y": 0,
             "sx": 1.0,
             "sy": 1.0,
@@ -1389,7 +1650,7 @@
             "layout": "linear",
             "count": 3,
             "size": 400,
-            "x": 1149,
+            "x": 1374,
             "y": 0,
             "sx": 0.79,
             "sy": 0.79
@@ -1578,7 +1839,7 @@
           "p": {
             "kind": "radar",
             "size": 0.28,
-            "cx": 0.7,
+            "cx": 0.72,
             "cy": 0.85,
             "n": 36,
             "weight": 3

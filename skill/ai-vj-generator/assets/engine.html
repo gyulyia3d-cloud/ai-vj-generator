@@ -95,6 +95,7 @@ h2.sec:first-child{margin-top:0}
 p.note{color:var(--dim);line-height:1.6;margin:6px 0 10px;font-size:var(--fs-s)}
 .row{display:flex;gap:4px;flex-wrap:wrap;align-items:center;margin:6px 0}
 .row.fill>*{flex:1}
+.irt{border-collapse:collapse;width:100%;font-size:var(--fs-s)}.irt th{color:var(--dim);text-align:left;font-size:var(--fs-xs);text-transform:uppercase;letter-spacing:.08em}.irt td,.irt th{padding:3px 8px 3px 0;vertical-align:top}.conf{font-size:var(--fs-xs);letter-spacing:.06em}.conf-INFERRED,.conf-UNKNOWN{color:var(--dim);font-weight:400}
 .kv{display:grid;grid-template-columns:110px 1fr;gap:4px 10px;font-size:var(--fs-s);line-height:1.5}
 .kv dt{color:var(--dim);text-transform:uppercase;letter-spacing:.08em;font-size:var(--fs-xs)}
 .kv dd{margin:0;min-width:0;overflow-wrap:anywhere}
@@ -582,7 +583,7 @@ html.stagemode #toast,html.stagemode #hint{display:none!important}
    função pura de (parâmetros, quadro) → o mesmo código desenha o preview,
    o export PNG alpha e a gravação.
    ===================================================================== */
-const VERSION = '3.11.0';
+const VERSION = '3.12.0';
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const TAU = Math.PI * 2, GA = Math.PI * (3 - Math.sqrt(5));
 const clamp = (v, a, b) => v < a ? a : v > b ? b : v, lerp = (a, b, t) => a + (b - a) * t;
@@ -4199,6 +4200,137 @@ const CREATIVE = (() => {
   return { compile, VERBS, DATA: D, tokens, norm };
 })();
 /*__CREATIVE_END__*/
+/*__SURFACEIRDATA_START__*/
+/* Gerado de skill/ai-vj-generator/registry/surface.json por node scripts/registry.mjs --write. Não edite. */
+const SURFACEIR_DATA = {"note":"Fonte única do Surface IR (fase 9). scripts/registry.mjs --write copia para app/surface-ir-data.js; surface_ir.py e surface-ir.js leem os mesmos dados e dão o mesmo IR. A superfície é entrada, restrição e contexto: nunca ambiente 3D nem mapping.","confidence":{"order":["EXPLICIT","DETECTED","INFERRED","UNKNOWN"],"EXPLICIT":"o autor declarou (tamanho, dobras, regiões de um CSV, passo, distância) ou é conta exata sobre o que ele declarou","DETECTED":"medido numa forma que o autor entregou (máscara de imagem, geometria das regiões): layout, simetria, área ativa","INFERRED":"palpite por regra a partir de outros fatos; pode estar errado, por isso só aconselha","UNKNOWN":"faltou o dado e não há regra honesta: fica registrado como pergunta, nunca chutado"},"strength":{"rule":"A força da restrição segue a confiança. EXPLICIT e DETECTED viram restrição dura (a composição obedece); INFERRED só aconselha (soft); UNKNOWN não restringe nada.","hardFrom":["EXPLICIT","DETECTED"]},"grid":8,"minCoverage":0.5,"foldHalfWidth":0.012,"foldMargin":0.02,"textFoldMargin":0.06,"safeInset":0.03,"defaultSafe":{"x":0.05,"y":0.05,"w":0.9,"h":0.9},"layoutGap":0.5,"layouts":["single","row","column","grid","scattered"],"gridFill":0.75,"readingAxis":{"wideFrom":1.5,"tallTo":0.67},"legibility":{"capDeg":0.3,"lineArcmin":3,"minCapPx":7,"minLinePx":2},"unknowns":[{"id":"depth","why":"a imagem 2D não diz se a superfície tem relevo ou profundidade","ask":"A superfície é plana ou tem relevo (volumes, recortes)?"},{"id":"curvature","why":"curvatura não aparece em largura e altura","ask":"A superfície é plana, côncava, convexa ou em cilindro?"},{"id":"ambientLight","why":"a luz do local muda contraste e cor percebidos","ask":"O local é escuro, penumbra ou com luz do dia?"},{"id":"material","why":"o acabamento do painel muda brilho e moiré","ask":"Qual o acabamento (LED, tela, parede branca, outro)?"}],"unknownsIfMissing":{"pitch":{"why":"sem o passo do LED não há como saber o menor traço legível","ask":"Qual o passo do pixel em mm?"},"distance":{"why":"sem a distância do espectador mais distante não há como saber o menor texto legível","ask":"A que distância fica o espectador mais longe, em metros?"},"regions":{"why":"sem as regiões ativas o canvas inteiro é tratado como superfície","ask":"Importe um CSV ou uma máscara PNG: há partes do canvas que não existem fisicamente?"}}};
+/*__SURFACEIRDATA_END__*/
+/*__SURFACEIR_START__*/
+/* Surface IR (fase 9): porta de skill/ai-vj-generator/scripts/surface_ir.py. O que se sabe da superfície, com que confiança e o que isso obriga na composição.
+   Cada fato leva um rótulo: EXPLICIT (o autor declarou), DETECTED (medido numa forma que o autor entregou: máscara, geometria das regiões), INFERRED (palpite por regra, só aconselha)
+   e UNKNOWN (faltou o dado: vira pergunta, nunca chute). A força da restrição segue a confiança: EXPLICIT e DETECTED são `hard`, INFERRED é `soft`, UNKNOWN não restringe.
+   A superfície é entrada, restrição e contexto: nunca ambiente 3D nem mapping. Dados em registry/surface.json, copiados para app/surface-ir-data.js por node scripts/registry.mjs --write.
+   Python e navegador dão o mesmo IR (scripts/surface_ir_check.mjs). Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html. */
+const SURFACEIR = (() => {
+  const D = SURFACEIR_DATA, N = D.grid, HARD = D.strength.hardFrom;
+  const pyRound = (x, nd = 0) => {
+    if (!isFinite(x)) return x;
+    const neg = x < 0, a = Math.abs(x), full = a.toFixed(100), dot = full.indexOf('.'), tail = full.slice(dot + 1 + nd);
+    let out;
+    if (/^50*$/.test(tail)) { const head = full.slice(0, dot + 1 + nd).replace(/\.$/, ''), last = +head.replace('.', '').slice(-1); out = last % 2 === 0 ? head : (a + Math.pow(10, -nd) / 2).toFixed(nd); }
+    else out = a.toFixed(nd);
+    const v = Number(out);
+    return neg ? -v : v;
+  };
+  const r3 = x => pyRound(x, 3), r2 = x => pyRound(x, 2), num = v => typeof v === 'number' && isFinite(v);
+  const aspectClass = (w, h) => { const r = w / h; return r >= 3 ? 'ultrawide' : r >= 1.5 ? 'wide' : r > 0.8 ? 'standard' : r > 0.4 ? 'tall' : 'ultratall'; };
+  const sum = (a, f) => a.reduce((s, x) => s + f(x), 0);
+
+  function cleanRegions(raw, W, H) {
+    const out = [];
+    for (const r of raw || []) {
+      if (!r || typeof r !== 'object' || !['x', 'y', 'w', 'h'].every(k => num(r[k]))) continue;
+      const x0 = Math.max(0, r.x), y0 = Math.max(0, r.y), x1 = Math.min(W, r.x + r.w), y1 = Math.min(H, r.y + r.h);
+      if (x1 - x0 > 0 && y1 - y0 > 0) out.push({ x: x0, y: y0, w: x1 - x0, h: y1 - y0, source: r.source || null });
+    }
+    return out;
+  }
+  const groups = (vals, gap) => { const vs = vals.slice().sort((a, b) => a - b); let n = 1; for (let i = 1; i < vs.length; i++) if (vs[i] - vs[i - 1] > gap) n++; return n; };
+  function layoutOf(rs) {
+    const n = rs.length; if (n === 1) return 'single';
+    const mh = sum(rs, r => r.h) / n, mw = sum(rs, r => r.w) / n;
+    const rows = groups(rs.map(r => r.y + r.h / 2), D.layoutGap * mh), cols = groups(rs.map(r => r.x + r.w / 2), D.layoutGap * mw);
+    if (rows === 1 && cols === 1) return 'single'; if (rows === 1) return 'row'; if (cols === 1) return 'column';
+    return n >= D.gridFill * rows * cols ? 'grid' : 'scattered';
+  }
+  function coverage(rs, W, H) {
+    const g = [];
+    for (let r = 0; r < N; r++) {
+      const row = [];
+      for (let c = 0; c < N; c++) {
+        const x0 = c * W / N, x1 = (c + 1) * W / N, y0 = r * H / N, y1 = (r + 1) * H / N;
+        const area = sum(rs, q => Math.max(0, Math.min(x1, q.x + q.w) - Math.max(x0, q.x)) * Math.max(0, Math.min(y1, q.y + q.h) - Math.max(y0, q.y)));
+        row.push(r2(Math.min(1.0, area / ((x1 - x0) * (y1 - y0)))));
+      }
+      g.push(row);
+    }
+    return g;
+  }
+  function symmetry(g, vertical) {
+    let nm = 0, dn = 0;
+    for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) { const a = g[r][c], b = vertical ? g[N - 1 - r][c] : g[r][N - 1 - c]; nm += Math.abs(a - b); dn += a + b; }
+    return dn ? r2(1 - nm / dn) : 1.0;
+  }
+  function legibility(pitch, dist) {
+    const L = D.legibility, rad = Math.PI / 180, capMm = dist * 1000 * Math.tan(L.capDeg * rad), lineMm = dist * 1000 * Math.tan((L.lineArcmin / 60) * rad);
+    return { capPx: Math.max(Math.max(1, pyRound(capMm / pitch)), L.minCapPx), linePx: Math.max(L.minLinePx, pyRound(lineMm / pitch)) };
+  }
+
+  function compile(sf) {
+    const W = sf.w, H = sf.h, cls = aspectClass(W, H), facts = [], constraints = [];
+    const fact = (id, value, confidence, basis) => facts.push({ id, value, confidence, basis }), strength = c => HARD.includes(c) ? 'hard' : 'soft';
+    fact('size', [W, H], 'EXPLICIT', 'declared canvas size in pixels');
+    fact('aspect', r3(W / H), 'EXPLICIT', 'exact arithmetic on the declared size');
+
+    const edges = [...new Set((sf.folds || []).filter(f => num(f) && f > 0 && f < W))].sort((a, b) => a - b), pts = [0].concat(edges, [W]);
+    const walls = pts.slice(1).map((b, i) => ({ from: r3(pts[i] / W), to: r3(b / W) }));
+    if (edges.length) {
+      fact('walls', walls.length, 'EXPLICIT', 'folds declared by the author');
+      const hw = D.foldHalfWidth;
+      constraints.push({ id: 'foldBands', kind: 'seam', strength: 'hard', confidence: 'EXPLICIT', bands: edges.map(e => ({ at: r3(e / W), from: r3(e / W - hw), to: r3(e / W + hw) })), rule: 'hero, structure and support zones do not straddle a fold; text keeps off the fold' });
+    } else fact('walls', 1, 'INFERRED', 'no folds declared: one wall is assumed');
+
+    const rs = cleanRegions(sf.regions, W, H); let regions = null, grid = null;
+    if (rs.length) {
+      const conf = rs[0].source === 'mask' ? 'DETECTED' : 'EXPLICIT';
+      grid = coverage(rs, W, H);
+      const share = r3(Math.min(1.0, sum(rs, q => q.w * q.h) / (W * H)));
+      const x0 = Math.min(...rs.map(q => q.x)), y0 = Math.min(...rs.map(q => q.y)), x1 = Math.max(...rs.map(q => q.x + q.w)), y1 = Math.max(...rs.map(q => q.y + q.h));
+      const bbox = { x: r3(x0 / W), y: r3(y0 / H), w: r3((x1 - x0) / W), h: r3((y1 - y0) / H) }, lay = layoutOf(rs), sym = { h: symmetry(grid, false), v: symmetry(grid, true) };
+      regions = { count: rs.length, source: conf === 'DETECTED' ? 'mask' : 'list', activeShare: share, bbox, layout: lay, symmetry: sym };
+      fact('activeArea', share, conf, conf === 'EXPLICIT' ? 'regions given by the author' : 'regions measured on the mask the author gave');
+      fact('layout', lay, 'DETECTED', 'measured on the geometry of the regions');
+      fact('symmetry', sym, 'DETECTED', 'measured on an 8x8 coverage grid of the regions');
+      constraints.push({ id: 'activeArea', kind: 'region', strength: strength(conf), confidence: conf, minCoverage: D.minCoverage, rule: 'the centre of each zone sits on a grid cell whose coverage is at least minCoverage' });
+      const i = D.safeInset, safe = { x: r3(bbox.x + bbox.w * i), y: r3(bbox.y + bbox.h * i), w: r3(bbox.w * (1 - 2 * i)), h: r3(bbox.h * (1 - 2 * i)) };
+      constraints.push({ id: 'safeArea', kind: 'margin', strength: strength(conf), confidence: conf, value: safe, rule: 'inset of the bounding box of the active regions' });
+    } else {
+      fact('activeArea', 1.0, 'INFERRED', 'no regions given: the whole canvas is treated as surface');
+      fact('layout', null, 'UNKNOWN', 'no regions to measure');
+      fact('symmetry', null, 'UNKNOWN', 'no regions to measure');
+      constraints.push({ id: 'safeArea', kind: 'margin', strength: 'soft', confidence: 'INFERRED', value: Object.assign({}, D.defaultSafe), rule: 'default margin: no regions to measure' });
+    }
+
+    const ra = D.readingAxis, axis = W / H >= ra.wideFrom ? 'x' : W / H <= ra.tallTo ? 'y' : 'none';
+    fact('readingAxis', axis, 'INFERRED', 'the long side of the canvas is where the eye travels');
+    constraints.push({ id: 'readingAxis', kind: 'advice', strength: 'soft', confidence: 'INFERRED', value: axis, rule: 'movement along the long side reads better than across it' });
+
+    let pitch = sf.pitchMm, dist = (sf.viewingDistanceM || [null, null]).slice(-1)[0];
+    const unknowns = D.unknowns.map(u => ({ id: u.id, why: u.why, ask: u.ask })), miss = D.unknownsIfMissing;
+    if (num(pitch) && pitch > 0) fact('pitch', pitch, 'EXPLICIT', 'declared by the author');
+    else { pitch = null; fact('pitch', null, 'UNKNOWN', miss.pitch.why); unknowns.push({ id: 'pitch', why: miss.pitch.why, ask: miss.pitch.ask }); }
+    if (num(dist) && dist > 0) fact('viewingDistance', dist, 'EXPLICIT', 'declared by the author (the farthest viewer)');
+    else { dist = null; fact('viewingDistance', null, 'UNKNOWN', miss.distance.why); unknowns.push({ id: 'viewingDistance', why: miss.distance.why, ask: miss.distance.ask }); }
+    if (pitch && dist) {
+      const lg = legibility(pitch, dist);
+      fact('legibility', lg, 'INFERRED', 'visual-angle rules of thumb applied to the declared pitch and distance');
+      constraints.push({ id: 'legibility', kind: 'advice', strength: 'soft', confidence: 'INFERRED', value: lg, rule: 'smallest text and stroke that read, in pixels (rules of thumb)' });
+    } else fact('legibility', null, 'UNKNOWN', 'needs the LED pitch and the viewing distance');
+    if (!rs.length) unknowns.push({ id: 'regions', why: miss.regions.why, ask: miss.regions.ask });
+
+    const summary = {}; D.confidence.order.forEach(k => { summary[k] = 0; }); facts.forEach(x => { summary[x.confidence]++; });
+    return { version: 1, canvas: { w: W, h: H, aspect: r3(W / H), aspectClass: cls, orientation: W > H * 1.1 ? 'wide' : H > W * 1.1 ? 'tall' : 'square' }, facts, walls, regions, grid, constraints, unknowns, summary };
+  }
+  function fromProject(proj) {
+    const c = proj.canvas, cf = ((proj.meta || {}).spec || {}).confirmed || {}, sf = { w: c.w, h: c.h };
+    if (c.folds && c.folds.length) sf.folds = c.folds.slice();
+    if (c.displays && c.displays.length) sf.regions = c.displays.map(d => Object.assign({}, d));
+    if (cf.pitchMm) sf.pitchMm = cf.pitchMm; if (cf.viewingDistanceM) sf.viewingDistanceM = cf.viewingDistanceM;
+    return sf;
+  }
+  const hard = (sx, id) => sx.constraints.find(c => c.id === id && c.strength === 'hard') || null;
+  return { compile, fromProject, hard, aspectClass, pyRound, DATA: D };
+})();
+/*__SURFACEIR_END__*/
 /*__COMPOSITIONDATA_START__*/
 /* Gerado de skill/ai-vj-generator/registry/composition.json por node scripts/registry.mjs --write. Não edite. */
 const COMPOSITION_DATA = {"note":"Fonte única do Composition IR (fase 6): gramáticas espaciais, afinidade por verbo e por proporção da superfície, e perfis das cinco fases. scripts/registry.mjs --write copia para app/composition-data.js.","grammars":[{"id":"centered","hero":[0.5,0.5,0.8],"secondary":[0.5,0.5,0.75],"support":[0.5,0.9],"text":[0.5,0.5,"center"],"negative":[0,0,0.12,1],"axis":"radial","alignment":"center","balance":"symmetric","heroMass":0.55,"edge":"contain","description":"one figure on the centre, quiet outer bands"},{"id":"offset","hero":[0.34,0.52,0.8],"secondary":[0.7,0.42,0.5],"support":[0.7,0.86],"text":[0.68,0.5,"left"],"negative":[0.6,0.55,0.4,0.45],"axis":"x","alignment":"left","balance":"asymmetric","heroMass":0.6,"edge":"contain","description":"the figure sits off centre and the open third answers it"},{"id":"diagonal","hero":[0.3,0.36,0.75],"secondary":[0.72,0.7,0.55],"support":[0.5,0.88],"text":[0.72,0.3,"left"],"negative":[0,0.6,0.3,0.4],"axis":"diag","alignment":"left","balance":"asymmetric","heroMass":0.5,"edge":"bleed","description":"the eye travels from the upper left to the lower right"},{"id":"radial","hero":[0.5,0.5,0.55],"secondary":[0.5,0.5,0.8],"support":[0.5,0.9],"text":[0.5,0.5,"center"],"negative":[0,0,0.1,1],"axis":"radial","alignment":"center","balance":"symmetric","heroMass":0.45,"edge":"contain","description":"everything is arranged around the centre"},{"id":"horizontal","hero":[0.28,0.5,0.7],"secondary":[0.7,0.5,0.55],"support":[0.5,0.88],"text":[0.7,0.5,"left"],"negative":[0,0,1,0.18],"axis":"x","alignment":"left","balance":"asymmetric","heroMass":0.5,"edge":"bleed","description":"a band that reads left to right"},{"id":"vertical","hero":[0.5,0.3,0.7],"secondary":[0.5,0.72,0.55],"support":[0.5,0.92],"text":[0.5,0.7,"center"],"negative":[0,0,0.18,1],"axis":"y","alignment":"center","balance":"symmetric","heroMass":0.5,"edge":"contain","description":"a column that reads top to bottom"},{"id":"distributed","hero":[0.5,0.5,0.5],"secondary":[0.2,0.5,0.4],"support":[0.8,0.5],"text":[0.5,0.85,"center"],"negative":[0.4,0,0.2,0.3],"axis":"x","alignment":"center","balance":"balanced","heroMass":0.34,"edge":"bleed","description":"the weight is shared across the whole width"},{"id":"clustered","hero":[0.62,0.58,0.65],"secondary":[0.4,0.65,0.4],"support":[0.7,0.9],"text":[0.62,0.3,"left"],"negative":[0,0,0.5,0.45],"axis":"diag","alignment":"right","balance":"asymmetric","heroMass":0.5,"edge":"contain","description":"the mass gathers in one corner and leaves a large void"},{"id":"asymmetric","hero":[0.26,0.6,0.9],"secondary":[0.8,0.3,0.35],"support":[0.8,0.85],"text":[0.78,0.55,"left"],"negative":[0.5,0.7,0.5,0.3],"axis":"diag","alignment":"left","balance":"asymmetric","heroMass":0.62,"edge":"bleed","description":"a large figure against one small counterweight"},{"id":"symmetrical","hero":[0.5,0.5,0.7],"secondary":[0.16,0.5,0.45],"support":[0.84,0.5],"text":[0.5,0.9,"center"],"negative":[0.35,0,0.3,0.2],"axis":"y","alignment":"center","balance":"symmetric","heroMass":0.5,"edge":"contain","description":"mirrored halves around a central figure"},{"id":"hierarchical","hero":[0.5,0.42,0.85],"secondary":[0.5,0.82,0.35],"support":[0.12,0.82],"text":[0.5,0.82,"center"],"negative":[0,0,1,0.1],"axis":"y","alignment":"center","balance":"asymmetric","heroMass":0.65,"edge":"contain","description":"a dominant figure, a clear second, a small third"},{"id":"edge-driven","hero":[0.86,0.5,0.4],"secondary":[0.14,0.5,0.4],"support":[0.5,0.92],"text":[0.2,0.2,"left"],"negative":[0.2,0.25,0.3,0.5],"axis":"x","alignment":"left","balance":"asymmetric","heroMass":0.4,"edge":"bleed","description":"the weight lives at the edges and the centre is a void"}],"grammarOrder":["centered","offset","diagonal","radial","horizontal","vertical","distributed","clustered","asymmetric","symmetrical","hierarchical","edge-driven"],"aspectClasses":{"ultrawide":{"horizontal":3,"offset":2,"edge-driven":2,"distributed":2,"diagonal":1},"wide":{"offset":3,"diagonal":2,"asymmetric":2,"horizontal":1,"centered":1},"standard":{"centered":2,"offset":2,"radial":2,"diagonal":1,"hierarchical":1,"clustered":1},"tall":{"vertical":3,"hierarchical":3,"centered":1,"symmetrical":1,"asymmetric":1},"ultratall":{"vertical":3,"hierarchical":3,"symmetrical":2}},"verbGrammars":{"grow":{"radial":2,"centered":1,"clustered":1},"contract":{"radial":3,"centered":2},"accumulate":{"vertical":2,"hierarchical":2,"distributed":1},"fracture":{"diagonal":3,"asymmetric":2},"drift":{"horizontal":3,"distributed":2},"orbit":{"radial":3,"centered":2},"breathe":{"centered":3,"symmetrical":2},"pulse":{"centered":2,"symmetrical":2},"erode":{"edge-driven":3,"clustered":2,"asymmetric":1},"bloom":{"radial":3,"centered":2},"collapse":{"vertical":3,"hierarchical":2},"stretch":{"horizontal":3,"diagonal":1},"fold":{"symmetrical":3,"vertical":1},"scatter":{"distributed":3,"edge-driven":2},"converge":{"radial":2,"diagonal":2,"centered":1},"oscillate":{"horizontal":2,"symmetrical":2},"morph":{"offset":2,"centered":1},"repel":{"edge-driven":3,"distributed":1},"attract":{"clustered":3,"radial":1},"trace":{"diagonal":3,"horizontal":1},"flow":{"horizontal":3,"diagonal":1},"hesitate":{"offset":2,"asymmetric":2},"freeze":{"centered":3,"symmetrical":1},"release":{"asymmetric":2,"offset":1,"radial":1},"compress":{"centered":2,"radial":2,"clustered":1},"expand":{"radial":3,"centered":1},"fragment":{"distributed":3,"asymmetric":1},"assemble":{"hierarchical":3,"clustered":1},"dissolve":{"edge-driven":2,"offset":2},"emerge":{"offset":2,"hierarchical":2},"sink":{"vertical":2,"hierarchical":2,"clustered":1},"rise":{"vertical":3,"diagonal":1}},"weights":{"aspect":12,"setSize":3,"baseHeroSize":0.7,"verb":10},"phaseNames":["establish","develop","transform","peak","release"],"phaseProfiles":{"pressure":{"heroScale":[1,0.92,0.84,1.22,1],"density":[0.8,1,1.15,1.35,0.9],"contrast":[1,1.08,1.15,1.3,1],"rotation":[0,0,0,2,0],"motion":[0.8,1,1.2,1.6,0.9]},"emerge":{"heroScale":[0.7,0.8,0.95,1.2,1.05],"density":[0.5,0.7,1,1.3,1.1],"contrast":[0.9,0.95,1,1.15,1],"rotation":[0,0,0,0,0],"motion":[0.6,0.8,1,1.2,0.9]},"erode":{"heroScale":[1.1,1.05,0.95,0.8,0.7],"density":[1.2,1.15,1,0.7,0.5],"contrast":[1.1,1.15,1.2,1,0.85],"rotation":[0,0,1,3,4],"motion":[0.8,1,1.3,1,0.6]},"drift":{"heroScale":[1,1,1.04,1,1],"density":[1,1,1.05,1,1],"contrast":[1,1,1,1,1],"rotation":[0,1,2,1,0],"motion":[0.8,1,1,1,0.9]},"cycle":{"heroScale":[1,1.1,0.95,1.1,1],"density":[1,1.1,1,1.1,1],"contrast":[1,1.05,1,1.1,1],"rotation":[0,2,0,-2,0],"motion":[1,1.1,1,1.1,1]}},"placeable":["tunnel","shape","organism"],"lineDir":{"x":"h","y":"v","diag":"d"}};
@@ -4240,9 +4372,40 @@ const COMPOSITION = (() => {
   const center = z => [z.x + z.w / 2, z.y + z.h / 2];
   const inside = (z, px, py) => z.x <= px && px <= z.x + z.w && z.y <= py && py <= z.y + z.h;
 
+  /* restrições da superfície (Surface IR): só as `hard` (fatos EXPLICIT ou DETECTED) movem zonas; conselho INFERRED e UNKNOWN nunca movem nada */
+  function fitZone(z, sx, name, log) {
+    const ac = SURFACEIR.hard(sx, 'activeArea');
+    if (ac) {
+      const [cx, cy] = center(z), grid = sx.grid, n = grid.length;
+      if (grid[Math.min(Math.floor(cy * n), n - 1)][Math.min(Math.floor(cx * n), n - 1)] < ac.minCoverage) {
+        let best = null;
+        for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (grid[r][c] >= ac.minCoverage) { const dx = (c + 0.5) / n - cx, dy = (r + 0.5) / n - cy, d = dx * dx + dy * dy; if (!best || d < best[0]) best = [d, r, c]; }
+        if (best) {
+          const nx = (best[2] + 0.5) / n, ny = (best[1] + 0.5) / n;
+          z = { x: r3(Math.min(Math.max(nx - z.w / 2, 0.0), 1.0 - z.w)), y: r3(Math.min(Math.max(ny - z.h / 2, 0.0), 1.0 - z.h)), w: z.w, h: z.h }; log.push({ zone: name, rule: 'activeArea' });
+        }
+      }
+    }
+    const fb = SURFACEIR.hard(sx, 'foldBands');
+    if (fb && fb.bands.some(b => z.x < b.to && z.x + z.w > b.from)) {
+      const cx = center(z)[0], wall = sx.walls.find(w => w.from <= cx && cx <= w.to) || sx.walls[sx.walls.length - 1], m = SURFACEIR.DATA.foldMargin;
+      let x = wall.to - wall.from >= z.w + 2 * m ? Math.min(Math.max(z.x, wall.from + m), wall.to - z.w - m) : (wall.from + wall.to) / 2 - z.w / 2;
+      x = r3(Math.min(Math.max(x, 0.0), 1.0 - z.w));
+      if (x !== z.x) { z = { x, y: z.y, w: z.w, h: z.h }; log.push({ zone: name, rule: 'foldBands' }); }
+    }
+    return z;
+  }
+  function fitText(a, sx, log) {
+    if (!SURFACEIR.hard(sx, 'foldBands')) return a;
+    const cx = a[0], wall = sx.walls.find(w => w.from <= cx && cx <= w.to) || sx.walls[sx.walls.length - 1], tm = SURFACEIR.DATA.textFoldMargin;
+    if ((wall.from > 0 && cx - wall.from < tm) || (wall.to < 1 && wall.to - cx < tm)) { log.push({ zone: 'text', rule: 'foldBands' }); return [r2((wall.from + wall.to) / 2), a[1], a[2]]; }
+    return a;
+  }
+
   function compile(brief, ir, i) {
     const sf = brief.surface, W = sf.w, H = sf.h, cls = aspectClass(W, H), top = rankGrammars(ir, cls).slice(0, D.weights.setSize), g = G[top[i % top.length]];
-    const hero = rect(g.hero[0], g.hero[1], g.hero[2], W, H), sec = rect(g.secondary[0], g.secondary[1], g.secondary[2], W, H), sup = rect(g.support[0], g.support[1], 0.3, W, H);
+    const sx = SURFACEIR.compile(sf), log = [];
+    const hero = fitZone(rect(g.hero[0], g.hero[1], g.hero[2], W, H), sx, 'hero', log), sec = fitZone(rect(g.secondary[0], g.secondary[1], g.secondary[2], W, H), sx, 'secondary', log), sup = fitZone(rect(g.support[0], g.support[1], 0.3, W, H), sx, 'support', log), text = fitText(g.text, sx, log);
     const neg = { x: g.negative[0], y: g.negative[1], w: g.negative[2], h: g.negative[3], why: 'left empty on purpose: nothing is placed here' };
     const hm = g.heroMass, sm = r2((1 - hm) * 0.6), mass = { hero: hm, secondary: sm, support: r2(1 - hm - sm) };
     const hc = center(hero), sc = center(sec), pc = center(sup);
@@ -4252,20 +4415,23 @@ const COMPOSITION = (() => {
     const arcId = (ir.arc && ir.arc.id) || 'drift', prof = D.phaseProfiles[arcId];
     const phases = D.phaseNames.map((name, k) => ({ name, at: r2(k / 5), heroScale: prof.heroScale[k], density: prof.density[k], contrast: prof.contrast[k], rotation: prof.rotation[k], motion: prof.motion[k] }));
     const base = D.weights.baseHeroSize;
-    return {
+    const seams = (SURFACEIR.hard(sx, 'foldBands') || { bands: [] }).bands.map(b => ({ x: b.from, y: 0, w: r3(b.to - b.from), h: 1, why: 'fold seam: nothing straddles it' })), sa = SURFACEIR.hard(sx, 'safeArea');
+    const out = {
       version: 1, grammar: g.id, grammarSet: top, aspectClass: cls,
       canvas: { w: W, h: H, aspect: r3(W / H), orientation: W > H * 1.1 ? 'wide' : H > W * 1.1 ? 'tall' : 'square' },
       hierarchy: { primary: 'hero', secondary: 'structure', tertiary: 'ground' },
       zones: { hero, secondary: sec, support: sup, background: { x: 0, y: 0, w: 1, h: 1 } },
-      negativeSpace: [neg], focalPoint: { x: r3(hc[0]), y: r3(hc[1]) },
+      negativeSpace: [neg].concat(seams), focalPoint: { x: r3(hc[0]), y: r3(hc[1]) },
       visualMass: mass, balance: { type: g.balance, centre: { x: r3(vx), y: r3(vy) } },
       alignment: g.alignment, movementAxis: g.axis, densityMap: dmap,
       scaleHierarchy: { hero: r2(g.hero[2] / base), secondary: r2(g.secondary[2] / base), support: 0.4 },
       depthHierarchy: { hero: 'foreground', secondary: 'midground', support: 'midground', background: 'background' },
-      safeAreas: { x: 0.05, y: 0.05, w: 0.9, h: 0.9 }, edgeBehavior: g.edge,
-      textAnchor: { cx: g.text[0], cy: g.text[1], align: g.text[2] },
+      safeAreas: sa ? sa.value : { x: 0.05, y: 0.05, w: 0.9, h: 0.9 }, edgeBehavior: g.edge,
+      textAnchor: { cx: text[0], cy: text[1], align: text[2] },
       temporal: { arc: arcId, phases }, description: g.description,
     };
+    if (SURFACEIR.hard(sx, 'activeArea') || SURFACEIR.hard(sx, 'foldBands')) out.surface = { hard: sx.constraints.filter(c => c.strength === 'hard').map(c => c.id + ':' + c.confidence), adjusted: log };
+    return out;
   }
   function envMod(k, raw, mode) {
     const lo = Math.min(...raw), hi = Math.max(...raw); if (hi - lo < 1e-9) return null;
@@ -4562,8 +4728,9 @@ const GENAI = (() => {
     const spec = { archetype: [ARCH[surf] || 'clip-pack'], confirmed: { pixelMap: [sf.w, sf.h] }, assumed: [{ field: 'surface', why: "generated from the brief without AI; the facts are the brief's own", risk: 'confirm the pixel map and distances with the venue before delivery' }] };
     if (sf.pitchMm) spec.confirmed.pitchMm = sf.pitchMm; if (sf.viewingDistanceM) spec.confirmed.viewingDistanceM = sf.viewingDistanceM;
     const canvas = { w: sf.w, h: sf.h, fps: sf.fps || 30, target: ['screen', 'led', 'projection', 'mapping', 'multi'].includes(surf) ? surf : 'screen' }; if (sf.folds) canvas.folds = sf.folds;
+    if (sf.regions && sf.regions.length) canvas.displays = sf.regions.map(r => { const o = {}; for (const k of ['x', 'y', 'w', 'h', 'name', 'source']) if (k in r) o[k] = r[k]; return o; });
     const id = String(brief.name).toLowerCase().split('').map(c => /[\p{L}\p{N}]/u.test(c) ? c : '-').join('').replace(/^-+|-+$/g, '') || 'project';
-    return { schema: 'ai-vj-generator/2', id, seed, meta: { name: String(brief.name).toUpperCase(), lang: brief.lang || 'en', brief: brief.concept, contract, artBible, spec, creativeIR: ir, compositionIR: cirs, animationIR: anis }, canvas,
+    return { schema: 'ai-vj-generator/2', id, seed, meta: { name: String(brief.name).toUpperCase(), lang: brief.lang || 'en', brief: brief.concept, contract, artBible, spec, creativeIR: ir, compositionIR: cirs, animationIR: anis, surfaceIR: SURFACEIR.compile(sf) }, canvas,
       time: { bpm: tm.bpm, bars, loop: true, seamless: true, mode: 'loop', transition: prof0.axes.continuity >= 0.5 ? 'fade' : 'wipe' }, audio: { reactive: strat !== 'none', sens: 1, smooth: 0.7, strategy: strat },
       palette: Object.assign({}, pal, (brief.output || {}).mode === 'white-alpha' ? { mode: 'white-alpha' } : {}), compositions: comps };
   }
@@ -5054,6 +5221,21 @@ function surLegHtml() {
   return inputs + `<dl class="kv"><dt>${T3('Altura mínima de letra', 'Minimum letter height')}</dt><dd>${lim.cap_height_min.px} px (${lim.cap_height_min.mm} mm)</dd><dt>${T3('Altura confortável', 'Comfortable height')}</dt><dd>${lim.cap_height_comfortable.px} px</dd><dt>${T3('Traço mínimo', 'Minimum stroke')}</dt><dd>${lim.line_weight_min_px} px</dd></dl>`
     + (r.warnings.length ? `<ul class="val">${r.warnings.map(w => `<li class="WARNING">${esc(w)}</li>`).join('')}</ul>` : `<p class="note">${T3('Nenhum texto ou traço abaixo do mínimo legível neste projeto.', 'No text or stroke below the readable minimum in this project.')}</p>`);
 }
+/* Surface IR: o que se sabe da superfície e com que confiança. EXPLICIT (declarado) e DETECTED (medido) restringem de verdade; INFERRED só aconselha; UNKNOWN vira pergunta. */
+const SUR_FACT = { size: ['Tamanho', 'Size'], aspect: ['Proporção', 'Aspect'], walls: ['Paredes', 'Walls'], activeArea: ['Área ativa', 'Active area'], layout: ['Arranjo das regiões', 'Region layout'], symmetry: ['Simetria', 'Symmetry'], readingAxis: ['Eixo de leitura', 'Reading axis'], pitch: ['Passo do LED (mm)', 'LED pitch (mm)'], viewingDistance: ['Distância máx. (m)', 'Max distance (m)'], legibility: ['Menor texto e traço (px)', 'Smallest text and stroke (px)'] };
+function surFactVal(f) {
+  const v = f.value; if (v === null || v === undefined) return '—';
+  if (f.id === 'size') return v[0] + '×' + v[1]; if (f.id === 'activeArea') return Math.round(v * 100) + '%'; if (f.id === 'symmetry') return 'H ' + v.h + ' · V ' + v.v; if (f.id === 'legibility') return v.capPx + ' / ' + v.linePx;
+  return String(v);
+}
+function surIrHtml() {
+  const sx = SURFACEIR.compile(SURFACEIR.fromProject(P)), en = ST.lang === 'en';
+  const rows = sx.facts.map(f => `<tr><td>${esc(SUR_FACT[f.id] ? T3(SUR_FACT[f.id][0], SUR_FACT[f.id][1]) : f.id)}</td><td>${esc(surFactVal(f))}</td><td><b class="conf conf-${f.confidence}">${f.confidence}</b></td><td class="note">${esc(f.basis)}</td></tr>`).join('');
+  const hard = sx.constraints.filter(c => c.strength === 'hard').map(c => c.id + ' (' + c.confidence + ')'), soft = sx.constraints.filter(c => c.strength === 'soft').map(c => c.id);
+  return `<table class="irt" id="sIr"><thead><tr><th>${T3('Fato', 'Fact')}</th><th>${T3('Valor', 'Value')}</th><th>${T3('Confiança', 'Confidence')}</th><th>${T3('Base', 'Basis')}</th></tr></thead><tbody>${rows}</tbody></table>
+    <p class="note" id="sIrCons"><b>${T3('Restringem (duras):', 'Constrain (hard):')}</b> ${esc(hard.join(', ') || T3('nenhuma', 'none'))}<br><b>${T3('Só aconselham (soft):', 'Advice only (soft):')}</b> ${esc(soft.join(', ') || T3('nenhuma', 'none'))}</p>
+    <details id="sIrUnk"><summary>${T3('Em aberto (UNKNOWN)', 'Open questions (UNKNOWN)')} · ${sx.unknowns.length}</summary><ul>${sx.unknowns.map(u => `<li><b>${esc(u.id)}</b>: ${esc(u.ask)}</li>`).join('')}</ul></details>`;
+}
 function renderSurface() {
   const el = pane('sur'); if (!el) return; const c = P.canvas, en = ST.lang === 'en', disp = c.displays || [];
   const cur = (SURFACE_PRESETS.find(q => q.type === c.target && q.w === c.w && q.h === c.h) || { id: '' }).id;
@@ -5071,6 +5253,7 @@ function renderSurface() {
     <div class="row"><button id="sTest">${T3('Adicionar composição de cartões de teste', 'Add a test-card composition')}</button></div>
     <p class="note">${T3('Grade, rampas, barras e quadrado em movimento para conferir a superfície antes do conteúdo.', 'Grid, ramps, bars and a moving square to check the surface before the content.')}</p>
     <h2 class="sec">${T3('Legibilidade', 'Legibility')}</h2>${surLegHtml()}
+    <h2 class="sec">${T3('Análise da superfície (Surface IR)', 'Surface analysis (Surface IR)')}</h2>${surIrHtml()}
     <div id="sMsg" class="note" role="status" aria-live="polite">${SUR.err.length ? '<b>' + T3('Atenção:', 'Warning:') + '</b><br>' + SUR.err.map(esc).join('<br>') : esc(SUR.msg)}</div>`;
   surBind(el);
 }
@@ -5096,7 +5279,7 @@ function surBind(el) {
       } else res = SURFX.parseCsv(await f.text(), c.w, c.h);
       SUR.err = res.errs;
       if (!res.rects.length) { SUR.err.push(T3('Nenhum módulo válido no arquivo.', 'No valid module in the file.')); renderSurface(); return; }
-      c.displays = res.rects.map(r => ({ x: r.x, y: r.y, w: r.w, h: r.h, name: r.name })); commit(true, 'Regiões'); drawOverlay();
+      c.displays = res.rects.map(r => Object.assign({ x: r.x, y: r.y, w: r.w, h: r.h, name: r.name }, res.activeShare !== undefined ? { source: 'mask' } : {})); commit(true, 'Regiões'); drawOverlay();
       SUR.msg = T3(`${res.rects.length} módulo(s) importado(s). Desfazer (Ctrl+Z) volta ao mapa anterior.`, `${res.rects.length} module(s) imported. Undo (Ctrl+Z) returns to the previous map.`); renderSurface();
     } catch (err) { SUR.err = [T3('Não consegui ler o arquivo: ', 'Could not read the file: ') + err.message]; renderSurface(); }
   });
@@ -6487,7 +6670,7 @@ function boot() {
   document.fonts && document.fonts.load('800 40px "Martian Mono"').catch(() => {});
   if (!embedded && !saved && !store.get('seenWiz', false)) openWiz();
   raf = requestAnimationFrame(tick);
-  window.AIVJ = { version: VERSION, get PAL() { return PAL; }, get RECIPES() { return RECIPES; }, addRecipe, addTestCards, recipeLayer, importFile, parseModel, setLang, setHow, undo, redo, evalExpr, applyTheme, layoutApply, setPanelOpen, setZoneDraw, get hist() { return ST.hist.length; }, get histLabels() { return ST.hl.slice(); }, surface: SC, specOf, applyCalc, renderSpec, specMarkdown, get project() { return P; }, get audio() { return AUD; }, pseudoAudio, synthTimes, applyMods, motionCurve, GENAI, EVALUATOR, flash: FLASH, ONSET, UX, fx: { FX, body: fxBody, op: fxOp }, synth: { SYN, src: synthSrc }, blobs: { X: BLOBX }, layerErrors: () => [...LAYER_ERR.values()], mp4: { X: MP4X, render: mp4Render, run: exportMp4Run }, isf: { X: ISFX, LIB: ISFLIB, lib: isfLib }, modUI: { render: modPanel, params: modNumericParams, sources: MOD_SOURCES }, expRun: exportRun, EXP, surfx: SURFX, region: regionRect, surUI: { state: SUR, applyPreset: surApplyPreset, render: renderSurface }, COMPOSITION, ANIMATION, CREATIVE, FIELD: { FLD, GLY, body: fldBody }, applyMods, RG, TM, composeFrame, buildComposeGraph: buildComposeGraph, frameAt, canvasPool: CANVAS_POOL, webgl: WEBGL, glProgram: body => glProg(body), glError: body => GL.err.get(body), glInfo: () => { glInit(); return GL.r ? { version: GL.r.version, context: GL.gl.constructor.name, glsl: GL.gl.getParameter(GL.gl.SHADING_LANGUAGE_VERSION), caps: GL.r.caps, stats: GL.r.stats } : { failure: GL.failure }; }, glMetrics: () => GL.r ? GL.r.metrics() : null, glr: () => GL.r, presets: SURFACE_PRESETS, GEN, FAMILIES, COMMON, modSources: () => MOD_SOURCES.map(x => x[0]), evaluate: lang => EVALUATOR.run(lang), shaderResolve, GLIB, specBins, simBake, parsePly, get LAYERERR() { return LAYER_ERR; }, setSeed, bpmWaves, get GLERR() { return GL.err; }, layerFrame, pm, importJson, frameAt, validate: o => validate(o), GEN, loopFrames, contactSheet, layerAudit, allowCode, loadAssets, toLogo, projectOut, get state() { return ST; }, geom, lintCode, compileCode, setCi(i) { ST.ci = i; refreshAll(); },
+  window.AIVJ = { version: VERSION, get PAL() { return PAL; }, get RECIPES() { return RECIPES; }, addRecipe, addTestCards, recipeLayer, importFile, parseModel, setLang, setHow, undo, redo, evalExpr, applyTheme, layoutApply, setPanelOpen, setZoneDraw, get hist() { return ST.hist.length; }, get histLabels() { return ST.hl.slice(); }, surface: SC, specOf, applyCalc, renderSpec, specMarkdown, get project() { return P; }, get audio() { return AUD; }, pseudoAudio, synthTimes, applyMods, motionCurve, GENAI, EVALUATOR, flash: FLASH, ONSET, UX, fx: { FX, body: fxBody, op: fxOp }, synth: { SYN, src: synthSrc }, blobs: { X: BLOBX }, layerErrors: () => [...LAYER_ERR.values()], mp4: { X: MP4X, render: mp4Render, run: exportMp4Run }, isf: { X: ISFX, LIB: ISFLIB, lib: isfLib }, modUI: { render: modPanel, params: modNumericParams, sources: MOD_SOURCES }, expRun: exportRun, EXP, surfx: SURFX, region: regionRect, surUI: { state: SUR, applyPreset: surApplyPreset, render: renderSurface }, COMPOSITION, SURFACEIR, ANIMATION, CREATIVE, FIELD: { FLD, GLY, body: fldBody }, applyMods, RG, TM, composeFrame, buildComposeGraph: buildComposeGraph, frameAt, canvasPool: CANVAS_POOL, webgl: WEBGL, glProgram: body => glProg(body), glError: body => GL.err.get(body), glInfo: () => { glInit(); return GL.r ? { version: GL.r.version, context: GL.gl.constructor.name, glsl: GL.gl.getParameter(GL.gl.SHADING_LANGUAGE_VERSION), caps: GL.r.caps, stats: GL.r.stats } : { failure: GL.failure }; }, glMetrics: () => GL.r ? GL.r.metrics() : null, glr: () => GL.r, presets: SURFACE_PRESETS, GEN, FAMILIES, COMMON, modSources: () => MOD_SOURCES.map(x => x[0]), evaluate: lang => EVALUATOR.run(lang), shaderResolve, GLIB, specBins, simBake, parsePly, get LAYERERR() { return LAYER_ERR; }, setSeed, bpmWaves, get GLERR() { return GL.err; }, layerFrame, pm, importJson, frameAt, validate: o => validate(o), GEN, loopFrames, contactSheet, layerAudit, allowCode, loadAssets, toLogo, projectOut, get state() { return ST; }, geom, lintCode, compileCode, setCi(i) { ST.ci = i; refreshAll(); },
     /* gancho de teste: renderiza a composição ci no quadro n, determinístico, sem tocar no preview */
     renderFrame(ci, n, scale = 0.25, alpha = false) {
       const comp = P.compositions[ci], W = P.canvas.w, H = P.canvas.h, w = Math.round(W * scale), h = Math.round(H * scale);

@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.12.0 (09/10/2026) · Fase 9: Surface IR
+
+- **Surface IR** (`surface_ir.py`, `app/surface-ir.js`, dados em `registry/surface.json`): uma por projeto, em `meta.surfaceIR`. Analisa o que o autor entregou da superfície (tamanho, dobras, regiões de um CSV ou de uma máscara PNG, passo do LED, distância) e **rotula cada fato com a confiança**: `EXPLICIT` (declarado), `DETECTED` (medido numa forma entregue: arranjo, simetria e área ativa das regiões), `INFERRED` (palpite por regra: só aconselha) e `UNKNOWN` (faltou o dado: vira pergunta, o valor é `null`, nunca se chuta).
+- **A força da restrição segue a confiança:** só `EXPLICIT` e `DETECTED` viram restrição dura (`activeArea`, `foldBands`, `safeArea` das regiões); `INFERRED` aconselha (`readingAxis`, `legibility`); `UNKNOWN` não restringe nada. O validador recusa restrição dura apoiada em fato INFERRED e fato UNKNOWN com valor.
+- **Aplicado ao Composition IR:** com dobras ou regiões declaradas, herói, secundário e apoio caem em células ativas e não cruzam a costura, o texto fica a 6% da dobra, a costura entra no espaço negativo, `safeAreas` vem da caixa das regiões e `compositionIR[i].surface` registra o que foi movido. Sem dobras nem regiões nada muda (passo e distância sozinhos continuam dando a mesma composição).
+- `brief.surface` aceita `regions`; os dois geradores levam dobras e regiões ao `canvas` e gravam `meta.surfaceIR`; `plan_ir.py --apply` lê dobras e regiões do projeto. Aba Superfície: tabela de fatos com a confiança de cada um, restrições duras e brandas, perguntas em aberto; regiões importadas de PNG ficam marcadas como `mask`.
+- Teste novo `surface_ir_check.mjs` (Python = navegador em 11 superfícies e na composição; confiança de cada fato; medidas com resposta conhecida; controles negativos que provam que as regras podem falhar; validador contra IR adulterado; plan_ir; aba). `references/surface-ir.md`; `PROMPT.md` e `SKILL.md` apontam para ele.
+
 ## 3.11.0 (09/10/2026) · Fase 8: 2D generativo avançado
 
 - **Camada `field`** (GPU, `app/field.js`): um campo escalar (ruído que anda numa volta fechada por loop, ou a luminância de uma imagem do projeto em `p.media`) desenhado por uma de **12 regras**: isolinhas, correntes (linhas de fluxo), células (Voronoi), Truchet, pontos em favo, moiré, metabolas, interferência, pontilhado, relevo, grade deformada e polar. `p.gain` (contraste do campo) e `p.invert`. Imagem como fonte: a mesma regra desenha outra origem.

@@ -1,4 +1,4 @@
-# Roadmap oficial (v11, motor 3.11.0)
+# Roadmap oficial (v11, motor 3.12.0)
 
 Substitui o roadmap v10. Decidido pela autora em 08/10/2026.
 
@@ -24,7 +24,7 @@ Referências antigas a isso ficam apenas no `CHANGELOG.md`.
 | 6 | Composition IR | **feita (3.8.0)** |
 | 7 | Animation IR | **feita (3.10.0)** |
 | 8 | 2D generativo avançado (campos, topologias, tipografia, imagem como fonte) | **feita (3.11.0)** |
-| 9 | Surface IR (análise 2D com confiança EXPLICIT/DETECTED/INFERRED/UNKNOWN) | pendente |
+| 9 | Surface IR (análise 2D com confiança EXPLICIT/DETECTED/INFERRED/UNKNOWN) | **feita (3.12.0)** |
 | 10 | Semântica de áudio (cada camada declara um comportamento temporal) | pendente |
 | 11 | 2.5D | pendente |
 | 12 | 3D generativo | pendente |

@@ -18,7 +18,7 @@
       "total": 82,
       "score": {
         "hierarchy": 96,
-        "contrast": 5,
+        "contrast": 4,
         "density": 100,
         "breathing": 98,
         "motion": 100,
@@ -27,18 +27,18 @@
       },
       "raw": {
         "declaredDensity": "sparse",
-        "dominance": 0.20168478031591341,
-        "p99": 0.3098713755607605,
-        "coverage": 0.039317129629629625,
-        "quiet": 0.9910300925925929,
-        "motion": 0.013810663308329281,
+        "dominance": 0.20065291095245213,
+        "p99": 0.306783527135849,
+        "coverage": 0.038765432098765436,
+        "quiet": 0.9916087962962964,
+        "motion": 0.013817316275913746,
         "dead": 0,
         "seamJump": false,
-        "arcRange": 0.5955727353125477,
+        "arcRange": 0.5955909412253476,
         "arcPeak": 0,
         "strongLayers": 2,
         "layers": 12,
-        "maxCorrelation": 0.8412933564262538,
+        "maxCorrelation": 0.8391449015728256,
         "similarTo": 1
       },
       "notes": {
@@ -66,18 +66,18 @@
       },
       "raw": {
         "declaredDensity": "sparse",
-        "dominance": 0.1714457729332625,
+        "dominance": 0.17142960878238697,
         "p99": 0.43649882078170776,
-        "coverage": 0.1433641975308642,
-        "quiet": 0.7745949074074073,
-        "motion": 0.029860131048712563,
+        "coverage": 0.14334876543209876,
+        "quiet": 0.7743055555555555,
+        "motion": 0.029858096155203045,
         "dead": 0,
         "seamJump": false,
-        "arcRange": 0.5560883566778386,
+        "arcRange": 0.5559100760527487,
         "arcPeak": 0,
         "strongLayers": 2,
         "layers": 12,
-        "maxCorrelation": 0.8412933564262538,
+        "maxCorrelation": 0.8391449015728256,
         "similarTo": 0
       },
       "notes": {
@@ -116,7 +116,7 @@
         "arcPeak": 0.2916666666666667,
         "strongLayers": 2,
         "layers": 12,
-        "maxCorrelation": 0.25876408350623054,
+        "maxCorrelation": 0.2642098726673248,
         "similarTo": 0
       },
       "notes": {

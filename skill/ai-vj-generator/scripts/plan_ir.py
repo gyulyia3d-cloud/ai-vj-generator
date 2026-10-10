@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Plan the intention, the composition and the movement of a piece: the Creative IR, one Composition IR and one Animation IR per composition.
 
-  python plan_ir.py brief.json                       # prints both IRs as JSON (read them, then choose generators)
-  python plan_ir.py brief.json --apply project.json  # writes meta.creativeIR, meta.compositionIR and meta.animationIR into the project and, when the
+  python plan_ir.py brief.json                       # prints the IRs as JSON (read them, then choose generators)
+  python plan_ir.py brief.json --apply project.json  # writes meta.creativeIR, meta.compositionIR, meta.animationIR and meta.surfaceIR into the project and, when the
                                                      # Creative IR drives, places and animates its layers (hero, structure, ground, instrument, text) by it
 
 IR = Intermediate Representation: a structured plan that sits between the briefing (words) and the generators (code). Instead of jumping from
@@ -20,6 +20,7 @@ sys.path.insert(0, HERE)
 import creative_ir as cir  # noqa: E402
 import composition_ir as comp_ir  # noqa: E402
 import animation_ir as anim_ir  # noqa: E402
+import surface_ir as sir  # noqa: E402
 
 
 def plan(brief, n):
@@ -40,16 +41,19 @@ def main():
     if not target:
         n = int(brief.get("compositions", 3))
         ir, cs, an = plan(brief, n)
-        print(json.dumps({"creativeIR": ir, "compositionIR": cs, "animationIR": an}, ensure_ascii=False, indent=1))
+        print(json.dumps({"creativeIR": ir, "compositionIR": cs, "animationIR": an, "surfaceIR": sir.compile_surface(brief["surface"])}, ensure_ascii=False, indent=1))
         return
     proj = json.load(open(target, encoding="utf-8"))
     comps = proj.get("compositions") or []
+    # the project knows more about the surface than the brief (folds, regions, pitch, distance): the brief wins where both speak
+    brief["surface"] = {**{k: v for k, v in sir.from_project(proj).items() if k not in brief["surface"]}, **brief["surface"]}
     ir, cs, an = plan(brief, len(comps))
     ir["colorLogic"] = ir.get("colorLogic") or "one accent used for events only"
     proj.setdefault("meta", {})
     proj["meta"]["creativeIR"] = ir
     proj["meta"]["compositionIR"] = cs
     proj["meta"]["animationIR"] = an
+    proj["meta"]["surfaceIR"] = sir.compile_surface(brief["surface"])
     placed = 0
     if ir["drives"]:
         W, H = proj["canvas"]["w"], proj["canvas"]["h"]

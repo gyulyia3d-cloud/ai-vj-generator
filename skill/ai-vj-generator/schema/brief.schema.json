@@ -149,6 +149,48 @@
             "minimum": 1
           },
           "description": "x positions (px) of physical corners."
+        },
+        "regions": {
+          "type": "array",
+          "maxItems": 500,
+          "items": {
+            "type": "object",
+            "required": [
+              "x",
+              "y",
+              "w",
+              "h"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "x": {
+                "type": "number",
+                "minimum": 0
+              },
+              "y": {
+                "type": "number",
+                "minimum": 0
+              },
+              "w": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "h": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "source": {
+                "type": "string",
+                "enum": [
+                  "list",
+                  "mask"
+                ]
+              }
+            }
+          },
+          "description": "Optional: the regions of the canvas that exist on the surface (pixels of the canvas). They enter the Surface IR as EXPLICIT, or DETECTED when source is mask. See registry/surface.json."
         }
       }
     },

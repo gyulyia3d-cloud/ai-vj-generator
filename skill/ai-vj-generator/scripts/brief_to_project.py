@@ -23,6 +23,7 @@ sys.path.insert(0, HERE)
 import schema_check  # noqa: E402
 import motion_profiles as mp  # noqa: E402
 import creative_ir as cir  # noqa: E402
+import surface_ir as sir  # noqa: E402
 import composition_ir as comp_ir  # noqa: E402
 import animation_ir as anim_ir  # noqa: E402
 
@@ -369,8 +370,10 @@ def build(brief):
     canvas = {"w": sf["w"], "h": sf["h"], "fps": sf.get("fps", 30), "target": surf if surf in ("screen", "led", "projection", "mapping", "multi") else "screen"}
     if sf.get("folds"):
         canvas["folds"] = sf["folds"]
+    if sf.get("regions"):
+        canvas["displays"] = [{k: r[k] for k in ("x", "y", "w", "h", "name", "source") if k in r} for r in sf["regions"]]
     proj = {"schema": "ai-vj-generator/2", "id": "".join(c if c.isalnum() else "-" for c in str(brief["name"]).lower()).strip("-") or "project", "seed": seed,
-            "meta": {"name": str(brief["name"]).upper(), "lang": brief.get("lang", "en"), "brief": brief["concept"], "contract": contract, "artBible": art_bible, "spec": spec, "creativeIR": ir, "compositionIR": cirs, "animationIR": anis},
+            "meta": {"name": str(brief["name"]).upper(), "lang": brief.get("lang", "en"), "brief": brief["concept"], "contract": contract, "artBible": art_bible, "spec": spec, "creativeIR": ir, "compositionIR": cirs, "animationIR": anis, "surfaceIR": sir.compile_surface(sf)},
             "canvas": canvas, "time": {"bpm": tm["bpm"], "bars": bars, "loop": True, "seamless": True, "mode": "loop", "transition": "fade" if prof0["axes"]["continuity"] >= 0.5 else "wipe"},
             "audio": {"reactive": strat != "none", "sens": 1, "smooth": 0.7, "strategy": strat},
             "palette": {**pal, **({"mode": "white-alpha"} if (brief.get("output") or {}).get("mode") == "white-alpha" else {})}, "compositions": comps}

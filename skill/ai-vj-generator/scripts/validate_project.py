@@ -276,6 +276,30 @@ def check_composition_ir(meta, out):
                 e.append(f"meta.compositionIR[{i}].zones.{k}: x, y, w, h must be numbers in 0..1")
 
 
+def check_surface_ir(P, out):
+    """Phase 9: meta.surfaceIR (references/surface-ir.md). Every fact has a confidence; only EXPLICIT and DETECTED may constrain (hard); UNKNOWN carries no value; the IR matches the canvas."""
+    e, w = out["errors"], out["warnings"]
+    sx = P.get("meta", {}).get("surfaceIR")
+    if sx is None:
+        return
+    if not isinstance(sx, dict):
+        e.append("meta.surfaceIR must be an object")
+        return
+    reg = _registry("surface.json")
+    levels, hard = reg["confidence"]["order"], reg["strength"]["hardFrom"]
+    for i, f in enumerate(sx.get("facts") or []):
+        if f.get("confidence") not in levels:
+            e.append(f"meta.surfaceIR.facts[{i}].confidence must be one of {', '.join(levels)}")
+        elif f["confidence"] == "UNKNOWN" and f.get("value") is not None:
+            e.append(f"meta.surfaceIR.facts[{i}] ({f.get('id')}): an UNKNOWN fact must not carry a value (never guess)")
+    for i, c in enumerate(sx.get("constraints") or []):
+        if c.get("strength") == "hard" and c.get("confidence") not in hard:
+            e.append(f"meta.surfaceIR.constraints[{i}] ({c.get('id')}): a hard constraint needs an EXPLICIT or DETECTED fact, not {c.get('confidence')}")
+    cv, sc = P.get("canvas", {}), sx.get("canvas") or {}
+    if (sc.get("w"), sc.get("h")) != (cv.get("w"), cv.get("h")):
+        w.append(f"meta.surfaceIR is for {sc.get('w')}x{sc.get('h')} but the canvas is {cv.get('w')}x{cv.get('h')}: run plan_ir.py --apply again")
+
+
 def check_animation_ir(P, out):
     """Phase 7: meta.animationIR is a list with one Animation IR per composition (references/animation-ir.md). Cycles are whole, lags and events sit on the loop, the loop closes."""
     e, w = out["errors"], out["warnings"]
@@ -560,6 +584,7 @@ def validate(path, extra_assets=()):
         check_creative_ir(P.get("meta", {}), out)
         check_composition_ir(P.get("meta", {}), out)
         check_animation_ir(P, out)
+        check_surface_ir(P, out)
         check_capabilities(P.get("capabilities"), out)
     cv, tm = P.get("canvas", {}), P.get("time", {})
     if v2:

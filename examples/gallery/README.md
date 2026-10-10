@@ -8,7 +8,7 @@ Regenerar: `node scripts/gallery.mjs`. Conferir: `node scripts/gallery.mjs --che
 
 | Brief | Superfície | Clima | BPM | Notas por composição | Set |
 |---|---|---|---|---|---|
-| `01-pressao-led` | led 4500×800 | industrial, glitch | 132 | INDUSTRIAL I: **89** · GLITCH II: **77** · INDUSTRIAL III: **87** | **84** |
+| `01-pressao-led` | led 4500×800 | industrial, glitch | 132 | INDUSTRIAL I: **89** · GLITCH II: **76** · INDUSTRIAL III: **87** | **84** |
 | `02-jardim-tela` | screen 1920×1080 | organic, calm | 96 | ORGANIC I: **98** · CALM II: **88** · ORGANIC III: **85** | **90** |
 | `03-vertical-cosmos` | screen 1080×1920 | cosmic | 90 | COSMIC I: **87** · COSMIC II: **79** · COSMIC III: **79** | **82** |
 | `04-torre-urbana` | led 540×1920 | urban, aggressive | 140 | URBAN I: **88** · AGGRESSIVE II: **81** · URBAN III: **92** | **87** |
@@ -27,8 +27,8 @@ Regenerar: `node scripts/gallery.mjs`. Conferir: `node scripts/gallery.mjs --che
 
 ![01-pressao-led-03_INDUSTRIAL_III.jpg](contato/01-pressao-led-03_INDUSTRIAL_III.jpg)
 
-- **INDUSTRIAL I** — 89/100 · hierarchy 72 · contrast 100 · density 100 · breathing 78 · motion 100 · arc 85 · repetition 100
-- **GLITCH II** — 77/100 · hierarchy 60 · contrast 44 · density 100 · breathing 68 · motion 100 · arc 85 · repetition 100
+- **INDUSTRIAL I** — 89/100 · hierarchy 71 · contrast 100 · density 100 · breathing 77 · motion 100 · arc 85 · repetition 100
+- **GLITCH II** — 76/100 · hierarchy 59 · contrast 44 · density 100 · breathing 67 · motion 100 · arc 85 · repetition 100
 - **INDUSTRIAL III** — 87/100 · hierarchy 98 · contrast 51 · density 100 · breathing 80 · motion 100 · arc 85 · repetition 100
 
 ## Jardim de Luz (`02-jardim-tela`)
@@ -125,6 +125,6 @@ Regenerar: `node scripts/gallery.mjs`. Conferir: `node scripts/gallery.mjs --che
 
 ![08-minimal-multi-03_MINIMAL_III.jpg](contato/08-minimal-multi-03_MINIMAL_III.jpg)
 
-- **MINIMAL I** — 82/100 · hierarchy 96 · contrast 5 · density 100 · breathing 98 · motion 100 · arc 85 · repetition 100
+- **MINIMAL I** — 82/100 · hierarchy 96 · contrast 4 · density 100 · breathing 98 · motion 100 · arc 85 · repetition 100
 - **MINIMAL II** — 84/100 · hierarchy 78 · contrast 37 · density 100 · breathing 100 · motion 100 · arc 85 · repetition 100
 - **MINIMAL III** — 95/100 · hierarchy 81 · contrast 96 · density 100 · breathing 100 · motion 98 · arc 100 · repetition 100

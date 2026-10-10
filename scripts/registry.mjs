@@ -47,6 +47,9 @@ const creativeJsPath = join(ROOT, 'app', 'creative-data.js');
 const composition = rd(join(REG, 'composition.json'));
 const compositionJs = '/* Gerado de skill/ai-vj-generator/registry/composition.json por node scripts/registry.mjs --write. Não edite. */\nconst COMPOSITION_DATA = ' + JSON.stringify(composition) + ';\n';
 const compositionJsPath = join(ROOT, 'app', 'composition-data.js');
+const surface = rd(join(REG, 'surface.json'));
+const surfaceJs = '/* Gerado de skill/ai-vj-generator/registry/surface.json por node scripts/registry.mjs --write. Não edite. */\nconst SURFACEIR_DATA = ' + JSON.stringify(surface) + ';\n';
+const surfaceJsPath = join(ROOT, 'app', 'surface-ir-data.js');
 const animation = rd(join(REG, 'animation.json'));
 const animationJs = '/* Gerado de skill/ai-vj-generator/registry/animation.json por node scripts/registry.mjs --write. Não edite. */\nconst ANIMATION_DATA = ' + JSON.stringify(animation) + ';\n';
 const animationJsPath = join(ROOT, 'app', 'animation-data.js');
@@ -62,8 +65,10 @@ if (mode === 'write') {
   writeFileSync(creativeJsPath, creativeJs);
   writeFileSync(compositionJsPath, compositionJs);
   writeFileSync(animationJsPath, animationJs);
+  writeFileSync(surfaceJsPath, surfaceJs);
   let b = rd(briefSchemaPath); b.properties.verbs = { type: 'array', items: { type: 'string', enum: verbIds }, description: 'Optional: visual verbs the author wants (the Creative IR adds them with extra weight). See registry/creative.json.' };
   b.properties.motionArchetype = { type: 'string', enum: animation.archetypeOrder, description: 'Optional: force the motion archetype of the first composition (Animation IR). See registry/animation.json.' };
+  b.properties.surface.properties.regions = { type: 'array', maxItems: 500, items: { type: 'object', required: ['x', 'y', 'w', 'h'], properties: { name: { type: 'string' }, x: { type: 'number', minimum: 0 }, y: { type: 'number', minimum: 0 }, w: { type: 'number', exclusiveMinimum: 0 }, h: { type: 'number', exclusiveMinimum: 0 }, source: { type: 'string', enum: ['list', 'mask'] } } }, description: 'Optional: the regions of the canvas that exist on the surface (pixels of the canvas). They enter the Surface IR as EXPLICIT, or DETECTED when source is mask. See registry/surface.json.' };
   writeFileSync(briefSchemaPath, JSON.stringify(b, null, 2) + '\n');
   console.log(`registry gravado: ${generators.generators.length} geradores, ${parameters.groups.reduce((a, g) => a + g.parameters.length, 0)} parâmetros comuns, ${mod.sources.length} fontes de modulação`);
   process.exit(0);
@@ -104,6 +109,8 @@ const optsOf = (t, k) => (generators.generators.find(g => g.id === t).parameters
 check(verbIds.every(v => optsOf('field', 'kind').includes(creative.fieldKinds[v]) && optsOf('glyphs', 'source').includes(creative.glyphSources[v])) && creative.heroTypes.includes('field') && creative.heroTypes.includes('glyphs'), 'todo verbo aponta para uma regra de field e um campo de glyphs que existem no motor; os dois são tipos de herói', verbIds.filter(v => !optsOf('field', 'kind').includes(creative.fieldKinds[v]) || !optsOf('glyphs', 'source').includes(creative.glyphSources[v])).join());
 /* Composition IR: dados únicos, copiados para o navegador, coerentes entre si */
 check(readFileSync(compositionJsPath, 'utf8').replace(/\r\n/g, '\n') === compositionJs, 'composition.json = app/composition-data.js (dados do Composition IR no navegador)', 'rode node scripts/registry.mjs --write');
+check(readFileSync(surfaceJsPath, 'utf8').replace(/\r\n/g, '\n') === surfaceJs, 'surface.json = app/surface-ir-data.js (dados do Surface IR no navegador)', 'rode node scripts/registry.mjs --write');
+check(JSON.stringify(surface.confidence.order) === '["EXPLICIT","DETECTED","INFERRED","UNKNOWN"]' && surface.strength.hardFrom.every(c => surface.confidence.order.includes(c)) && !surface.strength.hardFrom.includes('INFERRED') && !surface.strength.hardFrom.includes('UNKNOWN') && surface.unknowns.length >= 4, 'Surface IR: quatro níveis de confiança; só EXPLICIT e DETECTED restringem de forma dura', JSON.stringify(surface.strength));
 const GI = composition.grammarOrder;
 check(GI.length === 12 && composition.grammars.every(g => ['hero', 'secondary', 'support', 'text', 'negative'].every(k => Array.isArray(g[k])) && ['x', 'y', 'diag', 'radial'].includes(g.axis)), 'as 12 gramáticas espaciais definem herói, secundário, apoio, texto, espaço negativo e eixo de movimento', '');
 check(Object.keys(composition.verbGrammars).every(v => verbIds.includes(v) && Object.keys(composition.verbGrammars[v]).every(g => GI.includes(g))) && verbIds.every(v => composition.verbGrammars[v]), 'todo verbo do Creative IR aponta para gramáticas que existem', verbIds.filter(v => !composition.verbGrammars[v]).join(','));
@@ -119,5 +126,6 @@ check(bs.properties.motionArchetype && same(bs.properties.motionArchetype.enum, 
 /* o PROMPT.md (qualquer IA) ensina o vocabulário inteiro */
 const promptDoc = readFileSync(join(SK, 'portable', 'PROMPT.md'), 'utf8');
 check(verbIds.every(v => new RegExp('\\b' + v + '\\b').test(promptDoc)) && GI.every(g => promptDoc.includes(g)) && /plan_ir\.py/.test(promptDoc) && /meta\.creativeIR/.test(promptDoc) && /meta\.compositionIR/.test(promptDoc) && /meta\.animationIR/.test(promptDoc) && AO.every(a => new RegExp('\\b' + a + '\\b').test(promptDoc)), 'PROMPT.md cita os 32 verbos, as 12 gramáticas, os 8 arquétipos, plan_ir.py e os três campos do projeto', [...verbIds.filter(v => !new RegExp('\\b' + v + '\\b').test(promptDoc)), ...GI.filter(g => !promptDoc.includes(g)), ...AO.filter(a => !new RegExp('\\b' + a + '\\b').test(promptDoc))].join(','));
+check(surface.confidence.order.every(c => promptDoc.includes(c)) && /meta\.surfaceIR/.test(promptDoc) && readFileSync(join(SK, 'references', 'surface-ir.md'), 'utf8').includes('UNKNOWN'), 'PROMPT.md ensina as quatro confianças do Surface IR e meta.surfaceIR; references/surface-ir.md existe', 'faltou citar no PROMPT.md');
 console.log(fail ? `\n${fail} deriva(s).` : '\nregistry ok.');
 process.exit(fail ? 1 : 0);
