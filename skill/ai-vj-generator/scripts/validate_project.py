@@ -26,6 +26,7 @@ from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import audio_semantics as _asem  # noqa: E402
+import depth_ir as _depth  # noqa: E402
 
 ENGINE = Path(__file__).resolve().parent.parent / "assets" / "engine.html"
 BLENDS = {"normal", "add", "screen", "multiply", "difference", "overlay", "lighten"}
@@ -341,6 +342,32 @@ def check_animation_ir(P, out):
             e.append(f"{pre}.loop.closes: must be true")
 
 
+def check_depth_ir(P, out):
+    """Phase 11: meta.depthIR is a list with one Depth IR per composition (references/depth-ir.md). The camera runs in whole cycles; the IR matches the composition's camera."""
+    e, w = out["errors"], out["warnings"]
+    di = P.get("meta", {}).get("depthIR")
+    if di is None:
+        return
+    if not isinstance(di, list):
+        e.append("meta.depthIR must be a list (one entry per composition)")
+        return
+    comps = P.get("compositions") or []
+    if len(di) != len(comps):
+        w.append(f"meta.depthIR has {len(di)} entries for {len(comps)} compositions")
+    for i, d in enumerate(di):
+        pre = f"meta.depthIR[{i}]"
+        cam = d.get("camera") if isinstance(d, dict) else None
+        if not isinstance(cam, dict) or cam.get("move") not in _depth.CAMERAS:
+            e.append(f"{pre}.camera.move: must be one of {', '.join(_depth.CAMERAS)}")
+            continue
+        if (d.get("loop") or {}).get("closes") is not True:
+            e.append(f"{pre}.loop.closes: must be true")
+        if (d.get("loop") or {}).get("audio") is not False:
+            e.append(f"{pre}.loop.audio: the camera never listens to the audio (must be false)")
+        if i < len(comps) and isinstance(comps[i], dict) and comps[i].get("camera") != cam:
+            w.append(f"{pre}.camera differs from compositions[{i}].camera: run plan_ir.py --apply again")
+
+
 def check_creative_ir(meta, out):
     """Phase 5: meta.creativeIR (references/creative-ir.md). Verbs and generator types must exist in the registry."""
     e, w = out["errors"], out["warnings"]
@@ -587,6 +614,7 @@ def validate(path, extra_assets=()):
         check_creative_ir(P.get("meta", {}), out)
         check_composition_ir(P.get("meta", {}), out)
         check_animation_ir(P, out)
+        check_depth_ir(P, out)
         check_surface_ir(P, out)
         check_capabilities(P.get("capabilities"), out)
     cv, tm = P.get("canvas", {}), P.get("time", {})
@@ -767,6 +795,10 @@ def validate(path, extra_assets=()):
         default_names = [x.get("name") for x in body if str(x.get("name", "")).strip().upper() in DEFAULT_LAYER_NAMES]
         if default_names:
             w.append(f"{where}: layers still named {default_names}; name each layer for its job in this piece")
+        if v2:
+            de, dw = _depth.audit(c, P.get("canvas"))
+            e.extend(f"{where}: {m}" for m in de)
+            w.extend(f"{where}: {m}" for m in dw)
         if v2 and any("temporal" in x for x in layers):
             ae, aw = _asem.audit(layers, AUDIO_STRATEGY)
             e.extend(f"{where}: {m}" for m in ae)

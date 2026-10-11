@@ -21,6 +21,7 @@ import creative_ir as cir  # noqa: E402
 import composition_ir as comp_ir  # noqa: E402
 import animation_ir as anim_ir  # noqa: E402
 import audio_semantics as audio_sem  # noqa: E402
+import depth_ir as depth_ir  # noqa: E402
 import surface_ir as sir  # noqa: E402
 
 
@@ -65,6 +66,13 @@ def main():
     # audio semantics: declared for every composition, whether or not the plan drives
     strat = (proj.get("audio") or {}).get("strategy", "rhythmic")
     proj["meta"]["audioSemantics"] = [audio_sem.declare(c["layers"], strat, ai["archetype"] if ir["drives"] else None) for c, ai in zip(comps, an)]
+    # 2.5D: planes and camera for every composition (the camera follows the archetype, so it needs the Animation IR above)
+    W, H = proj["canvas"]["w"], proj["canvas"]["h"]
+    proj["meta"]["depthIR"] = []
+    for c, ci, ai in zip(comps, cs, an):
+        d = depth_ir.compile_depth(c["layers"], ai, ci, proj["meta"]["surfaceIR"], W, H)
+        depth_ir.apply_depth(c, c["layers"], d)
+        proj["meta"]["depthIR"].append(d)
     with open(target, "w", encoding="utf-8", newline="\n") as f:
         json.dump(proj, f, ensure_ascii=False, indent=2)
         f.write("\n")

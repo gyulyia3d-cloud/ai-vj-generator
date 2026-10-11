@@ -583,7 +583,7 @@ html.stagemode #toast,html.stagemode #hint{display:none!important}
    função pura de (parâmetros, quadro) → o mesmo código desenha o preview,
    o export PNG alpha e a gravação.
    ===================================================================== */
-const VERSION = '3.12.0';
+const VERSION = '3.14.0';
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const TAU = Math.PI * 2, GA = Math.PI * (3 - Math.sqrt(5));
 const clamp = (v, a, b) => v < a ? a : v > b ? b : v, lerp = (a, b, t) => a + (b - a) * t;
@@ -2657,12 +2657,13 @@ function paintLayer(ctx, comp, L, idx, F, k, W, H, clr, below) {
   if (clr) ctx.clearRect(0, 0, cv.width, cv.height);
   const g = GEN[L.type]; if (!g) return;
   let p = pm(L); const u = unitOf(W, H), LF = layerFrame(F, p, idx, comp.layers.length, L.type, L.temporal); p = applyMods(p, L, LF);
+  p = DEPTH.adjust(p, L, comp, F, W, H);   /* 2.5D (fase 11): a câmera da composição move, escala, desfoca e esmaece a camada que tem z; sem câmera nem z, p fica intacto */
   ctx.setTransform(k, 0, 0, k, 0, 0);
   const ax = p.ax * W, ay = p.ay * H;
   ctx.translate(ax + p.x + F.jx * u, ay + p.y); if (p.rot) ctx.rotate(p.rot * Math.PI / 180); if (p.sx !== 1 || p.sy !== 1) ctx.scale(p.sx, p.sy); ctx.translate(-ax, -ay);
   const f = [];
   if (p.bright !== 1) f.push(`brightness(${p.bright})`); if (p.contrast !== 1) f.push(`contrast(${p.contrast})`); if (p.sat !== 1) f.push(`saturate(${p.sat})`);
-  if (p.hue) f.push(`hue-rotate(${p.hue}deg)`); if (p.blur > 0) f.push(`blur(${p.blur * k}px)`);
+  if (p.hue) f.push(`hue-rotate(${p.hue}deg)`); if (p.blur > 0) f.push(`blur(${p.blur * k}px)`); if (p._alpha !== undefined && p._alpha < 1) f.push(`opacity(${p._alpha})`);
   if (f.length) ctx.filter = f.join(' ');
   ctx.lineJoin = 'miter'; ctx.lineCap = 'butt'; ctx.textBaseline = 'alphabetic';
   try { ctx.save(); g.draw(ctx, { L, p, F: LF, comp, W, H, u, k, idx, below }); ctx.restore(); LAYER_ERR.delete(L); }
@@ -4727,6 +4728,8 @@ const GENAI = (() => {
     if (drv) { comps.forEach((c, i) => ANIMATION.apply(c.layers, anis[i])); contract.motionLanguage += ` Animation IR archetypes: ${anis.map(x => x.archetype).join(', ')} (${anis[0].description}).`; }
     /* semântica de áudio: toda camada declara como marca o tempo; a estratégia decide quais poucas ouvem a música (independe do Creative IR) */
     const asem = comps.map((c, i) => AUDIOSEM.declare(c.layers, strat, drv ? anis[i].archetype : null));
+    /* 2.5D: planos de profundidade e uma câmera por composição; o arquétipo do Animation IR escolhe a câmera e uma restrição dura da superfície a trava em puxar foco */
+    const sxd = SURFACEIR.compile(sf), dirs = comps.map((c, i) => { const d = DEPTH.compile(c.layers, anis[i], cirs[i], sxd, sf.w, sf.h); DEPTH.apply(c, c.layers, d); return d; });
     const artBible = makeArtBible(brief, tags, contract, prof0, strat, led, ir);
     if (strat === 'none') contract.audioStrategyReason = (brief.audio || {}).reason || 'The brief asks for a silent, music-independent piece.';
     const spec = { archetype: [ARCH[surf] || 'clip-pack'], confirmed: { pixelMap: [sf.w, sf.h] }, assumed: [{ field: 'surface', why: "generated from the brief without AI; the facts are the brief's own", risk: 'confirm the pixel map and distances with the venue before delivery' }] };
@@ -4734,7 +4737,7 @@ const GENAI = (() => {
     const canvas = { w: sf.w, h: sf.h, fps: sf.fps || 30, target: ['screen', 'led', 'projection', 'mapping', 'multi'].includes(surf) ? surf : 'screen' }; if (sf.folds) canvas.folds = sf.folds;
     if (sf.regions && sf.regions.length) canvas.displays = sf.regions.map(r => { const o = {}; for (const k of ['x', 'y', 'w', 'h', 'name', 'source']) if (k in r) o[k] = r[k]; return o; });
     const id = String(brief.name).toLowerCase().split('').map(c => /[\p{L}\p{N}]/u.test(c) ? c : '-').join('').replace(/^-+|-+$/g, '') || 'project';
-    return { schema: 'ai-vj-generator/2', id, seed, meta: { name: String(brief.name).toUpperCase(), lang: brief.lang || 'en', brief: brief.concept, contract, artBible, spec, creativeIR: ir, compositionIR: cirs, animationIR: anis, audioSemantics: asem, surfaceIR: SURFACEIR.compile(sf) }, canvas,
+    return { schema: 'ai-vj-generator/2', id, seed, meta: { name: String(brief.name).toUpperCase(), lang: brief.lang || 'en', brief: brief.concept, contract, artBible, spec, creativeIR: ir, compositionIR: cirs, animationIR: anis, audioSemantics: asem, depthIR: dirs, surfaceIR: SURFACEIR.compile(sf) }, canvas,
       time: { bpm: tm.bpm, bars, loop: true, seamless: true, mode: 'loop', transition: prof0.axes.continuity >= 0.5 ? 'fade' : 'wipe' }, audio: { reactive: strat !== 'none', sens: 1, smooth: 0.7, strategy: strat },
       palette: Object.assign({}, pal, (brief.output || {}).mode === 'white-alpha' ? { mode: 'white-alpha' } : {}), compositions: comps };
   }
@@ -4922,6 +4925,144 @@ const AUDIOSEM = (() => {
   return { declare, state, mask, audit, tierOf, reactive, DATA: D };
 })();
 /*__AUDIOSEM_END__*/
+/*__DEPTHDATA_START__*/
+/* Gerado de skill/ai-vj-generator/registry/depth.json por node scripts/registry.mjs --write. Não edite. */
+const DEPTH_DATA = {"note":"Single source of the 2.5D system (phase 11): generated layers sit on depth planes (layer.z) and one camera per composition (composition.camera) moves them in parallax, perspective, fog and focus. Python (scripts/depth_ir.py) and the browser (app/depth.js) read this file; app/depth-data.js is a copy made by node scripts/registry.mjs --write.","zRange":[-1,1],"planes":{"ground":{"range":[-0.9,-0.5],"why":"the field behind everything: slowest parallax, most fog, softest focus"},"structure":{"range":[-0.4,-0.2],"why":"the module the eye measures against sits behind the hero"},"hero":{"range":[0.1,0.3],"why":"the single dominant figure sits on the focus plane, a little forward"},"event":{"range":[0.6,0.8],"why":"an event mark passes in front of the scene"}},"screenSpace":["background","instrument","information","finish"],"screenWhy":"text, meters, the ground colour and the finish stay on the screen plane: no parallax, no fog, no blur","focusTier":"hero","focusDefault":0.2,"cameras":{"still":{"axes":[],"amp":0,"moves":false,"description":"the camera does not move; planes still hold their fog and focus"},"sway":{"axes":["x"],"amp":0.05,"moves":true,"description":"side to side: near planes slide against far ones"},"crane":{"axes":["y"],"amp":0.04,"moves":true,"description":"up and down: the planes rise and sink against each other"},"orbit":{"axes":["x","y"],"amp":0.045,"moves":true,"description":"a small ellipse: parallax in both axes"},"dolly":{"axes":["scale"],"amp":0.12,"moves":true,"description":"push in and out: near planes grow more than far ones"},"rack":{"axes":["focus"],"amp":0.8,"moves":false,"description":"pull focus: nothing moves, the sharp plane travels between far and near"}},"archetypeCamera":{"pulse":"dolly","breathe":"dolly","glide":"sway","surge":"dolly","stutter":"sway","orbit":"orbit","ripple":"rack","settle":"crane"},"archetypeSteps":{"stutter":8},"axisSwap":{"vertical":{"sway":"crane"}},"seamSafe":"rack","cycles":{"sway":"one","crane":"one","orbit":"one","dolly":"half","rack":"one","still":"none"},"energy":{"lo":0.6,"span":0.8},"fog":{"default":0.1,"still":0.15,"rack":0},"dof":{"default":0.01,"rack":0.02,"still":0.014},"deadzone":0.25,"fogSpan":1.5,"fogSat":0.8,"maxShift":0.12,"reasons":{"pulse":"the scene breathes with the pulse: the camera pushes in and out","breathe":"a slow breath: the camera pushes in and out","glide":"the scene glides: the camera sways so planes slide against each other","surge":"a surge: the camera pushes in and out, near planes lead","stutter":"stepped motion: the camera sways in eight held steps","orbit":"the scene orbits: the camera traces a small ellipse","ripple":"a ripple through the planes: the focus is pulled from far to near","settle":"a landing: the camera cranes up and settles"},"seamReason":"a hard fold or active-area constraint is declared: nothing may slide or grow across a seam, so the camera only pulls focus"};
+/*__DEPTHDATA_END__*/
+/*__DEPTH_START__*/
+/* Depth IR (fase 11, 2.5D): porta de skill/ai-vj-generator/scripts/depth_ir.py. As camadas geradas ficam em planos de profundidade (layer.z, -1 longe a +1 perto) e uma câmera por composição
+   (composition.camera) move os planos: paralaxe (planos próximos deslizam contra os distantes), perspectiva (empurra e recua), névoa (o que está longe escurece e perde cor) e foco
+   (o que está fora do plano de foco desfoca). Texto, medidores, o fundo e o acabamento ficam no plano da tela. A câmera roda em ciclos inteiros do loop (o loop fecha) e nunca ouve o áudio.
+   O arquétipo do Animation IR escolhe a câmera; uma restrição dura de dobra ou de área ativa (Surface IR) deixa só o puxar de foco: nada desliza nem cresce por cima de uma costura.
+   Os dados vêm de registry/depth.json, copiados para app/depth-data.js por node scripts/registry.mjs --write. Python e navegador dão o mesmo IR e as mesmas transformações (scripts/depth_check.mjs).
+   Isto não é 3D (sem malha, sem câmera numa cena): é planos. A camada `parallax` (foto com mapa de profundidade) e `splat` continuam como estão.
+   Depende de GENAI (pyRound), AUDIOSEM (tierOf) e SURFACEIR (hard) só em tempo de execução: embutido depois deles.
+   Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html. */
+const DEPTH = (() => {
+  const D = DEPTH_DATA, CAMERAS = D.cameras, Z = D.zRange;
+  const R = (x, nd) => GENAI.pyRound(x, nd), r2 = x => R(x, 2), r3 = x => R(x, 3), r4 = x => R(x, 4);
+  const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
+  const tierOf = L => AUDIOSEM.tierOf(L);
+  const surfaceUnit = (W, H) => Math.min(H, W * 0.5625);
+  const isNum = v => typeof v === 'number' && Number.isFinite(v);
+  const isInt = v => typeof v === 'number' && Number.isInteger(v);
+
+  function assignPlanes(layers) {
+    const by = {}, out = new Map();
+    layers.forEach((L, i) => { if (L.on === false) return; const t = tierOf(L); if (t && D.planes[t]) (by[t] = by[t] || []).push(i); });
+    for (const t of Object.keys(by)) {
+      const [lo, hi] = D.planes[t].range, idx = by[t];
+      idx.forEach((i, j) => out.set(i, [t, r2(idx.length === 1 ? (lo + hi) / 2 : lo + (hi - lo) * j / (idx.length - 1))]));
+    }
+    return out;
+  }
+  function planeEffect(cam, z, S, focus) {
+    const f = focus === undefined ? cam.focus : focus;
+    return { fog: r3(cam.fog * clamp((f - z) / D.fogSpan, 0, 1)), blurPx: r2(cam.dof * S * Math.max(0, Math.abs(z - f) - D.deadzone)) };
+  }
+
+  function compile(layers, an, cmp, sx, W, H) {
+    const arch = an ? an.archetype : undefined;
+    let camId = D.archetypeCamera[arch] || 'sway';
+    const axis = cmp ? cmp.movementAxis : undefined;
+    camId = (D.axisSwap[axis] || {})[camId] || camId;
+    let seam = null;
+    if (sx && (SURFACEIR.hard(sx, 'foldBands') || SURFACEIR.hard(sx, 'activeArea'))) {
+      if (CAMERAS[camId].moves) { seam = { hard: true, rule: D.seamReason, from: camId }; camId = D.seamSafe; } else seam = { hard: true, rule: null, from: camId };
+    }
+    const c = CAMERAS[camId], planes = assignPlanes(layers), hz = [];
+    planes.forEach(([t, z]) => { if (t === 'hero') hz.push(z); });
+    const focus = hz.length ? r2(hz.reduce((a, b) => a + b, 0) / hz.length) : D.focusDefault;
+    const bars = an && an.timing && an.timing.bars !== undefined ? an.timing.bars : 4, rule = D.cycles[camId];
+    const cycles = rule === 'none' ? 0 : rule === 'half' ? Math.max(1, Math.trunc(bars) >> 1) : 1;
+    const energy = an && an.axes && an.axes.energy !== undefined ? an.axes.energy : 0.5;
+    let amp = camId !== 'still' ? r4(c.amp * (D.energy.lo + D.energy.span * energy)) : 0;
+    if (camId === 'rack') amp = Math.min(1.0, amp);
+    const cam = { move: camId, amp, cycles, phase: 0, focus, fog: D.fog[camId] !== undefined ? D.fog[camId] : D.fog.default, dof: D.dof[camId] !== undefined ? D.dof[camId] : D.dof.default };
+    const steps = camId === 'sway' ? D.archetypeSteps[arch] : undefined; if (steps) cam.steps = steps;
+    const S = surfaceUnit(W, H), rows = []; let far = 0;
+    [...planes.keys()].sort((a, b) => a - b).forEach(i => {
+      const [t, z] = planes.get(i), e = planeEffect(cam, z, S);
+      rows.push({ name: layers[i].name === undefined ? null : layers[i].name, tier: t, z, fog: e.fog, blurPx: e.blurPx }); far = Math.max(far, Math.abs(z - focus));
+    });
+    const ax = c.axes, zs = [...planes.values()].map(v => v[1]);
+    const shiftX = ax.includes('x') ? r2(amp * S * far) : 0, shiftY = ax.includes('y') ? r2(amp * S * far * (ax.includes('x') ? 0.5 : 1)) : 0;
+    const scale = ax.includes('scale') ? r2(amp * 100 * Math.max(0, ...zs.map(z => (z + 1) / 2))) : 0;
+    const screen = layers.filter((L, i) => L.on !== false && !planes.has(i)).map(L => L.name === undefined ? null : L.name);
+    return {
+      version: 1, archetype: arch === undefined ? null : arch, camera: cam, description: seam && seam.rule ? seam.rule : (D.reasons[arch] || c.description),
+      focus: { z: focus, tier: hz.length ? D.focusTier : 'default' },
+      planes: rows, screen,
+      parallax: { shiftXPx: shiftX, shiftYPx: shiftY, scalePct: scale, unitPx: r2(S), blurMaxPx: Math.max(0, ...rows.map(r => r.blurPx)), fogMax: Math.max(0, ...rows.map(r => r.fog)) },
+      seam: seam || { hard: false, rule: null, from: camId },
+      loop: { closes: true, wholeCycles: true, audio: false },
+    };
+  }
+  function apply(comp, layers, ir) {
+    const planes = assignPlanes(layers);
+    layers.forEach((L, i) => { if (planes.has(i)) L.z = planes.get(i)[1]; else delete L.z; });
+    comp.camera = JSON.parse(JSON.stringify(ir.camera));
+    return comp;
+  }
+
+  /* a câmera num quadro: offsets (fração da unidade), dolly (fração de escala) e plano de foco; fase ph em [0, 1) */
+  function state(cam, ph) {
+    const still = { cx: 0, cy: 0, dz: 0, focus: cam.focus };
+    if (cam.move === 'still' || !cam.cycles) return still;
+    let s = cam.cycles * ph + (cam.phase || 0);
+    if (cam.steps) s = Math.floor(s * cam.steps) / cam.steps;
+    const phi = 2 * Math.PI * s, a = cam.amp;
+    switch (cam.move) {
+      case 'sway': return Object.assign(still, { cx: a * Math.sin(phi) });
+      case 'crane': return Object.assign(still, { cy: a * Math.sin(phi) });
+      case 'orbit': return Object.assign(still, { cx: a * Math.sin(phi), cy: 0.5 * a * Math.cos(phi) });
+      case 'dolly': return Object.assign(still, { dz: a * Math.sin(phi) });
+      case 'rack': return Object.assign(still, { focus: clamp(cam.focus + a * Math.sin(phi), Z[0], Z[1]) });
+    }
+    return still;
+  }
+  /* o que a câmera faz a uma camada no plano z: deslocamentos em pixels, escala, raio de desfoque, opacidade e saturação */
+  function transform(cam, st, z, S) {
+    const f0 = cam.focus, f = st.focus, fog = cam.fog * clamp((f - z) / D.fogSpan, 0, 1);
+    return { dx: -st.cx * S * (z - f0), dy: -st.cy * S * (z - f0), scale: 1 + st.dz * (z + 1) / 2, blur: cam.dof * S * Math.max(0, Math.abs(z - f) - D.deadzone), alpha: 1 - fog, sat: 1 - D.fogSat * fog };
+  }
+  /* aplica a câmera aos parâmetros de uma camada num quadro (o motor chama isto em paintLayer); sem câmera ou sem z devolve p intacto: projeto antigo abre como sempre */
+  function adjust(p, L, comp, F, W, H) {
+    const cam = comp && comp.camera;
+    if (!cam || !CAMERAS[cam.move] || typeof L.z !== 'number') return p;
+    const t = transform(cam, state(cam, F.ph), L.z, surfaceUnit(W, H)), q = Object.assign({}, p);
+    q.x = p.x + t.dx; q.y = p.y + t.dy; q.sx = p.sx * t.scale; q.sy = p.sy * t.scale; q.blur = (p.blur || 0) + t.blur; q.sat = p.sat * t.sat; q._alpha = t.alpha;
+    return q;
+  }
+
+  function audit(comp, canvas) {
+    const e = [], w = [], cam = comp.camera, layers = comp.layers || [], zs = layers.filter(L => 'z' in L).map(L => [L, L.z]);
+    for (const [L, z] of zs) {
+      const nm = L.name || L.type;
+      if (!isNum(z) || z < Z[0] || z > Z[1]) { e.push(`${nm}.z: um número de ${Z[0]} (longe) a ${Z[1]} (perto)`); continue; }
+      const t = tierOf(L); if (D.screenSpace.includes(t)) w.push(`${nm}: camada ${t} deve ficar no plano da tela (sem z): ${D.screenWhy}`);
+    }
+    if (cam === undefined || cam === null) { if (zs.length) w.push('camadas têm `z` mas a composição não tem `camera`: os planos não fazem nada até a câmera existir (depth_ir.py ou plan_ir.py --apply)'); return { errors: e, warnings: w }; }
+    if (typeof cam !== 'object' || !CAMERAS[cam.move]) { e.push(`camera.move: um de ${Object.keys(CAMERAS).join(', ')}`); return { errors: e, warnings: w }; }
+    const c = CAMERAS[cam.move], num = (k, lo, hi) => isNum(cam[k]) && cam[k] >= lo && cam[k] <= hi, ampMax = cam.move === 'rack' ? 1.0 : 0.25;
+    if (!num('amp', 0, ampMax)) e.push(`camera.amp: um número de 0 a ${ampMax}`);
+    if (!num('focus', Z[0], Z[1])) e.push('camera.focus: um plano de -1 a 1');
+    if (!num('fog', 0, 1)) e.push('camera.fog: de 0 a 1');
+    if (!num('dof', 0, 0.1)) e.push('camera.dof: de 0 a 0.1');
+    if ('phase' in cam && !num('phase', 0, 1)) e.push('camera.phase: de 0 a 1');
+    if ('steps' in cam && !(isInt(cam.steps) && cam.steps >= 2 && cam.steps <= 32)) e.push('camera.steps: um inteiro de 2 a 32');
+    if (cam.move !== 'still' && !(isInt(cam.cycles) && cam.cycles >= 1)) e.push('camera.cycles: um número inteiro de ciclos por loop (no mínimo 1), senão o loop não fecha');
+    if (c.moves && canvas && canvas.folds && canvas.folds.length) e.push(`camera.move ${cam.move} move camadas por cima das dobras declaradas: use rack ou still numa superfície dobrada`);
+    if (!zs.length) w.push('a composição tem câmera mas nenhuma camada tem `z`: nada está num plano');
+    else if (isNum(cam.amp) && c.moves && cam.move !== 'dolly') {
+      const far = Math.max(0, ...zs.filter(([, z]) => isNum(z)).map(([, z]) => Math.abs(z - (cam.focus || 0))));
+      if (cam.amp * far > D.maxShift) w.push(`camera: o plano mais distante desloca ${(cam.amp * far).toFixed(3)} da unidade (acima de ${D.maxShift}): a paralaxe pode mostrar bordas esticadas`);
+    }
+    return { errors: e, warnings: w };
+  }
+  return { compile, apply, state, transform, adjust, audit, assignPlanes, surfaceUnit, DATA: D };
+})();
+/*__DEPTH_END__*/
 /*__EVAL_START__*/
 /* Avaliador estrutural (fase 2, no motor desde a fase 3): nota de 0 a 100 por composição, a partir de quadros reais.
    A CLI (scripts/evaluate.mjs) e a aba Gerar chamam a mesma função: AIVJ.evaluate(lang). Edite este arquivo; node scripts/embed-modules.mjs embute no index.html.
@@ -6750,7 +6891,7 @@ function boot() {
   document.fonts && document.fonts.load('800 40px "Martian Mono"').catch(() => {});
   if (!embedded && !saved && !store.get('seenWiz', false)) openWiz();
   raf = requestAnimationFrame(tick);
-  window.AIVJ = { version: VERSION, get PAL() { return PAL; }, get RECIPES() { return RECIPES; }, addRecipe, addTestCards, recipeLayer, importFile, parseModel, setLang, setHow, undo, redo, evalExpr, applyTheme, layoutApply, setPanelOpen, setZoneDraw, get hist() { return ST.hist.length; }, get histLabels() { return ST.hl.slice(); }, surface: SC, specOf, applyCalc, renderSpec, specMarkdown, get project() { return P; }, get audio() { return AUD; }, AUDIOSEM, pseudoAudio, synthTimes, applyMods, motionCurve, GENAI, EVALUATOR, flash: FLASH, ONSET, UX, fx: { FX, body: fxBody, op: fxOp }, synth: { SYN, src: synthSrc }, blobs: { X: BLOBX }, layerErrors: () => [...LAYER_ERR.values()], mp4: { X: MP4X, render: mp4Render, run: exportMp4Run }, isf: { X: ISFX, LIB: ISFLIB, lib: isfLib }, modUI: { render: modPanel, params: modNumericParams, sources: MOD_SOURCES }, expRun: exportRun, EXP, surfx: SURFX, region: regionRect, surUI: { state: SUR, applyPreset: surApplyPreset, render: renderSurface }, COMPOSITION, SURFACEIR, ANIMATION, CREATIVE, FIELD: { FLD, GLY, body: fldBody }, applyMods, RG, TM, composeFrame, buildComposeGraph: buildComposeGraph, frameAt, canvasPool: CANVAS_POOL, webgl: WEBGL, glProgram: body => glProg(body), glError: body => GL.err.get(body), glInfo: () => { glInit(); return GL.r ? { version: GL.r.version, context: GL.gl.constructor.name, glsl: GL.gl.getParameter(GL.gl.SHADING_LANGUAGE_VERSION), caps: GL.r.caps, stats: GL.r.stats } : { failure: GL.failure }; }, glMetrics: () => GL.r ? GL.r.metrics() : null, glr: () => GL.r, presets: SURFACE_PRESETS, GEN, FAMILIES, COMMON, modSources: () => MOD_SOURCES.map(x => x[0]), evaluate: lang => EVALUATOR.run(lang), shaderResolve, GLIB, specBins, simBake, parsePly, get LAYERERR() { return LAYER_ERR; }, setSeed, bpmWaves, get GLERR() { return GL.err; }, layerFrame, pm, importJson, frameAt, validate: o => validate(o), GEN, loopFrames, contactSheet, layerAudit, allowCode, loadAssets, toLogo, projectOut, get state() { return ST; }, geom, lintCode, compileCode, setCi(i) { ST.ci = i; refreshAll(); },
+  window.AIVJ = { version: VERSION, get PAL() { return PAL; }, get RECIPES() { return RECIPES; }, addRecipe, addTestCards, recipeLayer, importFile, parseModel, setLang, setHow, undo, redo, evalExpr, applyTheme, layoutApply, setPanelOpen, setZoneDraw, get hist() { return ST.hist.length; }, get histLabels() { return ST.hl.slice(); }, surface: SC, specOf, applyCalc, renderSpec, specMarkdown, get project() { return P; }, get audio() { return AUD; }, AUDIOSEM, DEPTH, pseudoAudio, synthTimes, applyMods, motionCurve, GENAI, EVALUATOR, flash: FLASH, ONSET, UX, fx: { FX, body: fxBody, op: fxOp }, synth: { SYN, src: synthSrc }, blobs: { X: BLOBX }, layerErrors: () => [...LAYER_ERR.values()], mp4: { X: MP4X, render: mp4Render, run: exportMp4Run }, isf: { X: ISFX, LIB: ISFLIB, lib: isfLib }, modUI: { render: modPanel, params: modNumericParams, sources: MOD_SOURCES }, expRun: exportRun, EXP, surfx: SURFX, region: regionRect, surUI: { state: SUR, applyPreset: surApplyPreset, render: renderSurface }, COMPOSITION, SURFACEIR, ANIMATION, CREATIVE, FIELD: { FLD, GLY, body: fldBody }, applyMods, RG, TM, composeFrame, buildComposeGraph: buildComposeGraph, frameAt, canvasPool: CANVAS_POOL, webgl: WEBGL, glProgram: body => glProg(body), glError: body => GL.err.get(body), glInfo: () => { glInit(); return GL.r ? { version: GL.r.version, context: GL.gl.constructor.name, glsl: GL.gl.getParameter(GL.gl.SHADING_LANGUAGE_VERSION), caps: GL.r.caps, stats: GL.r.stats } : { failure: GL.failure }; }, glMetrics: () => GL.r ? GL.r.metrics() : null, glr: () => GL.r, presets: SURFACE_PRESETS, GEN, FAMILIES, COMMON, modSources: () => MOD_SOURCES.map(x => x[0]), evaluate: lang => EVALUATOR.run(lang), shaderResolve, GLIB, specBins, simBake, parsePly, get LAYERERR() { return LAYER_ERR; }, setSeed, bpmWaves, get GLERR() { return GL.err; }, layerFrame, pm, importJson, frameAt, validate: o => validate(o), GEN, loopFrames, contactSheet, layerAudit, allowCode, loadAssets, toLogo, projectOut, get state() { return ST; }, geom, lintCode, compileCode, setCi(i) { ST.ci = i; refreshAll(); },
     /* gancho de teste: renderiza a composição ci no quadro n, determinístico, sem tocar no preview */
     renderFrame(ci, n, scale = 0.25, alpha = false) {
       const comp = P.compositions[ci], W = P.canvas.w, H = P.canvas.h, w = Math.round(W * scale), h = Math.round(H * scale);

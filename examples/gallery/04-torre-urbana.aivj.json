@@ -1406,6 +1406,242 @@
         ]
       }
     ],
+    "depthIR": [
+      {
+        "version": 1,
+        "archetype": "pulse",
+        "camera": {
+          "move": "dolly",
+          "amp": 0.1339,
+          "cycles": 2,
+          "phase": 0,
+          "focus": 0.2,
+          "fog": 0.1,
+          "dof": 0.01
+        },
+        "description": "the scene breathes with the pulse: the camera pushes in and out",
+        "focus": {
+          "z": 0.2,
+          "tier": "hero"
+        },
+        "planes": [
+          {
+            "name": "CAMPO URBAN I",
+            "tier": "ground",
+            "z": -0.9,
+            "fog": 0.073,
+            "blurPx": 2.58
+          },
+          {
+            "name": "ATMOSFERA I",
+            "tier": "ground",
+            "z": -0.5,
+            "fog": 0.047,
+            "blurPx": 1.37
+          },
+          {
+            "name": "HERÓI URBAN I",
+            "tier": "hero",
+            "z": 0.2,
+            "fog": 0.0,
+            "blurPx": 0.0
+          },
+          {
+            "name": "ESTRUTURA I",
+            "tier": "structure",
+            "z": -0.3,
+            "fog": 0.033,
+            "blurPx": 0.76
+          },
+          {
+            "name": "PALAVRA I",
+            "tier": "event",
+            "z": 0.7,
+            "fog": 0.0,
+            "blurPx": 0.76
+          }
+        ],
+        "screen": [
+          "FUNDO",
+          "INSTRUMENTO I",
+          "ACABAMENTO"
+        ],
+        "parallax": {
+          "shiftXPx": 0,
+          "shiftYPx": 0,
+          "scalePct": 11.38,
+          "unitPx": 303.75,
+          "blurMaxPx": 2.58,
+          "fogMax": 0.073
+        },
+        "seam": {
+          "hard": false,
+          "rule": null,
+          "from": "dolly"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "audio": false
+        }
+      },
+      {
+        "version": 1,
+        "archetype": "glide",
+        "camera": {
+          "move": "sway",
+          "amp": 0.0558,
+          "cycles": 1,
+          "phase": 0,
+          "focus": 0.2,
+          "fog": 0.1,
+          "dof": 0.01
+        },
+        "description": "the scene glides: the camera sways so planes slide against each other",
+        "focus": {
+          "z": 0.2,
+          "tier": "hero"
+        },
+        "planes": [
+          {
+            "name": "CAMPO AGGRESSIVE II",
+            "tier": "ground",
+            "z": -0.9,
+            "fog": 0.073,
+            "blurPx": 2.58
+          },
+          {
+            "name": "ATMOSFERA II",
+            "tier": "ground",
+            "z": -0.5,
+            "fog": 0.047,
+            "blurPx": 1.37
+          },
+          {
+            "name": "HERÓI AGGRESSIVE II",
+            "tier": "hero",
+            "z": 0.2,
+            "fog": 0.0,
+            "blurPx": 0.0
+          },
+          {
+            "name": "ESTRUTURA II",
+            "tier": "structure",
+            "z": -0.3,
+            "fog": 0.033,
+            "blurPx": 0.76
+          },
+          {
+            "name": "PALAVRA II",
+            "tier": "event",
+            "z": 0.7,
+            "fog": 0.0,
+            "blurPx": 0.76
+          }
+        ],
+        "screen": [
+          "FUNDO",
+          "INSTRUMENTO II",
+          "ACABAMENTO"
+        ],
+        "parallax": {
+          "shiftXPx": 18.64,
+          "shiftYPx": 0,
+          "scalePct": 0,
+          "unitPx": 303.75,
+          "blurMaxPx": 2.58,
+          "fogMax": 0.073
+        },
+        "seam": {
+          "hard": false,
+          "rule": null,
+          "from": "sway"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "audio": false
+        }
+      },
+      {
+        "version": 1,
+        "archetype": "breathe",
+        "camera": {
+          "move": "dolly",
+          "amp": 0.1339,
+          "cycles": 2,
+          "phase": 0,
+          "focus": 0.2,
+          "fog": 0.1,
+          "dof": 0.01
+        },
+        "description": "a slow breath: the camera pushes in and out",
+        "focus": {
+          "z": 0.2,
+          "tier": "hero"
+        },
+        "planes": [
+          {
+            "name": "CAMPO URBAN III",
+            "tier": "ground",
+            "z": -0.9,
+            "fog": 0.073,
+            "blurPx": 2.58
+          },
+          {
+            "name": "ATMOSFERA III",
+            "tier": "ground",
+            "z": -0.5,
+            "fog": 0.047,
+            "blurPx": 1.37
+          },
+          {
+            "name": "HERÓI URBAN III",
+            "tier": "hero",
+            "z": 0.2,
+            "fog": 0.0,
+            "blurPx": 0.0
+          },
+          {
+            "name": "ESTRUTURA III",
+            "tier": "structure",
+            "z": -0.3,
+            "fog": 0.033,
+            "blurPx": 0.76
+          },
+          {
+            "name": "PALAVRA III",
+            "tier": "event",
+            "z": 0.7,
+            "fog": 0.0,
+            "blurPx": 0.76
+          }
+        ],
+        "screen": [
+          "FUNDO",
+          "INSTRUMENTO III",
+          "ACABAMENTO"
+        ],
+        "parallax": {
+          "shiftXPx": 0,
+          "shiftYPx": 0,
+          "scalePct": 11.38,
+          "unitPx": 303.75,
+          "blurMaxPx": 2.58,
+          "fogMax": 0.073
+        },
+        "seam": {
+          "hard": false,
+          "rule": null,
+          "from": "dolly"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "audio": false
+        }
+      }
+    ],
     "surfaceIR": {
       "version": 1,
       "canvas": {
@@ -1622,7 +1858,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.9
         },
         {
           "type": "shader",
@@ -1647,7 +1884,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.5
         },
         {
           "type": "lines",
@@ -1737,7 +1975,8 @@
               "hit"
             ],
             "reason": "the hero answers each hit: bass weight and one accent per event"
-          }
+          },
+          "z": 0.2
         },
         {
           "type": "lines",
@@ -1759,7 +1998,8 @@
               "mid"
             ],
             "reason": "carries the mid story: the structure rotates and breathes with the body of the track"
-          }
+          },
+          "z": -0.3
         },
         {
           "type": "instrument",
@@ -1808,7 +2048,8 @@
               "hit"
             ],
             "reason": "the event mark lands on a hit"
-          }
+          },
+          "z": 0.7
         },
         {
           "type": "post",
@@ -1828,7 +2069,16 @@
             "reason": "lands on the beat grid; the audio does not push it"
           }
         }
-      ]
+      ],
+      "camera": {
+        "move": "dolly",
+        "amp": 0.1339,
+        "cycles": 2,
+        "phase": 0,
+        "focus": 0.2,
+        "fog": 0.1,
+        "dof": 0.01
+      }
     },
     {
       "name": "AGGRESSIVE II",
@@ -1874,7 +2124,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.9
         },
         {
           "type": "shader",
@@ -1899,7 +2150,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.5
         },
         {
           "type": "shape",
@@ -2038,7 +2290,8 @@
               "hit"
             ],
             "reason": "the hero answers each hit: bass weight and one accent per event"
-          }
+          },
+          "z": 0.2
         },
         {
           "type": "tunnel",
@@ -2077,7 +2330,8 @@
               "mid"
             ],
             "reason": "carries the mid story: the structure rotates and breathes with the body of the track"
-          }
+          },
+          "z": -0.3
         },
         {
           "type": "instrument",
@@ -2126,7 +2380,8 @@
               "hit"
             ],
             "reason": "the event mark lands on a hit"
-          }
+          },
+          "z": 0.7
         },
         {
           "type": "post",
@@ -2146,7 +2401,16 @@
             "reason": "lands on the beat grid; the audio does not push it"
           }
         }
-      ]
+      ],
+      "camera": {
+        "move": "sway",
+        "amp": 0.0558,
+        "cycles": 1,
+        "phase": 0,
+        "focus": 0.2,
+        "fog": 0.1,
+        "dof": 0.01
+      }
     },
     {
       "name": "URBAN III",
@@ -2192,7 +2456,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.9
         },
         {
           "type": "shader",
@@ -2217,7 +2482,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.5
         },
         {
           "type": "flow",
@@ -2303,7 +2569,8 @@
               "hit"
             ],
             "reason": "the hero answers each hit: bass weight and one accent per event"
-          }
+          },
+          "z": 0.2
         },
         {
           "type": "lines",
@@ -2337,7 +2604,8 @@
               "mid"
             ],
             "reason": "carries the mid story: the structure rotates and breathes with the body of the track"
-          }
+          },
+          "z": -0.3
         },
         {
           "type": "instrument",
@@ -2386,7 +2654,8 @@
               "hit"
             ],
             "reason": "the event mark lands on a hit"
-          }
+          },
+          "z": 0.7
         },
         {
           "type": "post",
@@ -2406,7 +2675,16 @@
             "reason": "lands on the beat grid; the audio does not push it"
           }
         }
-      ]
+      ],
+      "camera": {
+        "move": "dolly",
+        "amp": 0.1339,
+        "cycles": 2,
+        "phase": 0,
+        "focus": 0.2,
+        "fog": 0.1,
+        "dof": 0.01
+      }
     }
   ]
 }

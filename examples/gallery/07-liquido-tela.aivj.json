@@ -1391,6 +1391,242 @@
         ]
       }
     ],
+    "depthIR": [
+      {
+        "version": 1,
+        "archetype": "glide",
+        "camera": {
+          "move": "sway",
+          "amp": 0.0396,
+          "cycles": 1,
+          "phase": 0,
+          "focus": 0.2,
+          "fog": 0.1,
+          "dof": 0.01
+        },
+        "description": "the scene glides: the camera sways so planes slide against each other",
+        "focus": {
+          "z": 0.2,
+          "tier": "hero"
+        },
+        "planes": [
+          {
+            "name": "CAMPO LIQUID I",
+            "tier": "ground",
+            "z": -0.9,
+            "fog": 0.073,
+            "blurPx": 9.18
+          },
+          {
+            "name": "ATMOSFERA I",
+            "tier": "ground",
+            "z": -0.5,
+            "fog": 0.047,
+            "blurPx": 4.86
+          },
+          {
+            "name": "HERÓI LIQUID I",
+            "tier": "hero",
+            "z": 0.2,
+            "fog": 0.0,
+            "blurPx": 0.0
+          },
+          {
+            "name": "ESTRUTURA I",
+            "tier": "structure",
+            "z": -0.3,
+            "fog": 0.033,
+            "blurPx": 2.7
+          },
+          {
+            "name": "MARCA I",
+            "tier": "event",
+            "z": 0.7,
+            "fog": 0.0,
+            "blurPx": 2.7
+          }
+        ],
+        "screen": [
+          "FUNDO",
+          "INSTRUMENTO I",
+          "ACABAMENTO"
+        ],
+        "parallax": {
+          "shiftXPx": 47.04,
+          "shiftYPx": 0,
+          "scalePct": 0,
+          "unitPx": 1080,
+          "blurMaxPx": 9.18,
+          "fogMax": 0.073
+        },
+        "seam": {
+          "hard": false,
+          "rule": null,
+          "from": "sway"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "audio": false
+        }
+      },
+      {
+        "version": 1,
+        "archetype": "settle",
+        "camera": {
+          "move": "crane",
+          "amp": 0.0317,
+          "cycles": 1,
+          "phase": 0,
+          "focus": 0.2,
+          "fog": 0.1,
+          "dof": 0.01
+        },
+        "description": "a landing: the camera cranes up and settles",
+        "focus": {
+          "z": 0.2,
+          "tier": "hero"
+        },
+        "planes": [
+          {
+            "name": "CAMPO CALM II",
+            "tier": "ground",
+            "z": -0.9,
+            "fog": 0.073,
+            "blurPx": 9.18
+          },
+          {
+            "name": "ATMOSFERA II",
+            "tier": "ground",
+            "z": -0.5,
+            "fog": 0.047,
+            "blurPx": 4.86
+          },
+          {
+            "name": "HERÓI CALM II",
+            "tier": "hero",
+            "z": 0.2,
+            "fog": 0.0,
+            "blurPx": 0.0
+          },
+          {
+            "name": "ESTRUTURA II",
+            "tier": "structure",
+            "z": -0.3,
+            "fog": 0.033,
+            "blurPx": 2.7
+          },
+          {
+            "name": "MARCA II",
+            "tier": "event",
+            "z": 0.7,
+            "fog": 0.0,
+            "blurPx": 2.7
+          }
+        ],
+        "screen": [
+          "FUNDO",
+          "INSTRUMENTO II",
+          "ACABAMENTO"
+        ],
+        "parallax": {
+          "shiftXPx": 0,
+          "shiftYPx": 37.66,
+          "scalePct": 0,
+          "unitPx": 1080,
+          "blurMaxPx": 9.18,
+          "fogMax": 0.073
+        },
+        "seam": {
+          "hard": false,
+          "rule": null,
+          "from": "crane"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "audio": false
+        }
+      },
+      {
+        "version": 1,
+        "archetype": "breathe",
+        "camera": {
+          "move": "dolly",
+          "amp": 0.095,
+          "cycles": 4,
+          "phase": 0,
+          "focus": 0.2,
+          "fog": 0.1,
+          "dof": 0.01
+        },
+        "description": "a slow breath: the camera pushes in and out",
+        "focus": {
+          "z": 0.2,
+          "tier": "hero"
+        },
+        "planes": [
+          {
+            "name": "CAMPO LIQUID III",
+            "tier": "ground",
+            "z": -0.9,
+            "fog": 0.073,
+            "blurPx": 9.18
+          },
+          {
+            "name": "ATMOSFERA III",
+            "tier": "ground",
+            "z": -0.5,
+            "fog": 0.047,
+            "blurPx": 4.86
+          },
+          {
+            "name": "HERÓI LIQUID III",
+            "tier": "hero",
+            "z": 0.2,
+            "fog": 0.0,
+            "blurPx": 0.0
+          },
+          {
+            "name": "ESTRUTURA III",
+            "tier": "structure",
+            "z": -0.3,
+            "fog": 0.033,
+            "blurPx": 2.7
+          },
+          {
+            "name": "MARCA III",
+            "tier": "event",
+            "z": 0.7,
+            "fog": 0.0,
+            "blurPx": 2.7
+          }
+        ],
+        "screen": [
+          "FUNDO",
+          "INSTRUMENTO III",
+          "ACABAMENTO"
+        ],
+        "parallax": {
+          "shiftXPx": 0,
+          "shiftYPx": 0,
+          "scalePct": 8.07,
+          "unitPx": 1080,
+          "blurMaxPx": 9.18,
+          "fogMax": 0.073
+        },
+        "seam": {
+          "hard": false,
+          "rule": null,
+          "from": "dolly"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "audio": false
+        }
+      }
+    ],
     "surfaceIR": {
       "version": 1,
       "canvas": {
@@ -1612,7 +1848,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.9
         },
         {
           "type": "shader",
@@ -1637,7 +1874,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.5
         },
         {
           "type": "shape",
@@ -1758,7 +1996,8 @@
               "bass"
             ],
             "reason": "carries the bass story: it swells and settles with the low end"
-          }
+          },
+          "z": 0.2
         },
         {
           "type": "shape",
@@ -1783,7 +2022,8 @@
             "behavior": "beat",
             "listens": [],
             "reason": "lands on the beat grid; the audio does not push it"
-          }
+          },
+          "z": -0.3
         },
         {
           "type": "instrument",
@@ -1829,7 +2069,8 @@
             "behavior": "beat",
             "listens": [],
             "reason": "lands on the beat grid; the audio does not push it"
-          }
+          },
+          "z": 0.7
         },
         {
           "type": "post",
@@ -1849,7 +2090,16 @@
             "reason": "lands on the beat grid; the audio does not push it"
           }
         }
-      ]
+      ],
+      "camera": {
+        "move": "sway",
+        "amp": 0.0396,
+        "cycles": 1,
+        "phase": 0,
+        "focus": 0.2,
+        "fog": 0.1,
+        "dof": 0.01
+      }
     },
     {
       "name": "CALM II",
@@ -1894,7 +2144,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.9
         },
         {
           "type": "shader",
@@ -1918,7 +2169,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.5
         },
         {
           "type": "flow",
@@ -1988,7 +2240,8 @@
               "bass"
             ],
             "reason": "carries the bass story: it swells and settles with the low end"
-          }
+          },
+          "z": 0.2
         },
         {
           "type": "lines",
@@ -2008,7 +2261,8 @@
             "behavior": "beat",
             "listens": [],
             "reason": "lands on the beat grid; the audio does not push it"
-          }
+          },
+          "z": -0.3
         },
         {
           "type": "instrument",
@@ -2054,7 +2308,8 @@
             "behavior": "beat",
             "listens": [],
             "reason": "lands on the beat grid; the audio does not push it"
-          }
+          },
+          "z": 0.7
         },
         {
           "type": "post",
@@ -2074,7 +2329,16 @@
             "reason": "lands on the beat grid; the audio does not push it"
           }
         }
-      ]
+      ],
+      "camera": {
+        "move": "crane",
+        "amp": 0.0317,
+        "cycles": 1,
+        "phase": 0,
+        "focus": 0.2,
+        "fog": 0.1,
+        "dof": 0.01
+      }
     },
     {
       "name": "LIQUID III",
@@ -2120,7 +2384,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.9
         },
         {
           "type": "shader",
@@ -2145,7 +2410,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.5
         },
         {
           "type": "lines",
@@ -2212,7 +2478,8 @@
               "bass"
             ],
             "reason": "carries the bass story: it swells and settles with the low end"
-          }
+          },
+          "z": 0.2
         },
         {
           "type": "shape",
@@ -2248,7 +2515,8 @@
             "behavior": "beat",
             "listens": [],
             "reason": "lands on the beat grid; the audio does not push it"
-          }
+          },
+          "z": -0.3
         },
         {
           "type": "instrument",
@@ -2294,7 +2562,8 @@
             "behavior": "beat",
             "listens": [],
             "reason": "lands on the beat grid; the audio does not push it"
-          }
+          },
+          "z": 0.7
         },
         {
           "type": "post",
@@ -2314,7 +2583,16 @@
             "reason": "lands on the beat grid; the audio does not push it"
           }
         }
-      ]
+      ],
+      "camera": {
+        "move": "dolly",
+        "amp": 0.095,
+        "cycles": 4,
+        "phase": 0,
+        "focus": 0.2,
+        "fog": 0.1,
+        "dof": 0.01
+      }
     }
   ]
 }

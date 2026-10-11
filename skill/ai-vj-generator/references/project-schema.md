@@ -217,6 +217,9 @@ How it closes the loop: it warms up one loop, records two, and cross-fades them 
 ### `layer.mod` shape `env` (phase 6)
 `{ k, src: "lfo", shape: "env", cycles, keys: [0..1, ...], min, max, mode }`: a closed envelope through `keys` (the value at the start of each phase). Used by the Composition IR (`composition-ir.md`).
 
+### `z` and `camera` — 2.5D (phase 11)
+`layer.z` (-1 far to +1 near, optional) puts a layer on a depth plane; `composition.camera` (optional) is `{ move, amp, cycles, phase, focus, fog, dof, steps? }` with `move` one of `still`, `sway`, `crane`, `orbit`, `dolly`, `rack`. The camera slides far planes against near ones, scales them (`dolly`), fogs and blurs the planes away from `focus`, in whole `cycles` per loop; it never listens to the audio. A layer without `z` stays on the screen plane (text, meters, finish); a project without `camera` renders as before. `meta.depthIR` has one summary per composition. Full rules and the numbers: `references/depth-ir.md`.
+
 ### Layer categories (interface)
 The interface groups the types in nine categories of at most two words: Fundo, Shader, Formas, Texto, Mídia, Dados, Partículas, Efeito, Código. The category is not stored: the project keeps `layer.type`. `registry/generators.json` lists every type with its category, render mode, parameters and cost class; `schema/project.schema.json` restricts `layer.type` to that list.
 

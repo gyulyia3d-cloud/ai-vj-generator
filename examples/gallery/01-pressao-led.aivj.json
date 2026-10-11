@@ -1465,6 +1465,224 @@
         ]
       }
     ],
+    "depthIR": [
+      {
+        "version": 1,
+        "archetype": "pulse",
+        "camera": {
+          "move": "rack",
+          "amp": 0.905,
+          "cycles": 1,
+          "phase": 0,
+          "focus": 0.2,
+          "fog": 0,
+          "dof": 0.02
+        },
+        "description": "a hard fold or active-area constraint is declared: nothing may slide or grow across a seam, so the camera only pulls focus",
+        "focus": {
+          "z": 0.2,
+          "tier": "hero"
+        },
+        "planes": [
+          {
+            "name": "CAMPO INDUSTRIAL I",
+            "tier": "ground",
+            "z": -0.9,
+            "fog": 0.0,
+            "blurPx": 13.6
+          },
+          {
+            "name": "ATMOSFERA I",
+            "tier": "ground",
+            "z": -0.5,
+            "fog": 0.0,
+            "blurPx": 7.2
+          },
+          {
+            "name": "HERÓI INDUSTRIAL I",
+            "tier": "hero",
+            "z": 0.2,
+            "fog": 0.0,
+            "blurPx": 0.0
+          },
+          {
+            "name": "ESTRUTURA I",
+            "tier": "structure",
+            "z": -0.3,
+            "fog": 0.0,
+            "blurPx": 4.0
+          }
+        ],
+        "screen": [
+          "FUNDO",
+          "INSTRUMENTO I",
+          "INFORMAÇÃO I",
+          "ACABAMENTO"
+        ],
+        "parallax": {
+          "shiftXPx": 0,
+          "shiftYPx": 0,
+          "scalePct": 0,
+          "unitPx": 800,
+          "blurMaxPx": 13.6,
+          "fogMax": 0.0
+        },
+        "seam": {
+          "hard": true,
+          "rule": "a hard fold or active-area constraint is declared: nothing may slide or grow across a seam, so the camera only pulls focus",
+          "from": "dolly"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "audio": false
+        }
+      },
+      {
+        "version": 1,
+        "archetype": "surge",
+        "camera": {
+          "move": "rack",
+          "amp": 0.905,
+          "cycles": 1,
+          "phase": 0,
+          "focus": 0.2,
+          "fog": 0,
+          "dof": 0.02
+        },
+        "description": "a hard fold or active-area constraint is declared: nothing may slide or grow across a seam, so the camera only pulls focus",
+        "focus": {
+          "z": 0.2,
+          "tier": "hero"
+        },
+        "planes": [
+          {
+            "name": "CAMPO GLITCH II",
+            "tier": "ground",
+            "z": -0.9,
+            "fog": 0.0,
+            "blurPx": 13.6
+          },
+          {
+            "name": "ATMOSFERA II",
+            "tier": "ground",
+            "z": -0.5,
+            "fog": 0.0,
+            "blurPx": 7.2
+          },
+          {
+            "name": "HERÓI GLITCH II",
+            "tier": "hero",
+            "z": 0.2,
+            "fog": 0.0,
+            "blurPx": 0.0
+          },
+          {
+            "name": "ESTRUTURA II",
+            "tier": "structure",
+            "z": -0.3,
+            "fog": 0.0,
+            "blurPx": 4.0
+          }
+        ],
+        "screen": [
+          "FUNDO",
+          "INSTRUMENTO II",
+          "INFORMAÇÃO II",
+          "ACABAMENTO"
+        ],
+        "parallax": {
+          "shiftXPx": 0,
+          "shiftYPx": 0,
+          "scalePct": 0,
+          "unitPx": 800,
+          "blurMaxPx": 13.6,
+          "fogMax": 0.0
+        },
+        "seam": {
+          "hard": true,
+          "rule": "a hard fold or active-area constraint is declared: nothing may slide or grow across a seam, so the camera only pulls focus",
+          "from": "dolly"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "audio": false
+        }
+      },
+      {
+        "version": 1,
+        "archetype": "stutter",
+        "camera": {
+          "move": "rack",
+          "amp": 0.905,
+          "cycles": 1,
+          "phase": 0,
+          "focus": 0.2,
+          "fog": 0,
+          "dof": 0.02
+        },
+        "description": "a hard fold or active-area constraint is declared: nothing may slide or grow across a seam, so the camera only pulls focus",
+        "focus": {
+          "z": 0.2,
+          "tier": "hero"
+        },
+        "planes": [
+          {
+            "name": "CAMPO INDUSTRIAL III",
+            "tier": "ground",
+            "z": -0.9,
+            "fog": 0.0,
+            "blurPx": 13.6
+          },
+          {
+            "name": "ATMOSFERA III",
+            "tier": "ground",
+            "z": -0.5,
+            "fog": 0.0,
+            "blurPx": 7.2
+          },
+          {
+            "name": "HERÓI INDUSTRIAL III",
+            "tier": "hero",
+            "z": 0.2,
+            "fog": 0.0,
+            "blurPx": 0.0
+          },
+          {
+            "name": "ESTRUTURA III",
+            "tier": "structure",
+            "z": -0.3,
+            "fog": 0.0,
+            "blurPx": 4.0
+          }
+        ],
+        "screen": [
+          "FUNDO",
+          "INSTRUMENTO III",
+          "INFORMAÇÃO III",
+          "ACABAMENTO"
+        ],
+        "parallax": {
+          "shiftXPx": 0,
+          "shiftYPx": 0,
+          "scalePct": 0,
+          "unitPx": 800,
+          "blurMaxPx": 13.6,
+          "fogMax": 0.0
+        },
+        "seam": {
+          "hard": true,
+          "rule": "a hard fold or active-area constraint is declared: nothing may slide or grow across a seam, so the camera only pulls focus",
+          "from": "sway"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "audio": false
+        }
+      }
+    ],
     "surfaceIR": {
       "version": 1,
       "canvas": {
@@ -1713,7 +1931,8 @@
               "high"
             ],
             "reason": "carries the high story: detail and grain follow the top end"
-          }
+          },
+          "z": -0.9
         },
         {
           "type": "shader",
@@ -1738,7 +1957,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.5
         },
         {
           "type": "lines",
@@ -1828,7 +2048,8 @@
               "hit"
             ],
             "reason": "the hero answers each hit: bass weight and one accent per event"
-          }
+          },
+          "z": 0.2
         },
         {
           "type": "tunnel",
@@ -1870,7 +2091,8 @@
               "mid"
             ],
             "reason": "carries the mid story: the structure rotates and breathes with the body of the track"
-          }
+          },
+          "z": -0.3
         },
         {
           "type": "instrument",
@@ -1933,7 +2155,16 @@
             "reason": "lands on the beat grid; the audio does not push it"
           }
         }
-      ]
+      ],
+      "camera": {
+        "move": "rack",
+        "amp": 0.905,
+        "cycles": 1,
+        "phase": 0,
+        "focus": 0.2,
+        "fog": 0,
+        "dof": 0.02
+      }
     },
     {
       "name": "GLITCH II",
@@ -1981,7 +2212,8 @@
               "high"
             ],
             "reason": "carries the high story: detail and grain follow the top end"
-          }
+          },
+          "z": -0.9
         },
         {
           "type": "shader",
@@ -2006,7 +2238,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.5
         },
         {
           "type": "tunnel",
@@ -2145,7 +2378,8 @@
               "hit"
             ],
             "reason": "the hero answers each hit: bass weight and one accent per event"
-          }
+          },
+          "z": 0.2
         },
         {
           "type": "lines",
@@ -2179,7 +2413,8 @@
               "mid"
             ],
             "reason": "carries the mid story: the structure rotates and breathes with the body of the track"
-          }
+          },
+          "z": -0.3
         },
         {
           "type": "instrument",
@@ -2242,7 +2477,16 @@
             "reason": "lands on the beat grid; the audio does not push it"
           }
         }
-      ]
+      ],
+      "camera": {
+        "move": "rack",
+        "amp": 0.905,
+        "cycles": 1,
+        "phase": 0,
+        "focus": 0.2,
+        "fog": 0,
+        "dof": 0.02
+      }
     },
     {
       "name": "INDUSTRIAL III",
@@ -2289,7 +2533,8 @@
               "high"
             ],
             "reason": "carries the high story: detail and grain follow the top end"
-          }
+          },
+          "z": -0.9
         },
         {
           "type": "shader",
@@ -2313,7 +2558,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.5
         },
         {
           "type": "shape",
@@ -2455,7 +2701,8 @@
               "hit"
             ],
             "reason": "the hero answers each hit: bass weight and one accent per event"
-          }
+          },
+          "z": 0.2
         },
         {
           "type": "tunnel",
@@ -2496,7 +2743,8 @@
               "mid"
             ],
             "reason": "carries the mid story: the structure rotates and breathes with the body of the track"
-          }
+          },
+          "z": -0.3
         },
         {
           "type": "instrument",
@@ -2559,7 +2807,16 @@
             "reason": "lands on the beat grid; the audio does not push it"
           }
         }
-      ]
+      ],
+      "camera": {
+        "move": "rack",
+        "amp": 0.905,
+        "cycles": 1,
+        "phase": 0,
+        "focus": 0.2,
+        "fog": 0,
+        "dof": 0.02
+      }
     }
   ]
 }

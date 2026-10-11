@@ -56,6 +56,9 @@ const animationJsPath = join(ROOT, 'app', 'animation-data.js');
 const audio = rd(join(REG, 'audio.json'));
 const audioJs = '/* Gerado de skill/ai-vj-generator/registry/audio.json por node scripts/registry.mjs --write. Não edite. */\nconst AUDIOSEM_DATA = ' + JSON.stringify(audio) + ';\n';
 const audioJsPath = join(ROOT, 'app', 'audio-sem-data.js');
+const depth = rd(join(REG, 'depth.json'));
+const depthJs = '/* Gerado de skill/ai-vj-generator/registry/depth.json por node scripts/registry.mjs --write. Não edite. */\nconst DEPTH_DATA = ' + JSON.stringify(depth) + ';\n';
+const depthJsPath = join(ROOT, 'app', 'depth-data.js');
 const verbIds = creative.verbs.map(v => v.id);
 
 if (mode === 'write') {
@@ -70,6 +73,7 @@ if (mode === 'write') {
   writeFileSync(animationJsPath, animationJs);
   writeFileSync(surfaceJsPath, surfaceJs);
   writeFileSync(audioJsPath, audioJs);
+  writeFileSync(depthJsPath, depthJs);
   let b = rd(briefSchemaPath); b.properties.verbs = { type: 'array', items: { type: 'string', enum: verbIds }, description: 'Optional: visual verbs the author wants (the Creative IR adds them with extra weight). See registry/creative.json.' };
   b.properties.motionArchetype = { type: 'string', enum: animation.archetypeOrder, description: 'Optional: force the motion archetype of the first composition (Animation IR). See registry/animation.json.' };
   b.properties.surface.properties.regions = { type: 'array', maxItems: 500, items: { type: 'object', required: ['x', 'y', 'w', 'h'], properties: { name: { type: 'string' }, x: { type: 'number', minimum: 0 }, y: { type: 'number', minimum: 0 }, w: { type: 'number', exclusiveMinimum: 0 }, h: { type: 'number', exclusiveMinimum: 0 }, source: { type: 'string', enum: ['list', 'mask'] } } }, description: 'Optional: the regions of the canvas that exist on the surface (pixels of the canvas). They enter the Surface IR as EXPLICIT, or DETECTED when source is mask. See registry/surface.json.' };
@@ -140,5 +144,14 @@ const promptDoc = readFileSync(join(SK, 'portable', 'PROMPT.md'), 'utf8');
 check(verbIds.every(v => new RegExp('\\b' + v + '\\b').test(promptDoc)) && GI.every(g => promptDoc.includes(g)) && /plan_ir\.py/.test(promptDoc) && /meta\.creativeIR/.test(promptDoc) && /meta\.compositionIR/.test(promptDoc) && /meta\.animationIR/.test(promptDoc) && AO.every(a => new RegExp('\\b' + a + '\\b').test(promptDoc)), 'PROMPT.md cita os 32 verbos, as 12 gramáticas, os 8 arquétipos, plan_ir.py e os três campos do projeto', [...verbIds.filter(v => !new RegExp('\\b' + v + '\\b').test(promptDoc)), ...GI.filter(g => !promptDoc.includes(g)), ...AO.filter(a => !new RegExp('\\b' + a + '\\b').test(promptDoc))].join(','));
 check(surface.confidence.order.every(c => promptDoc.includes(c)) && /meta\.surfaceIR/.test(promptDoc) && readFileSync(join(SK, 'references', 'surface-ir.md'), 'utf8').includes('UNKNOWN'), 'PROMPT.md ensina as quatro confianças do Surface IR e meta.surfaceIR; references/surface-ir.md existe', 'faltou citar no PROMPT.md');
 check(AB.every(b => new RegExp('`' + b + '`').test(promptDoc)) && /meta\.audioSemantics/.test(promptDoc) && /audio_semantics\.py/.test(promptDoc) && readFileSync(join(SK, 'references', 'audio-semantics.md'), 'utf8').includes('follow'), 'PROMPT.md ensina os 6 comportamentos temporais e meta.audioSemantics; references/audio-semantics.md existe', 'faltou citar no PROMPT.md');
+/* 2.5D (fase 11): dados únicos, copiados para o navegador, coerentes entre si */
+check(readFileSync(depthJsPath, 'utf8').replace(/\r\n/g, '\n') === depthJs, 'depth.json = app/depth-data.js (dados do 2.5D no navegador)', 'rode node scripts/registry.mjs --write');
+const DC = Object.keys(depth.cameras), DP = ['ground', 'structure', 'hero', 'event'];
+check(DC.length === 6 && animation.archetypeOrder.every(a => DC.includes(depth.archetypeCamera[a])) && Object.keys(depth.archetypeCamera).every(a => animation.archetypeOrder.includes(a)), 'os 8 arquétipos de movimento escolhem uma das 6 câmeras', '');
+check(DP.every(t => depth.planes[t] && depth.planes[t].range.length === 2 && depth.planes[t].range[0] >= depth.zRange[0] && depth.planes[t].range[1] <= depth.zRange[1] && depth.planes[t].range[0] <= depth.planes[t].range[1]) && DP.slice(1).every((t, i) => depth.planes[DP[i]].range[1] < depth.planes[t].range[0]), 'os planos (chão, estrutura, herói, evento) cabem em [-1, 1], sem se sobrepor e em ordem do longe ao perto', '');
+check(!depth.screenSpace.some(t => depth.planes[t]) && depth.screenSpace.includes('information') && depth.screenSpace.includes('instrument'), 'texto, medidor, fundo e acabamento ficam no plano da tela (nunca ganham z)', '');
+check(!depth.cameras[depth.seamSafe].moves && !depth.cameras.still.moves && DC.every(c => ['one', 'half', 'none'].includes(depth.cycles[c]) && (c === 'still') === (depth.cycles[c] === 'none')), 'a câmera segura numa costura não move camadas; todo movimento roda em ciclos inteiros', '');
+check(depth.deadzone > 0 && depth.deadzone < 1 && depth.maxShift > 0 && Object.values(depth.fog).every(v => v >= 0 && v <= 1) && Object.values(depth.dof).every(v => v >= 0 && v <= 0.1), 'zona de foco, névoa e desfoque dentro dos limites que o validador aceita', '');
+check(DC.every(c => new RegExp('`' + c + '`').test(promptDoc)) && /meta\.depthIR/.test(promptDoc) && /depth_ir\.py/.test(promptDoc) && readFileSync(join(SK, 'references', 'depth-ir.md'), 'utf8').includes('rack'), 'PROMPT.md ensina as 6 câmeras, `z` e meta.depthIR; references/depth-ir.md existe', '');
 console.log(fail ? `\n${fail} deriva(s).` : '\nregistry ok.');
 process.exit(fail ? 1 : 0);

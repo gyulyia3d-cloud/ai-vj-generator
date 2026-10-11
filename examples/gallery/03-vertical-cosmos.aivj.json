@@ -1392,6 +1392,225 @@
         ]
       }
     ],
+    "depthIR": [
+      {
+        "version": 1,
+        "archetype": "surge",
+        "camera": {
+          "move": "dolly",
+          "amp": 0.1159,
+          "cycles": 2,
+          "phase": 0,
+          "focus": 0.2,
+          "fog": 0.1,
+          "dof": 0.01
+        },
+        "description": "a surge: the camera pushes in and out, near planes lead",
+        "focus": {
+          "z": 0.2,
+          "tier": "hero"
+        },
+        "planes": [
+          {
+            "name": "CAMPO COSMIC I",
+            "tier": "ground",
+            "z": -0.9,
+            "fog": 0.073,
+            "blurPx": 5.16
+          },
+          {
+            "name": "ATMOSFERA I",
+            "tier": "ground",
+            "z": -0.5,
+            "fog": 0.047,
+            "blurPx": 2.73
+          },
+          {
+            "name": "HERÓI COSMIC I",
+            "tier": "hero",
+            "z": 0.2,
+            "fog": 0.0,
+            "blurPx": 0.0
+          },
+          {
+            "name": "ESTRUTURA I",
+            "tier": "structure",
+            "z": -0.3,
+            "fog": 0.033,
+            "blurPx": 1.52
+          }
+        ],
+        "screen": [
+          "FUNDO",
+          "INSTRUMENTO I",
+          "INFORMAÇÃO I",
+          "ACABAMENTO"
+        ],
+        "parallax": {
+          "shiftXPx": 0,
+          "shiftYPx": 0,
+          "scalePct": 6.95,
+          "unitPx": 607.5,
+          "blurMaxPx": 5.16,
+          "fogMax": 0.073
+        },
+        "seam": {
+          "hard": false,
+          "rule": null,
+          "from": "dolly"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "audio": false
+        }
+      },
+      {
+        "version": 1,
+        "archetype": "pulse",
+        "camera": {
+          "move": "dolly",
+          "amp": 0.1159,
+          "cycles": 2,
+          "phase": 0,
+          "focus": 0.2,
+          "fog": 0.1,
+          "dof": 0.01
+        },
+        "description": "the scene breathes with the pulse: the camera pushes in and out",
+        "focus": {
+          "z": 0.2,
+          "tier": "hero"
+        },
+        "planes": [
+          {
+            "name": "CAMPO COSMIC II",
+            "tier": "ground",
+            "z": -0.9,
+            "fog": 0.073,
+            "blurPx": 5.16
+          },
+          {
+            "name": "ATMOSFERA II",
+            "tier": "ground",
+            "z": -0.5,
+            "fog": 0.047,
+            "blurPx": 2.73
+          },
+          {
+            "name": "HERÓI COSMIC II",
+            "tier": "hero",
+            "z": 0.2,
+            "fog": 0.0,
+            "blurPx": 0.0
+          },
+          {
+            "name": "ESTRUTURA II",
+            "tier": "structure",
+            "z": -0.3,
+            "fog": 0.033,
+            "blurPx": 1.52
+          }
+        ],
+        "screen": [
+          "FUNDO",
+          "INSTRUMENTO II",
+          "INFORMAÇÃO II",
+          "ACABAMENTO"
+        ],
+        "parallax": {
+          "shiftXPx": 0,
+          "shiftYPx": 0,
+          "scalePct": 6.95,
+          "unitPx": 607.5,
+          "blurMaxPx": 5.16,
+          "fogMax": 0.073
+        },
+        "seam": {
+          "hard": false,
+          "rule": null,
+          "from": "dolly"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "audio": false
+        }
+      },
+      {
+        "version": 1,
+        "archetype": "stutter",
+        "camera": {
+          "move": "sway",
+          "amp": 0.0483,
+          "cycles": 1,
+          "phase": 0,
+          "focus": 0.2,
+          "fog": 0.1,
+          "dof": 0.01,
+          "steps": 8
+        },
+        "description": "stepped motion: the camera sways in eight held steps",
+        "focus": {
+          "z": 0.2,
+          "tier": "hero"
+        },
+        "planes": [
+          {
+            "name": "CAMPO COSMIC III",
+            "tier": "ground",
+            "z": -0.9,
+            "fog": 0.073,
+            "blurPx": 5.16
+          },
+          {
+            "name": "ATMOSFERA III",
+            "tier": "ground",
+            "z": -0.5,
+            "fog": 0.047,
+            "blurPx": 2.73
+          },
+          {
+            "name": "HERÓI COSMIC III",
+            "tier": "hero",
+            "z": 0.2,
+            "fog": 0.0,
+            "blurPx": 0.0
+          },
+          {
+            "name": "ESTRUTURA III",
+            "tier": "structure",
+            "z": -0.3,
+            "fog": 0.033,
+            "blurPx": 1.52
+          }
+        ],
+        "screen": [
+          "FUNDO",
+          "INSTRUMENTO III",
+          "INFORMAÇÃO III",
+          "ACABAMENTO"
+        ],
+        "parallax": {
+          "shiftXPx": 32.28,
+          "shiftYPx": 0,
+          "scalePct": 0,
+          "unitPx": 607.5,
+          "blurMaxPx": 5.16,
+          "fogMax": 0.073
+        },
+        "seam": {
+          "hard": false,
+          "rule": null,
+          "from": "sway"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "audio": false
+        }
+      }
+    ],
     "surfaceIR": {
       "version": 1,
       "canvas": {
@@ -1613,7 +1832,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.9
         },
         {
           "type": "shader",
@@ -1638,7 +1858,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.5
         },
         {
           "type": "lines",
@@ -1722,7 +1943,8 @@
               "bass"
             ],
             "reason": "carries the bass story: it swells and settles with the low end"
-          }
+          },
+          "z": 0.2
         },
         {
           "type": "tunnel",
@@ -1758,7 +1980,8 @@
             "behavior": "beat",
             "listens": [],
             "reason": "lands on the beat grid; the audio does not push it"
-          }
+          },
+          "z": -0.3
         },
         {
           "type": "instrument",
@@ -1821,7 +2044,16 @@
             "reason": "lands on the beat grid; the audio does not push it"
           }
         }
-      ]
+      ],
+      "camera": {
+        "move": "dolly",
+        "amp": 0.1159,
+        "cycles": 2,
+        "phase": 0,
+        "focus": 0.2,
+        "fog": 0.1,
+        "dof": 0.01
+      }
     },
     {
       "name": "COSMIC II",
@@ -1867,7 +2099,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.9
         },
         {
           "type": "shader",
@@ -1892,7 +2125,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.5
         },
         {
           "type": "tunnel",
@@ -2034,7 +2268,8 @@
               "bass"
             ],
             "reason": "carries the bass story: it swells and settles with the low end"
-          }
+          },
+          "z": 0.2
         },
         {
           "type": "lines",
@@ -2068,7 +2303,8 @@
             "behavior": "beat",
             "listens": [],
             "reason": "lands on the beat grid; the audio does not push it"
-          }
+          },
+          "z": -0.3
         },
         {
           "type": "instrument",
@@ -2131,7 +2367,16 @@
             "reason": "lands on the beat grid; the audio does not push it"
           }
         }
-      ]
+      ],
+      "camera": {
+        "move": "dolly",
+        "amp": 0.1159,
+        "cycles": 2,
+        "phase": 0,
+        "focus": 0.2,
+        "fog": 0.1,
+        "dof": 0.01
+      }
     },
     {
       "name": "COSMIC III",
@@ -2176,7 +2421,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.9
         },
         {
           "type": "shader",
@@ -2200,7 +2446,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.5
         },
         {
           "type": "shape",
@@ -2341,7 +2588,8 @@
               "bass"
             ],
             "reason": "carries the bass story: it swells and settles with the low end"
-          }
+          },
+          "z": 0.2
         },
         {
           "type": "tunnel",
@@ -2379,7 +2627,8 @@
             "behavior": "beat",
             "listens": [],
             "reason": "lands on the beat grid; the audio does not push it"
-          }
+          },
+          "z": -0.3
         },
         {
           "type": "instrument",
@@ -2442,7 +2691,17 @@
             "reason": "lands on the beat grid; the audio does not push it"
           }
         }
-      ]
+      ],
+      "camera": {
+        "move": "sway",
+        "amp": 0.0483,
+        "cycles": 1,
+        "phase": 0,
+        "focus": 0.2,
+        "fog": 0.1,
+        "dof": 0.01,
+        "steps": 8
+      }
     }
   ]
 }

@@ -1476,6 +1476,242 @@
         ]
       }
     ],
+    "depthIR": [
+      {
+        "version": 1,
+        "archetype": "settle",
+        "camera": {
+          "move": "rack",
+          "amp": 0.6099,
+          "cycles": 1,
+          "phase": 0,
+          "focus": 0.2,
+          "fog": 0,
+          "dof": 0.02
+        },
+        "description": "a hard fold or active-area constraint is declared: nothing may slide or grow across a seam, so the camera only pulls focus",
+        "focus": {
+          "z": 0.2,
+          "tier": "hero"
+        },
+        "planes": [
+          {
+            "name": "CAMPO MINIMAL I",
+            "tier": "ground",
+            "z": -0.9,
+            "fog": 0.0,
+            "blurPx": 18.36
+          },
+          {
+            "name": "ATMOSFERA I",
+            "tier": "ground",
+            "z": -0.5,
+            "fog": 0.0,
+            "blurPx": 9.72
+          },
+          {
+            "name": "HERÓI MINIMAL I",
+            "tier": "hero",
+            "z": 0.2,
+            "fog": 0.0,
+            "blurPx": 0.0
+          },
+          {
+            "name": "ESTRUTURA I",
+            "tier": "structure",
+            "z": -0.3,
+            "fog": 0.0,
+            "blurPx": 5.4
+          },
+          {
+            "name": "MARCA I",
+            "tier": "event",
+            "z": 0.7,
+            "fog": 0.0,
+            "blurPx": 5.4
+          }
+        ],
+        "screen": [
+          "FUNDO",
+          "INSTRUMENTO I",
+          "ACABAMENTO"
+        ],
+        "parallax": {
+          "shiftXPx": 0,
+          "shiftYPx": 0,
+          "scalePct": 0,
+          "unitPx": 1080,
+          "blurMaxPx": 18.36,
+          "fogMax": 0.0
+        },
+        "seam": {
+          "hard": true,
+          "rule": "a hard fold or active-area constraint is declared: nothing may slide or grow across a seam, so the camera only pulls focus",
+          "from": "crane"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "audio": false
+        }
+      },
+      {
+        "version": 1,
+        "archetype": "breathe",
+        "camera": {
+          "move": "rack",
+          "amp": 0.6099,
+          "cycles": 1,
+          "phase": 0,
+          "focus": 0.2,
+          "fog": 0,
+          "dof": 0.02
+        },
+        "description": "a hard fold or active-area constraint is declared: nothing may slide or grow across a seam, so the camera only pulls focus",
+        "focus": {
+          "z": 0.2,
+          "tier": "hero"
+        },
+        "planes": [
+          {
+            "name": "CAMPO MINIMAL II",
+            "tier": "ground",
+            "z": -0.9,
+            "fog": 0.0,
+            "blurPx": 18.36
+          },
+          {
+            "name": "ATMOSFERA II",
+            "tier": "ground",
+            "z": -0.5,
+            "fog": 0.0,
+            "blurPx": 9.72
+          },
+          {
+            "name": "HERÓI MINIMAL II",
+            "tier": "hero",
+            "z": 0.2,
+            "fog": 0.0,
+            "blurPx": 0.0
+          },
+          {
+            "name": "ESTRUTURA II",
+            "tier": "structure",
+            "z": -0.3,
+            "fog": 0.0,
+            "blurPx": 5.4
+          },
+          {
+            "name": "MARCA II",
+            "tier": "event",
+            "z": 0.7,
+            "fog": 0.0,
+            "blurPx": 5.4
+          }
+        ],
+        "screen": [
+          "FUNDO",
+          "INSTRUMENTO II",
+          "ACABAMENTO"
+        ],
+        "parallax": {
+          "shiftXPx": 0,
+          "shiftYPx": 0,
+          "scalePct": 0,
+          "unitPx": 1080,
+          "blurMaxPx": 18.36,
+          "fogMax": 0.0
+        },
+        "seam": {
+          "hard": true,
+          "rule": "a hard fold or active-area constraint is declared: nothing may slide or grow across a seam, so the camera only pulls focus",
+          "from": "dolly"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "audio": false
+        }
+      },
+      {
+        "version": 1,
+        "archetype": "glide",
+        "camera": {
+          "move": "rack",
+          "amp": 0.6099,
+          "cycles": 1,
+          "phase": 0,
+          "focus": 0.2,
+          "fog": 0,
+          "dof": 0.02
+        },
+        "description": "a hard fold or active-area constraint is declared: nothing may slide or grow across a seam, so the camera only pulls focus",
+        "focus": {
+          "z": 0.2,
+          "tier": "hero"
+        },
+        "planes": [
+          {
+            "name": "CAMPO MINIMAL III",
+            "tier": "ground",
+            "z": -0.9,
+            "fog": 0.0,
+            "blurPx": 18.36
+          },
+          {
+            "name": "ATMOSFERA III",
+            "tier": "ground",
+            "z": -0.5,
+            "fog": 0.0,
+            "blurPx": 9.72
+          },
+          {
+            "name": "HERÓI MINIMAL III",
+            "tier": "hero",
+            "z": 0.2,
+            "fog": 0.0,
+            "blurPx": 0.0
+          },
+          {
+            "name": "ESTRUTURA III",
+            "tier": "structure",
+            "z": -0.3,
+            "fog": 0.0,
+            "blurPx": 5.4
+          },
+          {
+            "name": "MARCA III",
+            "tier": "event",
+            "z": 0.7,
+            "fog": 0.0,
+            "blurPx": 5.4
+          }
+        ],
+        "screen": [
+          "FUNDO",
+          "INSTRUMENTO III",
+          "ACABAMENTO"
+        ],
+        "parallax": {
+          "shiftXPx": 0,
+          "shiftYPx": 0,
+          "scalePct": 0,
+          "unitPx": 1080,
+          "blurMaxPx": 18.36,
+          "fogMax": 0.0
+        },
+        "seam": {
+          "hard": true,
+          "rule": "a hard fold or active-area constraint is declared: nothing may slide or grow across a seam, so the camera only pulls focus",
+          "from": "sway"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "audio": false
+        }
+      }
+    ],
     "surfaceIR": {
       "version": 1,
       "canvas": {
@@ -1722,7 +1958,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.9
         },
         {
           "type": "shader",
@@ -1746,7 +1983,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.5
         },
         {
           "type": "shape",
@@ -1847,7 +2085,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": 0.2
         },
         {
           "type": "shape",
@@ -1871,7 +2110,8 @@
             "behavior": "beat",
             "listens": [],
             "reason": "lands on the beat grid; the audio does not push it"
-          }
+          },
+          "z": -0.3
         },
         {
           "type": "instrument",
@@ -1917,7 +2157,8 @@
             "behavior": "beat",
             "listens": [],
             "reason": "lands on the beat grid; the audio does not push it"
-          }
+          },
+          "z": 0.7
         },
         {
           "type": "post",
@@ -1937,7 +2178,16 @@
             "reason": "lands on the beat grid; the audio does not push it"
           }
         }
-      ]
+      ],
+      "camera": {
+        "move": "rack",
+        "amp": 0.6099,
+        "cycles": 1,
+        "phase": 0,
+        "focus": 0.2,
+        "fog": 0,
+        "dof": 0.02
+      }
     },
     {
       "name": "MINIMAL II",
@@ -1983,7 +2233,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.9
         },
         {
           "type": "shader",
@@ -2008,7 +2259,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.5
         },
         {
           "type": "lines",
@@ -2070,7 +2322,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": 0.2
         },
         {
           "type": "lines",
@@ -2089,7 +2342,8 @@
             "behavior": "beat",
             "listens": [],
             "reason": "lands on the beat grid; the audio does not push it"
-          }
+          },
+          "z": -0.3
         },
         {
           "type": "instrument",
@@ -2135,7 +2389,8 @@
             "behavior": "beat",
             "listens": [],
             "reason": "lands on the beat grid; the audio does not push it"
-          }
+          },
+          "z": 0.7
         },
         {
           "type": "post",
@@ -2155,7 +2410,16 @@
             "reason": "lands on the beat grid; the audio does not push it"
           }
         }
-      ]
+      ],
+      "camera": {
+        "move": "rack",
+        "amp": 0.6099,
+        "cycles": 1,
+        "phase": 0,
+        "focus": 0.2,
+        "fog": 0,
+        "dof": 0.02
+      }
     },
     {
       "name": "MINIMAL III",
@@ -2201,7 +2465,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.9
         },
         {
           "type": "shader",
@@ -2226,7 +2491,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": -0.5
         },
         {
           "type": "typewall",
@@ -2272,7 +2538,8 @@
             "behavior": "drift",
             "listens": [],
             "reason": "moves with the loop and the BPM only; the music is not its job"
-          }
+          },
+          "z": 0.2
         },
         {
           "type": "shape",
@@ -2307,7 +2574,8 @@
             "behavior": "beat",
             "listens": [],
             "reason": "lands on the beat grid; the audio does not push it"
-          }
+          },
+          "z": -0.3
         },
         {
           "type": "instrument",
@@ -2353,7 +2621,8 @@
             "behavior": "beat",
             "listens": [],
             "reason": "lands on the beat grid; the audio does not push it"
-          }
+          },
+          "z": 0.7
         },
         {
           "type": "post",
@@ -2373,7 +2642,16 @@
             "reason": "lands on the beat grid; the audio does not push it"
           }
         }
-      ]
+      ],
+      "camera": {
+        "move": "rack",
+        "amp": 0.6099,
+        "cycles": 1,
+        "phase": 0,
+        "focus": 0.2,
+        "fog": 0,
+        "dof": 0.02
+      }
     }
   ]
 }

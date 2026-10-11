@@ -18,6 +18,7 @@
         "contract": { "type": "object" },
         "compositionIR": { "type": "array", "description": "One Composition IR per composition (references/composition-ir.md): grammar, zones, negative space, focal point, mass, balance, movement axis, density map, phases." },
         "audioSemantics": { "type": "array", "description": "One summary per composition (references/audio-semantics.md): strategy, budget of listening layers, how many listen, and each layer's behavior and bands." },
+        "depthIR": { "type": "array", "description": "One Depth IR per composition (references/depth-ir.md): the camera, the depth planes, the focus plane, the parallax numbers on this surface and the seam rule." },
         "animationIR": { "type": "array", "description": "One Animation IR per composition (references/animation-ir.md): archetype, timing in musical time, who leads and who follows and how late, easing, anticipation, settle, phase choreography, events on the beat grid." },
         "creativeIR": { "type": "object", "description": "Creative IR compiled from the brief (references/creative-ir.md): concept, visual verbs, motifs, hierarchy, behaviours." },
         "artBible": {
@@ -85,6 +86,7 @@
         "properties": {
           "name": { "type": "string", "minLength": 1 },
           "hypothesis": { "type": "string" },
+          "camera": { "type": "object", "description": "2.5D camera of the composition (references/depth-ir.md). Layers with a `z` sit on planes the camera moves in parallax, perspective, fog and focus. Whole cycles per loop, never listens to the audio.", "required": ["move"], "properties": { "move": { "type": "string", "enum": ["still","sway","crane","orbit","dolly","rack"] }, "amp": { "type": "number", "minimum": 0, "maximum": 1 }, "cycles": { "type": "integer", "minimum": 0 }, "phase": { "type": "number", "minimum": 0, "maximum": 1 }, "focus": { "type": "number", "minimum": -1, "maximum": 1 }, "fog": { "type": "number", "minimum": 0, "maximum": 1 }, "dof": { "type": "number", "minimum": 0, "maximum": 0.1 }, "steps": { "type": "integer", "minimum": 2, "maximum": 32 } } },
           "motion": { "type": "string", "enum": ["step", "smooth"] },
           "layers": {
             "type": "array",
@@ -97,6 +99,7 @@
                 "name": { "type": "string" },
                 "role": { "type": "string" },
                 "temporal": { "type": "object", "description": "Audio semantics (references/audio-semantics.md): how the layer keeps time. still, drift and beat never listen to the audio; follow, accent and section listen to the declared band classes.", "required": ["behavior"], "properties": { "behavior": { "type": "string", "enum": ["still", "drift", "beat", "follow", "accent", "section"] }, "listens": { "type": "array", "items": { "type": "string", "enum": ["bass", "mid", "high", "hit", "level"] } }, "reason": { "type": "string" } } },
+                "z": { "type": "number", "minimum": -1, "maximum": 1, "description": "Depth plane for the 2.5D camera (references/depth-ir.md): -1 far, +1 near. Absent = screen plane (text, meters, finish): no parallax, fog or blur." },
                 "on": { "type": "boolean" },
                 "opacity": { "type": "number", "minimum": 0, "maximum": 1 },
                 "blend": { "type": "string", "enum": ["normal", "add", "screen", "multiply", "difference", "overlay", "lighten"] },

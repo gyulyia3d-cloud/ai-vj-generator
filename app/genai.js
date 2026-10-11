@@ -261,6 +261,8 @@ const GENAI = (() => {
     if (drv) { comps.forEach((c, i) => ANIMATION.apply(c.layers, anis[i])); contract.motionLanguage += ` Animation IR archetypes: ${anis.map(x => x.archetype).join(', ')} (${anis[0].description}).`; }
     /* semântica de áudio: toda camada declara como marca o tempo; a estratégia decide quais poucas ouvem a música (independe do Creative IR) */
     const asem = comps.map((c, i) => AUDIOSEM.declare(c.layers, strat, drv ? anis[i].archetype : null));
+    /* 2.5D: planos de profundidade e uma câmera por composição; o arquétipo do Animation IR escolhe a câmera e uma restrição dura da superfície a trava em puxar foco */
+    const sxd = SURFACEIR.compile(sf), dirs = comps.map((c, i) => { const d = DEPTH.compile(c.layers, anis[i], cirs[i], sxd, sf.w, sf.h); DEPTH.apply(c, c.layers, d); return d; });
     const artBible = makeArtBible(brief, tags, contract, prof0, strat, led, ir);
     if (strat === 'none') contract.audioStrategyReason = (brief.audio || {}).reason || 'The brief asks for a silent, music-independent piece.';
     const spec = { archetype: [ARCH[surf] || 'clip-pack'], confirmed: { pixelMap: [sf.w, sf.h] }, assumed: [{ field: 'surface', why: "generated from the brief without AI; the facts are the brief's own", risk: 'confirm the pixel map and distances with the venue before delivery' }] };
@@ -268,7 +270,7 @@ const GENAI = (() => {
     const canvas = { w: sf.w, h: sf.h, fps: sf.fps || 30, target: ['screen', 'led', 'projection', 'mapping', 'multi'].includes(surf) ? surf : 'screen' }; if (sf.folds) canvas.folds = sf.folds;
     if (sf.regions && sf.regions.length) canvas.displays = sf.regions.map(r => { const o = {}; for (const k of ['x', 'y', 'w', 'h', 'name', 'source']) if (k in r) o[k] = r[k]; return o; });
     const id = String(brief.name).toLowerCase().split('').map(c => /[\p{L}\p{N}]/u.test(c) ? c : '-').join('').replace(/^-+|-+$/g, '') || 'project';
-    return { schema: 'ai-vj-generator/2', id, seed, meta: { name: String(brief.name).toUpperCase(), lang: brief.lang || 'en', brief: brief.concept, contract, artBible, spec, creativeIR: ir, compositionIR: cirs, animationIR: anis, audioSemantics: asem, surfaceIR: SURFACEIR.compile(sf) }, canvas,
+    return { schema: 'ai-vj-generator/2', id, seed, meta: { name: String(brief.name).toUpperCase(), lang: brief.lang || 'en', brief: brief.concept, contract, artBible, spec, creativeIR: ir, compositionIR: cirs, animationIR: anis, audioSemantics: asem, depthIR: dirs, surfaceIR: SURFACEIR.compile(sf) }, canvas,
       time: { bpm: tm.bpm, bars, loop: true, seamless: true, mode: 'loop', transition: prof0.axes.continuity >= 0.5 ? 'fade' : 'wipe' }, audio: { reactive: strat !== 'none', sens: 1, smooth: 0.7, strategy: strat },
       palette: Object.assign({}, pal, (brief.output || {}).mode === 'white-alpha' ? { mode: 'white-alpha' } : {}), compositions: comps };
   }

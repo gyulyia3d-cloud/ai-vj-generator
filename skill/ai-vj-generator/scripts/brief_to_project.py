@@ -27,6 +27,7 @@ import surface_ir as sir  # noqa: E402
 import composition_ir as comp_ir  # noqa: E402
 import animation_ir as anim_ir  # noqa: E402
 import audio_semantics as audio_sem  # noqa: E402
+import depth_ir as depth_ir  # noqa: E402
 
 # mood -> hue, scheme, motion, hero generators (type, params), shader presets, structure, whether a data/HUD tier suits
 MOODS = {
@@ -362,6 +363,11 @@ def build(brief):
         contract["motionLanguage"] += f" Animation IR archetypes: {', '.join(x['archetype'] for x in anis)} ({anis[0]['description']})."
     # audio semantics: every layer declares how it keeps time; the strategy decides which few listen to the music (independent of the Creative IR)
     asem = [audio_sem.declare(c["layers"], strat, anis[i]["archetype"] if drv else None) for i, c in enumerate(comps)]
+    # 2.5D: depth planes and one camera per composition; the archetype of the Animation IR picks the camera and a hard surface constraint leaves only the focus pull
+    sxd = sir.compile_surface(sf)
+    dirs = [depth_ir.compile_depth(c["layers"], anis[i], cirs[i], sxd, sf["w"], sf["h"]) for i, c in enumerate(comps)]
+    for c, d in zip(comps, dirs):
+        depth_ir.apply_depth(c, c["layers"], d)
     art_bible = make_art_bible(brief, tags, contract, prof0, strat, led=surf in ("led", "multi", "projection", "mapping"), ir=ir)
     if strat == "none":
         contract["audioStrategyReason"] = (brief.get("audio") or {}).get("reason") or "The brief asks for a silent, music-independent piece."
@@ -376,7 +382,7 @@ def build(brief):
     if sf.get("regions"):
         canvas["displays"] = [{k: r[k] for k in ("x", "y", "w", "h", "name", "source") if k in r} for r in sf["regions"]]
     proj = {"schema": "ai-vj-generator/2", "id": "".join(c if c.isalnum() else "-" for c in str(brief["name"]).lower()).strip("-") or "project", "seed": seed,
-            "meta": {"name": str(brief["name"]).upper(), "lang": brief.get("lang", "en"), "brief": brief["concept"], "contract": contract, "artBible": art_bible, "spec": spec, "creativeIR": ir, "compositionIR": cirs, "animationIR": anis, "audioSemantics": asem, "surfaceIR": sir.compile_surface(sf)},
+            "meta": {"name": str(brief["name"]).upper(), "lang": brief.get("lang", "en"), "brief": brief["concept"], "contract": contract, "artBible": art_bible, "spec": spec, "creativeIR": ir, "compositionIR": cirs, "animationIR": anis, "audioSemantics": asem, "depthIR": dirs, "surfaceIR": sir.compile_surface(sf)},
             "canvas": canvas, "time": {"bpm": tm["bpm"], "bars": bars, "loop": True, "seamless": True, "mode": "loop", "transition": "fade" if prof0["axes"]["continuity"] >= 0.5 else "wipe"},
             "audio": {"reactive": strat != "none", "sens": 1, "smooth": 0.7, "strategy": strat},
             "palette": {**pal, **({"mode": "white-alpha"} if (brief.get("output") or {}).get("mode") == "white-alpha" else {})}, "compositions": comps}
