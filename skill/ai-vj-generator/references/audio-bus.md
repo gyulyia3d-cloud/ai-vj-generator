@@ -6,11 +6,11 @@ One shared audio source feeds every layer: microphone, line input or an audio fi
 
 ## The shader rule (non-negotiable)
 
-**Every shader layer is audio-reactive.** This holds for presets and for custom GLSL:
+**A shader that declares it listens is audio-reactive** (`temporal.behavior` follow, accent or section; see `audio-semantics.md`). Not every layer listens: a layer that declares `drift`, `beat` or `still` gets no band at all. In a project with no `temporal` declarations (legacy) every shader is audio-reactive, as before. For a listening shader this holds for presets and for custom GLSL:
 
 - The engine forces a response of at least 0.35 on every `shader` layer (default 0.8, band `bass`), so a shader can never be silent.
 - Shaders receive `uBass uMid uHigh uRms uHit` plus `uAud` (the layer's chosen band). With a source connected they carry the music; without one they carry **deterministic synthetic bands locked to the BPM**, so the shader reacts in the preview, in the PNG export and in the recording of the loop. `audio.reactive` defaults to true.
-- A custom shader must read at least one of those uniforms and give each band a role (see `glsl-recipes.md`). `validate_project.py` raises an ERROR for a shader whose `src` ignores all of them, and for a shader layer with `p.audio` explicitly set to 0.
+- A custom shader must read at least one of those uniforms and give each band a role (see `glsl-recipes.md`). `validate_project.py` raises an ERROR for a listening (or undeclared) shader whose `src` ignores all of them, and for such a shader layer with `p.audio` explicitly set to 0. A shader declared `drift`, `beat` or `still` is exempt.
 - Non-shader layers react only when `p.audio > 0`, with live audio. They also get `K.t.bass .mid .high .rms .hit` in code layers (live, or BPM-locked synthetic) for opt-in use.
 - To check reactivity without a file or microphone, press **Fonte de teste** in the AUDIO tab (kick, hat and a lead at the project's BPM). It also works inside an Artifact.
 

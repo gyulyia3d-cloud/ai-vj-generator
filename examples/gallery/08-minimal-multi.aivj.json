@@ -1285,6 +1285,197 @@
         "description": "one continuous move per loop at a steady pace; no accent"
       }
     ],
+    "audioSemantics": [
+      {
+        "version": 1,
+        "strategy": "none",
+        "budget": 0,
+        "archetype": "settle",
+        "reactive": 0,
+        "layers": [
+          {
+            "name": "FUNDO",
+            "tier": "background",
+            "behavior": "still",
+            "listens": []
+          },
+          {
+            "name": "CAMPO MINIMAL I",
+            "tier": "ground",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "ATMOSFERA I",
+            "tier": "ground",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "HERÓI MINIMAL I",
+            "tier": "hero",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "ESTRUTURA I",
+            "tier": "structure",
+            "behavior": "beat",
+            "listens": []
+          },
+          {
+            "name": "INSTRUMENTO I",
+            "tier": "instrument",
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ]
+          },
+          {
+            "name": "MARCA I",
+            "tier": "event",
+            "behavior": "beat",
+            "listens": []
+          },
+          {
+            "name": "ACABAMENTO",
+            "tier": "finish",
+            "behavior": "beat",
+            "listens": []
+          }
+        ]
+      },
+      {
+        "version": 1,
+        "strategy": "none",
+        "budget": 0,
+        "archetype": "breathe",
+        "reactive": 0,
+        "layers": [
+          {
+            "name": "FUNDO",
+            "tier": "background",
+            "behavior": "still",
+            "listens": []
+          },
+          {
+            "name": "CAMPO MINIMAL II",
+            "tier": "ground",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "ATMOSFERA II",
+            "tier": "ground",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "HERÓI MINIMAL II",
+            "tier": "hero",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "ESTRUTURA II",
+            "tier": "structure",
+            "behavior": "beat",
+            "listens": []
+          },
+          {
+            "name": "INSTRUMENTO II",
+            "tier": "instrument",
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ]
+          },
+          {
+            "name": "MARCA II",
+            "tier": "event",
+            "behavior": "beat",
+            "listens": []
+          },
+          {
+            "name": "ACABAMENTO",
+            "tier": "finish",
+            "behavior": "beat",
+            "listens": []
+          }
+        ]
+      },
+      {
+        "version": 1,
+        "strategy": "none",
+        "budget": 0,
+        "archetype": "glide",
+        "reactive": 0,
+        "layers": [
+          {
+            "name": "FUNDO",
+            "tier": "background",
+            "behavior": "still",
+            "listens": []
+          },
+          {
+            "name": "CAMPO MINIMAL III",
+            "tier": "ground",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "ATMOSFERA III",
+            "tier": "ground",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "HERÓI MINIMAL III",
+            "tier": "hero",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "ESTRUTURA III",
+            "tier": "structure",
+            "behavior": "beat",
+            "listens": []
+          },
+          {
+            "name": "INSTRUMENTO III",
+            "tier": "instrument",
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ]
+          },
+          {
+            "name": "MARCA III",
+            "tier": "event",
+            "behavior": "beat",
+            "listens": []
+          },
+          {
+            "name": "ACABAMENTO",
+            "tier": "finish",
+            "behavior": "beat",
+            "listens": []
+          }
+        ]
+      }
+    ],
     "surfaceIR": {
       "version": 1,
       "canvas": {
@@ -1502,6 +1693,11 @@
           "role": "ground colour of the piece; the quiet reference everything else is read against",
           "p": {
             "grain": 0
+          },
+          "temporal": {
+            "behavior": "still",
+            "listens": [],
+            "reason": "ground colour: nothing in it moves"
           }
         },
         {
@@ -1521,6 +1717,11 @@
             "c2": "secondary",
             "res": 0.5,
             "alphaMode": "alpha"
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
           }
         },
         {
@@ -1540,6 +1741,11 @@
             "c2": "accent",
             "res": 0.5,
             "alphaMode": "alpha"
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
           }
         },
         {
@@ -1636,7 +1842,12 @@
               "max": 1.2015,
               "mode": "mul"
             }
-          ]
+          ],
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
+          }
         },
         {
           "type": "shape",
@@ -1655,7 +1866,12 @@
             "sx": 0.79,
             "sy": 0.79
           },
-          "mod": []
+          "mod": [],
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
+          }
         },
         {
           "type": "instrument",
@@ -1671,6 +1887,17 @@
             "cy": 0.85,
             "n": 36,
             "weight": 3
+          },
+          "temporal": {
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ],
+            "reason": "shows the real signal; it is the meter, not part of the picture"
           }
         },
         {
@@ -1685,6 +1912,11 @@
             "layout": "single",
             "size": 120,
             "pulseAmt": 0.4
+          },
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
           }
         },
         {
@@ -1698,6 +1930,11 @@
             "scan": 0,
             "vig": 0.35,
             "prob": 0.16
+          },
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
           }
         }
       ]
@@ -1716,6 +1953,11 @@
           "role": "ground colour of the piece; the quiet reference everything else is read against",
           "p": {
             "grain": 0
+          },
+          "temporal": {
+            "behavior": "still",
+            "listens": [],
+            "reason": "ground colour: nothing in it moves"
           }
         },
         {
@@ -1736,6 +1978,11 @@
             "res": 0.5,
             "alphaMode": "alpha",
             "phase": 0.0625
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
           }
         },
         {
@@ -1756,6 +2003,11 @@
             "res": 0.5,
             "alphaMode": "alpha",
             "phase": 0.0625
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
           }
         },
         {
@@ -1813,7 +2065,12 @@
               "max": 1.1612,
               "mode": "mul"
             }
-          ]
+          ],
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
+          }
         },
         {
           "type": "lines",
@@ -1827,7 +2084,12 @@
             "count": 5,
             "weight": 1.5
           },
-          "mod": []
+          "mod": [],
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
+          }
         },
         {
           "type": "instrument",
@@ -1843,6 +2105,17 @@
             "cy": 0.85,
             "n": 36,
             "weight": 3
+          },
+          "temporal": {
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ],
+            "reason": "shows the real signal; it is the meter, not part of the picture"
           }
         },
         {
@@ -1857,6 +2130,11 @@
             "layout": "single",
             "size": 160,
             "pulseAmt": 0.4
+          },
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
           }
         },
         {
@@ -1870,6 +2148,11 @@
             "scan": 0,
             "vig": 0.35,
             "prob": 0.16
+          },
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
           }
         }
       ]
@@ -1888,6 +2171,11 @@
           "role": "ground colour of the piece; the quiet reference everything else is read against",
           "p": {
             "grain": 0
+          },
+          "temporal": {
+            "behavior": "still",
+            "listens": [],
+            "reason": "ground colour: nothing in it moves"
           }
         },
         {
@@ -1908,6 +2196,11 @@
             "res": 0.5,
             "alphaMode": "alpha",
             "phase": 0.125
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
           }
         },
         {
@@ -1928,6 +2221,11 @@
             "res": 0.5,
             "alphaMode": "alpha",
             "phase": 0.125
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
           }
         },
         {
@@ -1969,7 +2267,12 @@
               "max": 1.1209,
               "mode": "mul"
             }
-          ]
+          ],
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
+          }
         },
         {
           "type": "shape",
@@ -1999,7 +2302,12 @@
               "max": 1.0604,
               "mode": "mul"
             }
-          ]
+          ],
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
+          }
         },
         {
           "type": "instrument",
@@ -2015,6 +2323,17 @@
             "cy": 0.5,
             "n": 36,
             "weight": 3
+          },
+          "temporal": {
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ],
+            "reason": "shows the real signal; it is the meter, not part of the picture"
           }
         },
         {
@@ -2029,6 +2348,11 @@
             "layout": "single",
             "size": 200,
             "pulseAmt": 0.4
+          },
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
           }
         },
         {
@@ -2042,6 +2366,11 @@
             "scan": 0,
             "vig": 0.35,
             "prob": 0.16
+          },
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
           }
         }
       ]

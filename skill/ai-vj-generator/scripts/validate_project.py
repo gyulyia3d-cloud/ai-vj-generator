@@ -24,6 +24,9 @@ import subprocess
 import sys
 from pathlib import Path
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import audio_semantics as _asem  # noqa: E402
+
 ENGINE = Path(__file__).resolve().parent.parent / "assets" / "engine.html"
 BLENDS = {"normal", "add", "screen", "multiply", "difference", "overlay", "lighten"}
 GENERIC = {"structure", "flow", "density", "rhythm", "transformation", "estrutura", "fluxo", "densidade",
@@ -743,7 +746,8 @@ def validate(path, extra_assets=()):
                         lint_glsl(v, lw + ".src", out)
                     continue
                 check_param(allowed, k, v, lw, out)
-            if t == "shader" and AUDIO_STRATEGY != "none":
+            quiet = isinstance(L.get("temporal"), dict) and L["temporal"].get("behavior") in _asem.BEHAVIORS and not _asem.reactive(L["temporal"]["behavior"])
+            if t == "shader" and AUDIO_STRATEGY != "none" and not quiet:
                 sp = L.get("p") or {}
                 if L.get("on", True) and isinstance(sp.get("audio"), (int, float)) and sp["audio"] <= 0:
                     e.append(f"{lw}: shader with p.audio = 0. Every shader must be audio-reactive (references/audio-bus.md); remove the key or use 0.35..1")
@@ -763,7 +767,13 @@ def validate(path, extra_assets=()):
         default_names = [x.get("name") for x in body if str(x.get("name", "")).strip().upper() in DEFAULT_LAYER_NAMES]
         if default_names:
             w.append(f"{where}: layers still named {default_names}; name each layer for its job in this piece")
-        if reactive > 3:
+        if v2 and any("temporal" in x for x in layers):
+            ae, aw = _asem.audit(layers, AUDIO_STRATEGY)
+            e.extend(f"{where}: {m}" for m in ae)
+            w.extend(f"{where}: {m}" for m in aw)
+        elif v2:
+            w.append(f"{where}: no layer declares `temporal` (legacy project): every shader listens to the audio; run plan_ir.py --apply to declare how each layer keeps time (references/audio-semantics.md)")
+        if reactive > 3 and not any("temporal" in x for x in layers):
             w.append(f"{where}: {reactive} non-shader layers respond to audio; keep 1-3 so the music has a hierarchy (references/audio-bus.md)")
         sigs.append(frozenset(t for t in active if t not in ("bg", "post")))
         if not sigs[-1]:

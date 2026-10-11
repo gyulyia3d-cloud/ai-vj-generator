@@ -1198,6 +1198,212 @@
         "description": "a damped wobble that travels outward: hero first, then structure, then ground"
       }
     ],
+    "audioSemantics": [
+      {
+        "version": 1,
+        "strategy": "full",
+        "budget": 3,
+        "archetype": "stutter",
+        "reactive": 2,
+        "layers": [
+          {
+            "name": "FUNDO",
+            "tier": "background",
+            "behavior": "still",
+            "listens": []
+          },
+          {
+            "name": "CAMPO GLITCH I",
+            "tier": "ground",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "ATMOSFERA I",
+            "tier": "ground",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "HERÓI GLITCH I",
+            "tier": "hero",
+            "behavior": "accent",
+            "listens": [
+              "bass",
+              "hit"
+            ]
+          },
+          {
+            "name": "ESTRUTURA I",
+            "tier": "structure",
+            "behavior": "follow",
+            "listens": [
+              "mid"
+            ]
+          },
+          {
+            "name": "INSTRUMENTO I",
+            "tier": "instrument",
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ]
+          },
+          {
+            "name": "INFORMAÇÃO I",
+            "tier": "information",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "ACABAMENTO",
+            "tier": "finish",
+            "behavior": "beat",
+            "listens": []
+          }
+        ]
+      },
+      {
+        "version": 1,
+        "strategy": "full",
+        "budget": 3,
+        "archetype": "pulse",
+        "reactive": 2,
+        "layers": [
+          {
+            "name": "FUNDO",
+            "tier": "background",
+            "behavior": "still",
+            "listens": []
+          },
+          {
+            "name": "CAMPO RETRO II",
+            "tier": "ground",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "ATMOSFERA II",
+            "tier": "ground",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "HERÓI RETRO II",
+            "tier": "hero",
+            "behavior": "accent",
+            "listens": [
+              "bass",
+              "hit"
+            ]
+          },
+          {
+            "name": "ESTRUTURA II",
+            "tier": "structure",
+            "behavior": "follow",
+            "listens": [
+              "mid"
+            ]
+          },
+          {
+            "name": "INSTRUMENTO II",
+            "tier": "instrument",
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ]
+          },
+          {
+            "name": "INFORMAÇÃO II",
+            "tier": "information",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "ACABAMENTO",
+            "tier": "finish",
+            "behavior": "beat",
+            "listens": []
+          }
+        ]
+      },
+      {
+        "version": 1,
+        "strategy": "full",
+        "budget": 3,
+        "archetype": "ripple",
+        "reactive": 2,
+        "layers": [
+          {
+            "name": "FUNDO",
+            "tier": "background",
+            "behavior": "still",
+            "listens": []
+          },
+          {
+            "name": "CAMPO GLITCH III",
+            "tier": "ground",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "ATMOSFERA III",
+            "tier": "ground",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "HERÓI GLITCH III",
+            "tier": "hero",
+            "behavior": "accent",
+            "listens": [
+              "bass",
+              "hit"
+            ]
+          },
+          {
+            "name": "ESTRUTURA III",
+            "tier": "structure",
+            "behavior": "follow",
+            "listens": [
+              "mid"
+            ]
+          },
+          {
+            "name": "INSTRUMENTO III",
+            "tier": "instrument",
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ]
+          },
+          {
+            "name": "INFORMAÇÃO III",
+            "tier": "information",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "ACABAMENTO",
+            "tier": "finish",
+            "behavior": "beat",
+            "listens": []
+          }
+        ]
+      }
+    ],
     "surfaceIR": {
       "version": 1,
       "canvas": {
@@ -1393,6 +1599,11 @@
           "role": "ground colour of the piece; the quiet reference everything else is read against",
           "p": {
             "grain": 0
+          },
+          "temporal": {
+            "behavior": "still",
+            "listens": [],
+            "reason": "ground colour: nothing in it moves"
           }
         },
         {
@@ -1412,6 +1623,11 @@
             "c2": "secondary",
             "res": 0.5,
             "alphaMode": "alpha"
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
           }
         },
         {
@@ -1431,6 +1647,11 @@
             "c2": "accent",
             "res": 0.5,
             "alphaMode": "alpha"
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
           }
         },
         {
@@ -1511,7 +1732,15 @@
               "mode": "mul",
               "steps": 6
             }
-          ]
+          ],
+          "temporal": {
+            "behavior": "accent",
+            "listens": [
+              "bass",
+              "hit"
+            ],
+            "reason": "the hero answers each hit: bass weight and one accent per event"
+          }
         },
         {
           "type": "structure",
@@ -1525,7 +1754,14 @@
             "audio": 0.5,
             "band": "high"
           },
-          "mod": []
+          "mod": [],
+          "temporal": {
+            "behavior": "follow",
+            "listens": [
+              "mid"
+            ],
+            "reason": "carries the mid story: the structure rotates and breathes with the body of the track"
+          }
         },
         {
           "type": "instrument",
@@ -1541,6 +1777,17 @@
             "cy": 0.85,
             "n": 36,
             "weight": 3
+          },
+          "temporal": {
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ],
+            "reason": "shows the real signal; it is the meter, not part of the picture"
           }
         },
         {
@@ -1552,6 +1799,11 @@
           "role": "information: small, calm, always the same place; it tells the viewer the system is alive",
           "p": {
             "title": "FALHA GERAL"
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
           }
         },
         {
@@ -1565,6 +1817,11 @@
             "scan": 0,
             "vig": 0.35,
             "prob": 0.37
+          },
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
           }
         }
       ]
@@ -1583,6 +1840,11 @@
           "role": "ground colour of the piece; the quiet reference everything else is read against",
           "p": {
             "grain": 0
+          },
+          "temporal": {
+            "behavior": "still",
+            "listens": [],
+            "reason": "ground colour: nothing in it moves"
           }
         },
         {
@@ -1603,6 +1865,11 @@
             "res": 0.5,
             "alphaMode": "alpha",
             "phase": 0.0625
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
           }
         },
         {
@@ -1623,6 +1890,11 @@
             "res": 0.5,
             "alphaMode": "alpha",
             "phase": 0.0625
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
           }
         },
         {
@@ -1688,7 +1960,15 @@
               "depth": 0.1305,
               "steps": 12
             }
-          ]
+          ],
+          "temporal": {
+            "behavior": "accent",
+            "listens": [
+              "bass",
+              "hit"
+            ],
+            "reason": "the hero answers each hit: bass weight and one accent per event"
+          }
         },
         {
           "type": "lines",
@@ -1718,7 +1998,14 @@
               "mode": "mul",
               "steps": 12
             }
-          ]
+          ],
+          "temporal": {
+            "behavior": "follow",
+            "listens": [
+              "mid"
+            ],
+            "reason": "carries the mid story: the structure rotates and breathes with the body of the track"
+          }
         },
         {
           "type": "instrument",
@@ -1734,6 +2021,17 @@
             "cy": 0.85,
             "n": 36,
             "weight": 3
+          },
+          "temporal": {
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ],
+            "reason": "shows the real signal; it is the meter, not part of the picture"
           }
         },
         {
@@ -1745,6 +2043,11 @@
           "role": "information: small, calm, always the same place; it tells the viewer the system is alive",
           "p": {
             "title": "FALHA GERAL"
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
           }
         },
         {
@@ -1758,6 +2061,11 @@
             "scan": 0,
             "vig": 0.35,
             "prob": 0.37
+          },
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
           }
         }
       ]
@@ -1776,6 +2084,11 @@
           "role": "ground colour of the piece; the quiet reference everything else is read against",
           "p": {
             "grain": 0
+          },
+          "temporal": {
+            "behavior": "still",
+            "listens": [],
+            "reason": "ground colour: nothing in it moves"
           }
         },
         {
@@ -1796,6 +2109,11 @@
             "res": 0.5,
             "alphaMode": "alpha",
             "phase": 0.125
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
           }
         },
         {
@@ -1816,6 +2134,11 @@
             "res": 0.5,
             "alphaMode": "alpha",
             "phase": 0.125
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
           }
         },
         {
@@ -1947,7 +2270,15 @@
               "max": 1.487,
               "mode": "mul"
             }
-          ]
+          ],
+          "temporal": {
+            "behavior": "accent",
+            "listens": [
+              "bass",
+              "hit"
+            ],
+            "reason": "the hero answers each hit: bass weight and one accent per event"
+          }
         },
         {
           "type": "structure",
@@ -1961,7 +2292,14 @@
             "audio": 0.5,
             "band": "high"
           },
-          "mod": []
+          "mod": [],
+          "temporal": {
+            "behavior": "follow",
+            "listens": [
+              "mid"
+            ],
+            "reason": "carries the mid story: the structure rotates and breathes with the body of the track"
+          }
         },
         {
           "type": "instrument",
@@ -1977,6 +2315,17 @@
             "cy": 0.85,
             "n": 36,
             "weight": 3
+          },
+          "temporal": {
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ],
+            "reason": "shows the real signal; it is the meter, not part of the picture"
           }
         },
         {
@@ -1988,6 +2337,11 @@
           "role": "information: small, calm, always the same place; it tells the viewer the system is alive",
           "p": {
             "title": "FALHA GERAL"
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
           }
         },
         {
@@ -2001,6 +2355,11 @@
             "scan": 0,
             "vig": 0.35,
             "prob": 0.37
+          },
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
           }
         }
       ]

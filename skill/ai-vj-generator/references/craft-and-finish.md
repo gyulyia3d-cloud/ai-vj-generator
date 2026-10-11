@@ -74,7 +74,7 @@ One family (or one family plus one mono), two or three sizes from the scale, con
 3. **Constant audit.** Do grid, spacing, scale and angles come from the same module and constants? Any pixel value that came from nowhere gets snapped.
 4. **Colour audit.** Accent below 5% of the frame, used on events or targets. Contrast between tiers distinguishable at the viewing distance.
 5. **Timing audit.** Step vs smooth assigned. Information quantised. Events on bars. No two layers with identical ease/speed/direction. Loop closes.
-6. **Audio audit.** Every shader reactive (rule). No more than three non-shader layers react. Each binding has a one-line reason. A silent bar still looks good.
+6. **Audio audit.** Every layer declares `temporal`; no more layers listen than the strategy allows (at most three, one story each). A listening shader reads the audio. Each binding has a one-line reason. A silent bar still looks good.
 7. **Surface audit.** Folds, gutters, safe areas, viewing distance, minimum element size (`aspect-ratios.md`).
 8. **Frame-by-frame look.** Read the contact sheets at beats 0, 1, 2, 3, the last beat and the loop seam. Fix, rebuild, look again. Do not describe a composition you did not see.
 9. **Remove one thing.** Cut the least necessary layer or element. Most pieces improve.

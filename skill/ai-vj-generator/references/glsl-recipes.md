@@ -7,7 +7,7 @@ More compile-tested shaders (Chladni figures, quasicrystal, domain colouring, Ju
 ## Rules every shader follows
 
 1. **Loop closes.** Time-driven motion uses `uPh` times a whole number (`TAU*uPh*floor(uP.y+.5)`), or `loopv(r)` to travel through noise space. Never `uT` for looping motion.
-2. **Every shader is audio-reactive** (project rule, enforced by the engine and `validate_project.py`). The engine feeds `uBass uMid uHigh uRms uHit` (and `uAud`, the band chosen in the layer's AUDIO panel) from the music when a source is connected, and from deterministic BPM-locked synthetic bands when not. A shader that ignores all of them is rejected. Map by role:
+2. **A shader that listens is audio-reactive** (a layer declared `follow`, `accent` or `section`, or a legacy shader with no declaration; `drift` and `beat` shaders get no band, see `audio-semantics.md`; enforced by the engine and `validate_project.py`). The engine feeds `uBass uMid uHigh uRms uHit` (and `uAud`, the band chosen in the layer's AUDIO panel) from the music when a source is connected, and from deterministic BPM-locked synthetic bands when not. A shader that ignores all of them is rejected. Map by role:
    - `uBass` weight, scale, pressure, warp amount, line thickness
    - `uMid` displacement, flow, scale drift, deformation
    - `uHigh` edge sparkle, texture, colour mix toward `uC2`, fine detail

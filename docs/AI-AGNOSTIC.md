@@ -21,7 +21,7 @@ Entrada: um briefing (`skill/ai-vj-generator/schema/brief.schema.json`). Saída:
 - **Só chat:** ela escreve o JSON e a checklist do fim do `PROMPT.md`; diz com honestidade que não renderizou; você abre o JSON no motor e confere.
 
 ## Regras que valem para todas
-Determinismo (sem `Math.random` nem relógio), loops que fecham em compassos inteiros, todo shader lê áudio (a menos que o contrato declare `audio.strategy: none` com motivo), referências viram princípios e nunca cópias, nada de shader sem licença, e nunca afirmar que viu um render que não viu. Estão no `PROMPT.md` e são testadas em `node scripts/check.mjs`.
+Determinismo (sem `Math.random` nem relógio), loops que fecham em compassos inteiros, toda camada declara `temporal` (still, drift, beat, follow, accent ou section) e só as poucas que a estratégia de áudio escolhe ouvem a música (projeto sem declaração segue a regra antiga: todo shader lê áudio, a menos que `audio.strategy` seja `none` com motivo), referências viram princípios e nunca cópias, nada de shader sem licença, e nunca afirmar que viu um render que não viu. Estão no `PROMPT.md` e são testadas em `node scripts/check.mjs`.
 
 ## Para quem mantém o repositório
 O texto-fonte é **um só**: `skill/ai-vj-generator/portable/PROMPT.md`. `AGENTS.md`, `GEMINI.md` e `CLAUDE.md` são ponteiros curtos; os comandos do Claude ficam em `adapters/claude/skills/` e não são necessários para as outras ferramentas. A skill completa (`SKILL.md` e `references/`) é Markdown comum: qualquer IA pode lê-la por demanda.

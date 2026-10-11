@@ -1195,6 +1195,203 @@
         "description": "quantised, hard steps on the beat; everything moves together, nothing rings"
       }
     ],
+    "audioSemantics": [
+      {
+        "version": 1,
+        "strategy": "subtle",
+        "budget": 1,
+        "archetype": "surge",
+        "reactive": 1,
+        "layers": [
+          {
+            "name": "FUNDO",
+            "tier": "background",
+            "behavior": "still",
+            "listens": []
+          },
+          {
+            "name": "CAMPO COSMIC I",
+            "tier": "ground",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "ATMOSFERA I",
+            "tier": "ground",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "HERÓI COSMIC I",
+            "tier": "hero",
+            "behavior": "follow",
+            "listens": [
+              "bass"
+            ]
+          },
+          {
+            "name": "ESTRUTURA I",
+            "tier": "structure",
+            "behavior": "beat",
+            "listens": []
+          },
+          {
+            "name": "INSTRUMENTO I",
+            "tier": "instrument",
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ]
+          },
+          {
+            "name": "INFORMAÇÃO I",
+            "tier": "information",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "ACABAMENTO",
+            "tier": "finish",
+            "behavior": "beat",
+            "listens": []
+          }
+        ]
+      },
+      {
+        "version": 1,
+        "strategy": "subtle",
+        "budget": 1,
+        "archetype": "pulse",
+        "reactive": 1,
+        "layers": [
+          {
+            "name": "FUNDO",
+            "tier": "background",
+            "behavior": "still",
+            "listens": []
+          },
+          {
+            "name": "CAMPO COSMIC II",
+            "tier": "ground",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "ATMOSFERA II",
+            "tier": "ground",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "HERÓI COSMIC II",
+            "tier": "hero",
+            "behavior": "follow",
+            "listens": [
+              "bass"
+            ]
+          },
+          {
+            "name": "ESTRUTURA II",
+            "tier": "structure",
+            "behavior": "beat",
+            "listens": []
+          },
+          {
+            "name": "INSTRUMENTO II",
+            "tier": "instrument",
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ]
+          },
+          {
+            "name": "INFORMAÇÃO II",
+            "tier": "information",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "ACABAMENTO",
+            "tier": "finish",
+            "behavior": "beat",
+            "listens": []
+          }
+        ]
+      },
+      {
+        "version": 1,
+        "strategy": "subtle",
+        "budget": 1,
+        "archetype": "stutter",
+        "reactive": 1,
+        "layers": [
+          {
+            "name": "FUNDO",
+            "tier": "background",
+            "behavior": "still",
+            "listens": []
+          },
+          {
+            "name": "CAMPO COSMIC III",
+            "tier": "ground",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "ATMOSFERA III",
+            "tier": "ground",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "HERÓI COSMIC III",
+            "tier": "hero",
+            "behavior": "follow",
+            "listens": [
+              "bass"
+            ]
+          },
+          {
+            "name": "ESTRUTURA III",
+            "tier": "structure",
+            "behavior": "beat",
+            "listens": []
+          },
+          {
+            "name": "INSTRUMENTO III",
+            "tier": "instrument",
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ]
+          },
+          {
+            "name": "INFORMAÇÃO III",
+            "tier": "information",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "ACABAMENTO",
+            "tier": "finish",
+            "behavior": "beat",
+            "listens": []
+          }
+        ]
+      }
+    ],
     "surfaceIR": {
       "version": 1,
       "canvas": {
@@ -1386,6 +1583,11 @@
           "role": "ground colour of the piece; the quiet reference everything else is read against",
           "p": {
             "grain": 0.4
+          },
+          "temporal": {
+            "behavior": "still",
+            "listens": [],
+            "reason": "ground colour: nothing in it moves"
           }
         },
         {
@@ -1406,6 +1608,11 @@
             "res": 1,
             "alphaMode": "alpha",
             "phase": 0.0312
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
           }
         },
         {
@@ -1426,6 +1633,11 @@
             "res": 0.5,
             "alphaMode": "alpha",
             "phase": 0.0312
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
           }
         },
         {
@@ -1503,7 +1715,14 @@
               "max": 1.3942,
               "mode": "mul"
             }
-          ]
+          ],
+          "temporal": {
+            "behavior": "follow",
+            "listens": [
+              "bass"
+            ],
+            "reason": "carries the bass story: it swells and settles with the low end"
+          }
         },
         {
           "type": "tunnel",
@@ -1516,7 +1735,6 @@
             "shape": "circle",
             "count": 10,
             "cycles": 1,
-            "audio": 0.5,
             "band": "high",
             "size": 1,
             "x": 0,
@@ -1535,7 +1753,12 @@
               "max": 1.1971,
               "mode": "mul"
             }
-          ]
+          ],
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
+          }
         },
         {
           "type": "instrument",
@@ -1551,6 +1774,17 @@
             "cy": 0.9,
             "n": 36,
             "weight": 3
+          },
+          "temporal": {
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ],
+            "reason": "shows the real signal; it is the meter, not part of the picture"
           }
         },
         {
@@ -1562,6 +1796,11 @@
           "role": "information: small, calm, always the same place; it tells the viewer the system is alive",
           "p": {
             "title": "POÇO CÓSMICO"
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
           }
         },
         {
@@ -1575,6 +1814,11 @@
             "scan": 0.2,
             "vig": 0.35,
             "prob": 0.22
+          },
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
           }
         }
       ]
@@ -1593,6 +1837,11 @@
           "role": "ground colour of the piece; the quiet reference everything else is read against",
           "p": {
             "grain": 0.4
+          },
+          "temporal": {
+            "behavior": "still",
+            "listens": [],
+            "reason": "ground colour: nothing in it moves"
           }
         },
         {
@@ -1613,6 +1862,11 @@
             "res": 1,
             "alphaMode": "alpha",
             "phase": 0.0312
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
           }
         },
         {
@@ -1633,6 +1887,11 @@
             "res": 0.5,
             "alphaMode": "alpha",
             "phase": 0.0312
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
           }
         },
         {
@@ -1768,7 +2027,14 @@
               "depth": 0.1545,
               "steps": 26
             }
-          ]
+          ],
+          "temporal": {
+            "behavior": "follow",
+            "listens": [
+              "bass"
+            ],
+            "reason": "carries the bass story: it swells and settles with the low end"
+          }
         },
         {
           "type": "lines",
@@ -1781,7 +2047,6 @@
             "dir": "v",
             "count": 18,
             "weight": 2,
-            "audio": 0.5,
             "band": "high",
             "phase": 0.0156
           },
@@ -1798,7 +2063,12 @@
               "mode": "mul",
               "steps": 26
             }
-          ]
+          ],
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
+          }
         },
         {
           "type": "instrument",
@@ -1814,6 +2084,17 @@
             "cy": 0.82,
             "n": 36,
             "weight": 3
+          },
+          "temporal": {
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ],
+            "reason": "shows the real signal; it is the meter, not part of the picture"
           }
         },
         {
@@ -1825,6 +2106,11 @@
           "role": "information: small, calm, always the same place; it tells the viewer the system is alive",
           "p": {
             "title": "POÇO CÓSMICO"
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
           }
         },
         {
@@ -1838,6 +2124,11 @@
             "scan": 0.2,
             "vig": 0.35,
             "prob": 0.22
+          },
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
           }
         }
       ]
@@ -1856,6 +2147,11 @@
           "role": "ground colour of the piece; the quiet reference everything else is read against",
           "p": {
             "grain": 0.4
+          },
+          "temporal": {
+            "behavior": "still",
+            "listens": [],
+            "reason": "ground colour: nothing in it moves"
           }
         },
         {
@@ -1875,6 +2171,11 @@
             "c2": "secondary",
             "res": 1,
             "alphaMode": "alpha"
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
           }
         },
         {
@@ -1894,6 +2195,11 @@
             "c2": "accent",
             "res": 0.5,
             "alphaMode": "alpha"
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
           }
         },
         {
@@ -2028,7 +2334,14 @@
               "mode": "mul",
               "steps": 6
             }
-          ]
+          ],
+          "temporal": {
+            "behavior": "follow",
+            "listens": [
+              "bass"
+            ],
+            "reason": "carries the bass story: it swells and settles with the low end"
+          }
         },
         {
           "type": "tunnel",
@@ -2041,7 +2354,6 @@
             "shape": "circle",
             "count": 10,
             "cycles": 1,
-            "audio": 0.5,
             "band": "high",
             "size": 1,
             "x": 0,
@@ -2062,7 +2374,12 @@
               "mode": "mul",
               "steps": 6
             }
-          ]
+          ],
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
+          }
         },
         {
           "type": "instrument",
@@ -2078,6 +2395,17 @@
             "cy": 0.9,
             "n": 36,
             "weight": 3
+          },
+          "temporal": {
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ],
+            "reason": "shows the real signal; it is the meter, not part of the picture"
           }
         },
         {
@@ -2089,6 +2417,11 @@
           "role": "information: small, calm, always the same place; it tells the viewer the system is alive",
           "p": {
             "title": "POÇO CÓSMICO"
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
           }
         },
         {
@@ -2102,6 +2435,11 @@
             "scan": 0.2,
             "vig": 0.35,
             "prob": 0.22
+          },
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
           }
         }
       ]

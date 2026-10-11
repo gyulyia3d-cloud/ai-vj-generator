@@ -35,9 +35,9 @@ const E = ev(empty, 'empty');
 check(E.compositions.every(c => c.total < 50 && c.score.contrast < 20 && c.score.motion < 20), `projeto vazio é reprovado (nota ${E.compositions[0].total}; contraste e movimento baixos)`, JSON.stringify(E.compositions[0].score));
 
 // 2) tela cheia: um campo opaco de ruído cobrindo tudo, sem respiro
-const full = clone(good); full.compositions.forEach(c => { c.layers.forEach(l => { if (l.type === 'shader') { l.opacity = 1; l.p = Object.assign({}, l.p, { preset: 'CAMPO FBM', p1: 6, p2: 1, p3: 1, p4: 1, c1: 'primary', c2: 'accent' }); } }); });
+const full = clone(good); full.compositions.forEach(c => { c.layers.forEach(l => { if (l.type === 'shader') { l.opacity = 1; l.p = Object.assign({}, l.p, { preset: 'CAMPO FBM', p1: 6, p2: 1, p3: 1, p4: 1, c1: 'primary', c2: 'secondary', audio: 1 }); l.temporal = { behavior: 'follow', listens: ['level'], reason: 'campo fabricado que ouve a faixa' }; } }); });
 const F = ev(full, 'full');
-check(F.compositions.every(c => c.score.breathing < 40), `tela cheia perde na métrica de respiro (${F.compositions.map(c => c.score.breathing).join(' / ')} contra ${A.compositions.map(c => c.score.breathing).join(' / ')})`, JSON.stringify(F.compositions.map(c => c.score)));
+check(F.compositions.every(c => c.raw.quiet < 0.15 && c.score.breathing < 50) && F.compositions.every((c, i) => c.raw.quiet < A.compositions[i].raw.quiet - 0.1), `tela cheia perde na métrica de respiro (áreas calmas ${F.compositions.map(c => c.raw.quiet.toFixed(2)).join(' / ')} contra ${A.compositions.map(c => c.raw.quiet.toFixed(2)).join(' / ')}; nota ${F.compositions.map(c => c.score.breathing).join(' / ')})`, JSON.stringify(F.compositions.map(c => c.score)));
 
 // 3) parada: uma forma estática, sem movimento nenhum
 const still = clone(good); still.compositions.forEach(c => { c.layers = [{ type: 'bg', name: 'FUNDO', role: 'x' }, { type: 'shape', name: 'FORMA', role: 'x', on: true, opacity: 1, p: { kind: 'circle', layout: 'single', size: 300, pulseAmt: 0, spin: 0 } }]; });

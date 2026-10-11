@@ -20,6 +20,7 @@ sys.path.insert(0, HERE)
 import creative_ir as cir  # noqa: E402
 import composition_ir as comp_ir  # noqa: E402
 import animation_ir as anim_ir  # noqa: E402
+import audio_semantics as audio_sem  # noqa: E402
 import surface_ir as sir  # noqa: E402
 
 
@@ -61,6 +62,9 @@ def main():
             comp_ir.apply_composition(c["layers"], ci, W, H)
             anim_ir.apply_animation(c["layers"], ai)
             placed += 1
+    # audio semantics: declared for every composition, whether or not the plan drives
+    strat = (proj.get("audio") or {}).get("strategy", "rhythmic")
+    proj["meta"]["audioSemantics"] = [audio_sem.declare(c["layers"], strat, ai["archetype"] if ir["drives"] else None) for c, ai in zip(comps, an)]
     with open(target, "w", encoding="utf-8", newline="\n") as f:
         json.dump(proj, f, ensure_ascii=False, indent=2)
         f.write("\n")

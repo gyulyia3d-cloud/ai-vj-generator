@@ -37,7 +37,7 @@ If something the concept needs is not in the menu, say so and write it (recipe, 
 ## Hard rules
 - Determinism: no `Math.random`, no clocks. Seeded values only (`seed`, `hash(...)`, `uSeed`).
 - Loops close: whole bars, motion in whole cycles; FPS only 24, 25, 30, 50 or 60.
-- Every shader reads at least one audio uniform unless the contract declares `audio.strategy: none` with a reason.
+- Every layer declares `temporal` (`still`, `drift`, `beat` do not listen to the audio; `follow`, `accent`, `section` listen to the `listens` bands you list) with a one-line `reason`. The strategy sets how many layers may listen (none 0, subtle 1, structural 2, rhythmic 3, full 3), one story each: hero bass, structure mid, a ground field high, an event mark hits. A shader that listens reads at least one audio uniform; one that is `drift` or `beat` need not. `scripts/audio_semantics.py` / `plan_ir.py --apply` write the declarations (`meta.audioSemantics`); a project with none keeps the old rule (every shader listens unless `audio.strategy` is `none` with a reason).
 - References become principles, never copies: no "make it like <living artist>", no tracing supplied work, no invented logos or fonts, no unlicensed shader code (`isf-library/README.md` says what is allowed).
 - Be honest about scope (`references/capabilities.md`): delivery is PNG sequence (alpha when needed) or MP4 (no alpha). Never promise MIDI, OSC, NDI, Spout, mapping, pixel-map or blueprint generation, or integrations with performance software; surfaces are input and constraint only.
 - Never report a composition you have not seen rendered.

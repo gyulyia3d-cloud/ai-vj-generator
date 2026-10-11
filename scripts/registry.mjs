@@ -53,6 +53,9 @@ const surfaceJsPath = join(ROOT, 'app', 'surface-ir-data.js');
 const animation = rd(join(REG, 'animation.json'));
 const animationJs = '/* Gerado de skill/ai-vj-generator/registry/animation.json por node scripts/registry.mjs --write. Não edite. */\nconst ANIMATION_DATA = ' + JSON.stringify(animation) + ';\n';
 const animationJsPath = join(ROOT, 'app', 'animation-data.js');
+const audio = rd(join(REG, 'audio.json'));
+const audioJs = '/* Gerado de skill/ai-vj-generator/registry/audio.json por node scripts/registry.mjs --write. Não edite. */\nconst AUDIOSEM_DATA = ' + JSON.stringify(audio) + ';\n';
+const audioJsPath = join(ROOT, 'app', 'audio-sem-data.js');
 const verbIds = creative.verbs.map(v => v.id);
 
 if (mode === 'write') {
@@ -66,6 +69,7 @@ if (mode === 'write') {
   writeFileSync(compositionJsPath, compositionJs);
   writeFileSync(animationJsPath, animationJs);
   writeFileSync(surfaceJsPath, surfaceJs);
+  writeFileSync(audioJsPath, audioJs);
   let b = rd(briefSchemaPath); b.properties.verbs = { type: 'array', items: { type: 'string', enum: verbIds }, description: 'Optional: visual verbs the author wants (the Creative IR adds them with extra weight). See registry/creative.json.' };
   b.properties.motionArchetype = { type: 'string', enum: animation.archetypeOrder, description: 'Optional: force the motion archetype of the first composition (Animation IR). See registry/animation.json.' };
   b.properties.surface.properties.regions = { type: 'array', maxItems: 500, items: { type: 'object', required: ['x', 'y', 'w', 'h'], properties: { name: { type: 'string' }, x: { type: 'number', minimum: 0 }, y: { type: 'number', minimum: 0 }, w: { type: 'number', exclusiveMinimum: 0 }, h: { type: 'number', exclusiveMinimum: 0 }, source: { type: 'string', enum: ['list', 'mask'] } } }, description: 'Optional: the regions of the canvas that exist on the surface (pixels of the canvas). They enter the Surface IR as EXPLICIT, or DETECTED when source is mask. See registry/surface.json.' };
@@ -123,9 +127,18 @@ check(AO.every(a => { const x = animation.archetypes[a]; return ASHAPES.includes
 check(verbIds.every(v => animation.verbArchetypes[v] && Object.keys(animation.verbArchetypes[v]).every(a => AO.includes(a))) && AO.every(a => verbIds.some(v => animation.verbArchetypes[v][a])), 'todo verbo do Creative IR aponta para arquétipos que existem e todo arquétipo é pedido por algum verbo', verbIds.filter(v => !animation.verbArchetypes[v]).join());
 check(Object.keys(animation.heroTarget).every(t => generators.generators.some(g => g.id === t)) && Object.keys(animation.structTarget).every(t => generators.generators.some(g => g.id === t)) && animation.events.length === 5, 'alvos de herói e estrutura são tipos de camada que existem; cinco eventos', '');
 check(bs.properties.motionArchetype && same(bs.properties.motionArchetype.enum, AO), 'brief.schema.json aceita os 8 arquétipos em motionArchetype', 'rode --write');
+/* Semântica de áudio: dados únicos, copiados para o navegador, coerentes entre si */
+check(readFileSync(audioJsPath, 'utf8').replace(/\r\n/g, '\n') === audioJs, 'audio.json = app/audio-sem-data.js (dados da semântica de áudio no navegador)', 'rode node scripts/registry.mjs --write');
+const AB = Object.keys(audio.behaviors), AS = ['none', 'subtle', 'structural', 'rhythmic', 'full'];
+check(AB.length === 6 && AB.filter(b => audio.behaviors[b].reactive).length === 3 && ['still', 'drift', 'beat'].every(b => audio.behaviors[b] && !audio.behaviors[b].reactive) && ['follow', 'accent', 'section'].every(b => audio.behaviors[b] && audio.behaviors[b].reactive), 'seis comportamentos temporais: still, drift e beat não ouvem; follow, accent e section ouvem', AB.join());
+check(AS.every(s => Number.isInteger(audio.budget[s]) && Array.isArray(audio.plan[s]) && audio.plan[s].length <= audio.budget[s]) && audio.budget.none === 0 && Math.max(...Object.values(audio.budget)) <= 3, 'o plano de cada estratégia cabe no orçamento (none 0, no máximo 3)', '');
+check(AS.every(s => audio.plan[s].every(x => AB.includes(x.behavior) && audio.behaviors[x.behavior].reactive && x.listens.length && x.listens.every(c => audio.classes.includes(c)) && (!x.accent || (audio.behaviors[x.accent].reactive && x.accentListens.every(c => audio.classes.includes(c)))))), 'todo slot do plano usa comportamento que ouve, com classes de banda que existem', '');
+check(Object.values(audio.sources).every(c => audio.classes.includes(c)) && mod.sources.filter(x => x.id !== 'lfo').every(x => audio.sources[x.id] || ['onbeat', 'bt', 'mt', 'ht', 'at', 'bpm'].includes(x.id) || /^(bsin|btri|bs)/i.test(x.id)) , 'toda fonte de banda da modulação está mapeada para uma classe de áudio (ou é tempo/grade)', mod.sources.filter(x => x.id !== 'lfo' && !audio.sources[x.id]).map(x => x.id).join());
+check(Object.values(audio.fallback).every(b => AB.includes(b) && !audio.behaviors[b].reactive) && AB.includes(audio.background) && AB.includes(audio.instrument.behavior), 'o recuo (camada fora do plano) nunca ouve o áudio', '');
 /* o PROMPT.md (qualquer IA) ensina o vocabulário inteiro */
 const promptDoc = readFileSync(join(SK, 'portable', 'PROMPT.md'), 'utf8');
 check(verbIds.every(v => new RegExp('\\b' + v + '\\b').test(promptDoc)) && GI.every(g => promptDoc.includes(g)) && /plan_ir\.py/.test(promptDoc) && /meta\.creativeIR/.test(promptDoc) && /meta\.compositionIR/.test(promptDoc) && /meta\.animationIR/.test(promptDoc) && AO.every(a => new RegExp('\\b' + a + '\\b').test(promptDoc)), 'PROMPT.md cita os 32 verbos, as 12 gramáticas, os 8 arquétipos, plan_ir.py e os três campos do projeto', [...verbIds.filter(v => !new RegExp('\\b' + v + '\\b').test(promptDoc)), ...GI.filter(g => !promptDoc.includes(g)), ...AO.filter(a => !new RegExp('\\b' + a + '\\b').test(promptDoc))].join(','));
 check(surface.confidence.order.every(c => promptDoc.includes(c)) && /meta\.surfaceIR/.test(promptDoc) && readFileSync(join(SK, 'references', 'surface-ir.md'), 'utf8').includes('UNKNOWN'), 'PROMPT.md ensina as quatro confianças do Surface IR e meta.surfaceIR; references/surface-ir.md existe', 'faltou citar no PROMPT.md');
+check(AB.every(b => new RegExp('`' + b + '`').test(promptDoc)) && /meta\.audioSemantics/.test(promptDoc) && /audio_semantics\.py/.test(promptDoc) && readFileSync(join(SK, 'references', 'audio-semantics.md'), 'utf8').includes('follow'), 'PROMPT.md ensina os 6 comportamentos temporais e meta.audioSemantics; references/audio-semantics.md existe', 'faltou citar no PROMPT.md');
 console.log(fail ? `\n${fail} deriva(s).` : '\nregistry ok.');
 process.exit(fail ? 1 : 0);

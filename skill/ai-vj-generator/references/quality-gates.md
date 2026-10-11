@@ -8,7 +8,7 @@ Two tools: **gates** that must pass in order while building, and a **100-point s
 2. **Concept.** Visual thesis unique; technique not chosen prematurely; semiotic intent explicit; contract written.
 3. **Composition.** Hierarchy exists; negative space exists; aspect ratio intentional; typography optically corrected; safe areas and gutters respected.
 4. **Motion.** Movement has a cause; timing has a hierarchy; variation without noise; the loop grammar is convincing.
-5. **Technical.** Dimensions, fps, alpha, mapping correct; performance acceptable; transport claims accurate; project validates with no ERROR; **every shader reads the audio uniforms**.
+5. **Technical.** Dimensions, fps, alpha, mapping correct; performance acceptable; transport claims accurate; project validates with no ERROR; **every layer declares `temporal` and every listening shader reads the audio uniforms**.
 5b. **Craft.** 6–10 visible layers per composition in tiers; every layer named for its job with a `role`; one coordinate system and module; opacity, weight and scale ladders; accent under 5% of the frame; step vs smooth clocks assigned; information quantised; events on bar boundaries (`craft-and-finish.md`).
 6. **Set diversity.** The compositions differ in concept expression, topology, spatial behavior, motion, temporal structure and implementation.
 7. **Anti-slop.** No generic noise wallpaper, glow as the main idea, default centre composition, uniform particle field, audio-reactive everything, random typography, identical easing everywhere, excessive post effects.

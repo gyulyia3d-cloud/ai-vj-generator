@@ -1,6 +1,6 @@
 # Audio direction (structured audio-reactivity)
 
-Audio is a design decision with a declared strength, a role for each band and bindings you can read. Mechanics: `audio-bus.md`. This file is how to decide.
+Audio is a design decision with a declared strength, a role for each band and bindings you can read. Mechanics: `audio-bus.md`. This file is how to decide. Which layers listen at all, and to which bands, is declared on each layer (`layer.temporal`): `audio-semantics.md`.
 
 ## 1. Strategy (`audio.strategy`)
 
@@ -24,7 +24,7 @@ Audio is a design decision with a declared strength, a role for each band and bi
 | `uBassT` `uMidT` `uHighT` | travel through space | camera, noise-space position, orbit angle (use `sin/cos/fract`) |
 | `uOnBeat` `uBSin*` `uBTri` | the grid itself | anything that must stay locked to the tempo without audio |
 
-Rule of three: one layer carries the bass story, one the mid, one the high. More than 3 audio-driven non-shader layers flatten the hierarchy (validator warning).
+Rule of three: one layer carries the bass story, one the mid, one the high (a declared `temporal.listens`; the validator refuses more than the strategy's budget, never more than 3). The other layers keep time with the loop (`drift`, `beat`).
 
 ## 3. Section map (what each part of a track asks for)
 
