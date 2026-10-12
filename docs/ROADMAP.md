@@ -12,7 +12,7 @@ Software de performance ou VJ playback, media server, projection mapping, geraç
 
 Referências antigas a isso ficam apenas no `CHANGELOG.md`.
 
-## Fases (ordem obrigatória)
+## Fases (ordem obrigatória; ver a ordem revisada abaixo da tabela)
 | Fase | Foco | Estado |
 |---|---|---|
 | 0 | Limpeza de escopo | **feita (3.1.0)** |
@@ -28,18 +28,18 @@ Referências antigas a isso ficam apenas no `CHANGELOG.md`.
 | 10 | Semântica de áudio (cada camada declara um comportamento temporal) | **feita (3.13.0)** |
 | 11 | 2.5D (planos de profundidade, câmera, paralaxe, névoa e foco) | **feita (3.14.0)** |
 | 12 | 3D generativo | **feita (3.15.0)**: camada `solid`, raymarching próprio sobre WebGL2, sem biblioteca 3D |
-| 13 | Partículas em GPU | pendente |
-| 14 | Interface de ferramenta de criação | pendente |
+| 18 | Redução do monólito `app/index.html` (antes da interface: a UI nova nasce em módulos) | **em andamento** |
+| 19 | Versionamento e migração de projetos (esqueleto agora; cada fase seguinte que muda o esquema traz a sua migração) | pendente |
+| 13 | Partículas em GPU (primeiro sem estado: posição em forma fechada do quadro; simulação com estado só depois, pelo histórico da fase 4) | pendente |
+| 14 | Interface de ferramenta de criação (sobre os módulos da fase 18) | pendente |
 | 15 | Crítica artística (ARTISTIC / STRUCTURAL / TECHNICAL separados) | pendente |
-| 16 | Export profissional (PNG, MP4, manifesto, verificação) | pendente |
+| 16 | Export profissional: o que falta é verificação, manifesto verificável e honestidade sobre alfa (`mp4.js` e o manifesto já existem) | pendente |
 | 17 | Performance | pendente |
-| 18 | Redução do monólito `app/index.html` | pendente |
-| 19 | Versionamento e migração de projetos | pendente |
-| 20 | Galeria de regressão | pendente |
-| 21 | Testes visuais determinísticos | pendente |
+| 20 | Galeria de regressão + testes visuais determinísticos (antigas 20 e 21 fundidas: um só mecanismo de quadros de referência; resolve o baseline obsoleto do `gl_parity` e o estouro de tempo do contato 02-jardim-tela) | pendente |
 | 22 | Testes de ponta a ponta | pendente |
-| 23 | Documentação final literal | pendente |
-| 24 | Portão final de qualidade | pendente |
+| 24 | Portão final de qualidade, com auditoria de documentação (a antiga 23 virou regra: cada fase documenta o que entrega) | pendente |
+
+**Ordem de execução a partir de 12 (revisada em 12/10/2026):** 18, 19, 13, 14, 15, 16, 17, 20, 22, 24. Os números das fases não mudam, só a ordem; a 21 foi fundida na 20 e a 23 virou regra por fase. Motivos: a migração fica mais cara a cada fase que muda o esquema; a interface não deve crescer dentro do monólito; galeria e testes visuais são o mesmo mecanismo.
 
 WebGL2 (fase 2) vem antes de 3D e partículas. A decisão anterior de não migrar (relatório V9 §5, medido) está revogada por este roadmap; a fase 2 registra o ADR.
 
