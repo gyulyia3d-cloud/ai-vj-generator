@@ -23,6 +23,13 @@ const tmp = join(tmpdir(), 'aivj-check.js');
 await writeFile(tmp, js);
 try { execFileSync(process.execPath, ['--check', tmp], { stdio: 'pipe' }); ok('sintaxe do motor'); } catch (e) { bad('sintaxe do motor: ' + e.stderr); }
 html.includes('/*__PROJECT_JSON__*/') ? ok('marcador do projeto presente') : bad('marcador /*__PROJECT_JSON__*/ ausente');
+// fase 18: o index.html é gerado; o código do motor mora nos módulos de app/ e o script solto fora dos marcadores é só o invólucro
+{
+  const loose = s => s.replace(/\/\*__(\w+?)_START__\*\/[\s\S]*?\/\*__\1_END__\*\//g, '').split('\n').filter(l => l.trim()).length;
+  const body = html.slice(html.indexOf('<script>\n') + 9, html.lastIndexOf('</script>')), n = loose(body), LIMIT = 20;
+  const control = loose(body + '\nconst solto = 1;'.repeat(LIMIT));   // controle negativo: código solto acima do limite tem de ser contado
+  (n <= LIMIT && control > LIMIT) ? ok(`monólito: ${n} linhas de script soltas no index.html (limite ${LIMIT}); o resto vive em app/*.js`) : bad(`monólito: ${n} linhas de script soltas no index.html (limite ${LIMIT}): mova o código para um módulo de app/ e rode node scripts/embed-modules.mjs`);
+}
 
 try {
   const eng = await readFile(join(SKILL, 'assets', 'engine.html'), 'utf8');

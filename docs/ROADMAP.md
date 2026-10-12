@@ -1,4 +1,4 @@
-# Roadmap oficial (v11, motor 3.15.0)
+# Roadmap oficial (v11, motor 3.16.0)
 
 Substitui o roadmap v10. Decidido pela autora em 08/10/2026.
 
@@ -28,7 +28,7 @@ Referências antigas a isso ficam apenas no `CHANGELOG.md`.
 | 10 | Semântica de áudio (cada camada declara um comportamento temporal) | **feita (3.13.0)** |
 | 11 | 2.5D (planos de profundidade, câmera, paralaxe, névoa e foco) | **feita (3.14.0)** |
 | 12 | 3D generativo | **feita (3.15.0)**: camada `solid`, raymarching próprio sobre WebGL2, sem biblioteca 3D |
-| 18 | Redução do monólito `app/index.html` (antes da interface: a UI nova nasce em módulos) | **em andamento** |
+| 18 | Redução do monólito `app/index.html` (antes da interface: a UI nova nasce em módulos) | **feita (3.16.0)**: 18 módulos e `style.css`; o index.html é gerado |
 | 19 | Versionamento e migração de projetos (esqueleto agora; cada fase seguinte que muda o esquema traz a sua migração) | pendente |
 | 13 | Partículas em GPU (primeiro sem estado: posição em forma fechada do quadro; simulação com estado só depois, pelo histórico da fase 4) | pendente |
 | 14 | Interface de ferramenta de criação (sobre os módulos da fase 18) | pendente |

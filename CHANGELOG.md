@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.16.0 (12/10/2026) · Fase 18: redução do monólito
+
+- **`app/index.html` virou arquivo gerado.** Todo o JS escrito à mão (cerca de 4 400 linhas: núcleo, camadas base e geradas, composição, cola WebGL, camadas fixas, kit de código, projeto, runtime, palco, painéis, exportação, ficha, layout, receitas, paleta rápida, regras EN e boot) e o CSS (416 linhas) foram para 18 módulos `app/*.js` e `app/style.css`, embutidos por `node scripts/embed-modules.mjs` entre marcadores, no mesmo lugar e no mesmo escopo (a IIFE do motor). Sobraram 6 linhas de script soltas no HTML.
+- **Mudança sem efeito no render, provada por bytes:** tirando os marcadores e o cabeçalho de cada módulo, o `index.html` novo e o `dist/ai-vj-generator.html` são idênticos byte a byte aos da 3.15.0.
+- **Portão novo em `check.mjs`:** o script solto no `index.html` não passa de 20 linhas (com controle negativo). Código novo vai para um módulo.
+- Roadmap revisado: ordem 18, 19, 13, 14, 15, 16, 17, 20 (galeria + testes visuais fundidos), 22, 24; a antiga 23 virou regra por fase.
+
 ## 3.15.0 (12/10/2026) · Fase 12: 3D generativo
 
 - **Decisão (ADR em `docs/ARQUITETURA-RENDER.md`): código próprio sobre o WebGL2, sem biblioteca 3D.** Nova camada `solid` (`app/solid.js`): uma forma 3D por distância assinada (raymarching num fragment shader) vista por uma câmera que orbita em voltas inteiras por loop, então o loop fecha por construção. Oito formas (`ESFERA`, `TORO`, `CRISTAIS`, `GIROIDE`, `COLUNAS`, `ANEIS`, `ONDAS`, `ESPONJA`), três materiais (`fosco`, `metal`, `vidro`), câmera (voltas, elevação, distância), luz e névoa. Sem relógio e sem `Math.random`; áudio só em `uBass` e `uHit` e só se a declaração temporal deixar. A saída é uma camada com alfa como as outras; a superfície continua restrição 2D.
