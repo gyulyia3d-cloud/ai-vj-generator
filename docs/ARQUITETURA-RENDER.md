@@ -1,4 +1,4 @@
-# Arquitetura de render (motor 3.6.0)
+# Arquitetura de render (motor 3.15.0)
 
 ## Caminho de um quadro
 ```
@@ -24,6 +24,10 @@ Todo o render é função do projeto e do número do quadro. Relógio, `Date.now
 - **Métricas de desenvolvimento** (`AIVJ.glMetrics()`): tempo de quadro, passes, desenhos, trocas de shader, alocações de textura e framebuffer, texturas ativas e no pool, partículas ativas (0 até a fase 13) e VRAM estimada (largura x altura x bytes do formato; o navegador não expõe o número real). Não existe modo ao vivo: é diagnóstico.
 - **Primeiro uso real:** a textura de entrada do `fx` vem do pool; depois do primeiro quadro, vários filtros não alocam nada.
 - **Decidido não fazer agora:** desenhar as camadas de GPU em framebuffer em vez do canvas WebGL compartilhado. Hoje cada camada custa uma cópia para o canvas 2D; o ganho só aparece com o render graph (fase 4), onde as camadas de GPU encadeiam sem voltar ao canvas 2D.
+
+## 3D generativo (fase 12)
+- **Decisão: código próprio sobre o WebGL2 da fase 2, sem biblioteca 3D.** A camada `solid` (`app/solid.js`) marcha uma função de distância assinada (SDF) num fragment shader, em tela cheia, como as outras camadas de GPU: mesmo `frameContext`, mesmos pools, mesmo render graph. Motivos: o produto gera animação 2D e o 3D é só meio; three.js e Babylon trariam cena, malha, carregador e relógio próprios, contra a regra de que o quadro é função pura do projeto e do número do quadro; um SDF cabe em dez linhas e uma IA consegue ler e mudar. Custo da decisão: sem malhas rasterizadas nem modelos importados (`model` e `splat` ficam como estão; instâncias e muitas partículas são a fase 13).
+- **Câmera:** órbita em voltas inteiras por loop (`p.orbit`), então o loop fecha por construção; áudio só em `uBass` e `uHit`, e só se a declaração temporal da camada deixar. Oito formas e três materiais; ver `skill/ai-vj-generator/references/solid-layer.md`.
 
 ## Render graph (fase 4)
 - **`app/rendergraph.js`** (`RG`): `RG.create()`, `add({ id, type, deps, run, inplace })`, `compile()` (valida dependências, ordena de forma estável, exige um Output, recusa ciclos), `execute(ctx, pool)` (devolve cada recurso ao pool quando o último consumidor termina). Tipos de nó: Source, Generator, Shader, Effect, Mask, Composite, History, Feedback, Output. `CanvasPool` reaproveita canvas 2D por tamanho: depois do primeiro quadro, zero canvas novos.

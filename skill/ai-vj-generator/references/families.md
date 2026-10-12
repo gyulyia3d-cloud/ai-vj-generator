@@ -37,6 +37,7 @@ the single dominant thing a composition is about.
 | `image` | generator | still image | any | unmeasured | stable | Import in the Media tab. |
 | `video` | generator | video clip | screen, projection, mapping | unmeasured | stable | Import in the Media tab. |
 | `field` | generator | scalar field drawn by one of 12 rules (isolines, flow lines, cells, Truchet, dots, moire, metaballs, interference, stipple, relief, warped grid, polar); an image can be the source of the field | any | medium | stable | Without an image the field is noise that walks a closed circle per loop. With `media` the same rule draws the image. Heavy on LED walls at full resolution: use `res` 0.5. |
+| `solid` | generator | a 3D form by signed distance (raymarching) seen by an orbiting camera: sphere, twisted torus, crystals, gyroid, columns, orbital rings, waves, sponge; three materials | any | medium | stable | Custom WebGL2 raymarching, no 3D library. The camera orbits in whole turns per loop, so the loop closes. Medium cost, about the same as `field`: use `res` 0.5 on LED walls. One solid is the hero; two or three in a composition are too many. |
 
 ## structure
 

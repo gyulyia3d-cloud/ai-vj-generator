@@ -1,4 +1,4 @@
-# Roadmap oficial (v11, motor 3.14.0)
+# Roadmap oficial (v11, motor 3.15.0)
 
 Substitui o roadmap v10. Decidido pela autora em 08/10/2026.
 
@@ -27,7 +27,7 @@ Referências antigas a isso ficam apenas no `CHANGELOG.md`.
 | 9 | Surface IR (análise 2D com confiança EXPLICIT/DETECTED/INFERRED/UNKNOWN) | **feita (3.12.0)** |
 | 10 | Semântica de áudio (cada camada declara um comportamento temporal) | **feita (3.13.0)** |
 | 11 | 2.5D (planos de profundidade, câmera, paralaxe, névoa e foco) | **feita (3.14.0)** |
-| 12 | 3D generativo | pendente |
+| 12 | 3D generativo | **feita (3.15.0)**: camada `solid`, raymarching próprio sobre WebGL2, sem biblioteca 3D |
 | 13 | Partículas em GPU | pendente |
 | 14 | Interface de ferramenta de criação | pendente |
 | 15 | Crítica artística (ARTISTIC / STRUCTURAL / TECHNICAL separados) | pendente |

@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.15.0 (12/10/2026) · Fase 12: 3D generativo
+
+- **Decisão (ADR em `docs/ARQUITETURA-RENDER.md`): código próprio sobre o WebGL2, sem biblioteca 3D.** Nova camada `solid` (`app/solid.js`): uma forma 3D por distância assinada (raymarching num fragment shader) vista por uma câmera que orbita em voltas inteiras por loop, então o loop fecha por construção. Oito formas (`ESFERA`, `TORO`, `CRISTAIS`, `GIROIDE`, `COLUNAS`, `ANEIS`, `ONDAS`, `ESPONJA`), três materiais (`fosco`, `metal`, `vidro`), câmera (voltas, elevação, distância), luz e névoa. Sem relógio e sem `Math.random`; áudio só em `uBass` e `uHit` e só se a declaração temporal deixar. A saída é uma camada com alfa como as outras; a superfície continua restrição 2D.
+- **Entra pelo conceito:** `solid` é tipo de herói do Creative IR (`registry/creative.json`: `heroTypes`, pesos nos verbos `orbit`, `morph`, `fold`, `bloom`, `accumulate`, `fracture`, `assemble`, `rise`, `converge`, e `solidKinds`, que liga cada um dos 32 verbos a uma forma); o Animation IR toca no parâmetro `size`; o Depth IR pode pôr a camada num plano. Python (`brief_to_project.py`) e navegador (`genai.js`) dão o mesmo projeto.
+- Teste novo `solid_check.mjs`; registry confere que todo verbo aponta para uma forma que existe; `references/solid-layer.md`; esquema, SKILL e PROMPT atualizados.
+
 ## 3.14.0 (11/10/2026) · Fase 11: 2.5D
 
 - **Depth IR** (`depth_ir.py`, `app/depth.js`, dados em `registry/depth.json`): as camadas geradas ganham um plano de profundidade (`layer.z`, -1 longe a +1 perto) e cada composição ganha **uma câmera** (`composition.camera`), registrados em `meta.depthIR`. Sem malha e sem 3D: planos. A câmera tem seis movimentos: `sway` e `crane` (paralaxe: o plano longe desliza contra o perto), `orbit` (elipse), `dolly` (empurra e recua, o perto cresce mais), `rack` (nada se move, o foco viaja) e `still`. Névoa (o que está atrás do foco perde opacidade e cor) e foco (o que passa de 0,25 do plano de foco desfoca) valem para todas.

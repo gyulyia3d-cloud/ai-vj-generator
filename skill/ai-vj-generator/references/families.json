@@ -500,6 +500,20 @@
    "cost": "medium",
    "maturity": "stable",
    "note": "The ramp is any string, from emptiest to fullest; the brief title becomes the ramp when the concept picks it. Cell size is in px at 1080 high."
+  },
+  "solid": {
+   "family": "figure",
+   "role": "a 3D form by signed distance (raymarching) seen by an orbiting camera: sphere, twisted torus, crystals, gyroid, columns, orbital rings, waves, sponge; three materials",
+   "surfaces": [
+    "screen",
+    "led",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "medium",
+   "maturity": "stable",
+   "note": "Custom WebGL2 raymarching, no 3D library. The camera orbits in whole turns per loop, so the loop closes. Medium cost, about the same as `field`: use `res` 0.5 on LED walls. One solid is the hero; two or three in a composition are too many."
   }
  },
  "recipes": {

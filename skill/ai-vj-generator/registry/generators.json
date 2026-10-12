@@ -6090,6 +6090,244 @@
    "deterministic": true,
    "surfaceAware": false,
    "performanceClass": "medium"
+  },
+  {
+   "id": "solid",
+   "category": "Shader",
+   "name": "Sólido 3D",
+   "renderMode": "canvas2d",
+   "parameters": [
+    {
+     "id": "kind",
+     "type": "select",
+     "default": "ESFERA",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Forma",
+     "options": [
+      "ESFERA",
+      "TORO",
+      "CRISTAIS",
+      "GIROIDE",
+      "COLUNAS",
+      "ANEIS",
+      "ONDAS",
+      "ESPONJA"
+     ],
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "size",
+     "type": "number",
+     "default": 1,
+     "min": 0.3,
+     "max": 2.5,
+     "step": 0.01,
+     "label": "Tamanho",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "p1",
+     "type": "number",
+     "default": 0.35,
+     "min": -400,
+     "max": 400,
+     "step": 0.01,
+     "label": "P1",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "p2",
+     "type": "number",
+     "default": 3,
+     "min": -400,
+     "max": 400,
+     "step": 0.01,
+     "label": "P2",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "p3",
+     "type": "number",
+     "default": 1,
+     "min": -400,
+     "max": 400,
+     "step": 0.01,
+     "label": "P3",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "p4",
+     "type": "number",
+     "default": 1,
+     "min": -400,
+     "max": 400,
+     "step": 0.01,
+     "label": "P4",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "material",
+     "type": "select",
+     "default": "fosco",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Material",
+     "options": [
+      "fosco",
+      "metal",
+      "vidro"
+     ],
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "orbit",
+     "type": "number",
+     "default": 1,
+     "min": 0,
+     "max": 4,
+     "step": 1,
+     "label": "Voltas da câmera por loop",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "elev",
+     "type": "number",
+     "default": 20,
+     "min": -80,
+     "max": 80,
+     "step": 1,
+     "label": "Elevação da câmera (°)",
+     "options": null,
+     "unit": "deg",
+     "semanticRole": "generator"
+    },
+    {
+     "id": "dist",
+     "type": "number",
+     "default": 4,
+     "min": 2.5,
+     "max": 10,
+     "step": 0.01,
+     "label": "Distância da câmera",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "light",
+     "type": "number",
+     "default": 40,
+     "min": -180,
+     "max": 180,
+     "step": 1,
+     "label": "Ângulo da luz (°)",
+     "options": null,
+     "unit": "deg",
+     "semanticRole": "generator"
+    },
+    {
+     "id": "fog",
+     "type": "number",
+     "default": 0.3,
+     "min": 0,
+     "max": 2,
+     "step": 0.01,
+     "label": "Névoa",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "alphaMode",
+     "type": "select",
+     "default": "alpha",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Saída",
+     "options": [
+      "alpha",
+      "opaque"
+     ],
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "res",
+     "type": "number",
+     "default": 0.75,
+     "min": 0.25,
+     "max": 1,
+     "step": 0.01,
+     "label": "Resolução interna",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "c1",
+     "type": "color",
+     "default": "primary",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Cor 1",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "c2",
+     "type": "color",
+     "default": "accent",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Cor 2",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "cbg",
+     "type": "color",
+     "default": "bg",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Fundo",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    }
+   ],
+   "audioRoles": [
+    "mass",
+    "body",
+    "detail",
+    "accent"
+   ],
+   "supportsAlpha": true,
+   "deterministic": true,
+   "surfaceAware": false,
+   "performanceClass": "medium"
   }
  ]
 }

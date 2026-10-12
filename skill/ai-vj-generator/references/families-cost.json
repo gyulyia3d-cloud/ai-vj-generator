@@ -101,6 +101,10 @@
   "glyphs": {
    "ms": 10.81,
    "firstMs": 12
+  },
+  "solid": {
+   "ms": 15.54,
+   "firstMs": 99.1
   }
  }
 }

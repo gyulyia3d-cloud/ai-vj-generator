@@ -26,7 +26,7 @@
   "hold": "one phase holds while the others change"
  },
  "fallback": { "stepped": "stutter", "springy": "pulse", "smooth": "breathe" },
- "heroTarget": { "tunnel": "size", "lines": "weight", "shape": "size", "organism": "breathe", "flow": "amp", "typewall": "fill", "field": "gain", "glyphs": "gain" },
+ "heroTarget": { "tunnel": "size", "lines": "weight", "shape": "size", "organism": "breathe", "flow": "amp", "typewall": "fill", "field": "gain", "glyphs": "gain", "solid": "size" },
  "structTarget": { "tunnel": "size", "lines": "weight", "shape": "size" },
  "targetDefault": { "size": 1, "weight": 2, "breathe": 0.5, "amp": 0.12, "fill": 0.82, "gain": 1 },
  "shapeSizeDefault": 160,
