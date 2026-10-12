@@ -21,6 +21,7 @@
         "depthIR": { "type": "array", "description": "One Depth IR per composition (references/depth-ir.md): the camera, the depth planes, the focus plane, the parallax numbers on this surface and the seam rule." },
         "animationIR": { "type": "array", "description": "One Animation IR per composition (references/animation-ir.md): archetype, timing in musical time, who leads and who follows and how late, easing, anticipation, settle, phase choreography, events on the beat grid." },
         "creativeIR": { "type": "object", "description": "Creative IR compiled from the brief (references/creative-ir.md): concept, visual verbs, motifs, hierarchy, behaviours." },
+        "formatVersion": { "type": "integer", "minimum": 0, "description": "Version of the project FORMAT (registry/versions.json, references/migration.md). The engine and migrate_project.py bring older projects up to date and stamp this field; absent means a project from before the pipeline (0)." },
         "artBible": {
           "type": "object",
           "properties": {

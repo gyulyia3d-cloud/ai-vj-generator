@@ -3,6 +3,7 @@
   "id": "pressure-test",
   "seed": 187812,
   "meta": {
+    "formatVersion": 2,
     "name": "PRESSURE TEST",
     "lang": "en",
     "brief": "A wall of cold signal that tightens with the beat and releases on the break; the crowd should feel contained pressure.",

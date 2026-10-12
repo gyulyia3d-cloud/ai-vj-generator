@@ -160,6 +160,7 @@ const WARN_LOAD = [];
 function normalize(o) {
   WARN_LOAD.length = 0;
   if (!o || typeof o !== 'object') throw new Error('JSON vazio');
+  const mig = MIGRATE.run(o); o = mig.project; MIGRATE.describe(mig).forEach(w => WARN_LOAD.push(w));   /* fase 19: projeto antigo sobe até o formato atual numa cópia */
   const pr = Object.assign({ schema: 'ai-vj-generator/2', id: 'proj-' + Date.now().toString(36) }, o); /* /1 continua válido: /2 só acrescenta meta.contract, capabilities e layer.role */
   pr.meta = Object.assign({ name: 'SEM TÍTULO', artist: '', context: '', brief: '', grammar: {} }, o.meta || {});
   pr.canvas = Object.assign({ w: 1920, h: 1080, fps: 30, target: 'screen', safe: 0.05, displays: [] }, o.canvas || {});

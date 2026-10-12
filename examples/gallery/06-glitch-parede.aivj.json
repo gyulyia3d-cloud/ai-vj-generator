@@ -3,6 +3,7 @@
   "id": "falha-geral",
   "seed": 169404,
   "meta": {
+    "formatVersion": 2,
     "name": "FALHA GERAL",
     "lang": "en",
     "brief": "Uma parede grande quebrando em blocos magenta, falhas que reorganizam a imagem no tempo da bateria.",

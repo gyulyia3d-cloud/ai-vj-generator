@@ -588,7 +588,7 @@ html.stagemode #toast,html.stagemode #hint{display:none!important}
    função pura de (parâmetros, quadro) → o mesmo código desenha o preview,
    o export PNG alpha e a gravação.
    ===================================================================== */
-const VERSION = '3.16.0';
+const VERSION = '3.17.0';
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const TAU = Math.PI * 2, GA = Math.PI * (3 - Math.sqrt(5));
 const clamp = (v, a, b) => v < a ? a : v > b ? b : v, lerp = (a, b, t) => a + (b - a) * t;
@@ -2588,6 +2588,7 @@ const WARN_LOAD = [];
 function normalize(o) {
   WARN_LOAD.length = 0;
   if (!o || typeof o !== 'object') throw new Error('JSON vazio');
+  const mig = MIGRATE.run(o); o = mig.project; MIGRATE.describe(mig).forEach(w => WARN_LOAD.push(w));   /* fase 19: projeto antigo sobe até o formato atual numa cópia */
   const pr = Object.assign({ schema: 'ai-vj-generator/2', id: 'proj-' + Date.now().toString(36) }, o); /* /1 continua válido: /2 só acrescenta meta.contract, capabilities e layer.role */
   pr.meta = Object.assign({ name: 'SEM TÍTULO', artist: '', context: '', brief: '', grammar: {} }, o.meta || {});
   pr.canvas = Object.assign({ w: 1920, h: 1080, fps: 30, target: 'screen', safe: 0.05, displays: [] }, o.canvas || {});
@@ -4804,7 +4805,7 @@ const GENAI = (() => {
     const canvas = { w: sf.w, h: sf.h, fps: sf.fps || 30, target: ['screen', 'led', 'projection', 'mapping', 'multi'].includes(surf) ? surf : 'screen' }; if (sf.folds) canvas.folds = sf.folds;
     if (sf.regions && sf.regions.length) canvas.displays = sf.regions.map(r => { const o = {}; for (const k of ['x', 'y', 'w', 'h', 'name', 'source']) if (k in r) o[k] = r[k]; return o; });
     const id = String(brief.name).toLowerCase().split('').map(c => /[\p{L}\p{N}]/u.test(c) ? c : '-').join('').replace(/^-+|-+$/g, '') || 'project';
-    return { schema: 'ai-vj-generator/2', id, seed, meta: { name: String(brief.name).toUpperCase(), lang: brief.lang || 'en', brief: brief.concept, contract, artBible, spec, creativeIR: ir, compositionIR: cirs, animationIR: anis, audioSemantics: asem, depthIR: dirs, surfaceIR: SURFACEIR.compile(sf) }, canvas,
+    return { schema: 'ai-vj-generator/2', id, seed, meta: { formatVersion: MIGRATE.CURRENT, name: String(brief.name).toUpperCase(), lang: brief.lang || 'en', brief: brief.concept, contract, artBible, spec, creativeIR: ir, compositionIR: cirs, animationIR: anis, audioSemantics: asem, depthIR: dirs, surfaceIR: SURFACEIR.compile(sf) }, canvas,
       time: { bpm: tm.bpm, bars, loop: true, seamless: true, mode: 'loop', transition: prof0.axes.continuity >= 0.5 ? 'fade' : 'wipe' }, audio: { reactive: strat !== 'none', sens: 1, smooth: 0.7, strategy: strat },
       palette: Object.assign({}, pal, (brief.output || {}).mode === 'white-alpha' ? { mode: 'white-alpha' } : {}), compositions: comps };
   }
@@ -5130,6 +5131,60 @@ const DEPTH = (() => {
   return { compile, apply, state, transform, adjust, audit, assignPlanes, surfaceUnit, DATA: D };
 })();
 /*__DEPTH_END__*/
+/*__VERSIONSDATA_START__*/
+/* Gerado de skill/ai-vj-generator/registry/versions.json por node scripts/registry.mjs --write. Não edite. */
+const VERSIONS_DATA = {"note":"Versões de esquema e migração de projetos (fase 19). `format` é a versão do FORMATO do projeto (meta.formatVersion); `steps` são migrações declarativas, em ordem, que app/migrate.js e migrate_project.py aplicam do mesmo jeito. Mudança aditiva (campo novo com padrão) não precisa de passo; mudança que renomeia, move ou remove campo precisa.","current":"ai-vj-generator/2","legacy":["ai-vj-generator/1"],"migration":{"ai-vj-generator/1":"abre sem mudança; campos novos recebem padrão no carregamento (normalize)"},"deprecated":[{"field":"capabilities.requiresBridge","replacement":"capabilities.notSupported","since":"3.1.0"},{"field":"capabilities.conceptual","replacement":"capabilities.notSupported","since":"3.1.0"},{"field":"meta.spec.archetype=object-mapping","replacement":"installation","since":"3.1.0"},{"field":"meta.spec.archetype=immersive","replacement":"none (fora de escopo)","since":"3.1.0"},{"field":"meta.spec.archetype=dooh","replacement":"none (fora de escopo)","since":"3.1.0"}],"format":{"key":"meta.formatVersion","current":2,"unversioned":0},"ops":["renameCapability","remapArchetype"],"steps":[{"id":"capabilities-legacy-labels","to":1,"since":"3.1.0","describe":"capabilities.requiresBridge e capabilities.conceptual viram capabilities.notSupported (itens sem repetir)","op":"renameCapability","map":{"requiresBridge":"notSupported","conceptual":"notSupported"}},{"id":"archetype-out-of-scope","to":2,"since":"3.1.0","describe":"meta.spec.archetype: object-mapping vira installation; immersive e dooh saem do produto e são removidos","op":"remapArchetype","map":{"object-mapping":"installation","immersive":null,"dooh":null}}]};
+/*__VERSIONSDATA_END__*/
+/*__MIGRATE_START__*/
+/* Migração de projetos (fase 19): porta de skill/ai-vj-generator/scripts/migrate_project.py. Um projeto guarda a versão do FORMATO em meta.formatVersion (ausente = 0, projeto de antes do pipeline).
+   Os passos são declarativos (registry/versions.json: `steps`, na ordem) e rodam sobre uma CÓPIA: o objeto de entrada nunca muda. Cada passo é idempotente (rodar duas vezes dá o mesmo que uma).
+   Projeto de formato mais novo que o do motor não é recusado nem reescrito: abre com aviso, porque campos desconhecidos são ignorados, nunca apagados.
+   Regra para as fases seguintes: mudança aditiva (campo novo com padrão) não precisa de passo; mudança que renomeia, move ou remove campo traz um passo novo em versions.json e sobe format.current.
+   Python e navegador dão a mesma migração e o mesmo relatório (scripts/migrate_check.mjs). Dados: registry/versions.json, copiados para app/versions-data.js por node scripts/registry.mjs --write.
+   Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html. Docs: skill/ai-vj-generator/references/migration.md */
+const MIGRATE = (() => {
+  const D = VERSIONS_DATA, KEY = D.format.key.split('.'), CUR = D.format.current;
+  const clone = o => JSON.parse(JSON.stringify(o));
+  const isObj = v => v && typeof v === 'object' && !Array.isArray(v);
+  const getVer = o => { let v = o; for (const k of KEY) v = isObj(v) ? v[k] : undefined; return Number.isInteger(v) && v >= 0 ? v : D.format.unversioned; };
+  const setVer = (o, n) => { if (!isObj(o.meta)) o.meta = {}; o.meta[KEY[KEY.length - 1]] = n; };
+  const OPS = {
+    /* capabilities[from] some e seus itens entram em capabilities[to], sem repetir */
+    renameCapability(o, step, note) {
+      const cap = o.capabilities; if (!isObj(cap)) return;
+      for (const [from, to] of Object.entries(step.map)) {
+        if (!(from in cap)) continue;
+        const items = Array.isArray(cap[from]) ? cap[from] : [], dest = Array.isArray(cap[to]) ? cap[to] : [];
+        for (const it of items) if (!dest.includes(it)) dest.push(it);
+        cap[to] = dest; delete cap[from]; note(`capabilities.${from} -> capabilities.${to}`);
+      }
+    },
+    /* meta.spec.archetype (texto ou lista): troca pelo mapa; destino null remove; lista que esvazia some */
+    remapArchetype(o, step, note) {
+      const spec = isObj(o.meta) ? o.meta.spec : null; if (!isObj(spec) || spec.archetype === undefined) return;
+      const was = Array.isArray(spec.archetype) ? spec.archetype : [spec.archetype], out = [];
+      for (const a of was) { if (a in step.map) { note(`meta.spec.archetype ${a} -> ${step.map[a] === null ? '(removido)' : step.map[a]}`); if (step.map[a] !== null && !out.includes(step.map[a])) out.push(step.map[a]); } else if (!out.includes(a)) out.push(a); }
+      if (out.length === was.length && out.every((a, i) => a === was[i])) return;
+      if (!out.length) delete spec.archetype; else spec.archetype = Array.isArray(spec.archetype) ? out : out[0];
+    },
+  };
+  /* sobe o projeto até o formato atual: { project, from, to, applied: [{ id, changes }], newer } */
+  function run(input) {
+    const o = clone(input), from = getVer(o), applied = [];
+    if (from > CUR) return { project: o, from, to: from, applied, newer: true };
+    for (const step of D.steps) {
+      if (step.to <= from) continue;
+      const changes = []; OPS[step.op](o, step, c => changes.push(c));
+      applied.push({ id: step.id, changes });
+    }
+    setVer(o, CUR);
+    return { project: o, from, to: CUR, applied, newer: false };
+  }
+  const describe = r => r.newer ? [`o projeto é do formato ${r.from}, mais novo que o deste motor (${CUR}): abre sem mudança, campos desconhecidos são ignorados`]
+    : r.applied.filter(a => a.changes.length).map(a => `migrado (${a.id}): ${a.changes.join('; ')}`);
+  return { run, describe, getVer, CURRENT: CUR, DATA: D };
+})();
+/*__MIGRATE_END__*/
 /*__EVAL_START__*/
 /* Avaliador estrutural (fase 2, no motor desde a fase 3): nota de 0 a 100 por composição, a partir de quadros reais.
    A CLI (scripts/evaluate.mjs) e a aba Gerar chamam a mesma função: AIVJ.evaluate(lang). Edite este arquivo; node scripts/embed-modules.mjs embute no index.html.
@@ -7042,7 +7097,7 @@ function boot() {
   document.fonts && document.fonts.load('800 40px "Martian Mono"').catch(() => {});
   if (!embedded && !saved && !store.get('seenWiz', false)) openWiz();
   raf = requestAnimationFrame(tick);
-  window.AIVJ = { version: VERSION, get PAL() { return PAL; }, get RECIPES() { return RECIPES; }, addRecipe, addTestCards, recipeLayer, importFile, parseModel, setLang, setHow, undo, redo, evalExpr, applyTheme, layoutApply, setPanelOpen, setZoneDraw, get hist() { return ST.hist.length; }, get histLabels() { return ST.hl.slice(); }, surface: SC, specOf, applyCalc, renderSpec, specMarkdown, get project() { return P; }, get audio() { return AUD; }, AUDIOSEM, DEPTH, pseudoAudio, synthTimes, applyMods, motionCurve, GENAI, EVALUATOR, flash: FLASH, ONSET, UX, fx: { FX, body: fxBody, op: fxOp }, synth: { SYN, src: synthSrc }, blobs: { X: BLOBX }, layerErrors: () => [...LAYER_ERR.values()], mp4: { X: MP4X, render: mp4Render, run: exportMp4Run }, isf: { X: ISFX, LIB: ISFLIB, lib: isfLib }, modUI: { render: modPanel, params: modNumericParams, sources: MOD_SOURCES }, expRun: exportRun, EXP, surfx: SURFX, region: regionRect, surUI: { state: SUR, applyPreset: surApplyPreset, render: renderSurface }, COMPOSITION, SURFACEIR, ANIMATION, CREATIVE, FIELD: { FLD, GLY, body: fldBody }, SOLID: { SOL, body: solBody }, applyMods, RG, TM, composeFrame, buildComposeGraph: buildComposeGraph, frameAt, canvasPool: CANVAS_POOL, webgl: WEBGL, glProgram: body => glProg(body), glError: body => GL.err.get(body), glInfo: () => { glInit(); return GL.r ? { version: GL.r.version, context: GL.gl.constructor.name, glsl: GL.gl.getParameter(GL.gl.SHADING_LANGUAGE_VERSION), caps: GL.r.caps, stats: GL.r.stats } : { failure: GL.failure }; }, glMetrics: () => GL.r ? GL.r.metrics() : null, glr: () => GL.r, presets: SURFACE_PRESETS, GEN, FAMILIES, COMMON, modSources: () => MOD_SOURCES.map(x => x[0]), evaluate: lang => EVALUATOR.run(lang), shaderResolve, GLIB, specBins, simBake, parsePly, get LAYERERR() { return LAYER_ERR; }, setSeed, bpmWaves, get GLERR() { return GL.err; }, layerFrame, pm, importJson, frameAt, validate: o => validate(o), GEN, loopFrames, contactSheet, layerAudit, allowCode, loadAssets, toLogo, projectOut, get state() { return ST; }, geom, lintCode, compileCode, setCi(i) { ST.ci = i; refreshAll(); },
+  window.AIVJ = { version: VERSION, get PAL() { return PAL; }, get RECIPES() { return RECIPES; }, addRecipe, addTestCards, recipeLayer, importFile, parseModel, setLang, setHow, undo, redo, evalExpr, applyTheme, layoutApply, setPanelOpen, setZoneDraw, get hist() { return ST.hist.length; }, get histLabels() { return ST.hl.slice(); }, surface: SC, specOf, applyCalc, renderSpec, specMarkdown, get project() { return P; }, get audio() { return AUD; }, AUDIOSEM, DEPTH, pseudoAudio, synthTimes, applyMods, motionCurve, GENAI, EVALUATOR, flash: FLASH, ONSET, UX, fx: { FX, body: fxBody, op: fxOp }, synth: { SYN, src: synthSrc }, blobs: { X: BLOBX }, layerErrors: () => [...LAYER_ERR.values()], mp4: { X: MP4X, render: mp4Render, run: exportMp4Run }, isf: { X: ISFX, LIB: ISFLIB, lib: isfLib }, modUI: { render: modPanel, params: modNumericParams, sources: MOD_SOURCES }, expRun: exportRun, EXP, surfx: SURFX, region: regionRect, surUI: { state: SUR, applyPreset: surApplyPreset, render: renderSurface }, COMPOSITION, SURFACEIR, ANIMATION, CREATIVE, FIELD: { FLD, GLY, body: fldBody }, SOLID: { SOL, body: solBody }, MIGRATE, applyMods, RG, TM, composeFrame, buildComposeGraph: buildComposeGraph, frameAt, canvasPool: CANVAS_POOL, webgl: WEBGL, glProgram: body => glProg(body), glError: body => GL.err.get(body), glInfo: () => { glInit(); return GL.r ? { version: GL.r.version, context: GL.gl.constructor.name, glsl: GL.gl.getParameter(GL.gl.SHADING_LANGUAGE_VERSION), caps: GL.r.caps, stats: GL.r.stats } : { failure: GL.failure }; }, glMetrics: () => GL.r ? GL.r.metrics() : null, glr: () => GL.r, presets: SURFACE_PRESETS, GEN, FAMILIES, COMMON, modSources: () => MOD_SOURCES.map(x => x[0]), evaluate: lang => EVALUATOR.run(lang), shaderResolve, GLIB, specBins, simBake, parsePly, get LAYERERR() { return LAYER_ERR; }, setSeed, bpmWaves, get GLERR() { return GL.err; }, layerFrame, pm, importJson, frameAt, validate: o => validate(o), GEN, loopFrames, contactSheet, layerAudit, allowCode, loadAssets, toLogo, projectOut, get state() { return ST; }, geom, lintCode, compileCode, setCi(i) { ST.ci = i; refreshAll(); },
     /* gancho de teste: renderiza a composição ci no quadro n, determinístico, sem tocar no preview */
     renderFrame(ci, n, scale = 0.25, alpha = false) {
       const comp = P.compositions[ci], W = P.canvas.w, H = P.canvas.h, w = Math.round(W * scale), h = Math.round(H * scale);

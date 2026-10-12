@@ -28,6 +28,7 @@ import composition_ir as comp_ir  # noqa: E402
 import animation_ir as anim_ir  # noqa: E402
 import audio_semantics as audio_sem  # noqa: E402
 import depth_ir as depth_ir  # noqa: E402
+import migrate_project as mig  # noqa: E402
 
 # mood -> hue, scheme, motion, hero generators (type, params), shader presets, structure, whether a data/HUD tier suits
 MOODS = {
@@ -385,7 +386,7 @@ def build(brief):
     if sf.get("regions"):
         canvas["displays"] = [{k: r[k] for k in ("x", "y", "w", "h", "name", "source") if k in r} for r in sf["regions"]]
     proj = {"schema": "ai-vj-generator/2", "id": "".join(c if c.isalnum() else "-" for c in str(brief["name"]).lower()).strip("-") or "project", "seed": seed,
-            "meta": {"name": str(brief["name"]).upper(), "lang": brief.get("lang", "en"), "brief": brief["concept"], "contract": contract, "artBible": art_bible, "spec": spec, "creativeIR": ir, "compositionIR": cirs, "animationIR": anis, "audioSemantics": asem, "depthIR": dirs, "surfaceIR": sir.compile_surface(sf)},
+            "meta": {"formatVersion": mig.CUR, "name": str(brief["name"]).upper(), "lang": brief.get("lang", "en"), "brief": brief["concept"], "contract": contract, "artBible": art_bible, "spec": spec, "creativeIR": ir, "compositionIR": cirs, "animationIR": anis, "audioSemantics": asem, "depthIR": dirs, "surfaceIR": sir.compile_surface(sf)},
             "canvas": canvas, "time": {"bpm": tm["bpm"], "bars": bars, "loop": True, "seamless": True, "mode": "loop", "transition": "fade" if prof0["axes"]["continuity"] >= 0.5 else "wipe"},
             "audio": {"reactive": strat != "none", "sens": 1, "smooth": 0.7, "strategy": strat},
             "palette": {**pal, **({"mode": "white-alpha"} if (brief.get("output") or {}).get("mode") == "white-alpha" else {})}, "compositions": comps}

@@ -3,6 +3,7 @@
   "id": "jardim-de-luz",
   "seed": 352459,
   "meta": {
+    "formatVersion": 2,
     "name": "JARDIM DE LUZ",
     "lang": "pt",
     "brief": "Um organismo de luz que cresce devagar e respira com a música; o público deve sentir cuidado e espanto.",

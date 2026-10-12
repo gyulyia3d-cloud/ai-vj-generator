@@ -3,6 +3,7 @@
   "id": "correnteza",
   "seed": 560352,
   "meta": {
+    "formatVersion": 2,
     "name": "CORRENTEZA",
     "lang": "pt",
     "brief": "Água azul deslizando sobre água azul; calma que não é vazia.",

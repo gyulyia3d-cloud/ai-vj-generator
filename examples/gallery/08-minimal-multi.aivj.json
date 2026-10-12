@@ -3,6 +3,7 @@
   "id": "vão",
   "seed": 689824,
   "meta": {
+    "formatVersion": 2,
     "name": "VÃO",
     "lang": "en",
     "brief": "Um círculo e quatro linhas em três telas lado a lado; o silêncio entre as telas faz parte da peça.",

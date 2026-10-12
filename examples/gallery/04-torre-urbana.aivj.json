@@ -3,6 +3,7 @@
   "id": "sirene",
   "seed": 125900,
   "meta": {
+    "formatVersion": 2,
     "name": "SIRENE",
     "lang": "en",
     "brief": "Faixas e palavras gritadas em uma torre estreita de LED, como sinal de rua à noite.",

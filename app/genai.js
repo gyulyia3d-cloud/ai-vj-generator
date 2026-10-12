@@ -271,7 +271,7 @@ const GENAI = (() => {
     const canvas = { w: sf.w, h: sf.h, fps: sf.fps || 30, target: ['screen', 'led', 'projection', 'mapping', 'multi'].includes(surf) ? surf : 'screen' }; if (sf.folds) canvas.folds = sf.folds;
     if (sf.regions && sf.regions.length) canvas.displays = sf.regions.map(r => { const o = {}; for (const k of ['x', 'y', 'w', 'h', 'name', 'source']) if (k in r) o[k] = r[k]; return o; });
     const id = String(brief.name).toLowerCase().split('').map(c => /[\p{L}\p{N}]/u.test(c) ? c : '-').join('').replace(/^-+|-+$/g, '') || 'project';
-    return { schema: 'ai-vj-generator/2', id, seed, meta: { name: String(brief.name).toUpperCase(), lang: brief.lang || 'en', brief: brief.concept, contract, artBible, spec, creativeIR: ir, compositionIR: cirs, animationIR: anis, audioSemantics: asem, depthIR: dirs, surfaceIR: SURFACEIR.compile(sf) }, canvas,
+    return { schema: 'ai-vj-generator/2', id, seed, meta: { formatVersion: MIGRATE.CURRENT, name: String(brief.name).toUpperCase(), lang: brief.lang || 'en', brief: brief.concept, contract, artBible, spec, creativeIR: ir, compositionIR: cirs, animationIR: anis, audioSemantics: asem, depthIR: dirs, surfaceIR: SURFACEIR.compile(sf) }, canvas,
       time: { bpm: tm.bpm, bars, loop: true, seamless: true, mode: 'loop', transition: prof0.axes.continuity >= 0.5 ? 'fade' : 'wipe' }, audio: { reactive: strat !== 'none', sens: 1, smooth: 0.7, strategy: strat },
       palette: Object.assign({}, pal, (brief.output || {}).mode === 'white-alpha' ? { mode: 'white-alpha' } : {}), compositions: comps };
   }

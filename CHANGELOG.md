@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.17.0 (12/10/2026) · Fase 19: versionamento e migração
+
+- **`meta.formatVersion`** (inteiro; ausente = 0) guarda a versão do FORMATO do projeto; o gerador (Python e navegador) já entrega o formato atual (2). `schema` continua `ai-vj-generator/2`, e `/1` abre como sempre.
+- **Pipeline de migração com passos declarativos** em `registry/versions.json` (`format`, `ops`, `steps`), aplicados do mesmo jeito por `app/migrate.js` (motor, em toda importação) e `scripts/migrate_project.py` (CLI: imprime o que mudaria, `--out`, `--in-place`). Dois passos reais, retroativos à 3.1.0: rótulos de capacidade `requiresBridge` e `conceptual` viram `notSupported`; arquétipos `object-mapping` viram `installation` e `immersive` e `dooh` saem. Roda numa cópia (a entrada nunca muda), é idempotente, e quem manda é a versão (projeto já carimbado não é migrado).
+- **Formato mais novo que o do motor** abre com aviso: não é recusado, a versão não é reescrita e campos desconhecidos não são apagados. O validador avisa formato mais novo, recusa `formatVersion` inválido e anota projeto atrasado.
+- **Regra para as fases seguintes** (`references/migration.md`): mudança aditiva não precisa de passo; renomear, mover ou remover campo traz passo novo e sobe `format.current`. `registry.mjs --check` exige passos contíguos de 1 até a versão atual.
+- Teste novo `migrate_check.mjs`: resposta conhecida, Python = navegador, idempotência, controles negativos, formato 99, os 11 exemplos e projetos da galeria só ganham o carimbo, e um da galeria migrado passa no validador.
+
 ## 3.16.0 (12/10/2026) · Fase 18: redução do monólito
 
 - **`app/index.html` virou arquivo gerado.** Todo o JS escrito à mão (cerca de 4 400 linhas: núcleo, camadas base e geradas, composição, cola WebGL, camadas fixas, kit de código, projeto, runtime, palco, painéis, exportação, ficha, layout, receitas, paleta rápida, regras EN e boot) e o CSS (416 linhas) foram para 18 módulos `app/*.js` e `app/style.css`, embutidos por `node scripts/embed-modules.mjs` entre marcadores, no mesmo lugar e no mesmo escopo (a IIFE do motor). Sobraram 6 linhas de script soltas no HTML.

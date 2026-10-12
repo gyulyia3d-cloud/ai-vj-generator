@@ -208,6 +208,9 @@ How it closes the loop: it warms up one loop, records two, and cross-fades them 
 ### `field` and `glyphs` — fields, topologies and generative typography (phase 8)
 - `field`: `p.kind` (12 rules: `ISOLINHAS`, `CORRENTES`, `CELULAS`, `TRUCHET`, `PONTOS`, `MOIRE`, `METABOLAS`, `INTERFERENCIA`, `PONTILHADO`, `RELEVO`, `GRADE DEFORMADA`, `POLAR`), `p.p1..p4` by rule, `p.gain`, `p.invert`, `p.media` (an image as the field; empty = noise), `p.fit`. `glyphs`: `p.source` (`noise`, `radial`, `wave`, `spiral`, `image`), `p.ramp` (characters from emptiest to fullest), `p.cell`, `p.cycles`, `p.shuffle`, `p.media`. Both close the loop. See `field-layer.md`.
 
+### `meta.formatVersion` — format version (phase 19)
+- Integer, written by the generator and the engine; absent = 0. The engine and `scripts/migrate_project.py` bring older projects to the current format on load (`references/migration.md`). A newer value than the tool knows opens with a warning and is never rewritten.
+
 ### `solid` — 3D generativo (phase 12)
 - `solid`: one 3D form by signed distance seen by an orbiting camera. `p.kind` (8 forms: `ESFERA`, `TORO`, `CRISTAIS`, `GIROIDE`, `COLUNAS`, `ANEIS`, `ONDAS`, `ESPONJA`), `p.p1..p4` by form, `p.size`, `p.material` (`fosco`, `metal`, `vidro`), `p.orbit` (whole camera turns per loop, 0 = still), `p.elev`, `p.dist`, `p.light`, `p.fog`, `p.res`, `p.alphaMode`, `c1`, `c2`, `cbg`. Closes the loop; no clock, no random. See `solid-layer.md`.
 

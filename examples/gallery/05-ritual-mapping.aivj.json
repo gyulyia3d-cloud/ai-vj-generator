@@ -3,6 +3,7 @@
   "id": "brasa",
   "seed": 417751,
   "meta": {
+    "formatVersion": 2,
     "name": "BRASA",
     "lang": "pt",
     "brief": "Anéis de brasa em volta de um objeto no palco, como um ritual que se acende e se apaga.",

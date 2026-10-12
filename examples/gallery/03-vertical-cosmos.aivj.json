@@ -3,6 +3,7 @@
   "id": "poço-cósmico",
   "seed": 214092,
   "meta": {
+    "formatVersion": 2,
     "name": "POÇO CÓSMICO",
     "lang": "pt",
     "brief": "Uma queda lenta por um poço de estrelas em uma tela vertical; vertigem suave, sem pressa.",

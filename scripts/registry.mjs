@@ -59,6 +59,9 @@ const audioJsPath = join(ROOT, 'app', 'audio-sem-data.js');
 const depth = rd(join(REG, 'depth.json'));
 const depthJs = '/* Gerado de skill/ai-vj-generator/registry/depth.json por node scripts/registry.mjs --write. Não edite. */\nconst DEPTH_DATA = ' + JSON.stringify(depth) + ';\n';
 const depthJsPath = join(ROOT, 'app', 'depth-data.js');
+const versions = rd(join(REG, 'versions.json'));
+const versionsJs = '/* Gerado de skill/ai-vj-generator/registry/versions.json por node scripts/registry.mjs --write. Não edite. */\nconst VERSIONS_DATA = ' + JSON.stringify(versions) + ';\n';
+const versionsJsPath = join(ROOT, 'app', 'versions-data.js');
 const verbIds = creative.verbs.map(v => v.id);
 
 if (mode === 'write') {
@@ -74,6 +77,7 @@ if (mode === 'write') {
   writeFileSync(surfaceJsPath, surfaceJs);
   writeFileSync(audioJsPath, audioJs);
   writeFileSync(depthJsPath, depthJs);
+  writeFileSync(versionsJsPath, versionsJs);
   let b = rd(briefSchemaPath); b.properties.verbs = { type: 'array', items: { type: 'string', enum: verbIds }, description: 'Optional: visual verbs the author wants (the Creative IR adds them with extra weight). See registry/creative.json.' };
   b.properties.motionArchetype = { type: 'string', enum: animation.archetypeOrder, description: 'Optional: force the motion archetype of the first composition (Animation IR). See registry/animation.json.' };
   b.properties.surface.properties.regions = { type: 'array', maxItems: 500, items: { type: 'object', required: ['x', 'y', 'w', 'h'], properties: { name: { type: 'string' }, x: { type: 'number', minimum: 0 }, y: { type: 'number', minimum: 0 }, w: { type: 'number', exclusiveMinimum: 0 }, h: { type: 'number', exclusiveMinimum: 0 }, source: { type: 'string', enum: ['list', 'mask'] } } }, description: 'Optional: the regions of the canvas that exist on the surface (pixels of the canvas). They enter the Surface IR as EXPLICIT, or DETECTED when source is mask. See registry/surface.json.' };
@@ -148,6 +152,10 @@ check(surface.confidence.order.every(c => promptDoc.includes(c)) && /meta\.surfa
 check(AB.every(b => new RegExp('`' + b + '`').test(promptDoc)) && /meta\.audioSemantics/.test(promptDoc) && /audio_semantics\.py/.test(promptDoc) && readFileSync(join(SK, 'references', 'audio-semantics.md'), 'utf8').includes('follow'), 'PROMPT.md ensina os 6 comportamentos temporais e meta.audioSemantics; references/audio-semantics.md existe', 'faltou citar no PROMPT.md');
 /* 2.5D (fase 11): dados únicos, copiados para o navegador, coerentes entre si */
 check(readFileSync(depthJsPath, 'utf8').replace(/\r\n/g, '\n') === depthJs, 'depth.json = app/depth-data.js (dados do 2.5D no navegador)', 'rode node scripts/registry.mjs --write');
+/* Fase 19: migração de projetos */
+check(readFileSync(versionsJsPath, 'utf8').replace(/\r\n/g, '\n') === versionsJs, 'versions.json = app/versions-data.js (dados da migração no navegador)', 'rode node scripts/registry.mjs --write');
+check(versions.steps.length === versions.format.current && versions.steps.every((s, i) => s.to === i + 1 && versions.ops.includes(s.op) && s.id && s.describe && s.map) && new Set(versions.steps.map(s => s.id)).size === versions.steps.length, 'migração: os passos vão de 1 até a versão atual do formato, sem buraco, com operação conhecida e id único', JSON.stringify(versions.steps.map(s => [s.id, s.to, s.op])));
+check(rd(schemaPath).properties.meta.properties.formatVersion && versions.format.key === 'meta.formatVersion', 'esquema declara meta.formatVersion', '');
 const DC = Object.keys(depth.cameras), DP = ['ground', 'structure', 'hero', 'event'];
 check(DC.length === 6 && animation.archetypeOrder.every(a => DC.includes(depth.archetypeCamera[a])) && Object.keys(depth.archetypeCamera).every(a => animation.archetypeOrder.includes(a)), 'os 8 arquétipos de movimento escolhem uma das 6 câmeras', '');
 check(DP.every(t => depth.planes[t] && depth.planes[t].range.length === 2 && depth.planes[t].range[0] >= depth.zRange[0] && depth.planes[t].range[1] <= depth.zRange[1] && depth.planes[t].range[0] <= depth.planes[t].range[1]) && DP.slice(1).every((t, i) => depth.planes[DP[i]].range[1] < depth.planes[t].range[0]), 'os planos (chão, estrutura, herói, evento) cabem em [-1, 1], sem se sobrepor e em ordem do longe ao perto', '');

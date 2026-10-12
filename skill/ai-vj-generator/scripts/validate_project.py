@@ -27,6 +27,7 @@ from pathlib import Path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import audio_semantics as _asem  # noqa: E402
 import depth_ir as _depth  # noqa: E402
+import migrate_project as _mig  # noqa: E402
 
 ENGINE = Path(__file__).resolve().parent.parent / "assets" / "engine.html"
 BLENDS = {"normal", "add", "screen", "multiply", "difference", "overlay", "lighten"}
@@ -607,6 +608,13 @@ def validate(path, extra_assets=()):
     schema = P.get("schema")
     if schema not in SCHEMAS:
         e.append(f"schema must be 'ai-vj-generator/2' (or the older /1), got {schema!r}")
+    fv = (P.get("meta") or {}).get("formatVersion") if isinstance(P.get("meta"), dict) else None
+    if fv is not None and (not isinstance(fv, int) or isinstance(fv, bool) or fv < 0):
+        e.append("meta.formatVersion must be a whole number of 0 or more")
+    elif isinstance(fv, int) and fv > _mig.CUR:
+        w.append(f"meta.formatVersion {fv} is newer than this tool's format ({_mig.CUR}): the project opens, unknown fields are ignored")
+    elif fv is None or fv < _mig.CUR:
+        out["notes"].append(f"meta.formatVersion is {fv if fv is not None else 'absent'}, current is {_mig.CUR}: run migrate_project.py (the engine migrates on load)")
     v2 = schema == "ai-vj-generator/2"
     if v2:
         check_contract(P.get("meta", {}), out)

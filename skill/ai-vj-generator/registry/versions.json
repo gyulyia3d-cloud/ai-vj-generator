@@ -1,5 +1,5 @@
 {
- "note": "Versões de esquema e caminho de migração (fase 19 formaliza o pipeline).",
+ "note": "Versões de esquema e migração de projetos (fase 19). `format` é a versão do FORMATO do projeto (meta.formatVersion); `steps` são migrações declarativas, em ordem, que app/migrate.js e migrate_project.py aplicam do mesmo jeito. Mudança aditiva (campo novo com padrão) não precisa de passo; mudança que renomeia, move ou remove campo precisa.",
  "current": "ai-vj-generator/2",
  "legacy": [
   "ai-vj-generator/1"
@@ -32,6 +32,40 @@
    "field": "meta.spec.archetype=dooh",
    "replacement": "none (fora de escopo)",
    "since": "3.1.0"
+  }
+ ],
+ "format": {
+  "key": "meta.formatVersion",
+  "current": 2,
+  "unversioned": 0
+ },
+ "ops": [
+  "renameCapability",
+  "remapArchetype"
+ ],
+ "steps": [
+  {
+   "id": "capabilities-legacy-labels",
+   "to": 1,
+   "since": "3.1.0",
+   "describe": "capabilities.requiresBridge e capabilities.conceptual viram capabilities.notSupported (itens sem repetir)",
+   "op": "renameCapability",
+   "map": {
+    "requiresBridge": "notSupported",
+    "conceptual": "notSupported"
+   }
+  },
+  {
+   "id": "archetype-out-of-scope",
+   "to": 2,
+   "since": "3.1.0",
+   "describe": "meta.spec.archetype: object-mapping vira installation; immersive e dooh saem do produto e são removidos",
+   "op": "remapArchetype",
+   "map": {
+    "object-mapping": "installation",
+    "immersive": null,
+    "dooh": null
+   }
   }
  ]
 }
