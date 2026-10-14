@@ -2,8 +2,9 @@
 
 ## Em andamento · Fase 14a: base da UI (DS v2 funcional)
 
-- **Tokens v2** em `app/style.css` (bloco V6): elevação por tom de cinza (`--s1`, `--s2`, `--s3`), um acento funcional (`--accent`, ciano de render; escuro `#3de8ff`, claro `#006f99`), raio de 3 px só em controles, escala de texto com piso de 12 px (11 px só em microrrótulo), escala de espaço de 4 px. Spec e racional em `docs/brand/UI-REDESIGN-PROPOSTA.md`.
+- **Tokens v2** em `app/style.css` (bloco V6): elevação por tom de cinza (`--s1`, `--s2`, `--s3`), um acento funcional (`--accent`, o verde da paleta STANDARD do app; escuro `#00ff3c`, claro `#007a22` para manter contraste), raio de 3 px só em controles, escala de texto com piso de 12 px (11 px só em microrrótulo), escala de espaço de 4 px. Spec e racional em `docs/brand/UI-REDESIGN-PROPOSTA.md`.
 - **Slider novo:** trilha de 4 px com preenchimento, alça de 14 px, valor em chip, rótulo de parâmetro em caixa normal. O que difere do padrão ganha acento (preenchimento e valor) e só então mostra o botão de restaurar. Módulo `app/slider-ui.js` (só apresentação: escreve `--p` e as classes `hasdef` e `chg`; nunca muda valor nem dispara evento). `ctlHtml` passa a gravar `data-def`.
+- **Tipografia (DS):** Helvetica no texto, rótulos de parâmetro e descrições; Martian Mono em títulos, categorias (trilho, biblioteca, modo, seções) e dados.
 - **Casca nova (14a-2), layout inspirado em editores como o Photoshop e apps de dither, com fontes, cores e linguagem do GYULYIA DS:**
   - **Slider empilhado:** rótulo à esquerda, valor à direita, trilha embaixo na largura toda (`.pc:has(>input[data-num])`).
   - **Barra superior em três zonas:** marca e modo | vista, zoom e histórico | briefing, tema, idioma e ajuda. Em telas de até 1180 px a zona do meio desce para uma segunda linha.

@@ -42,7 +42,7 @@ Passa a permitir (só nos controles da ferramenta, nunca nas imagens de marca se
 **Cor**
 - Elevação por tom de cinza (modo escuro): `--bg #000`, `--s1 #0d0d0d` (painéis), `--s2 #161616` (cartões, campos), `--s3 #202020` (menus, dicas). Linhas `#262626`.
 - Texto: `#f2f2f2` principal, `#999` secundário, `#666` terciário (mínimo 4,5:1 sobre `--s1` para o secundário em corpo).
-- Acento funcional: **ciano de render** (o DS já tem `02-render-cyan.svg`), valor inicial `#3de8ff`, a validar com contraste e daltonismo. Uso: preenchimento de slider alterado, seleção, foco, selo de modulação.
+- Acento funcional: **verde da paleta STANDARD do app** (`#00ff3c` no escuro, `#007a22` no claro, definido pelo usuário em 2026-10-14; o DS em si não tem verde). Contraste do claro conferido por conta: ≥ 5:1 sobre `#f6f6f6`. Uso: preenchimento de slider alterado, seleção, foco, selo de modulação.
 - Estados: erro e aviso com ícone e texto, nunca só cor.
 - Tema claro: a primeira entrega é só escuro. Claro entra depois, com tokens semânticos já prontos.
 
@@ -135,12 +135,12 @@ Duas peças, em duas versões. Fonte HTML no DS, saída PNG.
 - 16:9: faixa horizontal com 5 passos numerados, cada um com ícone de linha e captura recortada.
 - Carrossel 4:5, 6 telas: capa + 5 passos. (1) Descreva o set no chat com `/vj`; (2) o projeto chega montado; (3) ajuste com os sliders; (4) avalie; (5) exporte.
 
-Regras visuais: mesma linguagem do DS v2, ícones de linha de 1,5 px (desenhados em SVG, sem biblioteca), diagramas com linhas finas, capturas reais do app (não ilustração), um único acento ciano para destacar o caminho principal, texto de no mínimo 28 px no carrossel e 22 px no 16:9. Tom seco e técnico, sem humor.
+Regras visuais: mesma linguagem do DS v2, ícones de linha de 1,5 px (desenhados em SVG, sem biblioteca), diagramas com linhas finas, capturas reais do app (não ilustração), um único acento verde para destacar o caminho principal, texto de no mínimo 28 px no carrossel e 22 px no 16:9. Tom seco e técnico, sem humor.
 Pré-requisito: capturas boas dependem da UI nova. Por isso as imagens entram **depois** da 14a (ou em duas rodadas: versão com a UI atual agora, regerada depois).
 
 ## 10. Em aberto
 
-- Cor exata do acento (ciano `#3de8ff` é ponto de partida; validar contraste e daltonismo).
+- Cor exata do acento (verde `#00ff3c`; falta validar daltonismo).
 - Tema claro: depois da primeira entrega ou nunca?
 - Imagens: gerar já com a UI atual ou esperar a 14a?
 - Tags do GitHub: criar `v3.17.0` e apagar `v3.16.0`.

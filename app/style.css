@@ -420,7 +420,7 @@ html.stagemode #toast,html.stagemode #hint{display:none!important}
    piso de 12px no texto de conteúdo (11px só em microrrótulo). Spec: docs/brand/UI-REDESIGN-PROPOSTA.md */
 :root{
   --s1:#0d0d0d; --s2:#161616; --s3:#202020;
-  --accent:#3de8ff; --accent-ink:#00131a; --accent-soft:rgb(61 232 255 / .18);
+  --accent:#00ff3c; --accent-ink:#001a07; --accent-soft:rgb(0 255 60 / .18);
   --r:3px;
   --fs-xs:11px; --fs-s:12px; --fs-m:13px; --fs-l:16px; --fs-xl:20px; --fs-2xl:25px;
   --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px;
@@ -429,8 +429,8 @@ html.stagemode #toast,html.stagemode #hint{display:none!important}
   --shadow-pop:0 8px 24px rgb(0 0 0 / .5);
   --well:var(--s2); --soft:var(--s1); --faint:#707070;
 }
-:root[data-theme="light"]{--s1:#f6f6f6; --s2:#ececec; --s3:#e2e2e2; --accent:#006f99; --accent-ink:#ffffff; --accent-soft:rgb(0 111 153 / .16); --track:#d0d0d0; --fill:#555555; --shadow-pop:0 8px 24px rgb(0 0 0 / .16)}
-@media (prefers-color-scheme:light){:root[data-theme="auto"]{--s1:#f6f6f6; --s2:#ececec; --s3:#e2e2e2; --accent:#006f99; --accent-ink:#ffffff; --accent-soft:rgb(0 111 153 / .16); --track:#d0d0d0; --fill:#555555; --shadow-pop:0 8px 24px rgb(0 0 0 / .16)}}
+:root[data-theme="light"]{--s1:#f6f6f6; --s2:#ececec; --s3:#e2e2e2; --accent:#007a22; --accent-ink:#ffffff; --accent-soft:rgb(0 122 34 / .16); --track:#d0d0d0; --fill:#555555; --shadow-pop:0 8px 24px rgb(0 0 0 / .16)}
+@media (prefers-color-scheme:light){:root[data-theme="auto"]{--s1:#f6f6f6; --s2:#ececec; --s3:#e2e2e2; --accent:#007a22; --accent-ink:#ffffff; --accent-soft:rgb(0 122 34 / .16); --track:#d0d0d0; --fill:#555555; --shadow-pop:0 8px 24px rgb(0 0 0 / .16)}}
 
 /* texto: caixa-alta só em abas, botões, títulos e microrrótulos; rótulos de parâmetro e ajuda em caixa normal */
 html,body{font-size:var(--fs-s);letter-spacing:.01em;text-transform:none}
@@ -509,7 +509,7 @@ input[type=range]{height:24px}
 }
 
 /* 14a-2 · S3: trilho de ícones à direita (abas verticais, ícone de linha de 1,5px e rótulo) */
-#panel{display:grid;grid-template-columns:76px minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}
+#panel{display:grid;grid-template-columns:84px minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}
 #panelHead{display:contents}
 #panelHead .pbtns{grid-column:2;grid-row:1}
 #tabs{grid-column:1;grid-row:1 / span 2;display:flex;flex-direction:column;gap:2px;padding:var(--sp-2) 6px;border-right:1px solid var(--rule);border-bottom:0;overflow-y:auto;scrollbar-width:none;background:var(--bg)}
@@ -590,3 +590,9 @@ input[type=range]{height:24px}
 #lib .lrow .nm{text-transform:none;letter-spacing:.01em}
 #lib .lrow .ty{text-transform:none;letter-spacing:.02em}
 #lib .lrow input[type=number]{width:56px}
+
+/* 14a-2 · tipografia do DS: Helvetica no texto e nas descrições; Martian Mono em títulos e categorias */
+#tabs button,#libTabs button,#top .seg button,.lbl,.lrow .ty,h2.sec,summary,#libOpen,#panelOpen{font-family:var(--font-title)}
+#tabs button{font-size:var(--fs-xs);letter-spacing:.02em}
+#libTabs button{font-size:var(--fs-xs);letter-spacing:.02em}
+.lrow .ty{font-size:var(--fs-xs);letter-spacing:.02em}
