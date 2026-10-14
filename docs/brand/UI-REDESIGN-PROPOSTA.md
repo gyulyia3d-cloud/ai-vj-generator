@@ -144,3 +144,52 @@ Pré-requisito: capturas boas dependem da UI nova. Por isso as imagens entram **
 - Tema claro: depois da primeira entrega ou nunca?
 - Imagens: gerar já com a UI atual ou esperar a 14a?
 - Tags do GitHub: criar `v3.17.0` e apagar `v3.16.0`.
+
+## 11. Referências de layout (adendo de 2026-10-14)
+
+O usuário enviou três referências: um editor de dither (barra superior, painel esquerdo de biblioteca, canvas com barra de ações flutuante, trilho de ícones e painel de propriedades à direita), um popup de efeito (miniatura de pré-visualização, selects, linhas de campo + slider, botão de adicionar) e o Photoshop com painel de Timeline. **Vale só o layout, a posição e os menus**; fonte, cor e linguagem seguem o GYULYIA DS v2 (seção 4).
+
+Mapa para o app (substitui o diagrama da seção 6 no que divergir):
+
+| Referência | No AI VJ Generator |
+|---|---|
+| Barra superior: marca e seletor de modo à esquerda | `GYULYIA® AI VJ Generator`, nome do projeto, seletor Criativo/Avançado |
+| Barra superior: zoom, ajustar, comparar, desfazer, refazer, camadas no centro | Ajustar, 100%, zoom, grade, safe, desfazer, refazer, histórico |
+| Barra superior: ajuda e menu à direita | Carregar briefing, tema, idioma, ajuda |
+| Painel esquerdo de biblioteca (busca, abas, miniaturas) | Composições e Camadas, com busca e miniaturas; recolhível |
+| Barra de ações flutuante sobre o canvas | Cor, Mostrar camadas, Gravar, Tela limpa, Cheia, **Exportar** em destaque |
+| Trilho de ícones + painel de propriedades | Parâmetros, Texto, Mídia, Áudio, Superfície, Ficha, Exportar; seções com cabeçalho `/ NOME` |
+| Photoshop: painel Timeline embaixo | Timeline (seção 13) |
+
+Slider em duas variantes do mesmo componente: **empilhada** no painel de propriedades (rótulo à esquerda, valor à direita, trilha embaixo na largura toda) e **em linha** no popover (rótulo, chip de valor, trilha).
+
+## 12. Popover "Adicionar" (efeitos e camadas)
+
+Avaliação: **vale fazer**, com limites.
+- Ganho: tira do painel de propriedades o fluxo de escolher o que entra no projeto; deixa o painel só para editar. É o padrão de software criativo (Adobe: Adicionar camada, Adicionar ajuste).
+- Conteúdo: abas pelas 9 categorias de camada, grade de miniaturas, busca; ao escolher, pré-visualização leve (a mesma da antiga aba +Efeitos, por passar o mouse ou tocar), selects e 2 a 4 parâmetros essenciais em linha, e o botão **Adicionar camada**. Os demais parâmetros ficam no painel depois de adicionada.
+- Limites: sem editor de parâmetros completo no popover (duplicaria o painel e dobraria o teste); pré-visualização com custo limitado (um quadro a 256 px, sem loop contínuo); fecha com Esc e ao clicar fora; foco preso dentro enquanto aberto; adicionar é uma ação só no histórico (desfaz com um Ctrl+Z).
+- Onde abre: botão `+` no cabeçalho do painel de Camadas e botão Adicionar na barra flutuante. Em tela estreita vira gaveta.
+- O que ele **não** é: não traz de volta a aba +Efeitos removida na 3.4. As receitas continuam sendo o seletor das camadas shader e código; o popover só chama esse mesmo seletor.
+
+## 13. Timeline (estilo Photoshop, 14b)
+
+Avaliação: **vale fazer, e o modelo de dados já pede por ela.** O Animation IR já tem fases da composição, eventos na batida, comportamento temporal por camada (lead, follow, counter, ambient, accent, reveal, hold), atraso em semicolcheias (`p.phase`) e `loopFrames`. Hoje isso só aparece como números; numa timeline fica visível e arrastável.
+
+Layout (como no Photoshop): painel acoplado embaixo do canvas, recolhível e com altura arrastável.
+- Cabeçalho à esquerda: transporte (início, quadro anterior, play/pause, próximo quadro, áudio) e o zoom da timeline.
+- Régua: compassos, tempos e quadros (`0377/0450`), com a cabeça de leitura ligada ao scrub atual. Faixas de fase da composição coloridas em cinza e marcadores de evento na batida.
+- Uma faixa por camada, de baixo para cima como no painel de Camadas: nome à esquerda; à direita uma barra que mostra o comportamento temporal e o atraso (início deslocado em semicolcheias). Olho e trava iguais aos do painel de Camadas.
+- Faixa de áudio no fim: bandas (bass, mid, high, rms) ou a fonte de teste, com os onsets marcados.
+- O loop é a janela: fim da régua = fim do loop, e a barra mostra se o loop fecha.
+
+Entregas em fases (cada uma com teste visual):
+1. **T1, somente leitura:** régua, cabeça de leitura, faixas de fase e evento, uma faixa por camada com comportamento e atraso, faixa de áudio. Substitui a linha do scrub. Não muda projeto, formato nem render.
+2. **T2, edição do que já existe:** arrastar a barra de uma camada muda `p.phase` (atraso) em passos de semicolcheia; arrastar um evento muda a batida do evento. Mexe só em campos que já existem; desfaz como qualquer ajuste.
+3. **T3, entrada e saída por camada (só se você quiser):** hoje toda camada vive o loop inteiro. Dar início e fim a cada uma é mudança de modelo: campo novo no esquema, passo de migração (regra da fase 19), mudança no render e teste visual. Decidir depois de usar T1 e T2.
+
+Riscos: custo de desenhar a timeline a cada quadro (desenhar em canvas separado, só a cabeça de leitura se move); manter o loop fechando; teclado e leitor de tela para a régua e as barras (cada barra é um controle com rótulo e valor).
+
+## 14. Ordem revisada da fase 14
+
+14a-1 tokens v2 e slider (feito) · 14a-2 casca (barra superior, barra flutuante, trilho de ícones, painel esquerdo, slider empilhado) · 14a-3 popover Adicionar · 14b-T1 timeline somente leitura · 14b-T2 timeline editável · T3 só por decisão. A fase 13 (partículas em GPU) começa depois da 14a-2, já com os controles novos.
