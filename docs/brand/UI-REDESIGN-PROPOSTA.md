@@ -1,0 +1,146 @@
+# AI VJ Generator: proposta de UI/UX (fase 14a) e imagens do GitHub
+
+Status: **proposta para discussão**, nada implementado. Escrita em 2026-10-14 depois de auditar a 3.17.0 no navegador (1440×900, biblioteca padrão carregada).
+Decisões já tomadas pelo usuário: DS v2 funcional; fonte em `docs/brand/` com espelho em `GYULYIA-Design-System/ui_kits/aivj`; base da UI como fase 14a, antes da 13.
+
+## 1. Enquadramento do problema
+
+O app é um sistema de autoria generativa com muitos controles (75 sliders, 40 campos numéricos, 11 abas numa coluna de 280–400 px). Quem não escreveu o código não sabe onde ficar. A meta é ficar com a cara de um software de criação profissional (Adobe), mais bonito, com sliders que convidam a mexer, sem perder a identidade GYULYIA.
+
+Sucesso (mensurável):
+- Texto de controle nunca abaixo de 12 px (hoje: ~1.000 textos entre 8,5 e 10,5 px).
+- Controle de desktop com 28 px de altura no mínimo (hoje: botões de 16 px). Em ponteiro grosso, 44 px.
+- Qualquer parâmetro da camada selecionada a no máximo 2 cliques de distância, sem trocar de aba.
+- Primeira abertura sem diálogo empilhado: no máximo 1 passo antes de ver o canvas.
+- Todo slider mostra valor, estado (padrão ou alterado) e se está modulado, sem abrir nada.
+
+## 2. Auditoria da UI atual (priorizada)
+
+| P | Problema | Dimensão | Correção |
+|---|---|---|---|
+| P1 | Texto de 8,5–10,5 px em quase tudo | Densidade / legibilidade | Escala tipográfica com piso de 12 px |
+| P1 | 11 abas planas (Compose, Layers, Params, Text, Media, Audio, Project, Surface, Sheet, Export, Guide) | Hierarquia | Áreas de trabalho + painel Propriedades contextual |
+| P1 | Slider de 1 px, sem preenchimento, valor em campo separado | Affordance | Slider novo (seção 5) |
+| P2 | Dois diálogos seguidos na abertura | Carga cognitiva | Um passo de entrada + tour curto opcional |
+| P2 | Parágrafo de ajuda no topo de cada aba | Densidade | Ícone `?` com dica; guia vira tour |
+| P2 | Barra superior de 66 px com botões quebrando linha | Hierarquia | Menu + seletor de área de trabalho + ações agrupadas |
+| P3 | Caixa-alta em rótulos densos | Escaneabilidade | Caixa-alta só em abas, títulos e eyebrows |
+
+## 3. Princípios (em ordem de prioridade para conflito)
+
+1. **A obra manda.** O canvas é o maior elemento da tela; a interface recua em tom e cor.
+2. **Um acento, um significado.** A cor de acento só marca o que está ativo, alterado ou modulado.
+3. **Mostrar o estado, não pedir para abrir.** Valor, padrão/alterado e modulação ficam visíveis no próprio controle.
+4. **Perto é junto.** Rótulo mais perto do seu controle do que do vizinho; grupos separados por espaço antes de linha.
+5. **Ajuda onde a dúvida nasce.** Dica no controle, não parágrafo no topo.
+
+## 4. DS v2 funcional (extensão do GYULYIA DS)
+
+Mantém: Martian Mono, base preto/branco/cinza, linhas finas como estrutura, tom seco, sem emoji.
+Passa a permitir (só nos controles da ferramenta, nunca nas imagens de marca sem aprovação):
+
+**Cor**
+- Elevação por tom de cinza (modo escuro): `--bg #000`, `--s1 #0d0d0d` (painéis), `--s2 #161616` (cartões, campos), `--s3 #202020` (menus, dicas). Linhas `#262626`.
+- Texto: `#f2f2f2` principal, `#999` secundário, `#666` terciário (mínimo 4,5:1 sobre `--s1` para o secundário em corpo).
+- Acento funcional: **ciano de render** (o DS já tem `02-render-cyan.svg`), valor inicial `#3de8ff`, a validar com contraste e daltonismo. Uso: preenchimento de slider alterado, seleção, foco, selo de modulação.
+- Estados: erro e aviso com ícone e texto, nunca só cor.
+- Tema claro: a primeira entrega é só escuro. Claro entra depois, com tokens semânticos já prontos.
+
+**Forma**
+- Raio 3 px em campos, botões e cartões de camada; 0 px no resto (painéis, linhas, canvas).
+- Sombra só em menus e dicas flutuantes (`0 8px 24px rgb(0 0 0 / .5)`). Painéis acoplados não têm sombra.
+
+**Tipografia** (razão ~1,25; piso de 12 px para conteúdo)
+- 11 px: só microrrótulo em caixa-alta com tracking de 0,08em.
+- 12 px: rótulos de parâmetro, valores. 13 px: texto de ajuda e campos.
+- 16 / 20 / 25 px: títulos de painel, de área, de diálogo.
+- Altura de linha: 1,2 em títulos, 1,5 em texto corrido. Valores numéricos com `tabular-nums`.
+
+**Espaçamento** (escala de 4): 4, 8, 12, 16, 24, 32.
+- Dentro do grupo: 4–8. Entre grupos: 16–24. Entre seções: 32. A razão é o que cria a hierarquia.
+
+**Movimento:** 120–200 ms, easing padrão, nada elástico. Respeita `prefers-reduced-motion`.
+
+## 5. Slider e painel Propriedades
+
+Slider (um componente, usado em todo parâmetro):
+- Linha: `rótulo (arrastável)` · `slider` · `valor` · `reset`.
+- Trilha de 4 px, raio 2 px. Preenchimento cinza claro quando no padrão, ciano quando alterado. Alça de 14 px, com anel de foco visível.
+- Valor num chip editável (clique para digitar, aceita contas como `1920/2`, como hoje). Setas ajustam; Shift grosso, Alt fino; duplo clique reseta.
+- Ponto de reset só aparece quando o valor difere do padrão.
+- Selo de modulação (áudio, env, LFO) como ícone pequeno à direita; clique abre a origem da modulação.
+- Hit area de 28 px de altura (44 px em ponteiro grosso), mesmo com trilha fina.
+- Estados: padrão, hover, foco, arrastando, desativado, alterado, modulado. Todos desenhados e testados.
+
+Painel Propriedades:
+- Segue a camada selecionada (ou a composição, se nada selecionado).
+- Seções recolhíveis por assunto (Forma, Cor, Movimento, Áudio, Mistura), com contador de valores alterados no cabeçalho e memória do estado aberto/fechado.
+- Busca de parâmetro no topo (filtra e abre as seções).
+- Pré-ajustes como miniaturas, quando o gerador tiver receitas.
+
+## 6. Estrutura da tela (grade e áreas)
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│ Menu · projeto · [Compor|Estilo|Movimento|Superfície|Exportar]  ⌘K  ? │  48 px
+├──┬───────────────────────────────────────────────┬──────────────────┤
+│  │                                               │ Propriedades     │
+│T │                  CANVAS                       │ (camada ativa)   │
+│r │         (HUD artístico preservado)            ├──────────────────┤
+│i │                                               │ Camadas          │
+│l │                                               │ (olho·trava·mist)│
+├──┴───────────────────────────────────────────────┴──────────────────┤
+│ Transporte: ▶ · BPM · tap · quadro · régua · gravar          métricas │  44 px
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+- Grade de 12 colunas no centro, trilho de ferramentas de 48 px, coluna direita de 320 px (arrastável entre 280 e 480), margem de 16 px.
+- Áreas de trabalho trocam quais painéis aparecem e em que tamanho. O conteúdo das 11 abas atuais mapeia assim: Compor = Compose + Layers; Estilo = Params + Text + Media; Movimento = Audio + temporal; Superfície = Surface + Sheet; Exportar = Export + Project; Guide vira `?` e tour.
+- Larguras estreitas (< 1024 px): painéis viram gavetas, canvas em tela cheia, transporte compacto.
+- Atalhos preservados. Nada de lógica nova de render: só camada de apresentação (`app/style.css`, `ui-core.js`, `panels.js` e módulos de painel).
+
+## 7. Fluxo de experiência (mapa resumido)
+
+1. **Chega** com um briefing e o projeto do Claude pronto. A tela abre direto no canvas, com uma faixa de 1 linha: "Projeto carregado. Ajustar → Avaliar → Exportar".
+2. **Entende** em 1 passo (tour de 3 telas, opcional, reabre pelo `?`).
+3. **Ajusta** camada por camada pelo painel Propriedades. Sliders mostram o que mudou.
+4. **Avalia** na área Movimento/Superfície com o crítico (fase 15 no futuro).
+5. **Exporta** na área Exportar, com resumo do que sai (PNG sequência, MP4, região).
+
+Momentos de atrito a vigiar: abrir o primeiro projeto, achar um parâmetro, desfazer, saber o que mudou, exportar uma região.
+
+## 8. Plano da fase 14a (escopo e aceitação)
+
+Escopo, nesta ordem:
+1. Tokens v2 (cor, tipo, espaço, raio, movimento) em `app/style.css`, com tema escuro.
+2. Componente de slider + chip de valor + selo de modulação, usado primeiro no painel de parâmetros.
+3. Painel Propriedades com seções recolhíveis e busca.
+4. Barra superior nova, seletor de áreas de trabalho, trilho de ferramentas.
+5. Diálogo de entrada único, tour, `?` em vez de parágrafos.
+6. Camadas num painel com olho, trava e modo de mistura.
+
+Aceitação: critérios da seção 1, mais teste visual por captura em 1440×900, 1024×768 e 390×844; `check.mjs` verde; projetos antigos abrem iguais; nenhum controle perdeu função (lista gerada do estado atual); contraste conferido por script.
+
+Riscos: perder um atalho ou parâmetro escondido; piorar a performance do painel com 75 sliders (virtualizar seções fechadas); o `index.html` é gerado, então a mudança vai nos módulos de `app/`, nunca no HTML final.
+
+## 9. Imagens do GitHub
+
+Duas peças, em duas versões. Fonte HTML no DS, saída PNG.
+
+**Intro**
+- 16:9 (1920×1080): título + frase + diagrama da cadeia `briefing → interpretação → direção de arte → composição → animação → geração → render → PNG/MP4` + 3 saídas + captura real do app.
+- Carrossel 4:5 (1080×1350), 6 telas: (1) capa; (2) o que é, em 1 frase; (3) a cadeia, em diagrama de linha; (4) o que sai (PNG sequência, MP4, região); (5) captura do app com 3 chamadas; (6) como começar.
+
+**How-to**
+- 16:9: faixa horizontal com 5 passos numerados, cada um com ícone de linha e captura recortada.
+- Carrossel 4:5, 6 telas: capa + 5 passos. (1) Descreva o set no chat com `/vj`; (2) o projeto chega montado; (3) ajuste com os sliders; (4) avalie; (5) exporte.
+
+Regras visuais: mesma linguagem do DS v2, ícones de linha de 1,5 px (desenhados em SVG, sem biblioteca), diagramas com linhas finas, capturas reais do app (não ilustração), um único acento ciano para destacar o caminho principal, texto de no mínimo 28 px no carrossel e 22 px no 16:9. Tom seco e técnico, sem humor.
+Pré-requisito: capturas boas dependem da UI nova. Por isso as imagens entram **depois** da 14a (ou em duas rodadas: versão com a UI atual agora, regerada depois).
+
+## 10. Em aberto
+
+- Cor exata do acento (ciano `#3de8ff` é ponto de partida; validar contraste e daltonismo).
+- Tema claro: depois da primeira entrega ou nunca?
+- Imagens: gerar já com a UI atual ou esperar a 14a?
+- Tags do GitHub: criar `v3.17.0` e apagar `v3.16.0`.
