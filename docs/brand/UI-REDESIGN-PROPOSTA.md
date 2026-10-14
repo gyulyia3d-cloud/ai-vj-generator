@@ -193,3 +193,12 @@ Riscos: custo de desenhar a timeline a cada quadro (desenhar em canvas separado,
 ## 14. Ordem revisada da fase 14
 
 14a-1 tokens v2 e slider (feito) · 14a-2 casca (barra superior, barra flutuante, trilho de ícones, painel esquerdo, slider empilhado) · 14a-3 popover Adicionar · 14b-T1 timeline somente leitura · 14b-T2 timeline editável · T3 só por decisão. A fase 13 (partículas em GPU) começa depois da 14a-2, já com os controles novos.
+
+## 15. Decisões de forma e caixa (2026-10-14, substituem o que divergir na seção 4)
+
+- **Quinas retas em toda a UI**, sem exceção: botões, campos, painéis, abas, barra de ações. A alça do slider é um retângulo (10×18 px), nunca redonda. `--r` vale 0.
+- **Todo texto em caixa alta**, como no DS (a exceção é o que o usuário digita em campo de texto livre).
+- **Barra de ações sob o canvas:** retangular, de fundo preto, com botão **Ocultar** e um botão **Barra** para trazê-la de volta.
+- **Fontes:** Helvetica no texto e nas descrições; Martian Mono em títulos e categorias.
+- **Acento:** verde `#00ff3c` (claro `#007a22`).
+- Sombra e raio saem do DS v2; ficam a elevação por tom de cinza e o acento verde.

@@ -48,18 +48,18 @@ try {
   await sleep(300);
 
   console.log('1. divisor e menu');
-  check(await panelW() === 400, 'largura inicial do menu é 400 px', 'obtido ' + await panelW());
+  check(await panelW() === 440, 'largura inicial do menu é 440 px', 'obtido ' + await panelW());
   const sp = await rect('#split');
   await mouse('mousePressed', sp.x + sp.w / 2, sp.y + 200); await mouse('mouseMoved', sp.x - 60, sp.y + 200); await mouse('mouseMoved', sp.x - 100, sp.y + 200); await mouse('mouseReleased', sp.x - 100, sp.y + 200);
   await sleep(150);
-  const w1 = await panelW(); check(w1 > 480 && w1 < 520, 'arrastar o divisor 100 px alarga o menu (' + w1 + ')', 'obtido ' + w1);
+  const w1 = await panelW(); check(w1 > 520 && w1 < 560, 'arrastar o divisor 100 px alarga o menu (' + w1 + ')', 'obtido ' + w1);
   check(await E(`localStorage.getItem('aivj-panelW')`) === String(w1), 'a largura fica salva', await E(`localStorage.getItem('aivj-panelW')`));
   await E(`document.querySelector('#split').focus(); 1`); await key('ArrowRight', { code: 'ArrowRight', vk: 39 });
   check(await panelW() === w1 - 16, 'seta para a direita estreita 16 px', 'obtido ' + await panelW());
-  await key('Home', { code: 'Home', vk: 36 }); check(await panelW() === 280, 'Home vai ao mínimo (280)', 'obtido ' + await panelW());
+  await key('Home', { code: 'Home', vk: 36 }); check(await panelW() === 360, 'Home vai ao mínimo (360)', 'obtido ' + await panelW());
   await key('End', { code: 'End', vk: 35 }); const wmax = await panelW(); check(wmax >= 700 && wmax <= 760, 'End vai ao máximo (' + wmax + ')', 'obtido ' + wmax);
   await E(`document.querySelector('#split').dispatchEvent(new MouseEvent('dblclick', { bubbles: true })); 1`); await sleep(100);
-  check(await panelW() === 400, 'duplo clique restaura 400 px', 'obtido ' + await panelW());
+  check(await panelW() === 440, 'duplo clique restaura 440 px', 'obtido ' + await panelW());
   const vw0 = (await rect('#view')).w;
   await E(`document.querySelector('#panelOpen').click(); 1`); await sleep(200);
   const vw1 = (await rect('#view')).w;
@@ -67,7 +67,7 @@ try {
   check(await E(`getComputedStyle(document.querySelector('#panelOpen')).display`) !== 'none', 'botão de reabrir aparece', 'sumiu');
   check(await E(`localStorage.getItem('aivj-panelOpen')`) === 'false', 'estado minimizado fica salvo', '');
   await E(`document.querySelector('#panelOpen').click(); 1`); await sleep(200);
-  check(await panelW() === 400, 'reabrir volta ao 400 px', 'obtido ' + await panelW());
+  check(await panelW() === 440, 'reabrir volta ao 440 px', 'obtido ' + await panelW());
 
   console.log('\n2. tema');
   const bg0 = await E(`getComputedStyle(document.body).backgroundColor`);

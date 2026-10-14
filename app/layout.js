@@ -2,7 +2,7 @@
    Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html entre os marcadores LAYOUT. Mesmo escopo do motor (IIFE do index.html): sem import/export. */
 /* ---------- V5 · layout, tema, histórico, números, coordenadas ---------- */
 const ROOT_EL = document.documentElement, APP = $('#app');
-ST.hl = []; ST.fl = []; ST.pend = null; ST.panelW = store.get('panelW', 400); const defViewH = () => innerHeight < 700 ? 34 : 46; ST.viewH = store.get('viewH', null); ST.viewHCustom = ST.viewH != null; if (!ST.viewHCustom) ST.viewH = defViewH(); ST.zoneDraw = null; ST.zoneTmp = null;
+ST.hl = []; ST.fl = []; ST.pend = null; ST.panelW = store.get('panelW', 440); const defViewH = () => innerHeight < 700 ? 34 : 46; ST.viewH = store.get('viewH', null); ST.viewHCustom = ST.viewH != null; if (!ST.viewHCustom) ST.viewH = defViewH(); ST.zoneDraw = null; ST.zoneTmp = null;
 
 /* tema: escuro (marca) · claro · sistema */
 const THEMES = [['dark', 'Escuro'], ['light', 'Claro'], ['auto', 'Sistema']];
@@ -18,7 +18,7 @@ $('#themeBtn').onclick = () => { const i = THEMES.findIndex(x => x[0] === ST.the
 /* layout: divisor arrastável, minimizar, empilhado no celular */
 const MQ_STACK = matchMedia('(max-width:900px)'), MQ_LAND = matchMedia('(max-width:900px) and (orientation:landscape) and (max-height:540px)');
 const stacked = () => MQ_STACK.matches && !MQ_LAND.matches;
-const panelRange = () => [280, Math.max(280, Math.min(760, Math.round(innerWidth * 0.65)))];
+const panelRange = () => [360, Math.max(360, Math.min(760, Math.round(innerWidth * 0.65)))];
 function layoutApply(save) {
   const [lo, hi] = panelRange(), split = $('#split');
   if (!ST.viewHCustom) ST.viewH = defViewH();
@@ -46,7 +46,7 @@ function setPanelOpen(open, quiet) {
   });
   const end = () => { if (!drag) return; drag = null; split.classList.remove('drag'); document.body.classList.remove('resizing'); layoutApply(true); fit(); };
   split.addEventListener('pointerup', end); split.addEventListener('pointercancel', end);
-  split.addEventListener('dblclick', () => { ST.panelW = 400; ST.viewHCustom = false; ST.viewH = defViewH(); layoutApply(true); toast('Tamanho padrão do menu', 900); });
+  split.addEventListener('dblclick', () => { ST.panelW = 440; ST.viewHCustom = false; ST.viewH = defViewH(); layoutApply(true); toast('Tamanho padrão do menu', 900); });
   split.addEventListener('keydown', e => {
     const st = stacked(), step = e.shiftKey ? 64 : 16, [lo, hi] = panelRange(); let used = true; if (st) ST.viewHCustom = true;
     if (e.key === 'ArrowLeft' && !st) ST.panelW += step; else if (e.key === 'ArrowRight' && !st) ST.panelW -= step;

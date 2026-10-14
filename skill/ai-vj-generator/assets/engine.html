@@ -214,7 +214,7 @@ pre.tree{font-size:var(--fs-xs);line-height:1.6;background:var(--well);border:1p
   --font-text:"Helvetica Neue",Helvetica,Arimo,Arial,sans-serif;
   --mono:var(--font-title); --display:var(--font-title);
   --ease:cubic-bezier(.4,0,.2,1); --t-fast:120ms; --t-base:160ms; --t-slow:200ms;
-  --panel-w:400px; --view-h:46dvh; --split:8px;
+  --panel-w:440px; --view-h:46dvh; --split:8px;
   --safe-b:env(safe-area-inset-bottom,0px); --safe-l:env(safe-area-inset-left,0px); --safe-r:env(safe-area-inset-right,0px);
   --hit:30px;
 }
@@ -520,7 +520,7 @@ input[type=range]{height:24px}
 }
 
 /* 14a-2 · S3: trilho de ícones à direita (abas verticais, ícone de linha de 1,5px e rótulo) */
-#panel{display:grid;grid-template-columns:84px minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}
+#panel{display:grid;grid-template-columns:92px minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}
 #panelHead{display:contents}
 #panelHead .pbtns{grid-column:2;grid-row:1}
 #tabs{grid-column:1;grid-row:1 / span 2;display:flex;flex-direction:column;gap:2px;padding:var(--sp-2) 6px;border-right:1px solid var(--rule);border-bottom:0;overflow-y:auto;scrollbar-width:none;background:var(--bg)}
@@ -607,6 +607,36 @@ input[type=range]{height:24px}
 #tabs button{font-size:var(--fs-xs);letter-spacing:.02em}
 #libTabs button{font-size:var(--fs-xs);letter-spacing:.02em}
 .lrow .ty{font-size:var(--fs-xs);letter-spacing:.02em}
+
+/* 14a-2 · DS estrito (decisão de 2026-10-14): quinas retas em tudo, slider retangular, texto em caixa alta, barra de ações preta e ocultável */
+:root{--r:0}
+html,body{letter-spacing:.04em;text-transform:uppercase}
+.note,p.note,.kv dd,.val li,.pc>label,select{text-transform:uppercase}
+.pc>label{letter-spacing:.06em}
+#tabs button,#libTabs button{text-transform:uppercase;letter-spacing:.02em}
+#libSearch,#lib .lrow .nm,#lib .lrow .ty{text-transform:uppercase;letter-spacing:.04em}
+#libSearch::placeholder{text-transform:uppercase}
+input[type=range]::-webkit-slider-runnable-track{border-radius:0}
+input[type=range]::-moz-range-track,input[type=range]::-moz-range-progress{border-radius:0}
+input[type=range]::-webkit-slider-thumb{width:10px;height:18px;margin-top:-7px;border:0;border-radius:0;background:var(--fg);box-shadow:none}
+input[type=range]::-moz-range-thumb{width:10px;height:18px;border:0;border-radius:0;background:var(--fg);box-shadow:none}
+input[type=range]:hover::-webkit-slider-thumb{box-shadow:0 0 0 1px var(--accent)}
+input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 2px var(--accent)}
+input[type=range]:active::-webkit-slider-thumb{background:var(--accent);box-shadow:none}
+@media (pointer:coarse){
+  input[type=range]::-webkit-slider-thumb{width:14px;height:28px;margin-top:-12px}
+  input[type=range]::-moz-range-thumb{width:14px;height:28px}
+}
+@media (min-width:901px){
+  #bar{border-radius:0;background:var(--bg);box-shadow:none;backdrop-filter:none;border:1px solid var(--rule)}
+  #bar button{border-radius:0;border-color:var(--rule)}
+  #bar button:hover:not(:disabled){background:var(--s3);border-color:var(--fg)}
+  #bar #expBtn{border-color:var(--accent)}
+}
+#app.barhide #bar{display:none}
+#barShow{position:absolute;left:50%;bottom:var(--sp-4);transform:translateX(-50%);z-index:6;background:var(--bg);border:1px solid var(--rule)}
+#barShow[hidden]{display:none}
+#app.clean #barShow{display:none}
 /*__STYLE_END__*/
 </style>
 </head>
@@ -688,6 +718,7 @@ input[type=range]{height:24px}
       <div id="drop">Solte imagem, vídeo ou fonte</div>
       <div id="drawHint" role="status"></div>
     </div>
+    <button id="barShow" aria-label="Mostrar a barra" title="Mostrar a barra" hidden>Barra ▴</button>
     <button id="libOpen" aria-label="Abrir a biblioteca" title="Abrir a biblioteca" hidden>Biblioteca ›</button>
     <button id="panelOpen" aria-label="Minimizar o menu" aria-expanded="true" title="Minimizar ou abrir o menu (G)">Menu ›</button>
   </main>
@@ -708,9 +739,10 @@ input[type=range]{height:24px}
     <button id="cleanBtn" title="H">Tela limpa</button>
     <button id="fsBtn" title="F">Cheia</button>
     <button id="expBtn" title="Abrir a aba Exportar">Exportar</button>
+    <button id="barHide" aria-label="Ocultar a barra" title="Ocultar a barra">Ocultar ▾</button>
   </nav>
 
-  <div id="split" role="separator" tabindex="0" aria-orientation="vertical" aria-valuemin="280" aria-valuemax="760" aria-valuenow="400" aria-controls="panel"></div>
+  <div id="split" role="separator" tabindex="0" aria-orientation="vertical" aria-valuemin="360" aria-valuemax="760" aria-valuenow="440" aria-controls="panel"></div>
 
   <aside id="panel" aria-label="Controles">
     <div id="panelHead">
@@ -4126,7 +4158,7 @@ function bindSpec(el) {
    Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html entre os marcadores LAYOUT. Mesmo escopo do motor (IIFE do index.html): sem import/export. */
 /* ---------- V5 · layout, tema, histórico, números, coordenadas ---------- */
 const ROOT_EL = document.documentElement, APP = $('#app');
-ST.hl = []; ST.fl = []; ST.pend = null; ST.panelW = store.get('panelW', 400); const defViewH = () => innerHeight < 700 ? 34 : 46; ST.viewH = store.get('viewH', null); ST.viewHCustom = ST.viewH != null; if (!ST.viewHCustom) ST.viewH = defViewH(); ST.zoneDraw = null; ST.zoneTmp = null;
+ST.hl = []; ST.fl = []; ST.pend = null; ST.panelW = store.get('panelW', 440); const defViewH = () => innerHeight < 700 ? 34 : 46; ST.viewH = store.get('viewH', null); ST.viewHCustom = ST.viewH != null; if (!ST.viewHCustom) ST.viewH = defViewH(); ST.zoneDraw = null; ST.zoneTmp = null;
 
 /* tema: escuro (marca) · claro · sistema */
 const THEMES = [['dark', 'Escuro'], ['light', 'Claro'], ['auto', 'Sistema']];
@@ -4142,7 +4174,7 @@ $('#themeBtn').onclick = () => { const i = THEMES.findIndex(x => x[0] === ST.the
 /* layout: divisor arrastável, minimizar, empilhado no celular */
 const MQ_STACK = matchMedia('(max-width:900px)'), MQ_LAND = matchMedia('(max-width:900px) and (orientation:landscape) and (max-height:540px)');
 const stacked = () => MQ_STACK.matches && !MQ_LAND.matches;
-const panelRange = () => [280, Math.max(280, Math.min(760, Math.round(innerWidth * 0.65)))];
+const panelRange = () => [360, Math.max(360, Math.min(760, Math.round(innerWidth * 0.65)))];
 function layoutApply(save) {
   const [lo, hi] = panelRange(), split = $('#split');
   if (!ST.viewHCustom) ST.viewH = defViewH();
@@ -4170,7 +4202,7 @@ function setPanelOpen(open, quiet) {
   });
   const end = () => { if (!drag) return; drag = null; split.classList.remove('drag'); document.body.classList.remove('resizing'); layoutApply(true); fit(); };
   split.addEventListener('pointerup', end); split.addEventListener('pointercancel', end);
-  split.addEventListener('dblclick', () => { ST.panelW = 400; ST.viewHCustom = false; ST.viewH = defViewH(); layoutApply(true); toast('Tamanho padrão do menu', 900); });
+  split.addEventListener('dblclick', () => { ST.panelW = 440; ST.viewHCustom = false; ST.viewH = defViewH(); layoutApply(true); toast('Tamanho padrão do menu', 900); });
   split.addEventListener('keydown', e => {
     const st = stacked(), step = e.shiftKey ? 64 : 16, [lo, hi] = panelRange(); let used = true; if (st) ST.viewHCustom = true;
     if (e.key === 'ArrowLeft' && !st) ST.panelW += step; else if (e.key === 'ArrowRight' && !st) ST.panelW -= step;
@@ -7180,6 +7212,10 @@ $('#rec').onclick = recToggle;
 $('#cleanBtn').onclick = () => { $('#app').classList.add('clean'); toast('Tela limpa · H para voltar', 1800); setTimeout(fit, 30); };
 $('#fsBtn').onclick = toggleFs;
 $('#expBtn').onclick = () => $('#tabs [data-tab="exp"]').click();
+function setBarHidden(h) { $('#app').classList.toggle('barhide', h); $('#barShow').hidden = !h; store.set('barHidden', h); setTimeout(fit, 30); }
+$('#barHide').onclick = () => setBarHidden(true);
+$('#barShow').onclick = () => setBarHidden(false);
+if (store.get('barHidden', false) === true) setBarHidden(true);
 function setPause(v) { ST.paused = v; if (!v) ST.t0 = performance.now() - ST.n / P.canvas.fps * 1000; $('#pause').setAttribute('aria-pressed', v); $('#pause').textContent = v ? 'Play' : 'Pausa'; $$('video').forEach(x => v && x.pause()); }
 let scrubbing = false;
 $('#scrub').addEventListener('input', e => { scrubbing = true; ST.n = +e.target.value; if (!ST.paused) setPause(true); });

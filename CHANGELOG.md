@@ -2,8 +2,9 @@
 
 ## Em andamento · Fase 14a: base da UI (DS v2 funcional)
 
-- **Tokens v2** em `app/style.css` (bloco V6): elevação por tom de cinza (`--s1`, `--s2`, `--s3`), um acento funcional (`--accent`, o verde da paleta STANDARD do app; escuro `#00ff3c`, claro `#007a22` para manter contraste), raio de 3 px só em controles, escala de texto com piso de 12 px (11 px só em microrrótulo), escala de espaço de 4 px. Spec e racional em `docs/brand/UI-REDESIGN-PROPOSTA.md`.
+- **Tokens v2** em `app/style.css` (bloco V6): elevação por tom de cinza (`--s1`, `--s2`, `--s3`), um acento funcional (`--accent`, o verde da paleta STANDARD do app; escuro `#00ff3c`, claro `#007a22` para manter contraste), quinas retas em tudo (`--r:0`), escala de texto com piso de 11 px, escala de espaço de 4 px. Spec e racional em `docs/brand/UI-REDESIGN-PROPOSTA.md`.
 - **Slider novo:** trilha de 4 px com preenchimento, alça de 14 px, valor em chip, rótulo de parâmetro em caixa normal. O que difere do padrão ganha acento (preenchimento e valor) e só então mostra o botão de restaurar. Módulo `app/slider-ui.js` (só apresentação: escreve `--p` e as classes `hasdef` e `chg`; nunca muda valor nem dispara evento). `ctlHtml` passa a gravar `data-def`.
+- **Regras de forma e caixa (decisão do usuário em 14/10):** nada arredondado, inclusive a alça do slider (retângulo de 10×18 px); todo texto em caixa alta (menos o que o usuário digita); barra de ações retangular, de fundo preto (`--bg`), com botão **Ocultar** e botão **Barra** para trazê-la de volta (estado salvo). Painel de propriedades passa de 400 para 440 px (mínimo de 360), por causa do trilho de ícones.
 - **Tipografia (DS):** Helvetica no texto, rótulos de parâmetro e descrições; Martian Mono em títulos, categorias (trilho, biblioteca, modo, seções) e dados.
 - **Casca nova (14a-2), layout inspirado em editores como o Photoshop e apps de dither, com fontes, cores e linguagem do GYULYIA DS:**
   - **Slider empilhado:** rótulo à esquerda, valor à direita, trilha embaixo na largura toda (`.pc:has(>input[data-num])`).
@@ -11,7 +12,7 @@
   - **Trilho de ícones à direita:** as abas viram ícones de linha (1,5 px) com rótulo, num trilho vertical; o painel de propriedades fica ao lado. Em até 900 px o trilho volta a ser uma faixa horizontal.
   - **Barra de ações flutuante** sobre a vista (só acima de 900 px), com **Exportar** em destaque (abre a aba Exportar).
   - **Biblioteca à esquerda** (Composições e Camadas, com busca e recolher). As abas `comp` e `lay` do trilho continuam existindo, escondidas, e só abrem a biblioteca; a aba padrão do painel passou a ser Parâmetros. Abaixo de 1280 px ela começa recolhida; em até 900 px vira uma gaveta inferior.
-  - `ux_check.mjs` foi atualizado para a nova estrutura: Composições e Camadas ficam na biblioteca, e a conferência de ajuda por aba cobre só as abas do trilho.
+  - `ui_layout_check.mjs` ganhou as larguras novas (440 padrão, 360 mínimo); `ux_check.mjs` foi atualizado para a nova estrutura: Composições e Camadas ficam na biblioteca, e a conferência de ajuda por aba cobre só as abas do trilho.
 - Sem mudança de render, de projeto ou de formato; nenhuma migração.
 - **Dívida conhecida:** o tour guiado ainda aponta o passo "Camadas" para a biblioteca mesmo quando ela está recolhida (telas estreitas); em celular deitado (até 900 px de largura e 540 de altura) a biblioteca não aparece (a troca de composição segue pelos botões 01 a 05 e as camadas por Mostrar camadas). Os textos novos (busca, recolher e abrir a biblioteca, Exportar) já têm tradução para o inglês.
 

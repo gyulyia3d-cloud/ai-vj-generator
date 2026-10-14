@@ -41,6 +41,10 @@ $('#rec').onclick = recToggle;
 $('#cleanBtn').onclick = () => { $('#app').classList.add('clean'); toast('Tela limpa · H para voltar', 1800); setTimeout(fit, 30); };
 $('#fsBtn').onclick = toggleFs;
 $('#expBtn').onclick = () => $('#tabs [data-tab="exp"]').click();
+function setBarHidden(h) { $('#app').classList.toggle('barhide', h); $('#barShow').hidden = !h; store.set('barHidden', h); setTimeout(fit, 30); }
+$('#barHide').onclick = () => setBarHidden(true);
+$('#barShow').onclick = () => setBarHidden(false);
+if (store.get('barHidden', false) === true) setBarHidden(true);
 function setPause(v) { ST.paused = v; if (!v) ST.t0 = performance.now() - ST.n / P.canvas.fps * 1000; $('#pause').setAttribute('aria-pressed', v); $('#pause').textContent = v ? 'Play' : 'Pausa'; $$('video').forEach(x => v && x.pause()); }
 let scrubbing = false;
 $('#scrub').addEventListener('input', e => { scrubbing = true; ST.n = +e.target.value; if (!ST.paused) setPause(true); });
