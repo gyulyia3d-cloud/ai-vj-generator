@@ -1,5 +1,11 @@
 # Changelog
 
+## Em andamento · Fase 14a: base da UI (DS v2 funcional)
+
+- **Tokens v2** em `app/style.css` (bloco V6): elevação por tom de cinza (`--s1`, `--s2`, `--s3`), um acento funcional (`--accent`, ciano de render; escuro `#3de8ff`, claro `#006f99`), raio de 3 px só em controles, escala de texto com piso de 12 px (11 px só em microrrótulo), escala de espaço de 4 px. Spec e racional em `docs/brand/UI-REDESIGN-PROPOSTA.md`.
+- **Slider novo:** trilha de 4 px com preenchimento, alça de 14 px, valor em chip, rótulo de parâmetro em caixa normal. O que difere do padrão ganha acento (preenchimento e valor) e só então mostra o botão de restaurar. Módulo `app/slider-ui.js` (só apresentação: escreve `--p` e as classes `hasdef` e `chg`; nunca muda valor nem dispara evento). `ctlHtml` passa a gravar `data-def`.
+- Sem mudança de render, de projeto ou de formato; nenhuma migração.
+
 ## 3.17.0 (12/10/2026) · Fase 19: versionamento e migração
 
 - **`meta.formatVersion`** (inteiro; ausente = 0) guarda a versão do FORMATO do projeto; o gerador (Python e navegador) já entrega o formato atual (2). `schema` continua `ai-vj-generator/2`, e `/1` abre como sempre.

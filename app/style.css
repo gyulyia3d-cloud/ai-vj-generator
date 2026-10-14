@@ -91,12 +91,12 @@ p.note{color:var(--dim);line-height:1.6;margin:6px 0 10px;font-size:var(--fs-s)}
 .kv dd{margin:0;min-width:0;overflow-wrap:anywhere}
 
 /* controle numérico: slider + campo */
-.pc{display:grid;grid-template-columns:96px minmax(0,1fr) 74px 22px;gap:6px;align-items:center;margin:3px 0}
+.pc{display:grid;grid-template-columns:var(--pc-lbl) minmax(0,1fr) var(--pc-val) 28px;gap:6px;align-items:center;margin:3px 0}
 .pc>label{font-size:var(--fs-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pc .rs{min-height:22px;padding:0;border-color:transparent;color:var(--faint);font-size:12px}
 .pc .rs:hover{color:var(--fg);border-color:var(--rule)}
-.pc.wide{grid-template-columns:96px minmax(0,1fr) 22px}
-.pc.col{grid-template-columns:96px auto minmax(0,1fr) 22px}
+.pc.wide{grid-template-columns:var(--pc-lbl) minmax(0,1fr) 28px}
+.pc.col{grid-template-columns:var(--pc-lbl) auto minmax(0,1fr) 28px}
 .pc.ta{grid-template-columns:1fr;gap:4px}
 details.grp{border-top:1px solid var(--rule);padding:6px 0}
 details.grp>summary{cursor:pointer;list-style:none;font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;padding:6px 0;display:flex;justify-content:space-between}
@@ -259,11 +259,11 @@ body.resizing #panel,body.resizing #app{transition:none!important}
 #app.clean #panelOpen,#app.clean #split{display:none}
 
 /* controle numérico: rótulo arrastável, campo digitável */
-.pc{grid-template-columns:96px minmax(0,1fr) 78px 22px}
+.pc{grid-template-columns:var(--pc-lbl) minmax(0,1fr) var(--pc-val) 28px}
 .pc>label[for]{cursor:ew-resize;touch-action:none;user-select:none}
 .pc>label[for]:hover{color:var(--fg)}
 .pc.scrubbing>label{color:var(--fg)}
-.pc input[data-num]{width:78px;min-height:28px}
+.pc input[data-num]{width:var(--pc-val);min-height:28px}
 .pc input[data-num]:focus{border-color:var(--fg)}
 .pc input[data-num].bad{border-style:dashed;border-color:var(--fg)}
 input[type=range]{touch-action:pan-y}
@@ -414,3 +414,54 @@ html.stagemode,html.stagemode body,html.stagemode #app,html.stagemode #vp,html.s
 html.stagemode{cursor:none}
 html.stagemode #fit{box-shadow:none!important;outline:none!important}
 html.stagemode #toast,html.stagemode #hint{display:none!important}
+
+/* ===== V6 · GYULYIA DS v2 funcional (fase 14a): tokens, tipografia, forma, slider =====
+   Extensão do DS: elevação por tom de cinza, 1 acento funcional (ativo, alterado, modulado), raio de 3px só em controles,
+   piso de 12px no texto de conteúdo (11px só em microrrótulo). Spec: docs/brand/UI-REDESIGN-PROPOSTA.md */
+:root{
+  --s1:#0d0d0d; --s2:#161616; --s3:#202020;
+  --accent:#3de8ff; --accent-ink:#00131a; --accent-soft:rgb(61 232 255 / .18);
+  --r:3px;
+  --fs-xs:11px; --fs-s:12px; --fs-m:13px; --fs-l:16px; --fs-xl:20px; --fs-2xl:25px;
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px;
+  --track:var(--g600); --fill:var(--g400);
+  --pc-lbl:112px; --pc-val:72px;
+  --shadow-pop:0 8px 24px rgb(0 0 0 / .5);
+  --well:var(--s2); --soft:var(--s1); --faint:#707070;
+}
+:root[data-theme="light"]{--s1:#f6f6f6; --s2:#ececec; --s3:#e2e2e2; --accent:#006f99; --accent-ink:#ffffff; --accent-soft:rgb(0 111 153 / .16); --track:#d0d0d0; --fill:#555555; --shadow-pop:0 8px 24px rgb(0 0 0 / .16)}
+@media (prefers-color-scheme:light){:root[data-theme="auto"]{--s1:#f6f6f6; --s2:#ececec; --s3:#e2e2e2; --accent:#006f99; --accent-ink:#ffffff; --accent-soft:rgb(0 111 153 / .16); --track:#d0d0d0; --fill:#555555; --shadow-pop:0 8px 24px rgb(0 0 0 / .16)}}
+
+/* texto: caixa-alta só em abas, botões, títulos e microrrótulos; rótulos de parâmetro e ajuda em caixa normal */
+html,body{font-size:var(--fs-s);letter-spacing:.01em;text-transform:none}
+.note,p.note,.kv dd,.val li,.pc>label,select{text-transform:none}
+.pc>label{font-size:var(--fs-s);letter-spacing:.01em}
+button,input,select,textarea{letter-spacing:.02em}
+button{letter-spacing:.06em}
+h2.sec{font-size:var(--fs-xs);letter-spacing:.14em}
+#tabs button{font-size:var(--fs-xs)}
+#xy{font-size:var(--fs-xs)}
+
+/* forma: raio só em controles; painéis, linhas e vista seguem retos */
+button,input[type=number],input[type=text],select,textarea,input[type=color]{border-radius:var(--r)}
+#panel{background:var(--s1)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* slider v2: trilha de 4px com preenchimento (--p vem de app/slider-ui.js), alça de 14px, estado alterado em acento */
+input[type=range]{--p:0%;height:28px;cursor:pointer}
+input[type=range]:focus-visible{outline:0}
+input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:linear-gradient(to right,var(--fill) var(--p),var(--track) var(--p))}
+input[type=range]::-moz-range-track{height:4px;border-radius:2px;background:var(--track)}
+input[type=range]::-moz-range-progress{height:4px;border-radius:2px;background:var(--fill)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;margin-top:-5px;border-radius:50%;background:var(--fg);border:2px solid var(--s1);box-shadow:0 0 0 1px var(--fill)}
+input[type=range]::-moz-range-thumb{width:10px;height:10px;border-radius:50%;background:var(--fg);border:2px solid var(--s1);box-shadow:0 0 0 1px var(--fill)}
+input[type=range]:hover::-webkit-slider-thumb{box-shadow:0 0 0 1px var(--fg)}
+input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 1px var(--accent),0 0 0 4px var(--accent-soft)}
+input[type=range]:active::-webkit-slider-thumb{background:var(--accent);box-shadow:0 0 0 1px var(--accent),0 0 0 4px var(--accent-soft)}
+.pc.chg input[type=range]{--fill:var(--accent)}
+.pc.chg input[data-num]{color:var(--accent)}
+.pc.hasdef:not(.chg) .rs{visibility:hidden}
+.pc .rs{min-height:28px;min-width:28px;font-size:var(--fs-m)}
+.pc input[data-num]{background:var(--s2);border-color:transparent;font-size:var(--fs-s)}
+.pc input[data-num]:hover{border-color:var(--rule)}
+.pc input[data-num]:focus{border-color:var(--accent)}

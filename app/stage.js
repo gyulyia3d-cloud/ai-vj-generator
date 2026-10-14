@@ -167,7 +167,7 @@ function colorCtl(d, val, id) {
 }
 function ctlHtml(d, val) {
   const id = uid();
-  if (d.t === 'n') return `<div class="pc" data-k="${d.k}" data-t="n"><label for="${id}" title="${esc(d.l)}">${esc(d.l)}</label><input type="range" min="${d.min}" max="${d.max}" step="${d.step}" value="${val}" data-r aria-label="${esc(d.l)}"><input id="${id}" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" data-min="${d.min}" data-max="${d.max}" data-step="${d.step}" data-last="${+(+val).toFixed(4)}" value="${+(+val).toFixed(4)}" data-num title="Digite um número ou uma conta, como 120/2. Setas ajustam; Shift ×10, Alt ×0,1."><button class="rs" data-reset title="Restaurar ${esc(d.l)}">↺</button></div>`;
+  if (d.t === 'n') return `<div class="pc" data-k="${d.k}" data-t="n"><label for="${id}" title="${esc(d.l)}">${esc(d.l)}</label><input type="range" min="${d.min}" max="${d.max}" step="${d.step}" value="${val}" data-r data-def="${d.d}" aria-label="${esc(d.l)}"><input id="${id}" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" data-min="${d.min}" data-max="${d.max}" data-step="${d.step}" data-last="${+(+val).toFixed(4)}" value="${+(+val).toFixed(4)}" data-num title="Digite um número ou uma conta, como 120/2. Setas ajustam; Shift ×10, Alt ×0,1."><button class="rs" data-reset title="Restaurar ${esc(d.l)}">↺</button></div>`;
   if (d.t === 's') {
     let opts = d.opts;
     if (/^mediad?$/.test(d.k)) opts = ['', ...Object.keys(MEDIA).filter(k => MEDIA[k].kind === (d === GEN.video.params[0] ? 'video' : d === GEN.model.params[0] ? 'model' : d === GEN.splat.params[0] ? 'splat' : 'image'))];
@@ -202,4 +202,4 @@ function bindCtls(root, defs, get, set) {
     if (e.target.matches('[data-reset]')) { set(k, undefined); const v = get(k); const tmp = document.createElement('div'); tmp.innerHTML = ctlHtml(d, v); row.replaceWith(tmp.firstElementChild); commit(); }
   });
 }
-function setCtlValue(root, k, v) { const row = root.querySelector(`.pc[data-k="${k}"]`); if (!row) return; const r = row.querySelector('[data-r]'), n = row.querySelector('[data-num]'); if (r) r.value = v; if (n) { n.value = +(+v).toFixed(2); n.dataset.last = n.value; } }
+function setCtlValue(root, k, v) { const row = root.querySelector(`.pc[data-k="${k}"]`); if (!row) return; const r = row.querySelector('[data-r]'), n = row.querySelector('[data-num]'); if (r) { r.value = v; SLIDERUI.sync(r); } if (n) { n.value = +(+v).toFixed(2); n.dataset.last = n.value; } }
