@@ -4,7 +4,7 @@
 let SLOTS = { standard: standardProject(), briefing: null };
 let P = SLOTS.standard;
 const ST = { mode: 'standard', ci: 0, sel: 1, solo: -1, paused: false, exploded: false, t0: performance.now(), n: 0, lastNow: performance.now(), quality: 0.75, dens: 1, zoom: 1, grid: false, safe: false,
-  manEv: null, live: true, rx: 58, rz: -32, tap: [], hist: [], future: [], clip: null, tr: null, lastBeat: -1, ps: 0.5, fitS: 1, fpsA: 60, ms: 0, tab: 'comp' };
+  manEv: null, live: true, rx: 58, rz: -32, tap: [], hist: [], future: [], clip: null, tr: null, lastBeat: -1, ps: 0.5, fitS: 1, fpsA: 60, ms: 0, tab: 'par', lib: 'comp' };
 const cur = () => P.compositions[ST.ci] || P.compositions[0];
 const isVis = i => { const L = cur().layers[i]; return !!L && L.on && (ST.solo < 0 || ST.solo === i) && !(ST.alphaStage && L.type === 'bg'); };
 

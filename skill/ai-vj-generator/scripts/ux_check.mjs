@@ -25,9 +25,9 @@ const key = (k, extra = {}) => E(`document.dispatchEvent(new KeyboardEvent('keyd
 try {
   // 1) modo
   await E(`localStorage.removeItem('aivj-level'); AIVJ.UX.setLevel('creative', true)`);
-  const vis = JSON.parse(await E(`JSON.stringify(['comp','lay','par','aud','sur','exp','txt','prj','spc'].map(t => [t, document.querySelector('#tabs [data-tab="' + t + '"]').offsetParent !== null]))`));
+  const vis = JSON.parse(await E(`JSON.stringify(['comp','lay','par','aud','sur','exp','txt','prj','spc'].map(t => [t, (document.querySelector(t === 'comp' || t === 'lay' ? '#libTabs [data-lib="' + t + '"]' : '#tabs [data-tab="' + t + '"]')).offsetParent !== null]))`));
   const shown = Object.fromEntries(vis);
-  check(shown.comp && shown.lay && shown.par && shown.aud && shown.sur && shown.exp && !shown.txt && !shown.prj && !shown.spc, 'modo Criativo mostra Compor, Camadas, Parâm., Áudio, Superfície e Exportar e esconde Texto, Projeto e Ficha', JSON.stringify(shown));
+  check(shown.comp && shown.lay && shown.par && shown.aud && shown.sur && shown.exp && !shown.txt && !shown.prj && !shown.spc, 'modo Criativo mostra Composições e Camadas (biblioteca), Parâm., Áudio, Superfície e Exportar e esconde Texto, Projeto e Ficha', JSON.stringify(shown));
   await E(`document.getElementById('lvlBtn').click()`);
   const adv = JSON.parse(await E(`JSON.stringify(['txt','prj','spc'].map(t => document.querySelector('#tabs [data-tab="' + t + '"]').offsetParent !== null))`));
   check(adv.every(Boolean) && (await E(`localStorage.getItem('aivj-level')`)) === '"advanced"', 'o botão troca para Avançado: as quatro abas voltam e a escolha fica gravada', JSON.stringify(adv));
@@ -36,7 +36,7 @@ try {
   check(await E(`!!AIVJ.project && AIVJ.project.compositions.length === 1`), 'esconder abas não mexe no projeto', 'projeto mudou');
 
   // 2) ajuda por aba
-  const tabs = JSON.parse(await E(`JSON.stringify([...document.querySelectorAll('#tabs [data-tab]')].map(b => b.dataset.tab))`));
+  const tabs = JSON.parse(await E(`JSON.stringify([...document.querySelectorAll('#tabs [data-tab]')].map(b => b.dataset.tab).filter(k => k !== 'comp' && k !== 'lay'))`));
   const noHelp = [], helps = {};
   for (const t of tabs) { await E(`document.querySelector('#tabs [data-tab="${t}"]').click()`); await new Promise(r => setTimeout(r, 60)); const h = await E(`(() => { const x = document.getElementById('tabHelp'); return x && !x.hidden ? x.textContent : ''; })()`); helps[t] = h; if (!h || h.length < 30) noHelp.push(t); }
   check(!noHelp.length, `todas as ${tabs.length} abas têm uma linha de ajuda (${tabs.join(', ')})`, 'sem ajuda em: ' + noHelp.join(', '));

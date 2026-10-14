@@ -13,7 +13,7 @@ const UX = (() => {
 #tourBox p{margin:0 0 10px;line-height:1.55}#tourBox .row{justify-content:space-between}`;
   document.head.appendChild(css);
   function setLevel(l, quiet) { level = l === 'advanced' ? 'advanced' : 'creative'; document.body.dataset.level = level; store.set('level', level); const b = document.getElementById('lvlBtn'); if (b) { b.textContent = level === 'creative' ? T3('Criativo', 'Creative') : T3('Avançado', 'Advanced'); b.setAttribute('aria-pressed', level === 'advanced'); b.title = T3('Criativo esconde as abas técnicas (Texto, Projeto, Ficha). Avançado mostra tudo.', 'Creative hides the technical tabs (Text, Project, +Effects, Sheet). Advanced shows everything.'); }
-    if (level === 'creative' && ADV_TABS.includes(ST.tab)) { const t = document.querySelector('#tabs [data-tab="comp"]'); if (t) t.click(); }
+    if (level === 'creative' && ADV_TABS.includes(ST.tab)) { const t = document.querySelector('#tabs [data-tab="par"]'); if (t) t.click(); }
     if (!quiet) toast(level === 'creative' ? T3('Modo Criativo: abas técnicas escondidas', 'Creative mode: technical tabs hidden') : T3('Modo Avançado: todas as abas', 'Advanced mode: all tabs'), 1600); }
   /* ajuda de cada aba: uma linha sempre à vista sob a barra de abas */
   const HELP = {
@@ -51,7 +51,7 @@ const UX = (() => {
   /* tour guiado: um passo por vez, a peça destacada e uma frase */
   const STEPS = [
     ['#vp', 'Esta é a vista. Arraste para mover a camada selecionada; Shift escala; Alt gira. A tecla E abre a pilha de camadas em 3D.', 'This is the view. Drag to move the selected layer; Shift scales; Alt rotates. The E key opens the layer stack in 3D.'],
-    ['#tabs [data-tab="lay"]', 'Camadas: ligue, desligue e reordene. Cada composição tem de 6 a 10, em camadas de fundo, herói, estrutura, instrumento, informação e acabamento.', 'Layers: toggle and reorder. Each composition has 6 to 10, as ground, hero, structure, instrument, information and finish.'],
+    ['#libTabs [data-lib="lay"]', 'Camadas: ligue, desligue e reordene. Cada composição tem de 6 a 10, em camadas de fundo, herói, estrutura, instrumento, informação e acabamento.', 'Layers: toggle and reorder. Each composition has 6 to 10, as ground, hero, structure, instrument, information and finish.'],
     ['#tabs [data-tab="par"]', 'Parâmetros e modulação: digite números, ou ligue um parâmetro a kick, grave, onda do BPM ou LFO.', 'Parameters and modulation: type numbers, or tie a parameter to kick, bass, a BPM wave or an LFO.'],
     ['#tabs [data-tab="aud"]', 'Áudio: conecte um arquivo, o microfone ou a fonte de teste para ver a reação de verdade.', 'Audio: connect a file, the microphone or the test source to see the real reaction.'],
     ['#tabs [data-tab="sur"]', 'Superfície: escolha o preset do seu LED ou tela, corte nas dobras e importe as regiões.', 'Surface: pick the preset for your LED or screen, cut at the folds and import the regions.'],

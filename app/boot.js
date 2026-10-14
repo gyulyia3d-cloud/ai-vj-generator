@@ -3,11 +3,31 @@
 /* ---------- eventos de UI ---------- */
 $('#tabs').addEventListener('click', e => {
   const b = e.target.closest('[data-tab]'); if (!b) return;
+  if (b.dataset.tab === 'comp' || b.dataset.tab === 'lay') { setLib(b.dataset.tab); openLib(); return; }
   ST.tab = b.dataset.tab; $$('#tabs [data-tab]').forEach(x => x.setAttribute('aria-selected', x === b));
-  $$('.pane').forEach(p => p.hidden = p.dataset.pane !== ST.tab);
-  if (ST.tab === 'sur') renderSurface(); if (ST.tab === 'exp') renderExport(); if (ST.tab === 'aud') renderAudio(); if (ST.tab === 'comp') renderComp(); if (ST.tab === 'spc') renderSpec();  if (ST.tab === 'isf') renderIsf();
+  $$('#panes .pane').forEach(p => p.hidden = p.dataset.pane !== ST.tab);
+  if (ST.tab === 'sur') renderSurface(); if (ST.tab === 'exp') renderExport(); if (ST.tab === 'aud') renderAudio(); if (ST.tab === 'spc') renderSpec();  if (ST.tab === 'isf') renderIsf();
   store.set('tab', ST.tab);
 });
+/* biblioteca à esquerda (14a-2): Composições e Camadas ficam num painel próprio; as abas comp e lay do trilho só a abrem */
+function setLib(k) {
+  ST.lib = k === 'lay' ? 'lay' : 'comp';
+  $$('#lib .pane').forEach(p => p.hidden = p.dataset.pane !== ST.lib);
+  $$('#libTabs [data-lib]').forEach(x => x.setAttribute('aria-selected', x.dataset.lib === ST.lib));
+  store.set('libTab', ST.lib); if (ST.lib === 'comp') renderComp(); libFilter();
+}
+function openLib(open = true) {
+  $('#app').classList.toggle('nolib', !open); $('#app').classList.toggle('libsheet', open); $('#libOpen').hidden = open; store.set('libOpen', open); setTimeout(fit, 30);
+}
+function libFilter() {
+  const q = $('#libSearch').value.trim().toLowerCase();
+  $$('#lib .pane:not([hidden]) .crow, #lib .pane:not([hidden]) .lrow').forEach(r => { r.hidden = !!q && !r.textContent.toLowerCase().includes(q); });
+}
+$('#libTabs').addEventListener('click', e => { const b = e.target.closest('[data-lib]'); if (b) setLib(b.dataset.lib); });
+$('#libMin').onclick = () => openLib(false);
+$('#libOpen').onclick = () => openLib(true);
+$('#libSearch').addEventListener('input', libFilter);
+{ let lt = 0; new MutationObserver(() => { clearTimeout(lt); lt = setTimeout(libFilter, 0); }).observe($('#libBody'), { childList: true, subtree: true }); }
 $('#mStd').onclick = () => setMode('standard');
 $('#mBrief').onclick = () => setMode('briefing');
 $('#wizBtn').onclick = openWiz;
@@ -20,6 +40,7 @@ $('#audBtn').onclick = () => { setAudio(!P.audio.reactive); if (ST.tab === 'aud'
 $('#rec').onclick = recToggle;
 $('#cleanBtn').onclick = () => { $('#app').classList.add('clean'); toast('Tela limpa · H para voltar', 1800); setTimeout(fit, 30); };
 $('#fsBtn').onclick = toggleFs;
+$('#expBtn').onclick = () => $('#tabs [data-tab="exp"]').click();
 function setPause(v) { ST.paused = v; if (!v) ST.t0 = performance.now() - ST.n / P.canvas.fps * 1000; $('#pause').setAttribute('aria-pressed', v); $('#pause').textContent = v ? 'Play' : 'Pausa'; $$('video').forEach(x => v && x.pause()); }
 let scrubbing = false;
 $('#scrub').addEventListener('input', e => { scrubbing = true; ST.n = +e.target.value; if (!ST.paused) setPause(true); });
@@ -205,7 +226,7 @@ function boot() {
   buildGrain(); rememberOrig(); renderGuide(); gateCode(P); EXP.luma = P.palette.mode === 'white-alpha';
   if (embedded) loadAssets(embedded); if (P !== embedded) loadAssets(P);
   $('#codeYes').onclick = allowCode; $('#codeNo').onclick = () => { $('#codeBan').hidden = true; };
-  const tab = store.get('tab', 'comp'); const tb = $(`#tabs [data-tab="${tab}"]`); if (tb) tb.click();
+  const tab = store.get('tab', 'par'); const tb = $(`#tabs [data-tab="${tab}"]`); if (tb && tab !== 'comp' && tab !== 'lay') tb.click(); setLib(store.get('libTab', 'comp')); if (store.get('libOpen', innerWidth >= 1280) === false) openLib(false);
   new ResizeObserver(() => fit()).observe(vp);
   refreshAll(); lastSnap = snap(); initLangHelp();
   document.fonts && document.fonts.load('800 40px "Martian Mono"').catch(() => {});
