@@ -59,7 +59,7 @@ const UX = (() => {
   ];
   let tour = null;
   function tourStep(i) {
-    const [sel, pt, en] = STEPS[i], el = document.querySelector(sel); if (!el || el.offsetParent === null && sel.startsWith('#tabs')) { if (i < STEPS.length - 1) return tourStep(i + 1); return endTour(); }
+    const [sel, pt, en] = STEPS[i]; if (sel.startsWith('#libTabs') && typeof openLib === 'function') openLib(true); /* biblioteca recolhida: abre antes de apontar */ const el = document.querySelector(sel); if (!el || el.offsetParent === null && sel.startsWith('#tabs')) { if (i < STEPS.length - 1) return tourStep(i + 1); return endTour(); }
     tour.i = i; const r = el.getBoundingClientRect(), hi = tour.hi, pad = 4;
     Object.assign(hi.style, { left: r.left - pad + 'px', top: r.top - pad + 'px', width: r.width + pad * 2 + 'px', height: r.height + pad * 2 + 'px' });
     const box = tour.box; box.innerHTML = `<p><b>${i + 1} / ${STEPS.length}</b> · ${esc(T3(pt, en))}</p><div class="row"><button id="tourPrev" ${i ? '' : 'disabled'}>${T3('Voltar', 'Back')}</button><span><button id="tourEnd">${T3('Sair', 'Exit')}</button> <button id="tourNext" class="on">${i < STEPS.length - 1 ? T3('Próximo', 'Next') : T3('Concluir', 'Finish')}</button></span></div>`;

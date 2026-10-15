@@ -123,7 +123,7 @@ details.grp>summary::-webkit-details-marker{display:none}
 .lrow .nm{display:block;font-size:var(--fs-s);text-transform:uppercase;letter-spacing:.04em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .lrow .ty{display:block;font-size:var(--fs-xs);color:var(--dim);letter-spacing:.06em;text-transform:uppercase}
 .lrow input[type=number]{width:54px;min-height:24px;padding:2px 4px}
-.lrow select{min-height:24px;padding:2px;font-size:9px;width:84px}
+.lrow select{min-height:24px;padding:2px;font-size:var(--fs-xs);width:84px}
 .tg{width:26px;height:16px;border:1px solid var(--fg);position:relative;padding:0;min-height:0}
 .tg::after{content:"";position:absolute;top:2px;left:2px;width:10px;height:10px;background:var(--fg)}
 .tg[aria-pressed="true"]{background:var(--fg)}
@@ -136,7 +136,7 @@ details.grp>summary::-webkit-details-marker{display:none}
 .crow canvas{width:112px;height:auto;display:block;background:#000;border:1px solid var(--rule);cursor:pointer}
 .crow input[type=text]{width:100%;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
 .crow .hy{color:var(--dim);font-size:var(--fs-xs);line-height:1.5;margin:4px 0;letter-spacing:.04em}
-.crow .row button{min-height:22px;padding:2px 6px;font-size:8.5px}
+.crow .row button{min-height:22px;padding:2px 6px;font-size:var(--fs-xs)}
 
 /* validação: estado por forma, não por cor */
 .val{list-style:none;margin:8px 0;padding:0}
@@ -147,7 +147,7 @@ details.grp>summary::-webkit-details-marker{display:none}
 .tbl{width:100%;border-collapse:collapse;font-size:var(--fs-s)}
 .tbl th,.tbl td{text-align:left;padding:6px 4px;border-bottom:1px solid var(--rule);vertical-align:top;line-height:1.5}
 .tbl th{font-size:var(--fs-xs);letter-spacing:.1em;color:var(--dim);font-weight:500}
-.tag{display:inline-block;font-size:8.5px;letter-spacing:.1em;padding:2px 5px;border:1px solid var(--fg)}
+.tag{display:inline-block;font-size:var(--fs-xs);letter-spacing:.1em;padding:2px 5px;border:1px solid var(--fg)}
 .tag.f{background:var(--fg);color:var(--bg)}
 .tag.d{border-style:dashed}
 .tag.o{border-style:dotted;color:var(--dim)}
@@ -163,7 +163,7 @@ pre.tree{font-size:var(--fs-xs);line-height:1.6;background:var(--well);border:1p
 .chips{display:flex;flex-wrap:wrap;gap:4px}
 .chips button{min-height:26px}
 .media{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--rule)}
-.media .th{width:56px;height:32px;background:#000 center/cover no-repeat;border:1px solid var(--rule);display:grid;place-items:center;font-size:8px;color:var(--dim)}
+.media .th{width:56px;height:32px;background:#000 center/cover no-repeat;border:1px solid var(--rule);display:grid;place-items:center;font-size:var(--fs-xs);color:var(--dim)}
 .filebtn{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--rule);padding:6px 9px;min-height:30px;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
 .filebtn:hover{border-color:var(--fg)}
 .filebtn input{position:absolute;inset:0;opacity:0;cursor:pointer}
@@ -280,11 +280,11 @@ body.resizing #panel,body.resizing #app{transition:none!important}
 input[type=range]{touch-action:pan-y}
 
 /* leitura de coordenadas na viewport (cursor de coordenadas da marca) */
-#xy{position:fixed;z-index:12;pointer-events:none;display:none;padding:3px 6px;background:var(--bg);color:var(--fg);border:1px solid var(--fg);font-size:9.5px;letter-spacing:.06em;white-space:nowrap;text-transform:uppercase}
+#xy{position:fixed;z-index:12;pointer-events:none;display:none;padding:3px 6px;background:var(--bg);color:var(--fg);border:1px solid var(--fg);font-size:var(--fs-xs);letter-spacing:.06em;white-space:nowrap;text-transform:uppercase}
 #vp.draw{cursor:crosshair}
 #drawHint{position:absolute;left:8px;bottom:8px;z-index:6;display:none;padding:5px 8px;background:var(--bg);border:1px solid var(--fg);font-size:var(--fs-xs)}
 #vp.draw #drawHint{display:block}
-#vFrame{width:64px;min-height:22px;padding:1px 4px;font-size:10px}
+#vFrame{width:64px;min-height:22px;padding:1px 4px;font-size:var(--fs-xs)}
 
 /* histórico */
 #hist{position:fixed;z-index:30;right:12px;top:48px;width:min(320px,calc(100vw - 24px));max-height:min(60dvh,420px);overflow:auto;background:var(--bg);border:1px solid var(--fg)}
@@ -7185,7 +7185,7 @@ const UX = (() => {
   ];
   let tour = null;
   function tourStep(i) {
-    const [sel, pt, en] = STEPS[i], el = document.querySelector(sel); if (!el || el.offsetParent === null && sel.startsWith('#tabs')) { if (i < STEPS.length - 1) return tourStep(i + 1); return endTour(); }
+    const [sel, pt, en] = STEPS[i]; if (sel.startsWith('#libTabs') && typeof openLib === 'function') openLib(true); /* biblioteca recolhida: abre antes de apontar */ const el = document.querySelector(sel); if (!el || el.offsetParent === null && sel.startsWith('#tabs')) { if (i < STEPS.length - 1) return tourStep(i + 1); return endTour(); }
     tour.i = i; const r = el.getBoundingClientRect(), hi = tour.hi, pad = 4;
     Object.assign(hi.style, { left: r.left - pad + 'px', top: r.top - pad + 'px', width: r.width + pad * 2 + 'px', height: r.height + pad * 2 + 'px' });
     const box = tour.box; box.innerHTML = `<p><b>${i + 1} / ${STEPS.length}</b> · ${esc(T3(pt, en))}</p><div class="row"><button id="tourPrev" ${i ? '' : 'disabled'}>${T3('Voltar', 'Back')}</button><span><button id="tourEnd">${T3('Sair', 'Exit')}</button> <button id="tourNext" class="on">${i < STEPS.length - 1 ? T3('Próximo', 'Next') : T3('Concluir', 'Finish')}</button></span></div>`;

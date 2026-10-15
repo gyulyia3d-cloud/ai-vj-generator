@@ -21,7 +21,8 @@
   - **Biblioteca à esquerda** (Composições e Camadas, com busca e recolher). As abas `comp` e `lay` do trilho continuam existindo, escondidas, e só abrem a biblioteca; a aba padrão do painel passou a ser Parâmetros. Abaixo de 1280 px ela começa recolhida; em até 900 px vira uma gaveta inferior.
   - `ui_layout_check.mjs` ganhou as larguras novas (440 padrão, 360 mínimo); `ux_check.mjs` foi atualizado para a nova estrutura: Composições e Camadas ficam na biblioteca, e a conferência de ajuda por aba cobre só as abas do trilho.
 - Sem mudança de render, de projeto ou de formato; nenhuma migração.
-- **Dívida conhecida:** o tour guiado ainda aponta o passo "Camadas" para a biblioteca mesmo quando ela está recolhida (telas estreitas); em celular deitado (até 900 px de largura e 540 de altura) a biblioteca não aparece (a troca de composição segue pelos botões 01 a 05 e as camadas por Mostrar camadas). Os textos novos (busca, recolher e abrir a biblioteca, Exportar) já têm tradução para o inglês.
+- **Corrigido (15/10):** o tour abre a biblioteca recolhida antes do passo "Camadas" (`app/ux.js`); os últimos textos abaixo de 11 px (botões da biblioteca, etiqueta, seletor, campo de quadro) usam `--fs-xs` (11 px); medido no navegador, nenhum texto visível nas 11 abas fica abaixo de 11 px.
+- **Dívida conhecida:** em celular deitado (até 900 px de largura e 540 de altura) a biblioteca não aparece (a troca de composição segue pelos botões 01 a 05 e as camadas por Mostrar camadas). Os textos novos (busca, recolher e abrir a biblioteca, Exportar) já têm tradução para o inglês.
 
 ## 3.17.0 (12/10/2026) · Fase 19: versionamento e migração
 
