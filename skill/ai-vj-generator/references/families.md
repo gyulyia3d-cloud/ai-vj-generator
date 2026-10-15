@@ -38,6 +38,7 @@ the single dominant thing a composition is about.
 | `video` | generator | video clip | screen, projection, mapping | unmeasured | stable | Import in the Media tab. |
 | `field` | generator | scalar field drawn by one of 12 rules (isolines, flow lines, cells, Truchet, dots, moire, metaballs, interference, stipple, relief, warped grid, polar); an image can be the source of the field | any | medium | stable | Without an image the field is noise that walks a closed circle per loop. With `media` the same rule draws the image. Heavy on LED walls at full resolution: use `res` 0.5. |
 | `solid` | generator | a 3D form by signed distance (raymarching) seen by an orbiting camera: sphere, twisted torus, crystals, gyroid, columns, orbital rings, waves, sponge; three materials | any | medium | stable | Custom WebGL2 raymarching, no 3D library. The camera orbits in whole turns per loop, so the loop closes. Medium cost, about the same as `field`: use `res` 0.5 on LED walls. One solid is the hero; two or three in a composition are too many. |
+| `particles` | generator | thousands of points in one GPU call, closed-form motion with no state: orbits, jet, spiral, rain, burst, Lissajous swarm | any | medium | stable | Stateless: every frame is a pure function of the index and the loop phase, so out-of-order frames match and the loop closes. No trails or collisions yet (they need the Phase 4 history). Cost is overdraw: a big dot with `soma` is the expensive case; keep `count` under 8000 on LED walls. |
 
 ## structure
 

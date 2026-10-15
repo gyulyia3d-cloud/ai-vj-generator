@@ -11,7 +11,8 @@
   "data",
   "field",
   "glyphs",
-  "solid"
+  "solid",
+  "particles"
  ],
  "shaderOrder": [
   "GRADE SDF",
@@ -203,7 +204,8 @@
     "flow": 3,
     "sim": 2,
     "lines": 1,
-    "field": 2
+    "field": 2,
+    "particles": 1
    },
    "shaders": [
     "FLUXO WARP",
@@ -240,7 +242,8 @@
     "shape": 3,
     "tunnel": 2,
     "organism": 1,
-    "solid": 2
+    "solid": 2,
+    "particles": 1
    },
    "shaders": [
     "ANÉIS SDF",
@@ -386,7 +389,8 @@
     "organism": 3,
     "flow": 2,
     "shape": 1,
-    "solid": 1
+    "solid": 1,
+    "particles": 1
    },
    "shaders": [
     "KALEIDO",
@@ -533,7 +537,8 @@
    "families": {
     "flow": 3,
     "shape": 2,
-    "sim": 1
+    "sim": 1,
+    "particles": 2
    },
    "shaders": [
     "CÉLULAS",
@@ -570,7 +575,8 @@
     "lines": 3,
     "tunnel": 2,
     "flow": 1,
-    "solid": 1
+    "solid": 1,
+    "particles": 1
    },
    "shaders": [
     "ANÉIS SDF",
@@ -680,7 +686,8 @@
    "families": {
     "flow": 3,
     "shape": 2,
-    "lines": 1
+    "lines": 1,
+    "particles": 1
    },
    "shaders": [
     "CÉLULAS",
@@ -716,7 +723,8 @@
    "families": {
     "flow": 3,
     "shape": 2,
-    "organism": 1
+    "organism": 1,
+    "particles": 1
    },
    "shaders": [
     "ANÉIS SDF",
@@ -788,7 +796,8 @@
    "families": {
     "flow": 3,
     "sim": 3,
-    "field": 2
+    "field": 2,
+    "particles": 1
    },
    "shaders": [
     "FLUXO WARP",
@@ -898,7 +907,8 @@
    "families": {
     "organism": 2,
     "flow": 2,
-    "shape": 2
+    "shape": 2,
+    "particles": 1
    },
    "shaders": [
     "CAMPO FBM",
@@ -969,7 +979,8 @@
    "families": {
     "tunnel": 3,
     "organism": 2,
-    "sim": 1
+    "sim": 1,
+    "particles": 1
    },
    "shaders": [
     "ANÉIS SDF",
@@ -1081,7 +1092,8 @@
     "sim": 3,
     "flow": 2,
     "organism": 1,
-    "field": 2
+    "field": 2,
+    "particles": 2
    },
    "shaders": [
     "CAMPO FBM",
@@ -1192,7 +1204,8 @@
     "flow": 3,
     "organism": 2,
     "lines": 1,
-    "solid": 1
+    "solid": 1,
+    "particles": 1
    },
    "shaders": [
     "FLUXO WARP",
@@ -1873,5 +1886,39 @@
   "emerge": "ESFERA",
   "sink": "ONDAS",
   "rise": "COLUNAS"
+ },
+ "particleKinds": {
+  "grow": "ESPIRAL",
+  "contract": "ORBITA",
+  "accumulate": "CHUVA",
+  "fracture": "EXPLOSAO",
+  "drift": "ENXAME",
+  "orbit": "ORBITA",
+  "breathe": "ESPIRAL",
+  "pulse": "EXPLOSAO",
+  "erode": "CHUVA",
+  "bloom": "EXPLOSAO",
+  "collapse": "ORBITA",
+  "stretch": "ENXAME",
+  "fold": "ENXAME",
+  "scatter": "EXPLOSAO",
+  "converge": "ESPIRAL",
+  "oscillate": "ENXAME",
+  "morph": "ENXAME",
+  "repel": "EXPLOSAO",
+  "attract": "ESPIRAL",
+  "trace": "ENXAME",
+  "flow": "ENXAME",
+  "hesitate": "ORBITA",
+  "freeze": "CHUVA",
+  "release": "FONTE",
+  "compress": "ORBITA",
+  "expand": "EXPLOSAO",
+  "fragment": "EXPLOSAO",
+  "assemble": "ESPIRAL",
+  "dissolve": "CHUVA",
+  "emerge": "FONTE",
+  "sink": "CHUVA",
+  "rise": "FONTE"
  }
 }

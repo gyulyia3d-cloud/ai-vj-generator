@@ -34,7 +34,7 @@ const WEBGL = (() => {
     const r = {
       gl, canvas, version: 2, tick: 0,
       progs: new Map(), errors: new Map(), keyOf: new Map(),
-      stats: { compiles: 0, programs: 0, draws: 0, passes: 0, shaderSwitches: 0, textureAllocs: 0, textureReuses: 0, framebufferAllocs: 0, framebufferReuses: 0, arrayAllocs: 0, arrayReuses: 0, stateChanges: 0, frameMs: 0 }, frame: 0,
+      stats: { particles: 0, compiles: 0, programs: 0, draws: 0, passes: 0, shaderSwitches: 0, textureAllocs: 0, textureReuses: 0, framebufferAllocs: 0, framebufferReuses: 0, arrayAllocs: 0, arrayReuses: 0, stateChanges: 0, frameMs: 0 }, frame: 0,
       state: { prog: null, vao: null, vw: 0, vh: 0, unit: -1, tex: new Map() },
       caps: {
         maxTextureSize: gl.getParameter(gl.MAX_TEXTURE_SIZE), maxDrawBuffers: gl.getParameter(gl.MAX_DRAW_BUFFERS), maxColorAttachments: gl.getParameter(gl.MAX_COLOR_ATTACHMENTS),
@@ -54,11 +54,11 @@ const WEBGL = (() => {
     /* programa: key identifica o corpo (o chamador escolhe); source é o GLSL de autoria sem cabeçalho de versão; lineOffset diminui os números de linha das mensagens */
     r.program = (key, source, opts) => {
       let e = r.progs.get(key); if (e) { e.lastUsed = r.tick; return e; }
-      const o = Object.assign({ defines: '', lineOffset: 0 }, opts || {});
+      const o = Object.assign({ defines: '', lineOffset: 0, vert: '' }, opts || {});
       if (r.progs.size > 48) { const old = [...r.progs.entries()].sort((x, y) => x[1].lastUsed - y[1].lastUsed); for (const [k, v] of old) { if (v.prog) gl.deleteProgram(v.prog); r.progs.delete(k); if (r.progs.size < 24) break; } }
       e = { key, prog: null, uniforms: new Map(), schema: [], attributes: ['a'], defines: o.defines, status: 'error', lastUsed: r.tick, source: COMPAT + o.defines + source };
       try {
-        const vs = compile(gl.VERTEX_SHADER, VERT);
+        const vs = compile(gl.VERTEX_SHADER, o.vert || VERT);
         let fs;
         try { fs = compile(gl.FRAGMENT_SHADER, e.source); }
         catch (err) {   /* só se o ES 3.00 recusar a redeclaração de função embutida, tenta de novo com o nome do usuário trocado */
@@ -83,11 +83,13 @@ const WEBGL = (() => {
     r.viewport = (w, h) => { if (r.state.vw !== w || r.state.vh !== h) { gl.viewport(0, 0, w, h); r.state.vw = w; r.state.vh = h; } };
     r.resize = (w, h) => { if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; r.state.vw = r.state.vh = 0; } };
     r.clear = () => { gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); };
+    /* pontos sem buffer de vértices (fase 13): o vertex shader lê gl_VertexID; um só draw para n partículas */
+    r.drawPoints = n => { if (r.state.vao !== null) { gl.bindVertexArray(null); r.state.vao = null; } gl.drawArrays(gl.POINTS, 0, n); r.stats.draws++; r.stats.passes++; r.stats.particles += n; r.tick++; };
     r.drawFullscreen = () => { if (r.state.vao !== vao) { gl.bindVertexArray(vao); r.state.vao = vao; } gl.drawArrays(gl.TRIANGLES, 0, 3); r.stats.draws++; r.stats.passes++; r.tick++; };
 
     /* ---- estado da GPU: só chama o GL quando o valor muda ---- */
     const st = r.state; Object.assign(st, { blend: null, depth: false, scissor: false, fbo: null, units: new Map(), unit: 0 });
-    r.setBlend = mode => { if (st.blend === mode) return; if (mode) { gl.enable(gl.BLEND); gl.blendFunc(mode === 'add' ? gl.ONE : gl.SRC_ALPHA, mode === 'add' ? gl.ONE : gl.ONE_MINUS_SRC_ALPHA); } else gl.disable(gl.BLEND); st.blend = mode; r.stats.stateChanges++; };
+    r.setBlend = mode => { if (st.blend === mode) return; if (mode) { gl.enable(gl.BLEND); if (mode === 'soma') gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE, gl.ONE, gl.ONE_MINUS_SRC_ALPHA); else gl.blendFunc(mode === 'add' ? gl.ONE : gl.SRC_ALPHA, mode === 'add' ? gl.ONE : gl.ONE_MINUS_SRC_ALPHA); } else gl.disable(gl.BLEND); st.blend = mode; r.stats.stateChanges++; };
     r.setDepth = on => { if (st.depth === on) return; on ? gl.enable(gl.DEPTH_TEST) : gl.disable(gl.DEPTH_TEST); st.depth = on; r.stats.stateChanges++; };
     r.setScissor = rect => { const on = !!rect; if (on !== st.scissor) { on ? gl.enable(gl.SCISSOR_TEST) : gl.disable(gl.SCISSOR_TEST); st.scissor = on; r.stats.stateChanges++; } if (on) gl.scissor(rect[0], rect[1], rect[2], rect[3]); };
     r.bindFramebuffer = fb => { if (st.fbo === fb) return; gl.bindFramebuffer(gl.FRAMEBUFFER, fb); st.fbo = fb; st.vw = st.vh = 0; r.stats.stateChanges++; };
@@ -149,7 +151,7 @@ const WEBGL = (() => {
     r.endFrame = () => { r.frame++; r.stats.frameMs = performance.now() - (r.t0 || performance.now()); r.textures.trim(120); r.framebuffers.trim(120); r.arrays.trim(120); };
     r.metrics = () => { const s = r.stats, m = r.mark || s;
       return { frameMs: s.frameMs, passes: s.passes - m.passes, draws: s.draws - m.draws, shaderSwitches: s.shaderSwitches - m.shaderSwitches, textureAllocs: s.textureAllocs, framebufferAllocs: s.framebufferAllocs,
-        activeTextures: r.textures.active, pooledTextures: r.textures.total, activeFramebuffers: r.framebuffers.active, activeParticles: 0, estimatedVramBytes: r.textures.bytes + r.framebuffers.bytes + r.arrays.bytes, activeArrays: r.arrays.active, programs: r.progs.size }; };
+        activeTextures: r.textures.active, pooledTextures: r.textures.total, activeFramebuffers: r.framebuffers.active, activeParticles: s.particles - m.particles, estimatedVramBytes: r.textures.bytes + r.framebuffers.bytes + r.arrays.bytes, activeArrays: r.arrays.active, programs: r.progs.size }; };
     return r;
   }
   return { create, support, legalize, COMPAT, COMPAT_LINES };

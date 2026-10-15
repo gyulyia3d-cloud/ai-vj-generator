@@ -6328,6 +6328,217 @@
    "deterministic": true,
    "surfaceAware": false,
    "performanceClass": "medium"
+  },
+  {
+   "id": "particles",
+   "category": "Shader",
+   "name": "Partículas GPU",
+   "renderMode": "canvas2d",
+   "parameters": [
+    {
+     "id": "kind",
+     "type": "select",
+     "default": "ORBITA",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Regra de movimento",
+     "options": [
+      "ORBITA",
+      "FONTE",
+      "ESPIRAL",
+      "CHUVA",
+      "EXPLOSAO",
+      "ENXAME"
+     ],
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "size",
+     "type": "number",
+     "default": 1,
+     "min": 0.3,
+     "max": 2.5,
+     "step": 0.01,
+     "label": "Extensão",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "p1",
+     "type": "number",
+     "default": 0.32,
+     "min": -400,
+     "max": 400,
+     "step": 0.01,
+     "label": "P1",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "p2",
+     "type": "number",
+     "default": 0.45,
+     "min": -400,
+     "max": 400,
+     "step": 0.01,
+     "label": "P2",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "p3",
+     "type": "number",
+     "default": 0.5,
+     "min": -400,
+     "max": 400,
+     "step": 0.01,
+     "label": "P3",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "p4",
+     "type": "number",
+     "default": 1,
+     "min": -400,
+     "max": 400,
+     "step": 0.01,
+     "label": "P4",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "count",
+     "type": "number",
+     "default": 3000,
+     "min": 50,
+     "max": 20000,
+     "step": 1,
+     "label": "Quantidade",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "dot",
+     "type": "number",
+     "default": 6,
+     "min": 0.5,
+     "max": 40,
+     "step": 0.01,
+     "label": "Tamanho da partícula (px a 1080)",
+     "options": null,
+     "unit": "px",
+     "semanticRole": "generator"
+    },
+    {
+     "id": "soft",
+     "type": "number",
+     "default": 0.6,
+     "min": 0.05,
+     "max": 1,
+     "step": 0.01,
+     "label": "Maciez do ponto",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "blend",
+     "type": "select",
+     "default": "soma",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Mistura",
+     "options": [
+      "soma",
+      "normal"
+     ],
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "alphaMode",
+     "type": "select",
+     "default": "alpha",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Saída",
+     "options": [
+      "alpha",
+      "opaque"
+     ],
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "res",
+     "type": "number",
+     "default": 1,
+     "min": 0.25,
+     "max": 1,
+     "step": 0.01,
+     "label": "Resolução interna",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "c1",
+     "type": "color",
+     "default": "primary",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Cor 1",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "c2",
+     "type": "color",
+     "default": "accent",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Cor 2",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "cbg",
+     "type": "color",
+     "default": "bg",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Fundo",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    }
+   ],
+   "audioRoles": [
+    "mass",
+    "body",
+    "detail",
+    "accent"
+   ],
+   "supportsAlpha": true,
+   "deterministic": true,
+   "surfaceAware": false,
+   "performanceClass": "medium"
   }
  ]
 }

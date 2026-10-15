@@ -211,6 +211,9 @@ How it closes the loop: it warms up one loop, records two, and cross-fades them 
 ### `meta.formatVersion` — format version (phase 19)
 - Integer, written by the generator and the engine; absent = 0. The engine and `scripts/migrate_project.py` bring older projects to the current format on load (`references/migration.md`). A newer value than the tool knows opens with a warning and is never rewritten.
 
+### `particles` — partículas em GPU sem estado (phase 13)
+- `particles`: 50 to 20000 points in one draw, position in closed form of index, seed and loop phase. `p.kind` (6 rules: `ORBITA`, `FONTE`, `ESPIRAL`, `CHUVA`, `EXPLOSAO`, `ENXAME`), `p.p1..p4` by rule, `p.size` (extent), `p.count`, `p.dot` (px at 1080), `p.soft`, `p.blend` (`soma`, `normal`), `p.res`, `p.alphaMode`, `c1`, `c2`, `cbg`. Closes the loop; no clock, no random. See `particles-layer.md`.
+
 ### `solid` — 3D generativo (phase 12)
 - `solid`: one 3D form by signed distance seen by an orbiting camera. `p.kind` (8 forms: `ESFERA`, `TORO`, `CRISTAIS`, `GIROIDE`, `COLUNAS`, `ANEIS`, `ONDAS`, `ESPONJA`), `p.p1..p4` by form, `p.size`, `p.material` (`fosco`, `metal`, `vidro`), `p.orbit` (whole camera turns per loop, 0 = still), `p.elev`, `p.dist`, `p.light`, `p.fog`, `p.res`, `p.alphaMode`, `c1`, `c2`, `cbg`. Closes the loop; no clock, no random. See `solid-layer.md`.
 

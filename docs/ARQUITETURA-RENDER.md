@@ -1,4 +1,4 @@
-# Arquitetura de render (motor 3.15.0)
+# Arquitetura de render (motor 3.18.0)
 
 ## Caminho de um quadro
 ```
@@ -28,6 +28,11 @@ Todo o render é função do projeto e do número do quadro. Relógio, `Date.now
 ## 3D generativo (fase 12)
 - **Decisão: código próprio sobre o WebGL2 da fase 2, sem biblioteca 3D.** A camada `solid` (`app/solid.js`) marcha uma função de distância assinada (SDF) num fragment shader, em tela cheia, como as outras camadas de GPU: mesmo `frameContext`, mesmos pools, mesmo render graph. Motivos: o produto gera animação 2D e o 3D é só meio; three.js e Babylon trariam cena, malha, carregador e relógio próprios, contra a regra de que o quadro é função pura do projeto e do número do quadro; um SDF cabe em dez linhas e uma IA consegue ler e mudar. Custo da decisão: sem malhas rasterizadas nem modelos importados (`model` e `splat` ficam como estão; instâncias e muitas partículas são a fase 13).
 - **Câmera:** órbita em voltas inteiras por loop (`p.orbit`), então o loop fecha por construção; áudio só em `uBass` e `uHit`, e só se a declaração temporal da camada deixar. Oito formas e três materiais; ver `skill/ai-vj-generator/references/solid-layer.md`.
+
+## Partículas em GPU (fase 13)
+- **Decisão: sem estado primeiro.** A camada `particles` (`app/particles.js`) calcula a posição de cada ponto no vertex shader, em forma fechada do índice (`gl_VertexID`), da semente e da fase do loop. Nada passa de um quadro para o outro: o quadro N sai igual se pedido fora de ordem (o teste pede 3, 27 e 11 antes do 20), o scrub e o render em paralelo valem e o loop fecha porque toda frequência é inteira. O acaso é hash de inteiros (`uint`), igual em qualquer placa.
+- **Desenho:** `gl.POINTS` sem buffer de vértices, uma chamada para até 20 mil pontos (`r.drawPoints`), vertex shader próprio por regra (`r.program` aceita `vert`), mistura `soma`. A métrica `activeParticles` conta os pontos do quadro. Teto de 64 px por ponto, fixo, para não depender da placa.
+- **Fica para depois:** simulação com estado (colisão, forças entre partículas, rastro) por textura de posição em ping-pong sobre o histórico do RenderGraph, com migração e teste visual próprios. Ver `skill/ai-vj-generator/references/particles-layer.md`.
 
 ## Render graph (fase 4)
 - **`app/rendergraph.js`** (`RG`): `RG.create()`, `add({ id, type, deps, run, inplace })`, `compile()` (valida dependências, ordena de forma estável, exige um Output, recusa ciclos), `execute(ctx, pool)` (devolve cada recurso ao pool quando o último consumidor termina). Tipos de nó: Source, Generator, Shader, Effect, Mask, Composite, History, Feedback, Output. `CanvasPool` reaproveita canvas 2D por tamanho: depois do primeiro quadro, zero canvas novos.

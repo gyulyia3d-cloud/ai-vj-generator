@@ -8,7 +8,7 @@
    função pura de (parâmetros, quadro) → o mesmo código desenha o preview,
    o export PNG alpha e a gravação.
    ===================================================================== */
-const VERSION = '3.17.0';
+const VERSION = '3.18.0';
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const TAU = Math.PI * 2, GA = Math.PI * (3 - Math.sqrt(5));
 const clamp = (v, a, b) => v < a ? a : v > b ? b : v, lerp = (a, b, t) => a + (b - a) * t;
@@ -136,7 +136,7 @@ const reg = (type, label, group, params, draw) => { GEN[type] = { type, label, g
    O projeto JSON continua guardando o tipo interno (L.type), então projetos antigos, o gerador e os testes não mudam. */
 const FAMILIES = [
   ['Fundo', [['bg', 'Fundo']]],
-  ['Shader', [['shader', 'Preset GLSL'], ['isf', 'Biblioteca ISF'], ['synth', 'Cadeia'], ['field', 'Campo'], ['solid', 'Sólido 3D']]],
+  ['Shader', [['shader', 'Preset GLSL'], ['isf', 'Biblioteca ISF'], ['synth', 'Cadeia'], ['field', 'Campo'], ['solid', 'Sólido 3D'], ['particles', 'Partículas GPU']]],
   ['Formas', [['shape', 'Forma'], ['lines', 'Linhas'], ['tunnel', 'Túnel'], ['organism', 'Organismo'], ['structure', 'Estrutura'], ['symbols', 'Símbolos'], ['hazard', 'Faixa risco'], ['bitfield', 'Campo bits']]],
   ['Texto', [['text', 'Texto'], ['typeset', 'Tipografia'], ['typewall', 'Parede'], ['pixeltext', 'Texto pixel'], ['glyphs', 'Glifos']]],
   ['Mídia', [['image', 'Imagem'], ['video', 'Vídeo'], ['model', 'Objeto 3D'], ['parallax', 'Parallax'], ['splat', 'Splat 3D'], ['logo', 'Logo']]],

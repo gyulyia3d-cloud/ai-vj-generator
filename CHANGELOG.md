@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.18.0 (14/10/2026) · Fase 13: partículas em GPU, sem estado
+
+- **Nova camada `particles`** (`app/particles.js`): 50 a 20 mil pontos numa só chamada `gl.POINTS`, sem buffer de vértices. A posição de cada partícula é função em forma fechada do índice, da semente e da fase do loop, no vertex shader: o quadro N sai igual fora de ordem, o loop fecha por frequências inteiras, o acaso é hash de inteiros. Seis regras: `ORBITA`, `FONTE`, `ESPIRAL`, `CHUVA`, `EXPLOSAO`, `ENXAME`; mistura `soma` ou `normal`.
+- **Renderer:** `r.drawPoints(n)`, vertex shader próprio em `r.program` (`vert`), mistura `soma`, métrica `activeParticles` real, `glProgV` em `gl-glue.js`.
+- **Entra pelo conceito:** `particles` é tipo de herói do Creative IR (`heroTypes`, pesos em 12 verbos, `particleKinds` liga cada um dos 32 verbos a uma regra); o Animation IR toca em `size`. Python e navegador dão o mesmo projeto. Aditivo: projetos antigos não precisam de migração.
+- Teste novo `particles_check.mjs`; `registry.mjs` confere os 32 verbos; `references/particles-layer.md`; esquema, SKILL, PROMPT e famílias atualizados. Simulação com estado, rastro e colisão ficam para depois (histórico do RenderGraph).
+
 ## Em andamento · Fase 14a: base da UI (DS v2 funcional)
 
 - **Tokens v2** em `app/style.css` (bloco V6): elevação por tom de cinza (`--s1`, `--s2`, `--s3`), um acento funcional (`--accent`, o verde da paleta STANDARD do app; escuro `#00ff3c`, claro `#007a22` para manter contraste), quinas retas em tudo (`--r:0`), escala de texto com piso de 11 px, escala de espaço de 4 px. Spec e racional em `docs/brand/UI-REDESIGN-PROPOSTA.md`.

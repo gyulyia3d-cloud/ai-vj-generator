@@ -85,6 +85,7 @@ POOL_STRUCT.setdefault("structure", {"grid": 100})
 POOL_HERO["field"] = {"kind": "ISOLINHAS"}
 POOL_HERO["glyphs"] = {"source": "noise", "cell": 18}
 POOL_HERO["solid"] = {"kind": "ESFERA"}
+POOL_HERO["particles"] = {"kind": "ORBITA"}
 
 
 def pick_by(ir, mapping, i, dflt):
@@ -105,7 +106,7 @@ ARC = ["ESTABLISH", "BUILD", "PEAK", "RELEASE", "TURN", "CODA"]
 ROMAN = ["I", "II", "III", "IV", "V", "VI"]
 ARCH = {"led": "stage-led", "projection": "facade-mapping", "mapping": "installation", "multi": "led-architecture", "screen": "clip-pack"}
 # parameter the motion profile plays on, per generator (all numeric, default > 0, so a 'mul' modulation scales them)
-HERO_TARGET = {"tunnel": "size", "lines": "weight", "shape": "size", "organism": "breathe", "flow": "amp", "typewall": "fill", "field": "gain", "glyphs": "gain", "solid": "size"}
+HERO_TARGET = {"tunnel": "size", "lines": "weight", "shape": "size", "organism": "breathe", "flow": "amp", "typewall": "fill", "field": "gain", "glyphs": "gain", "solid": "size", "particles": "size"}
 STRUCT_TARGET = {"tunnel": "size", "lines": "weight", "shape": "size"}
 TARGET_DEFAULT = {"size": 1, "weight": 2, "breathe": 0.5, "amp": 0.12, "fill": 0.82, "gain": 1}  # engine defaults, written into p so the modulation base is explicit
 TENSION = lambda e: "relaxed" if e < 0.35 else ("balanced" if e < 0.7 else "assertive")
@@ -167,6 +168,8 @@ def build_comp(i, n, brief, mood, strat, rnd, prof=None, ir=None, cmp=None):
             hero_p["kind"] = pick_by(ir, cir.DATA["fieldKinds"], i, "ISOLINHAS")
         if hero_t == "solid":
             hero_p["kind"] = pick_by(ir, cir.DATA["solidKinds"], i, "ESFERA")
+        if hero_t == "particles":
+            hero_p["kind"] = pick_by(ir, cir.DATA["particleKinds"], i, "ORBITA")
         if hero_t == "glyphs":
             hero_p["source"] = pick_by(ir, cir.DATA["glyphSources"], i, "noise")
             rp = glyph_ramp(brief)

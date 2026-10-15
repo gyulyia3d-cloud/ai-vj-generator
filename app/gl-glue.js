@@ -39,6 +39,11 @@ function glProg(body) {
   const gl = glInit(); if (!gl) return null;
   return GL.r.program(body, GL_HEAD + body, { lineOffset: GL_HEAD_LINES });
 }
+/* programa com vertex shader próprio (partículas, fase 13): key identifica o par, frag recebe o cabeçalho comum */
+function glProgV(key, vert, frag) {
+  const gl = glInit(); if (!gl) return null;
+  return GL.r.program(key, GL_HEAD + frag, { lineOffset: GL_HEAD_LINES, vert });
+}
 /* FrameContext: tudo que o render de um quadro pode ler, montado a partir do quadro (nunca de relógio, Date.now ou Math.random) */
 function frameContext(R, w, h) {
   const { F, comp } = R;

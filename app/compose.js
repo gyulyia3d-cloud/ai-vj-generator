@@ -6,7 +6,7 @@
 let CANVAS_POOL_REAL = null;   /* RG vem de um módulo embutido mais abaixo: o pool nasce no primeiro uso */
 const CANVAS_POOL = { get real() { return CANVAS_POOL_REAL || (CANVAS_POOL_REAL = new RG.CanvasPool()); }, acquire(w, h) { return this.real.acquire(w, h); }, release(c) { this.real.release(c); }, get stats() { return this.real.stats; } };
 let COMPOSE_OPTS = null;
-const nodeTypeOf = L => L.type === 'temporal' ? TM.presetOf(pm(L)).kind : (L.type === 'shader' || L.type === 'isf' || L.type === 'synth' || L.type === 'field' || L.type === 'solid') ? 'Shader' : BELOW_TYPES.has(L.type) ? 'Effect' : 'Generator';
+const nodeTypeOf = L => L.type === 'temporal' ? TM.presetOf(pm(L)).kind : (L.type === 'shader' || L.type === 'isf' || L.type === 'synth' || L.type === 'field' || L.type === 'solid' || L.type === 'particles') ? 'Shader' : BELOW_TYPES.has(L.type) ? 'Effect' : 'Generator';
 function buildComposeGraph(comp, F, o) {
   const target = o.target, w = target.width, h = target.height, g = RG.create('quadro');
   g.add({ id: 'src', type: 'Source', run: () => { const x = target.getContext('2d'); x.setTransform(1, 0, 0, 1, 0, 0); x.globalAlpha = 1; x.globalCompositeOperation = 'source-over'; x.clearRect(0, 0, w, h); if (o.bgFill) { x.fillStyle = o.bgFill; x.fillRect(0, 0, w, h); } return target; } });

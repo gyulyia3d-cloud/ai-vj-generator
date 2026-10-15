@@ -91,6 +91,7 @@ function paramGroups(L) {
   const g = GEN[L.type];
   let gp = g.params;
   if (L.type === 'temporal') { const s = TM.presetOf(pm(L)); gp = gp.map(d => /^p[1-4]$/.test(d.k) ? Object.assign({}, d, { l: 'P' + d.k[1] + ' · ' + s.labels[+d.k[1] - 1], d: s.d[+d.k[1] - 1] }) : d); }
+  if (L.type === 'particles') { const s = PRT[pm(L).kind] || PRT.ORBITA; gp = gp.map(d => /^p[1-4]$/.test(d.k) ? Object.assign({}, d, { l: 'P' + d.k[1] + ' · ' + s.labels[+d.k[1] - 1], d: s.d[+d.k[1] - 1] }) : d); }
   if (L.type === 'solid') { const s = SOL[pm(L).kind] || SOL.ESFERA; gp = gp.map(d => /^p[1-4]$/.test(d.k) ? Object.assign({}, d, { l: 'P' + d.k[1] + ' · ' + s.labels[+d.k[1] - 1], d: s.d[+d.k[1] - 1] }) : d); }
   if (L.type === 'field') { const s = FLD[pm(L).kind] || FLD.ISOLINHAS; gp = gp.map(d => /^p[1-4]$/.test(d.k) ? Object.assign({}, d, { l: 'P' + d.k[1] + ' · ' + s.labels[+d.k[1] - 1], d: s.d[+d.k[1] - 1] }) : d); }
   if (L.type === 'fx') { const s = FX[pm(L).preset] || FX.PIXELATE; gp = gp.map(d => /^p[1-4]$/.test(d.k) ? Object.assign({}, d, { l: 'P' + d.k[1] + ' · ' + s.labels[+d.k[1] - 1], d: s.d[+d.k[1] - 1] }) : d); }
@@ -110,6 +111,7 @@ function paramPanel(host, L, title) {
   const set = (k, v) => {
     if (v === undefined) delete L.p[k]; else L.p[k] = v;
     if (L.type === 'temporal' && k === 'preset') { const s = TM.PRESETS[v]; if (s) ['p1', 'p2', 'p3', 'p4'].forEach((q, i) => L.p[q] = s.d[i]); paramPanel(host, L, title); }
+    if (L.type === 'particles' && k === 'kind') { const s = PRT[v]; if (s) ['p1', 'p2', 'p3', 'p4'].forEach((q, i) => L.p[q] = s.d[i]); paramPanel(host, L, title); }
     if (L.type === 'solid' && k === 'kind') { const s = SOL[v]; if (s) ['p1', 'p2', 'p3', 'p4'].forEach((q, i) => L.p[q] = s.d[i]); paramPanel(host, L, title); }
     if (L.type === 'field' && k === 'kind') { const s = FLD[v]; if (s) ['p1', 'p2', 'p3', 'p4'].forEach((q, i) => L.p[q] = s.d[i]); paramPanel(host, L, title); }
     if (L.type === 'fx' && k === 'preset') { const s = FX[v]; if (s) ['p1', 'p2', 'p3', 'p4'].forEach((q, i) => L.p[q] = s.d[i]); paramPanel(host, L, title); }
@@ -300,6 +302,7 @@ function validate(o) {
       if (L.type === 'isf') { try { const b = shaderBody({ src: isfLib(p.lib).src }); glProg(b); if (GL.err.get(b)) add('ERROR', `${nm} · L${i} ISF`, GL.err.get(b)); } catch (e) { add('ERROR', `${nm} · L${i} ISF`, e.message); } }
       if (L.type === 'synth') { try { const b = shaderBody({ src: synthSrc(p) }); glProg(b); if (GL.err.get(b)) add('ERROR', `${nm} · L${i} cadeia`, GL.err.get(b)); } catch (e) { add('ERROR', `${nm} · L${i} cadeia`, e.message); } }
       if (L.type === 'temporal') { const b = TM.body(TM.presetOf(p).src); glProg(b); if (GL.err.get(b)) add('ERROR', `${nm} · L${i} tempo`, GL.err.get(b)); }
+      if (L.type === 'particles') { prtProg(p); const kk = prtKey(p); if (GL.err.get(kk)) add('ERROR', `${nm} · L${i} partículas`, GL.err.get(kk)); }
       if (L.type === 'solid') { const b = solBody(p); glProg(b); if (GL.err.get(b)) add('ERROR', `${nm} · L${i} sólido`, GL.err.get(b)); }
       if (L.type === 'field') { if (p.media && !MEDIA[p.media]) add('ERROR', `${nm} · L${i} mídia ausente`, `"${p.media}" não está carregada neste navegador. Importe na aba Mídia.`); const b = fldBody(p); glProg(b); if (GL.err.get(b)) add('ERROR', `${nm} · L${i} campo`, GL.err.get(b)); }
       if (L.type === 'glyphs' && p.source === 'image' && !MEDIA[p.media]) add('ERROR', `${nm} · L${i} mídia ausente`, p.media ? `"${p.media}" não está carregada neste navegador. Importe na aba Mídia.` : 'Campo = image sem imagem escolhida.');

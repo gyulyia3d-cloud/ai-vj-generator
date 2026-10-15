@@ -108,6 +108,7 @@ function pm(L) {
   if (L.type === 'fx') { const s = FX[o.preset]; if (s) ['p1', 'p2', 'p3', 'p4'].forEach((k, i) => { if (L.p[k] == null) o[k] = s.d[i]; }); }
   if (L.type === 'temporal') { const s = TM.PRESETS[o.preset]; if (s) ['p1', 'p2', 'p3', 'p4'].forEach((k, i) => { if (L.p[k] == null) o[k] = s.d[i]; }); }
   if (L.type === 'field') { const s = FLD[o.kind]; if (s) ['p1', 'p2', 'p3', 'p4'].forEach((k, i) => { if (L.p[k] == null) o[k] = s.d[i]; }); }
+  if (L.type === 'particles') { const s = PRT[o.kind]; if (s) ['p1', 'p2', 'p3', 'p4'].forEach((k, i) => { if (L.p[k] == null) o[k] = s.d[i]; }); }
   if (L.type === 'solid') { const s = SOL[o.kind]; if (s) ['p1', 'p2', 'p3', 'p4'].forEach((k, i) => { if (L.p[k] == null) o[k] = s.d[i]; }); }
   if (L.vars) for (const d of L.vars) if (o['v_' + d.k] === undefined) o['v_' + d.k] = d.d;
   return o;

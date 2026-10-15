@@ -96,7 +96,7 @@
               "type": "object",
               "required": ["type"],
               "properties": {
-                "type": { "type": "string", "enum": ["bg","organism","structure","measure","data","hud","event","post","lines","instrument","bitfield","sim","parallax","splat","flow","tunnel","typewall","shader","image","video","model","shape","text","typeset","code","pixeltext","symbols","hazard","blocks","logo","isf","fx","synth","blobs","temporal","field","glyphs","solid"] },
+                "type": { "type": "string", "enum": ["bg","organism","structure","measure","data","hud","event","post","lines","instrument","bitfield","sim","parallax","splat","flow","tunnel","typewall","shader","image","video","model","shape","text","typeset","code","pixeltext","symbols","hazard","blocks","logo","isf","fx","synth","blobs","temporal","field","glyphs","solid","particles"] },
                 "name": { "type": "string" },
                 "role": { "type": "string" },
                 "temporal": { "type": "object", "description": "Audio semantics (references/audio-semantics.md): how the layer keeps time. still, drift and beat never listen to the audio; follow, accent and section listen to the declared band classes.", "required": ["behavior"], "properties": { "behavior": { "type": "string", "enum": ["still", "drift", "beat", "follow", "accent", "section"] }, "listens": { "type": "array", "items": { "type": "string", "enum": ["bass", "mid", "high", "hit", "level"] } }, "reason": { "type": "string" } } },
