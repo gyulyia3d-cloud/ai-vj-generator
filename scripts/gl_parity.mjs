@@ -4,15 +4,17 @@
 //   node scripts/gl_parity.mjs --compare base.json   renderiza de novo e compara com a base (sai com 1 se passar da tolerância)
 // Casos: as composições da galeria (quadros 0, meio e último, em escala reduzida) e uma camada de cada shader, filtro fx, cadeia synth e ISF original.
 // Tolerância: diferença média <= 1.5 de 255 e no máximo 2% dos pixels com diferença > 24 (GPUs e compiladores diferem em ruído e ponto flutuante).
-import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, mkdirSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { deflateSync, inflateSync } from 'node:zlib';
 import { openPage } from '../skill/ai-vj-generator/scripts/cdp.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..'), a = process.argv.slice(2);
-const mode = a.includes('--save') ? 'save' : a.includes('--compare') ? 'compare' : null, file = a[a.indexOf(mode === 'save' ? '--save' : '--compare') + 1];
-if (!mode || !file) { console.error('uso: node scripts/gl_parity.mjs --save|--compare arquivo.json'); process.exit(2); }
+const REF = join(ROOT, 'examples', 'reference', 'parity.json');
+const mode = a.includes('--update') ? 'save' : a.includes('--save') ? 'save' : a.includes('--compare') ? 'compare' : null;
+const file = a.includes('--update') ? REF : a[a.indexOf(mode === 'save' ? '--save' : '--compare') + 1] || (a.includes('--compare') ? REF : undefined);
+if (!mode || !file) { console.error('uso: node scripts/gl_parity.mjs --update | --compare [arquivo.json] | --save arquivo.json'); process.exit(2); }
 
 const open = () => openPage(join(ROOT, 'app', 'index.html'), { waitFor: '!!(window.AIVJ && window.AIVJ.renderFrame && window.AIVJ.isf)', width: 900, height: 600 });
 let page = await open();
@@ -26,9 +28,17 @@ const fix = JSON.parse(await E(`(() => { const A = AIVJ, base = { schema: 'ai-vj
   A.GEN.fx.params[0].opts.forEach(o => mk('fx/' + o, { type: 'fx', name: 'X', p: { preset: o } }));
   A.GEN.synth.params[0].opts.forEach(o => mk('synth/' + o, { type: 'synth', name: 'Y', p: { preset: o } }));
   A.isf.LIB.filter(x => x.origin === 'original').forEach(x => mk('isf/' + x.id, { type: 'isf', name: 'I', p: { lib: x.id } }));
+  ['field', 'glyphs', 'solid', 'particles', 'temporal', 'shape', 'instrument', 'tunnel', 'symbols', 'lines', 'pixeltext'].forEach(t => { const d = A.GEN[t] && A.GEN[t].params[0]; if (d && d.opts && d.opts.length) d.opts.forEach(o => mk(t + '/' + o, { type: t, name: 'T', p: { [d.k]: o } })); });
   return JSON.stringify(out); })()`));
 for (const c of fix) cases.push(c);
 
+/* Quadro de referência compacto: média em caixa até ~1200 px (cabe no git e absorve ruído de GPU); base e comparação passam pelo mesmo encolhimento. */
+function shrink(d, w, h, max = 1200) {
+  const k = Math.max(1, Math.floor(Math.sqrt(w * h / max))); if (k === 1) return { w, h, data: d };
+  const nw = Math.floor(w / k), nh = Math.floor(h / k), o = Buffer.alloc(nw * nh * 4);
+  for (let y = 0; y < nh; y++) for (let x = 0; x < nw; x++) for (let c = 0; c < 4; c++) { let t = 0; for (let j = 0; j < k; j++) for (let i = 0; i < k; i++) t += d[((y * k + j) * w + x * k + i) * 4 + c]; o[(y * nw + x) * 4 + c] = Math.round(t / (k * k)); }
+  return { w: nw, h: nh, data: o };
+}
 const frames = [];   // { key, w, h, data }
 if (process.env.GLP_ONLY) for (let i = cases.length - 1; i >= 0; i--) if (!cases[i].name.includes(process.env.GLP_ONLY)) cases.splice(i, 1);
 let first = true;
@@ -40,16 +50,18 @@ for (const c of cases) { if (process.env.GLP_LOG) console.log(c.name, Date.now()
     for (const ci of cis) for (const f of fr) { const im = A.renderFrame(ci, f, Math.min(1, Math.sqrt(16000 / (P.canvas.w * P.canvas.h))), true); out.push({ key: ci + '@' + f, w: im.width, h: im.height, b64: u8(im.data) }); }
     return JSON.stringify(out); })()`));
   if (process.env.GLP_LOG) console.log(' ->', r.length);
-  for (const x of r) frames.push({ key: c.name + '#' + x.key, w: x.w, h: x.h, data: Buffer.from(x.b64, 'base64') });
+  for (const x of r) { const q = shrink(Buffer.from(x.b64, 'base64'), x.w, x.h); frames.push({ key: c.name + '#' + x.key, w: q.w, h: q.h, data: q.data }); }
 }
 await page.close();
 
 if (mode === 'save') {
+  mkdirSync(dirname(file), { recursive: true });
   writeFileSync(file, JSON.stringify(frames.map(f => ({ key: f.key, w: f.w, h: f.h, z: deflateSync(f.data).toString('base64') }))));
   console.log(`base gravada: ${frames.length} quadros de ${cases.length} casos em ${file}`); process.exit(0);
 }
 const base = new Map(JSON.parse(readFileSync(file, 'utf8')).map(f => [f.key, { w: f.w, h: f.h, data: inflateSync(Buffer.from(f.z, 'base64')) }]));
 let worst = 0, bad = 0; const rows = [];
+if (process.env.GLP_PERTURB && frames[0]) for (let i = 0; i < frames[0].data.length; i += 4) frames[0].data[i] = Math.min(255, frames[0].data[i] + 60);   /* controle negativo do check.mjs: a comparação PRECISA reprovar */
 for (const f of frames) {
   const b = base.get(f.key); if (!b || b.w !== f.w || b.h !== f.h) { bad++; rows.push(`ERRO ${f.key}: tamanho ou caso ausente na base`); continue; }
   let sum = 0, big = 0, n = f.data.length / 4;

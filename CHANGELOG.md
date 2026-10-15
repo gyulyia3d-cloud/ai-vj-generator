@@ -7,6 +7,13 @@
 - **Entra pelo conceito:** `particles` é tipo de herói do Creative IR (`heroTypes`, pesos em 12 verbos, `particleKinds` liga cada um dos 32 verbos a uma regra); o Animation IR toca em `size`. Python e navegador dão o mesmo projeto. Aditivo: projetos antigos não precisam de migração.
 - Teste novo `particles_check.mjs`; `registry.mjs` confere os 32 verbos; `references/particles-layer.md`; esquema, SKILL, PROMPT e famílias atualizados. Simulação com estado, rastro e colisão ficam para depois (histórico do RenderGraph).
 
+## Em andamento · Fase 20: quadros de referência (primeira parte, 15/10/2026)
+
+- **Base versionada:** `examples/reference/parity.json` guarda 184 quadros de 120 casos (as 8 composições da galeria em 3 quadros e uma camada por opção de shader, fx, synth, ISF e, novas, field, glyphs, solid, particles, temporal, shape, instrument, tunnel, symbols, lines e pixeltext), encolhidos por média em caixa para ~1200 px (893 KB). O baseline obsoleto da fase 2 deixa de existir.
+- **`node scripts/gl_parity.mjs --update`** regrava a base; **`--compare`** (sem arquivo) compara com ela. `check.mjs` roda a comparação e um controle negativo (quadro adulterado tem de reprovar). Duas execuções seguidas dão diferença 0.000 (render por software determinístico). Dura ~45 s.
+- **Regra:** quem muda o render de propósito confere o desenho, roda `--update` e explica no commit; mudança de render sem `--update` reprova o `check.mjs`.
+- Ainda na fase 20: contatos de galeria com tempo estourado (`02-jardim-tela` em `gallery.mjs`) e quadros em tamanho cheio por camada de fundo/forma.
+
 ## Em andamento · Fase 14a: base da UI (DS v2 funcional)
 
 - **Tokens v2** em `app/style.css` (bloco V6): elevação por tom de cinza (`--s1`, `--s2`, `--s3`), um acento funcional (`--accent`, o verde da paleta STANDARD do app; escuro `#00ff3c`, claro `#007a22` para manter contraste), quinas retas em tudo (`--r:0`), escala de texto com piso de 11 px, escala de espaço de 4 px. Spec e racional em `docs/brand/UI-REDESIGN-PROPOSTA.md`.

@@ -51,4 +51,4 @@ Todo o render é função do projeto e do número do quadro. Relógio, `Date.now
 | instancing, transform feedback, MRT | detectados; usados nas fases 12 e 13 |
 
 ## Testes
-`scripts/gl_parity.mjs --save|--compare` (paridade de pixels, tolerância: média <= 1,5 de 255 e <= 2% dos pixels com diferença > 24), `webgl2_check.mjs`, `gpu_resources_check.mjs` e `rendergraph_check.mjs` (grafo, composição, determinismo, replay, emenda do loop, slit scan por pixel).
+`scripts/gl_parity.mjs --update|--compare` (quadros de referência versionados em `examples/reference/parity.json`; paridade de pixels, tolerância: média <= 1,5 de 255 e <= 2% dos pixels com diferença > 24), `webgl2_check.mjs`, `gpu_resources_check.mjs` e `rendergraph_check.mjs` (grafo, composição, determinismo, replay, emenda do loop, slit scan por pixel).

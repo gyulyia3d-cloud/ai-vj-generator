@@ -241,6 +241,11 @@ try { execFileSync('python', [join(SKILL, 'scripts', 'families.py'), 'check'], {
 catch (e) { bad('families: ' + String(e.stdout || e.stderr).trim().slice(0, 200)); }
 try { execFileSync(process.execPath, [join(ROOT, 'scripts', 'gallery.mjs'), '--check'], { stdio: 'pipe' }); ok('galeria: 8 briefs geram projetos limpos e toda composição tira nota >= 75'); }
 catch (e) { e.status === 3 ? console.log('  --   galeria pulada (sem navegador)') : bad('galeria: ' + String(e.stdout).split(NL).filter(l => /ERRO/.test(l)).slice(0, 3).join(' | ')); }
+// fase 20: quadros de referência (examples/reference/parity.json): o render de hoje tem de bater com a base versionada, e a comparação tem de reprovar um quadro adulterado
+try { execFileSync(process.execPath, [join(ROOT, 'scripts', 'gl_parity.mjs'), '--compare'], { stdio: 'pipe', timeout: 300000 }); ok('quadros de referência: galeria e uma camada de cada família batem com a base versionada'); }
+catch (e) { e.status === 3 ? console.log('  --   quadros de referência pulados (sem navegador)') : bad('quadros de referência: ' + String(e.stdout).split(NL).filter(l => /ERRO/.test(l)).slice(0, 3).join(' | ')); }
+try { execFileSync(process.execPath, [join(ROOT, 'scripts', 'gl_parity.mjs'), '--compare'], { stdio: 'pipe', timeout: 300000, env: Object.assign({}, process.env, { GLP_PERTURB: '1', GLP_ONLY: 'fx/' }) }); bad('quadros de referência: um quadro adulterado passou na comparação'); }
+catch (e) { e.status === 1 ? ok('quadros de referência reprovam o controle negativo (quadro adulterado)') : e.status === 3 ? console.log('  --   controle negativo dos quadros pulado') : bad('controle negativo dos quadros: ' + String(e.message).slice(0, 160)); }
 // visualizador de arquivos gerados (OUTPUT.html)
 try {
   const dir = (await import('node:fs')).mkdtempSync(join(tmpdir(), 'aivj-out-')), fs = await import('node:fs');

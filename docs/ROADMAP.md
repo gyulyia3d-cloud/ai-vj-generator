@@ -35,7 +35,7 @@ Referências antigas a isso ficam apenas no `CHANGELOG.md`.
 | 15 | Crítica artística (ARTISTIC / STRUCTURAL / TECHNICAL separados) | pendente |
 | 16 | Export profissional: o que falta é verificação, manifesto verificável e honestidade sobre alfa (`mp4.js` e o manifesto já existem) | pendente |
 | 17 | Performance | pendente |
-| 20 | Galeria de regressão + testes visuais determinísticos (antigas 20 e 21 fundidas: um só mecanismo de quadros de referência; resolve o baseline obsoleto do `gl_parity` e o estouro de tempo do contato 02-jardim-tela) | pendente |
+| 20 | Galeria de regressão + testes visuais determinísticos (antigas 20 e 21 fundidas: um só mecanismo de quadros de referência; resolve o baseline obsoleto do `gl_parity` e o estouro de tempo do contato 02-jardim-tela) | **em andamento**: base versionada `examples/reference/parity.json` (184 quadros) e controle negativo no `check.mjs`; falta o contato `02-jardim-tela` |
 | 22 | Testes de ponta a ponta | pendente |
 | 24 | Portão final de qualidade, com auditoria de documentação (a antiga 23 virou regra: cada fase documenta o que entrega) | pendente |
 
