@@ -63,7 +63,7 @@ Use a `code` layer when no generator expresses the idea. It runs inside the engi
 | Shapes | `K.rect(c,x,y,w,h)` pixel-snapped fill · `K.sym(c,'o|O|x|+|s|k|S|.',x,y,size)` · `K.emblem(c,cx,cy,r,ang)` · `K.hazard(c,x,y,w,h,step,offset,dir)` · `K.checker(...)` |
 | Cut-out | `K.erase(c, () => { ... })` removes pixels **of this layer only** |
 | Glitch | `K.glitchOn(amt,salt)` · `K.glitch(c,amt,salt,{cell,solid})` copies and shifts blocks of the layer's own image (call last) · `K.strobe(c,amt)` |
-| Media | `K.img(name)` · `K.drawImg(c,name,cx,cy,maxW,maxH,color,scale)` · `K.cutImg(...)` · `K.mosaic(c,name,cx,cy,maxW,maxH,cell,color)` · `K.dots(...)` halftone · `K.anchor(name,seed)` |
+| Media | `K.img(name)` (cartão `{kind,name,w,h}`; passe-o a `c.drawImage` ou use `K.drawImg`) · `K.drawImg(c,name,cx,cy,maxW,maxH,color,scale)` · `K.cutImg(...)` · `K.mosaic(c,name,cx,cy,maxW,maxH,cell,color)` · `K.dots(...)` halftone · `K.anchor(name,seed)` |
 | Other | `K.name` project name · `K.seed` · `K.R` the raw render record |
 
 Pixel-snap blocks (`K.rect`, `K.bText`, `K.mosaic`): the canvas is scaled, and un-snapped rectangles show antialiased seams between neighbours.

@@ -146,6 +146,26 @@ const fitBox = (m, maxW, maxH) => { const k = Math.min(maxW / m.w, maxH / m.h); 
 
 /* ---------- comparação de código: filtros e execução ---------- */
 const CODE_SHADOW = ['window', 'document', 'globalThis', 'fetch', 'XMLHttpRequest', 'WebSocket', 'localStorage', 'sessionStorage', 'indexedDB', 'navigator', 'Function', 'Worker', 'setTimeout', 'setInterval', 'requestAnimationFrame', 'Date', 'performance', 'importScripts', 'postMessage', 'Reflect', 'Proxy', 'WebAssembly', 'SharedArrayBuffer', 'Image', 'Audio'];
+/* ---------- isolamento: o código do usuário roda no contexto da página, então o que ele ALCANÇA é a fronteira ----------
+   (1) construtores de função mortos: (()=>1)['constr'+'uctor'] não devolve mais o Function real (new Function abaixo usa a referência global, que não muda);
+   (2) o contexto 2D chega como fachada sem .canvas (c.canvas.ownerDocument.defaultView era o caminho até a janela);
+   (3) mídia chega como cartão {w, h}: o elemento <img> fica atrás de um WeakMap que só a fachada desembrulha.
+   O filtro de texto abaixo continua como primeira barreira, mas não é a fronteira: o teste code_sandbox_check.mjs mede o alcance de verdade. */
+(function sealCtors() {
+  const stub = function () { throw new Error('Construtores de função são proibidos na camada de código.'); };
+  for (const proto of [Function.prototype, Object.getPrototypeOf(async function () {}), Object.getPrototypeOf(function* () {}), Object.getPrototypeOf(async function* () {})])
+    try { Object.defineProperty(proto, 'constructor', { value: stub, writable: false, configurable: false }); } catch (e) { /* já selado */ }
+})();
+const UNWRAP = new WeakMap(), SAFE_CTX = new WeakMap();
+function safeCtx(c) {
+  let s = SAFE_CTX.get(c); if (s) return s; const fns = new Map(), un = x => UNWRAP.get(x) || x;
+  s = new Proxy(c, {
+    get(t, k) { if (k === 'canvas') return undefined; const v = t[k]; if (typeof v !== 'function') return v; let f = fns.get(k); if (!f) fns.set(k, f = (...a) => { const r = v.apply(t, a.map(un)); return r === t ? s : r; }); return f; },
+    set(t, k, v) { if (k === 'canvas') return true; t[k] = v; return true; }
+  });
+  UNWRAP.set(s, c); SAFE_CTX.set(c, s); return s;
+}
+function mediaCard(m) { const h = Object.freeze({ kind: m.kind, name: m.name, w: m.w, h: m.h }); UNWRAP.set(h, m.img); return h; }
 const CODE_LINT = [
   [/\bMath\s*\.\s*random\b/, 'Math.random é proibido: o render precisa ser determinístico. Use K.rand(i, k) ou K.rng(seed).'],
   [/\b(Date|performance|setTimeout|setInterval|requestAnimationFrame)\b/, 'Relógio real é proibido: use K.t (quadro, fase do loop, beat).'],
@@ -225,7 +245,7 @@ function makeKit(c, R) {
     glitchOn(amt, salt) { const strong = F.beat % 4 === 0, fb = F.bp * F.fpb; if (fb >= (strong ? 4 : 2)) return false; if (!strong && hr(F.beat, (salt | 0) + 91) > 0.3 + (amt ?? 0.5) * 0.5) return false; return true; },
     /* glitch em bloco: copia blocos da PRÓPRIA camada deslocados em células inteiras, ou pinta blocos cheios. Chame por último. */
     glitch(cc, amt, salt, o) {
-      amt = amt ?? 0.5; o = o || {}; if (!K.glitchOn(amt, salt)) return; const cell = o.cell || cell0, strong = F.beat % 4 === 0, n = Math.round((strong ? 4 : 2) + amt * 6), src = cc.canvas, m = cc.getTransform();
+      amt = amt ?? 0.5; o = o || {}; if (!K.glitchOn(amt, salt)) return; const cell = o.cell || cell0, strong = F.beat % 4 === 0, n = Math.round((strong ? 4 : 2) + amt * 6), src = (UNWRAP.get(cc) || cc).canvas, m = cc.getTransform();
       const sol = o.solid ?? false;
       for (let i = 0; i < n; i++) {
         const sd = F.beat * 31 + i * 7 + (salt | 0), wl = G.walls[Math.floor(hr(sd, 1) * G.walls.length)], cw = 2 + Math.floor(hr(sd, 2) * 6), ch = 1 + Math.floor(hr(sd, 3) * 3);
@@ -240,7 +260,7 @@ function makeKit(c, R) {
     /* strobe de parede: pisca uma parede por meia batida, 2 quadros */
     strobe(cc, amt, color) { if (!(amt > 0.02)) return; const q = F.fpb / 2, t = F.n % q; if (t >= 2) return; const wl = G.walls[Math.floor(F.n / q) % G.walls.length]; cc.fillStyle = color || K.ink; cc.globalAlpha = 0.5 + amt * 0.5; cc.fillRect(wl.x0, 0, wl.w, G.h); cc.globalAlpha = 1; },
     /* mídia importada (aba Mídia): K.img('logo.png') */
-    img: name => mediaImg(name),
+    img: name => { const m = mediaImg(name); return m ? mediaCard(m) : null; },
     imgBox: (name, maxW, maxH) => { const m = mediaImg(name); return m ? fitBox(m, maxW, maxH) : null; },
     drawImg(cc, name, cx, cy, maxW, maxH, color, sc) {
       const m = mediaImg(name); if (!m) return null; const tcv = tintOf(m, color || K.ink), b = fitBox(m, maxW, maxH), w = b[0] * (sc || 1), h = b[1] * (sc || 1);
@@ -277,7 +297,7 @@ reg('code', 'Código · camada livre', 'code', [T('src', 'Código (corpo de draw
   if (!ST.codeAllow) return;
   const fn = compileCode(R.p.src); if (fn.err) throw new Error(fn.err);
   const K = makeKit(c, R); c.scale(R.u, R.u);
-  fn.f(c, K, SAFE_MATH);
+  fn.f(safeCtx(c), K, SAFE_MATH);
 });
 
 /* ===== primitivos declarativos: o que a skill usa quando o briefing não pede código ===== */
