@@ -506,9 +506,10 @@ input[type=range]{height:24px}
 #top .zc button{border-color:transparent;min-height:30px;padding:4px 8px}
 #top .zc button:hover:not(:disabled){background:var(--s2);border-color:transparent}
 #top .zc button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
-#top #metrics{margin-right:var(--sp-2)}
-@media (max-width:1400px){#top #metrics{display:none}}
-@media (max-width:1180px){
+#top #metrics{margin-right:var(--sp-2);flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
+#top .zr>:not(#metrics){flex:none}
+@media (max-width:1800px){#top #metrics{display:none}}
+@media (max-width:1560px){
   #top{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"zl zr" "zc zc";row-gap:var(--sp-1)}
   #top .zl{grid-area:zl}#top .zr{grid-area:zr}
   #top .zc{grid-area:zc;justify-content:flex-start;overflow-x:auto;scrollbar-width:none}
