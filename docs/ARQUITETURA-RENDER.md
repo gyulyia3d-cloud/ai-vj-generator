@@ -1,4 +1,4 @@
-# Arquitetura de render (motor 3.19.0)
+# Arquitetura de render (motor 3.20.0)
 
 ## Caminho de um quadro
 ```

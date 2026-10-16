@@ -18,7 +18,7 @@ Written at the root of the (last) ZIP.
 
 ```json
 {
-  "schema": "ai-vj-generator/export-manifest/2", "engine": "3.19.0", "createdAt": "ISO date",
+  "schema": "ai-vj-generator/export-manifest/2", "engine": "3.20.0", "createdAt": "ISO date",
   "project": { "name": "", "id": "", "seed": 0, "sha256": "64 hex of the project JSON as exported", "bpm": 0, "bars": 0, "loop": true, "seamless": true, "loopFrames": 0 },
   "canvas": { "w": 0, "h": 0, "fps": 0, "target": "led", "folds": [] },
   "export": { "mode": "comp|rgb|layers|single", "region": "full | { name, index, x, y, w, h }", "alpha": true, "whiteAlpha": false, "scale": 1, "size": [0, 0], "start": 0, "end": 0, "frames": 0, "compositions": [], "prefix": "", "files": 0, "naming": "text", "partMB": 0 },

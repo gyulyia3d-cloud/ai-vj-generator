@@ -1,6 +1,9 @@
 # Changelog
 
-## Em andamento · Fase 16: export verificável (16/10/2026)
+## 3.20.0 (16/10/2026) · Fase 16: export verificável
+
+Fecha a fase 16. Sem mudança de render nem de formato de projeto (a base de quadros de referência continua em diferença 0.000); o manifesto de export sobe para o esquema 2 e o 1 continua legível. `check.mjs`: 141 verificações, todas verdes.
+
 
 - **Manifesto v2** (`ai-vj-generator/export-manifest/2`): lista cada PNG com bytes e SHA-256 (`crypto.subtle`; sem ele o campo é `null` e o manifesto diz que não há hash, em vez de inventar), declara o que o alfa significa e que MP4 não tem alfa. O v1 continua legível.
 - **Verificador independente `scripts/verify_export.mjs`:** confere pasta ou partes `.zip` contra o manifesto (hash do projeto, quadros contíguos e contados, SHA-256 e bytes de cada PNG, dimensões, **alfa medido nos pixels**; MP4: bytes, SHA-256, `ftyp` e `alpha: false`). Sem o motor e sem rede.
