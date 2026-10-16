@@ -6,7 +6,9 @@
 - **Verificador independente `scripts/verify_export.mjs`:** confere pasta ou partes `.zip` contra o manifesto (hash do projeto, quadros contíguos e contados, SHA-256 e bytes de cada PNG, dimensões, **alfa medido nos pixels**; MP4: bytes, SHA-256, `ftyp` e `alpha: false`). Sem o motor e sem rede.
 - **`scripts/render.mjs` passa a gravar manifesto** (PNG: `MANIFEST.json` e `project.json` na pasta; MP4: `<arquivo>.manifest.json`), no mesmo esquema.
 - **Testes:** `export_verify_check.mjs` (render pela linha de comando, entregas boas e 8 controles negativos: byte trocado, quadro apagado, `project.json` adulterado, alfa mentido, dimensão errada, sem manifesto, MP4 adulterado, MP4 que promete alfa) e `export_check.mjs` agora verifica o ZIP baixado pelo motor, as 8 partes juntas e a falta de uma parte.
-- Achado, não corrigido: o ZIP do motor depende do JSZip carregado por CDN; sem rede o export em ZIP não roda (a linha de comando não depende).
+- **JSZip embutido** (`app/vendor/jszip.min.js`, 3.10.1, baixado do cdnjs e conferido pelo mesmo SRI sha512 que a página já usava; cabeçalho MIT/GPLv3 preservado): o export em ZIP não depende mais de CDN. Teste novo `export_offline_check.mjs`: nenhum script de fora, nenhuma requisição http(s) além das fontes web, export de ponta a ponta conferido pelo verificador, e controle negativo (sem JSZip o export recusa com mensagem clara).
+- **Bug achado pelo verificador:** o `FLASH.sha256` do motor errava o preenchimento quando o tamanho em bytes era 55 mod 64, então o "SHA-256 do projeto" do manifesto não era um SHA-256 verdadeiro em 1 de cada 64 projetos (e nenhuma ferramenta externa o reproduzia). Corrigido; `export_check.mjs` agora compara com `crypto.subtle` em todos os tamanhos de 0 a 260 bytes e com UTF-8.
+- O `project.json` do ZIP passa a ser o mesmo texto que gerou o hash do manifesto (calculado antes do render, que preenche parâmetros padrão).
 
 ## 3.19.0 (15/10/2026) · Fase 14a: base da UI, quadros de referência e camada `code` isolada
 

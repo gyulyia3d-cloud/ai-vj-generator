@@ -70,7 +70,7 @@ node scripts/check.mjs                               # tudo; precisa terminar em
 node scripts/render.mjs projeto.aivj.json --out saida --format mp4
 node scripts/bench.mjs projeto.aivj.json             # custo por camada
 ```
-Sem dependências de npm; a única biblioteca externa é o JSZip (cdnjs, com SRI), usada só no ZIP de PNG. Regras do repositório: [AGENTS.md](AGENTS.md) e [CONTRIBUTING.md](CONTRIBUTING.md). Histórico: [CHANGELOG.md](CHANGELOG.md).
+Sem dependências de npm; a única biblioteca de terceiros é o JSZip 3.10.1 (MIT ou GPLv3), embutida em `app/vendor/` (sem CDN: o export em ZIP funciona sem rede); só as fontes web vêm de fora e têm fallback do sistema. Regras do repositório: [AGENTS.md](AGENTS.md) e [CONTRIBUTING.md](CONTRIBUTING.md). Histórico: [CHANGELOG.md](CHANGELOG.md).
 
 ## English summary
 

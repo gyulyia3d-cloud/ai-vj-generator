@@ -58,7 +58,7 @@ const FLASH = (() => {
   function sha256(str) {
     const b = new TextEncoder().encode(str), l = b.length, K = [], H = [0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19];
     for (let p = 2, c = 0; c < 64; p++) { let pr = true; for (let d = 2; d * d <= p; d++) if (p % d === 0) { pr = false; break; } if (pr) { K[c++] = Math.floor((Math.pow(p, 1 / 3) % 1) * 4294967296) >>> 0; } }
-    const n = (((l + 9) >> 6) + 1) << 6, m = new Uint8Array(n); m.set(b); m[l] = 0x80; const dv = new DataView(m.buffer); dv.setUint32(n - 8, Math.floor(l * 8 / 4294967296)); dv.setUint32(n - 4, (l * 8) >>> 0);
+    const n = ((l + 9 + 63) >> 6) << 6, m = new Uint8Array(n); m.set(b); m[l] = 0x80; const dv = new DataView(m.buffer); dv.setUint32(n - 8, Math.floor(l * 8 / 4294967296)); dv.setUint32(n - 4, (l * 8) >>> 0);
     const w = new Uint32Array(64), rr = (x, k) => (x >>> k) | (x << (32 - k));
     for (let o = 0; o < n; o += 64) {
       for (let i = 0; i < 16; i++) w[i] = dv.getUint32(o + i * 4);

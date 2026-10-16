@@ -32,7 +32,7 @@ async function prepMedia(comp, F) {
 async function exportRun(info, bar) {
   if (EXPORTING) return;
   if (typeof JSZip === 'undefined') { info.textContent = 'A biblioteca de ZIP não carregou. Verifique a conexão e recarregue.'; return; }
-  const projHash = FLASH.sha256(JSON.stringify(projectOut()));
+  const projObj = projectOut(), projHash = FLASH.sha256(JSON.stringify(projObj)), projText = JSON.stringify(projObj, null, 2);   /* o project.json do ZIP é este mesmo texto: o hash do manifesto e o arquivo nunca divergem (a renderização preenche parâmetros padrão depois) */
   const bak = { fps: P.canvas.fps, bars: P.time.bars, live: ST.live };
   const fps = EXP.fps || P.canvas.fps, bars = EXP.bars || P.time.bars;
   P.canvas.fps = fps; P.time.bars = bars;
@@ -95,7 +95,7 @@ async function exportRun(info, bar) {
         await maybeFlush();
       }
     }
-    zip.file(`${PROJ}/PROJECT_DATA/project.json`, JSON.stringify(projectOut(), null, 2));
+    zip.file(`${PROJ}/PROJECT_DATA/project.json`, projText);
     zip.file(`${PROJ}/PROJECT_DATA/LEIAME.txt`, readme(fps, bars, reg ? reg.w : w, reg ? reg.h : h, end - start + 1, alpha));
     /* manifesto: tudo que é preciso para reproduzir ou conferir o export (a última parte leva o manifesto, o project.json e o LEIAME) */
     const manifest = {
