@@ -1,27 +1,10 @@
 # Changelog
 
-## 3.18.0 (14/10/2026) · Fase 13: partículas em GPU, sem estado
+## 3.19.0 (15/10/2026) · Fase 14a: base da UI, quadros de referência e camada `code` isolada
 
-- **Nova camada `particles`** (`app/particles.js`): 50 a 20 mil pontos numa só chamada `gl.POINTS`, sem buffer de vértices. A posição de cada partícula é função em forma fechada do índice, da semente e da fase do loop, no vertex shader: o quadro N sai igual fora de ordem, o loop fecha por frequências inteiras, o acaso é hash de inteiros. Seis regras: `ORBITA`, `FONTE`, `ESPIRAL`, `CHUVA`, `EXPLOSAO`, `ENXAME`; mistura `soma` ou `normal`.
-- **Renderer:** `r.drawPoints(n)`, vertex shader próprio em `r.program` (`vert`), mistura `soma`, métrica `activeParticles` real, `glProgV` em `gl-glue.js`.
-- **Entra pelo conceito:** `particles` é tipo de herói do Creative IR (`heroTypes`, pesos em 12 verbos, `particleKinds` liga cada um dos 32 verbos a uma regra); o Animation IR toca em `size`. Python e navegador dão o mesmo projeto. Aditivo: projetos antigos não precisam de migração.
-- Teste novo `particles_check.mjs`; `registry.mjs` confere os 32 verbos; `references/particles-layer.md`; esquema, SKILL, PROMPT e famílias atualizados. Simulação com estado, rastro e colisão ficam para depois (histórico do RenderGraph).
+Release de fechamento da 14a. Sem mudança de formato de projeto nem de migração; o render não mudou (a base de quadros de referência confirma: diferença 0.000). `check.mjs`: 139 verificações, todas verdes.
 
-## Em andamento · Endurecimento da camada `code` (15/10/2026)
-
-- **Problema medido:** o filtro de texto (`lintCode`) era a única barreira e se contornava montando `constructor` por concatenação (`K.ease.out['constr'+'uctor']('return this')()` devolvia a janela) ou por `c.canvas.ownerDocument.defaultView`. Provado por teste vermelho antes da correção.
-- **Fronteira nova, de alcance:** construtores de função selados (`Function`, `AsyncFunction`, gerador e gerador async; `new Function` do motor não muda); o contexto 2D chega à camada como fachada sem `.canvas` (que devolve `undefined`) e desembrulha os argumentos; `K.img(name)` devolve cartão `{kind, name, w, h}` em vez do registro com o `<img>`, e `c.drawImage(K.img(n), ...)` continua funcionando. Custo medido: +0,9 ms por quadro com 3000 chamadas de desenho.
-- **Teste novo `code_sandbox_check.mjs`:** passeio pelo grafo de objetos a partir de `c`, `K` e `Math` (tem de não achar janela, nó do DOM nem construtor real), 8 ataques conhecidos, controle negativo do passeio (no contexto cru ele acha `c.canvas`), controle positivo (o código legítimo desenha) e o filtro de texto como primeira barreira.
-- **Limite honesto:** o código ainda roda no mesmo contexto da página, sem processo separado (o render síncrono e determinístico impede Worker). Poluição de protótipos e laços infinitos não são cobertos; o aviso de autorização diz isso e continua exigindo confiança em quem gerou o arquivo.
-
-## Em andamento · Fase 20: quadros de referência (primeira parte, 15/10/2026)
-
-- **Base versionada:** `examples/reference/parity.json` guarda 184 quadros de 120 casos (as 8 composições da galeria em 3 quadros e uma camada por opção de shader, fx, synth, ISF e, novas, field, glyphs, solid, particles, temporal, shape, instrument, tunnel, symbols, lines e pixeltext), encolhidos por média em caixa para ~1200 px (893 KB). O baseline obsoleto da fase 2 deixa de existir.
-- **`node scripts/gl_parity.mjs --update`** regrava a base; **`--compare`** (sem arquivo) compara com ela. `check.mjs` roda a comparação e um controle negativo (quadro adulterado tem de reprovar). Duas execuções seguidas dão diferença 0.000 (render por software determinístico). Dura ~45 s.
-- **Regra:** quem muda o render de propósito confere o desenho, roda `--update` e explica no commit; mudança de render sem `--update` reprova o `check.mjs`.
-- Ainda na fase 20: contatos de galeria com tempo estourado (`02-jardim-tela` em `gallery.mjs`) e quadros em tamanho cheio por camada de fundo/forma.
-
-## Em andamento · Fase 14a: base da UI (DS v2 funcional)
+### Fase 14a: base da UI (DS v2 funcional)
 
 - **Tokens v2** em `app/style.css` (bloco V6): elevação por tom de cinza (`--s1`, `--s2`, `--s3`), um acento funcional (`--accent`, o verde da paleta STANDARD do app; escuro `#00ff3c`, claro `#007a22` para manter contraste), quinas retas em tudo (`--r:0`), escala de texto com piso de 11 px, escala de espaço de 4 px. Spec e racional em `docs/brand/UI-REDESIGN-PROPOSTA.md`.
 - **Slider novo:** trilha de 4 px com preenchimento, alça de 14 px, valor em chip, rótulo de parâmetro em caixa normal. O que difere do padrão ganha acento (preenchimento e valor) e só então mostra o botão de restaurar. Módulo `app/slider-ui.js` (só apresentação: escreve `--p` e as classes `hasdef` e `chg`; nunca muda valor nem dispara evento). `ctlHtml` passa a gravar `data-def`.
@@ -37,6 +20,27 @@
 - Sem mudança de render, de projeto ou de formato; nenhuma migração.
 - **Corrigido (15/10):** o tour abre a biblioteca recolhida antes do passo "Camadas" (`app/ux.js`); os últimos textos abaixo de 11 px (botões da biblioteca, etiqueta, seletor, campo de quadro) usam `--fs-xs` (11 px); medido no navegador, nenhum texto visível nas 11 abas fica abaixo de 11 px.
 - **Dívida conhecida:** em celular deitado (até 900 px de largura e 540 de altura) a biblioteca não aparece (a troca de composição segue pelos botões 01 a 05 e as camadas por Mostrar camadas). Os textos novos (busca, recolher e abrir a biblioteca, Exportar) já têm tradução para o inglês.
+
+### Camada `code` isolada por alcance
+
+- **Problema medido:** o filtro de texto (`lintCode`) era a única barreira e se contornava montando `constructor` por concatenação (`K.ease.out['constr'+'uctor']('return this')()` devolvia a janela) ou por `c.canvas.ownerDocument.defaultView`. Provado por teste vermelho antes da correção.
+- **Fronteira nova, de alcance:** construtores de função selados (`Function`, `AsyncFunction`, gerador e gerador async; `new Function` do motor não muda); o contexto 2D chega à camada como fachada sem `.canvas` (que devolve `undefined`) e desembrulha os argumentos; `K.img(name)` devolve cartão `{kind, name, w, h}` em vez do registro com o `<img>`, e `c.drawImage(K.img(n), ...)` continua funcionando. Custo medido: +0,9 ms por quadro com 3000 chamadas de desenho.
+- **Teste novo `code_sandbox_check.mjs`:** passeio pelo grafo de objetos a partir de `c`, `K` e `Math` (tem de não achar janela, nó do DOM nem construtor real), 8 ataques conhecidos, controle negativo do passeio (no contexto cru ele acha `c.canvas`), controle positivo (o código legítimo desenha) e o filtro de texto como primeira barreira.
+- **Limite honesto:** o código ainda roda no mesmo contexto da página, sem processo separado (o render síncrono e determinístico impede Worker). Poluição de protótipos e laços infinitos não são cobertos; o aviso de autorização diz isso e continua exigindo confiança em quem gerou o arquivo.
+
+### Fase 20, primeira parte: quadros de referência versionados
+
+- **Base versionada:** `examples/reference/parity.json` guarda 184 quadros de 120 casos (as 8 composições da galeria em 3 quadros e uma camada por opção de shader, fx, synth, ISF e, novas, field, glyphs, solid, particles, temporal, shape, instrument, tunnel, symbols, lines e pixeltext), encolhidos por média em caixa para ~1200 px (893 KB). O baseline obsoleto da fase 2 deixa de existir.
+- **`node scripts/gl_parity.mjs --update`** regrava a base; **`--compare`** (sem arquivo) compara com ela. `check.mjs` roda a comparação e um controle negativo (quadro adulterado tem de reprovar). Duas execuções seguidas dão diferença 0.000 (render por software determinístico). Dura ~45 s.
+- **Regra:** quem muda o render de propósito confere o desenho, roda `--update` e explica no commit; mudança de render sem `--update` reprova o `check.mjs`.
+- Ainda na fase 20: contatos de galeria com tempo estourado (`02-jardim-tela` em `gallery.mjs`) e quadros em tamanho cheio por camada de fundo/forma.
+
+## 3.18.0 (14/10/2026) · Fase 13: partículas em GPU, sem estado
+
+- **Nova camada `particles`** (`app/particles.js`): 50 a 20 mil pontos numa só chamada `gl.POINTS`, sem buffer de vértices. A posição de cada partícula é função em forma fechada do índice, da semente e da fase do loop, no vertex shader: o quadro N sai igual fora de ordem, o loop fecha por frequências inteiras, o acaso é hash de inteiros. Seis regras: `ORBITA`, `FONTE`, `ESPIRAL`, `CHUVA`, `EXPLOSAO`, `ENXAME`; mistura `soma` ou `normal`.
+- **Renderer:** `r.drawPoints(n)`, vertex shader próprio em `r.program` (`vert`), mistura `soma`, métrica `activeParticles` real, `glProgV` em `gl-glue.js`.
+- **Entra pelo conceito:** `particles` é tipo de herói do Creative IR (`heroTypes`, pesos em 12 verbos, `particleKinds` liga cada um dos 32 verbos a uma regra); o Animation IR toca em `size`. Python e navegador dão o mesmo projeto. Aditivo: projetos antigos não precisam de migração.
+- Teste novo `particles_check.mjs`; `registry.mjs` confere os 32 verbos; `references/particles-layer.md`; esquema, SKILL, PROMPT e famílias atualizados. Simulação com estado, rastro e colisão ficam para depois (histórico do RenderGraph).
 
 ## 3.17.0 (12/10/2026) · Fase 19: versionamento e migração
 

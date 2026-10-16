@@ -1,4 +1,4 @@
-# Roadmap oficial (v11, motor 3.18.0)
+# Roadmap oficial (v11, motor 3.19.0)
 
 Substitui o roadmap v10. Decidido pela autora em 08/10/2026.
 
@@ -31,7 +31,7 @@ Referências antigas a isso ficam apenas no `CHANGELOG.md`.
 | 18 | Redução do monólito `app/index.html` (antes da interface: a UI nova nasce em módulos) | **feita (3.16.0)**: 18 módulos e `style.css`; o index.html é gerado |
 | 19 | Versionamento e migração de projetos (esqueleto agora; cada fase seguinte que muda o esquema traz a sua migração) | **feita (3.17.0)**: `meta.formatVersion`, passos em `registry/versions.json`, `migrate.js` = `migrate_project.py` |
 | 13 | Partículas em GPU (primeiro sem estado: posição em forma fechada do quadro; simulação com estado só depois, pelo histórico da fase 4) | **feita (3.18.0)**: camada `particles`, 6 regras em forma fechada (sem estado, quadros fora de ordem iguais), gl.POINTS sem buffer; simulação com estado fica para depois, pelo histórico da fase 4 |
-| 14 | Interface de ferramenta de criação (sobre os módulos da fase 18) | pendente |
+| 14 | Interface de ferramenta de criação (sobre os módulos da fase 18) | **em andamento**: 14a (base: tokens, slider, casca nova) feita (3.19.0); falta o restante da 14 |
 | 15 | Crítica artística (ARTISTIC / STRUCTURAL / TECHNICAL separados) | pendente |
 | 16 | Export profissional: o que falta é verificação, manifesto verificável e honestidade sobre alfa (`mp4.js` e o manifesto já existem) | pendente |
 | 17 | Performance | pendente |
