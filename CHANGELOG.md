@@ -1,5 +1,13 @@
 # Changelog
 
+## Em andamento · Fase 16: export verificável (16/10/2026)
+
+- **Manifesto v2** (`ai-vj-generator/export-manifest/2`): lista cada PNG com bytes e SHA-256 (`crypto.subtle`; sem ele o campo é `null` e o manifesto diz que não há hash, em vez de inventar), declara o que o alfa significa e que MP4 não tem alfa. O v1 continua legível.
+- **Verificador independente `scripts/verify_export.mjs`:** confere pasta ou partes `.zip` contra o manifesto (hash do projeto, quadros contíguos e contados, SHA-256 e bytes de cada PNG, dimensões, **alfa medido nos pixels**; MP4: bytes, SHA-256, `ftyp` e `alpha: false`). Sem o motor e sem rede.
+- **`scripts/render.mjs` passa a gravar manifesto** (PNG: `MANIFEST.json` e `project.json` na pasta; MP4: `<arquivo>.manifest.json`), no mesmo esquema.
+- **Testes:** `export_verify_check.mjs` (render pela linha de comando, entregas boas e 8 controles negativos: byte trocado, quadro apagado, `project.json` adulterado, alfa mentido, dimensão errada, sem manifesto, MP4 adulterado, MP4 que promete alfa) e `export_check.mjs` agora verifica o ZIP baixado pelo motor, as 8 partes juntas e a falta de uma parte.
+- Achado, não corrigido: o ZIP do motor depende do JSZip carregado por CDN; sem rede o export em ZIP não roda (a linha de comando não depende).
+
 ## 3.19.0 (15/10/2026) · Fase 14a: base da UI, quadros de referência e camada `code` isolada
 
 Release de fechamento da 14a. Sem mudança de formato de projeto nem de migração; o render não mudou (a base de quadros de referência confirma: diferença 0.000). `check.mjs`: 139 verificações, todas verdes.

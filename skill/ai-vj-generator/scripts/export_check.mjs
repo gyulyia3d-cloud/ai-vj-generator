@@ -25,6 +25,11 @@ writeFileSync(json, JSON.stringify(mk('Calmo', calm)));
 execFileSync(process.execPath, [join(HERE, 'make-artifact.mjs'), json, '--out', html], { stdio: 'pipe' });
 const page = await openPage(html, { chrome, width: 1200, height: 800 });
 const E = x => page.evaluate(x);
+/* fase 16: os ZIPs que o motor baixou são gravados em disco e conferidos pelo verificador independente (scripts/verify_export.mjs) */
+const VERIFY = join(HERE, '..', '..', '..', 'scripts', 'verify_export.mjs');
+const grab = async (tag) => { const list = JSON.parse(await E(`(async () => { const fs = await Promise.all(window.__dl), o = []; for (const f of fs) { const u = new Uint8Array(f.buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); o.push({ name: f.name, b64: btoa(s) }); } return JSON.stringify(o); })()`));
+  return list.map(f => { const q = join(tmp, tag + '_' + f.name); writeFileSync(q, Buffer.from(f.b64, 'base64')); return q; }); };
+const verify = files => { try { return { code: 0, out: execFileSync(process.execPath, [VERIFY, ...files], { stdio: 'pipe' }).toString() }; } catch (e) { return { code: e.status, out: String(e.stdout) }; } };
 try {
   // SHA-256 e análise de flash: unidades puras dentro do navegador
   const u = JSON.parse(await E(`(() => { const F = AIVJ.flash, sq = (n, per, lo, hi) => Array.from({ length: n }, (_, i) => Math.floor(i / (per / 2)) % 2 ? hi : lo), a = (s) => F.analyze(s, 30);
@@ -50,12 +55,16 @@ try {
     const hash0 = await E(`AIVJ.flash.sha256(JSON.stringify(AIVJ.projectOut()))`);
     const A = await run(`AIVJ.EXP.partMB = 0; AIVJ.EXP.flashLimit = false`);
     const a = A.parts[0], m = a && a.manifest, frames = m && m.export.frames;
-    check(A.parts.length === 1 && m && m.schema === 'ai-vj-generator/export-manifest/1', 'export simples gera um ZIP com MANIFEST.json', JSON.stringify(A).slice(0, 300));
+    check(A.parts.length === 1 && m && m.schema === 'ai-vj-generator/export-manifest/2', 'export simples gera um ZIP com MANIFEST.json (esquema v2)', JSON.stringify(A).slice(0, 300));
     check(m && m.project.sha256 === hash0 && /^[0-9a-f]{64}$/.test(m.project.sha256), 'o manifesto traz o hash SHA-256 do projeto (o mesmo que o motor calcula antes do export)', m && m.project.sha256);
     const pngs = a ? a.entries.filter(n => n.endsWith('.png') && /\/ALPHA\//.test(n)) : [];
     check(m && pngs.length === frames && frames === m.project.loopFrames && /\/ALPHA\/01_A\/01_A_000000\.png$/.test(pngs.sort()[0]) && /01_A_0000(59)\.png$/.test(pngs.sort().slice(-1)[0]), `${pngs.length} PNG com nomes previsíveis (ALPHA/01_A/01_A_000000.png … 000059) e quadros = quadros do loop`, JSON.stringify(pngs.slice(0, 2)));
     check(m && m.canvas.w === 320 && m.canvas.fps === 30 && m.project.seed === 7 && m.project.bars === 1 && m.export.size.join() === '320,180', 'o manifesto registra canvas, fps, seed, compassos e tamanho', JSON.stringify(m && { c: m.canvas, p: m.project }));
     check(a && a.entries.some(n => /PROJECT_DATA\/project\.json$/.test(n)) && a.entries.some(n => /PREVIEW\//.test(n)), 'o ZIP leva project.json e a prévia', JSON.stringify(a && a.entries.filter(n => !n.endsWith('.png'))));
+
+    const zA = await grab('A'), vA = verify(zA);
+    check(m && m.schema === 'ai-vj-generator/export-manifest/2' && m.frames.length >= frames && m.frames.every(f => /^[0-9a-f]{64}$/.test(f.sha256)), 'manifesto v2 traz o SHA-256 e os bytes de cada PNG gravado', JSON.stringify(m && m.frames && m.frames[0]));
+    check(vA.code === 0 && /SHA-256 de todos os quadros bate/.test(vA.out) && /alfa/.test(vA.out), 'o verificador independente confere o ZIP baixado pelo motor (hash de cada quadro, sequência, dimensão, alfa)', vA.out.slice(-400));
 
     // A2) região: o display escolhido sai recortado, o resto do projeto não muda
     await E(`AIVJ.project.canvas.displays = [{ x: 0, y: 0, w: 160, h: 180, name: 'ESQ' }, { x: 160, y: 0, w: 160, h: 180, name: 'DIR' }]; 0`);
@@ -77,6 +86,10 @@ try {
     const mp = B.parts[B.parts.length - 1].manifest.parts;
     check(B.parts.every((pt, i) => mp[i].file === pt.name && mp[i].files === pt.entries.length), 'a contagem de arquivos de cada parte no manifesto bate com o que há dentro do ZIP (prévias e dados inclusos)', JSON.stringify(mp.map((x, i) => [x.files, B.parts[i].entries.length])));
     check(A.parts[0].manifest.parts[0].files === A.parts[0].entries.length, 'export simples: a contagem de arquivos do manifesto bate com o ZIP', JSON.stringify([A.parts[0].manifest.parts[0].files, A.parts[0].entries.length]));
+
+    const zB = await grab('B'), vB = verify(zB), vB2 = verify(zB.slice(1));
+    check(vB.code === 0, `o verificador confere as ${zB.length} partes juntas (o manifesto da última parte cobre todos os PNG)`, vB.out.slice(-400));
+    check(vB2.code === 1 && /não estão na entrega/.test(vB2.out), 'controle negativo: com uma parte faltando o verificador reprova (arquivos do manifesto ausentes)', vB2.out.slice(-300));
 
     // C) segurança de flash: estrobo de 8 Hz sem e com limitador; o PNG exportado é medido de volta
     await E(`AIVJ.importJson(${JSON.stringify(JSON.stringify(mk('Estrobo', strobe)))})`);

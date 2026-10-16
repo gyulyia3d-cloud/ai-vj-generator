@@ -3680,6 +3680,8 @@ function regionRect(idx, scale, even) {
   return { x, y, w, h, idx, name: d.name || 'D' + pad(idx + 1, 2) };
 }
 let CANCEL = false;
+/* SHA-256 de um arquivo gravado (manifesto v2): crypto.subtle quando o contexto permite; sem ele o hash fica null e o manifesto diz isso, em vez de inventar */
+async function shaBlob(b) { try { if (!(window.crypto && crypto.subtle)) return null; return [...new Uint8Array(await crypto.subtle.digest('SHA-256', await b.arrayBuffer()))].map(x => x.toString(16).padStart(2, '0')).join(''); } catch (e) { return null; } }
 function lumaKey(ctx, w, h) { const im = ctx.getImageData(0, 0, w, h), d = im.data; for (let i = 0; i < d.length; i += 4) { const a = d[i + 3]; if (!a) continue; const v = Math.max(d[i], d[i + 1], d[i + 2]); d[i + 3] = (v * a / 255) | 0; d[i] = d[i + 1] = d[i + 2] = 255; } ctx.putImageData(im, 0, 0); }
 async function prepMedia(comp, F) {
   for (const [i, L] of comp.layers.entries()) {
@@ -3717,9 +3719,9 @@ async function exportRun(info, bar) {
   if (crop) { crop.width = reg.w; crop.height = reg.h; }
   const view = c => { if (!reg) return c; kctx.clearRect(0, 0, reg.w, reg.h); kctx.drawImage(c, reg.x, reg.y, reg.w, reg.h, 0, 0, reg.w, reg.h); return crop; };
   let zip = new JSZip(); const PROJ = safe(P.meta.name), tag = (EXP.prefix ? safe(EXP.prefix) + '_' : '') + (reg ? safe(reg.name) + '_' : '');
-  let files = 0, partBytes = 0, partFiles = 0; const parts = [];
+  let files = 0, partBytes = 0, partFiles = 0; const parts = [], frameList = [];
   const baseName = () => `${PROJ}_${EXP.comps === 'all' ? 'ALL' : pad(ST.ci + 1, 2) + '_' + safe(cur().name)}_${reg ? reg.w : w}x${reg ? reg.h : h}_${fps}fps${reg ? '_' + safe(reg.name) : ''}${alpha ? '_ALPHA' : ''}${EXP.luma ? '_BRANCO' : ''}`;
-  const put = async (path, canvas) => { const b = await new Promise(r => view(canvas).toBlob(r, 'image/png')); zip.file(path, b); partBytes += b.size; partFiles++; files++; };
+  const put = async (path, canvas) => { const b = await new Promise(r => view(canvas).toBlob(r, 'image/png')); zip.file(path, b); partBytes += b.size; partFiles++; files++; frameList.push({ file: path, bytes: b.size, sha256: await shaBlob(b) }); };
   /* divisão em partes: quando o ZIP em memória passa do limite, ele é gravado e recomeça; as partes têm pastas disjuntas (quadros diferentes) e se extraem juntas */
   const flushPart = async (last) => {
     info.textContent = `Compactando a parte ${parts.length + 1}…`;
@@ -3757,11 +3759,14 @@ async function exportRun(info, bar) {
     zip.file(`${PROJ}/PROJECT_DATA/LEIAME.txt`, readme(fps, bars, reg ? reg.w : w, reg ? reg.h : h, end - start + 1, alpha));
     /* manifesto: tudo que é preciso para reproduzir ou conferir o export (a última parte leva o manifesto, o project.json e o LEIAME) */
     const manifest = {
-      schema: 'ai-vj-generator/export-manifest/1', engine: VERSION, createdAt: new Date().toISOString(),
+      schema: 'ai-vj-generator/export-manifest/2', engine: VERSION, createdAt: new Date().toISOString(),
       project: { name: P.meta.name, id: P.id || null, seed: P.seed, sha256: projHash, bpm: P.time.bpm, bars, loop: P.time.loop, seamless: P.time.seamless, loopFrames: LF },
       canvas: { w: W, h: H, fps, target: P.canvas.target, folds: P.canvas.folds || [] },
       export: { mode: EXP.what, alpha, whiteAlpha: EXP.luma, scale: EXP.scale, size: reg ? [reg.w, reg.h] : [w, h], region: reg ? { name: reg.name, index: reg.idx, x: reg.x, y: reg.y, w: reg.w, h: reg.h, unit: 'px at export scale' } : 'full', start, end, frames: end - start + 1, compositions: ciList.map(ci => P.compositions[ci].name), prefix: EXP.prefix || '', files, naming: `${PROJ}/${alpha ? 'ALPHA' : 'COMPOSITIONS'}/NN_COMPOSICAO/${tag}NN_COMPOSICAO_QUADRO6.png (quadro com 6 dígitos, começa em ${pad(start, 6)})`, partMB: EXP.partMB || 0 },
       flash: { criterion: 'WCAG 2.3.1 general flash (luminância relativa média do quadro; flash vermelho saturado NÃO medido)', analyzed: doFlash, limiter: EXP.flashLimit, perComposition: flashInfo },
+      alpha: { declared: alpha, claim: alpha ? 'PNG RGBA: onde não há desenho o quadro é transparente (a camada bg não entra). Quem mede é o verificador, nos pixels.' : 'PNG opaco: alpha 255 em todo pixel (o PNG é gravado em RGBA, mas sem transparência).', mp4: 'MP4 H.264 não guarda alpha; para transparência use a sequência PNG.' },
+      hashes: { algorithm: 'SHA-256', frames: frameList.every(f => f.sha256) ? 'present' : 'unavailable (crypto.subtle indisponível neste contexto)' },
+      frames: frameList.slice().sort((a, b) => a.file < b.file ? -1 : a.file > b.file ? 1 : 0),
       parts: [],
     };
     const lastName = parts.length ? `${baseName()}_p${pad(parts.length + 1, 2)}.zip` : `${baseName()}.zip`;

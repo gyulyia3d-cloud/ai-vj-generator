@@ -58,8 +58,9 @@ try {
   const ROOT = join(HERE, '..', '..', '..'), outDir = join(tmp, 'cli');
   execFileSync(process.execPath, [join(ROOT, 'scripts', 'render.mjs'), pj, '--out', outDir, '--format', 'png', '--end', '3'], { stdio: 'pipe' });
   execFileSync(process.execPath, [join(ROOT, 'scripts', 'render.mjs'), pj, '--out', outDir, '--format', 'mp4', '--end', '5', '--quality', 'low'], { stdio: 'pipe' });
-  const { readdirSync } = await import('node:fs'), top = readdirSync(outDir), pngs = readdirSync(join(outDir, top.find(x => !x.endsWith('.mp4'))));
+  const { readdirSync, statSync } = await import('node:fs'), top = readdirSync(outDir), pdir = join(outDir, top.find(x => statSync(join(outDir, x)).isDirectory())), all = readdirSync(pdir), pngs = all.filter(x => x.endsWith('.png'));
   check(pngs.length === 4 && pngs[0] === '000000.png', 'CLI: --format png grava 4 quadros numerados', pngs.join(','));
+  check(all.includes('MANIFEST.json') && all.includes('project.json') && top.some(x => x.endsWith('.manifest.json')), 'CLI: PNG leva MANIFEST.json e project.json; MP4 leva o manifesto ao lado (fase 16)', all.join(',') + ' | ' + top.join(','));
   const rp = JSON.parse(readFileSync(pj, 'utf8')); rp.canvas.displays = [{ x: 0, y: 0, w: 320, h: 360, name: 'ESQ' }, { x: 320, y: 0, w: 320, h: 360, name: 'DIR' }];
   const pj2 = join(tmp, 'reg.json'); writeFileSync(pj2, JSON.stringify(rp)); const outR = join(tmp, 'cliR');
   execFileSync(process.execPath, [join(ROOT, 'scripts', 'render.mjs'), pj2, '--out', outR, '--format', 'png', '--end', '1', '--region', '1'], { stdio: 'pipe' });

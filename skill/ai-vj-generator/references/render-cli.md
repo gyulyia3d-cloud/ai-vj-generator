@@ -19,6 +19,8 @@ If the browser refuses the size (`H.264 em WxH`), lower the resolution (most enc
 node scripts/render.mjs projeto.aivj.json --out saida --format mp4 --comp all --quality high
 node scripts/render.mjs projeto.aivj.json --out saida --format png --comp 0 --alpha --start 0 --end 119
 ```
+Each PNG folder gets `MANIFEST.json` and `project.json`; each MP4 gets `<file>.manifest.json` (SHA-256, bytes, codec, `"alpha": false`). Check any delivery with `node scripts/verify_export.mjs <folder|zip...>` (see `surface-and-export.md`).
+
 Options: `--comp N|all`, `--scale 1`, `--fps 30`, `--bars N`, `--start`, `--end`, `--quality high|mid|low`, `--alpha` (PNG only). `AIVJ_GPU=1` uses the graphics card (without it Chrome renders in software: slower, same pixels up to rounding). MP4 files are named `<project>_<NN>_<W>x<H>_<fps>fps.mp4`; PNG frames go to `<project>_<NN>/000000.png`.
 
 ## ProRes, HAP, DXV, GIF from the PNG sequence
