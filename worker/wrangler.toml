@@ -4,7 +4,7 @@ main = "vj-worker.js"
 compatibility_date = "2026-01-01"
 
 [vars]
-ALLOWED_ORIGINS = "https://gyulyia3d-cloud.github.io"
+ALLOWED_ORIGINS = "https://gyulyia3d-cloud.github.io,https://gyulyia.com,https://www.gyulyia.com"
 ALLOW_FILE_ORIGIN = "true"
 DAILY_LIMIT = "14"
 GROQ_MODEL = "openai/gpt-oss-20b"
