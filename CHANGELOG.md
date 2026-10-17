@@ -1,5 +1,18 @@
 # Changelog
 
+## Não lançado · Elementos 3D (pontos, linhas, plexus, glow)
+
+Categoria de camada nova, **Elementos 3D**, com o **Organismo** (saiu de Formas) e cinco tipos novos de objeto em nuvem de pontos, desenhados por projetor próprio (`app/elements3d.js`, módulo `ELEMENTS3D`, sem biblioteca 3D). Projetos antigos não mudam: o organismo com os valores padrão sai idêntico (render `points`, glow 0).
+
+- **`botanic`** (Botânica): flor 3D (pétalas 5/8/13 em volta de um disco em filotaxia, abrindo e fechando) e folhagem (três frondes de samambaia).
+- **`molecule`** (Molecular): DNA em dupla hélice e molécula montada pela semente.
+- **`sigil`** (Símbolos 3D): esfera armilar astrológica (eclíptica, signos e planetas), quadratura do círculo alquímica com os quatro elementos, heptagrama e pentagrama magick.
+- **`terrain`** (Terreno): voo rasante com relevo periódico na direção do voo, para o loop fechar.
+- **`monument`** (Monumento): torre, zigurate, corredor, corpo, globo, anel e toro, portados do kit 3D do TECNOFEUDO TOTAL (projeto da autora).
+- **Render `points` / `lines` / `plexus`** e **`glow`** em todos os Elementos 3D, organismo incluso (linhas do organismo seguem as espirais 13 e 21; o plexus liga vizinhos no espaço 3D até `reach`). O glow reduz a camada em meias escalas e soma o halo, sem `ctx.filter`; em fundo claro o halo vai por baixo.
+- Tempo só por ciclos inteiros (`spin`, `cycles`); sem relógio nem acaso.
+- **Teste novo** `elements3d_check.mjs` (16 formas desenham e diferem, determinístico, emenda do loop pelo critério do `loop_check` com giro 0, renders e glow mudam a imagem, glow 0 = organismo antigo, controles negativos; a emenda pega uma respiração com ciclo fracionário, conferido por mutação). `layers_check.mjs`: o menu passa a ter 10 categorias.
+
 ## Não lançado · Gerar briefing (IA gratuita opcional) e how-to das IAs
 
 Sem mudança de render nem de formato de projeto. O motor ganha um assistente que faz, na web e sem custo, o papel do `/vj`: a pessoa responde a auditoria, junta mídias e descreve o projeto, e o motor monta as composições pelas regras locais (`genai.js`); uma IA gratuita, opcional, só completa o que ficou em branco.

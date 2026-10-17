@@ -132,12 +132,13 @@ gl_FragColor=outc(mix(uC1,uC2,clamp(uHigh+uPulse*.4,0.,1.)),clamp(k+uHit*.1,0.,1
 /* ---------- biblioteca de geradores ---------- */
 const GEN = {};
 const reg = (type, label, group, params, draw) => { GEN[type] = { type, label, group, params, draw }; };
-/* Categorias de camada: o menu e o inspetor mostram 9 categorias de até duas palavras; o tipo dentro da categoria se escolhe nos parâmetros da camada.
+/* Categorias de camada: o menu e o inspetor mostram 10 categorias de até duas palavras; o tipo dentro da categoria se escolhe nos parâmetros da camada.
    O projeto JSON continua guardando o tipo interno (L.type), então projetos antigos, o gerador e os testes não mudam. */
 const FAMILIES = [
   ['Fundo', [['bg', 'Fundo']]],
   ['Shader', [['shader', 'Preset GLSL'], ['isf', 'Biblioteca ISF'], ['synth', 'Cadeia'], ['field', 'Campo'], ['solid', 'Sólido 3D'], ['particles', 'Partículas GPU']]],
-  ['Formas', [['shape', 'Forma'], ['lines', 'Linhas'], ['tunnel', 'Túnel'], ['organism', 'Organismo'], ['structure', 'Estrutura'], ['symbols', 'Símbolos'], ['hazard', 'Faixa risco'], ['bitfield', 'Campo bits']]],
+  ['Formas', [['shape', 'Forma'], ['lines', 'Linhas'], ['tunnel', 'Túnel'], ['structure', 'Estrutura'], ['symbols', 'Símbolos'], ['hazard', 'Faixa risco'], ['bitfield', 'Campo bits']]],
+  ['Elementos 3D', [['organism', 'Organismo'], ['botanic', 'Botânica'], ['molecule', 'Molecular'], ['sigil', 'Símbolos 3D'], ['terrain', 'Terreno'], ['monument', 'Monumento']]],
   ['Texto', [['text', 'Texto'], ['typeset', 'Tipografia'], ['typewall', 'Parede'], ['pixeltext', 'Texto pixel'], ['glyphs', 'Glifos']]],
   ['Mídia', [['image', 'Imagem'], ['video', 'Vídeo'], ['model', 'Objeto 3D'], ['parallax', 'Parallax'], ['splat', 'Splat 3D'], ['logo', 'Logo']]],
   ['Dados', [['measure', 'Medição'], ['data', 'Telemetria'], ['hud', 'HUD'], ['instrument', 'Instrumento'], ['blobs', 'Manchas']]],
