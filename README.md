@@ -10,7 +10,7 @@
 
 1. Baixe o repositório (**Code → Download ZIP**) e descompacte.
 2. Dê dois cliques em `app/index.html` (Chrome ou Edge).
-3. Sem IA: gere o projeto a partir de um briefing JSON com `python skill/ai-vj-generator/scripts/brief_to_project.py brief.json --out projeto.aivj.json` (exemplo de briefing em `examples/briefs/`), depois **Carregar** o JSON no motor. Depois escolha o preset da sua superfície na aba Superfície.
+3. Sem IA e sem Python: clique em **Gerar briefing**, responda a auditoria, junte as mídias e descreva o projeto; o motor monta as composições no seu computador. Ou, com Python: gere o projeto a partir de um briefing JSON com `python skill/ai-vj-generator/scripts/brief_to_project.py brief.json --out projeto.aivj.json` (exemplo de briefing em `examples/briefs/`), depois **Carregar** o JSON no motor. Depois escolha o preset da sua superfície na aba Superfície.
 4. Ajuste, avalie, exporte na aba **Exportar** (PNG sequence ou MP4).
 
 Passo a passo ilustrado em texto: [docs/GUIA-SEM-IA.md](docs/GUIA-SEM-IA.md). Para microfone e janela de saída o navegador exige `http://`: `node scripts/serve.mjs` e abra `http://localhost:5173`.
