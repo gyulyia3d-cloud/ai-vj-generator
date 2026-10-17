@@ -1,5 +1,12 @@
 # Changelog
 
+## Não lançado · Hash portátil nos shaders (mudança de render intencional)
+
+- **Causa:** o `hash()` do cabeçalho GLSL (`app/gl-glue.js`) e os `vh`/`gh`/`syH` locais de `fx.js` e `synth.js` eram `fract(sin(x)*43758.5)`. O `sin` da GPU tem erro de arredondamento que muda de driver para driver (SwiftShader da nuvem ≠ SwiftShader do CI ≠ float32 exato), e o fator 43758 transforma esse erro em outro número aleatório. O mesmo projeto sorteava outro arranjo em cada máquina: 102 dos 184 quadros de referência falhavam aqui e passavam no CI, e no `GLITCH EM BLOCOS` o passo 3 de 12 não tinha nenhum bloco acima do limiar (efeito nulo, `fx_check` em 0.0).
+- **Correção:** `hash()` agora mistura os bits do float de entrada com inteiros (`floatBitsToUint` + `vjU32`, GLSL ES 3.00); os helpers locais chamam `hash()`. A saída bate bit a bit com uma emulação exata em JS (4096 amostras, 0 diferenças), então não depende do `sin` da GPU. Mesmo estilo em todo shader, outro arranjo sorteado.
+- **`GLITCH EM BLOCOS`:** com probabilidade > 0, cada passo tem pelo menos um bloco deslocado; com probabilidade 0 o efeito continua desligado.
+- **Base de referência regravada** (`node scripts/gl_parity.mjs --update`): o arranjo mudou em todo shader que usa `hash`, `noise` ou `fbm`. A `lib.glsl` (`vjHash22/31/33`, `vjRand`, `vjGrain`) ainda usa `sin` e fica para outro passo.
+
 ## Não lançado · Elementos de interface animados e biometria
 
 Doze camadas novas, distribuídas nas categorias que já existem (o menu continua com 10 categorias). Vocabulário dos elementos animados do Layer Forge e dos módulos de leitura das gerações /vj, reescrito para o motor (`app/elements-ui.js`, módulo `ELEMENTSUI`). Sem mudança no render das camadas existentes.
