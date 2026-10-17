@@ -32,7 +32,7 @@ check(same(BG.ENUMS.motionArchetype, P.motionArchetype.enum) && same(BG.ENUMS.mo
 check(same(BG.ENUMS.density, P.density.enum) && same(BG.ENUMS.scheme, P.palette.properties.scheme.enum) && same(BG.ENUMS.strategy, P.audio.properties.strategy.enum), 'densidade, esquema de cor e estratégia de áudio = esquema do brief', 'diferem');
 const W = await import(pathToFileURL(join(ROOT, 'worker', 'vj-worker.js')).href);
 check(['mood', 'verbs', 'motionArchetype', 'density', 'scheme', 'strategy'].every(k => same(BG.ENUMS[k], W.ENUMS[k])), 'listas do Worker = listas do assistente (sem deriva)', 'diferem');
-check(BG.ENDPOINT === '' || /^https:\/\//.test(BG.ENDPOINT), 'ENDPOINT vazio ou https', BG.ENDPOINT);
+check(BG.ENDPOINT === '' || /^https:\/\/[a-z0-9.-]+\.workers\.dev\/brief$/.test(BG.ENDPOINT), 'ENDPOINT vazio ou a URL https do Worker (.workers.dev/brief)', BG.ENDPOINT);
 
 const hostile = { mood: ['urban', '<img onerror=x>', 'urban', 'calm', 'ritual', 'glitch', 'nope', 7, null], verbs: ['rise', '__proto__', 'constructor', ...Array(20).fill('sink')], energy: 9, density: 'enormous', motionArchetype: 'orbit',
   palette: { hue: 999, scheme: 'triad', extra: 1 }, audioStrategy: 'full', focalEvent: '  <script>alert(1)</script>\u0000um círculo que respira  ', banned: ['glow', 'x', '<b>flash</b>', ...Array(10).fill('particle bursts')], notes: 'ok '.repeat(500),
@@ -105,6 +105,8 @@ try {
   check(gem.length === 1 && gem[0].body.messages[0].content.filter(p => p.type === 'image_url').length === 2 && grq.length === 1 && !JSON.stringify(grq[0].body).includes('base64,'), 'Worker: só imagens data: JPEG/PNG/WebP vão ao Gemini (visão); a Groq recebe só texto', `gem=${gem.length} grq=${grq.length}`);
   e = env(); calls = []; await post(e, { body: { v: 1, brief, images: Array(6).fill(img) } }); check(calls.find(c => c.url.includes('generativelanguage')).body.messages[0].content.filter(p => p.type === 'image_url').length === 3, 'Worker: no máximo 3 imagens', '');
   behavior = { groq: 'fail', gemini: 'ok' }; e = env(); calls = []; const fb = await post(e); check(fb.status === 200 && calls.length === 2 && calls[1].url.includes('generativelanguage'), 'Worker: Groq cai, o Gemini responde no lugar', String(fb.status));
+  behavior = { groq: 'ok', gemini: 'fail' }; e = env(); const imgFail = await (await post(e, { body: { v: 1, brief, images: [img] } })).json();
+  check(imgFail.ok === true && imgFail.imageUsed === false && imgFail.imageDetail === 'gemini:500' && !JSON.stringify(imgFail).includes('SECRET'), 'Worker: se a visão falha, a geração segue só com texto e diz imageDetail (gemini:500)', JSON.stringify(imgFail));
   behavior = { groq: 'fail', gemini: 'fail' }; e = env(); const dead = await post(e); const dj = await dead.json();
   check(dj.detail === 'groq:500,gemini:500' && !JSON.stringify(dj).includes('SECRET'), 'Worker: a falha diz só o código HTTP de cada provedor (groq:500,gemini:500), sem chave nem texto', JSON.stringify(dj));
   check(dead.status === 502 && dj.error === 'upstream' && (+e.BUDGET.m.get(`d:${new Date().toISOString().slice(0, 10)}`) || 0) === 0, 'Worker: se tudo falha, 502 e a geração do dia é devolvida (estorno)', JSON.stringify([dead.status, [...e.BUDGET.m]]));
@@ -137,6 +139,7 @@ try {
   check(await E(`!!document.getElementById('genBtn') && document.getElementById('genBtn').parentNode.nextElementSibling === document.getElementById('wizBtn').parentNode`), 'o botão GERAR BRIEFING fica ao lado de Carregar briefing', 'não achei');
   check(/gerar briefing/i.test(await E(`document.getElementById('genBtn').textContent`)), 'o botão diz Gerar briefing', '');
   /* primeira visita: o assistente de Carregar briefing aparece sozinho e oferece o caminho para Gerar briefing */
+  await E(`AIVJ.briefgen.setEndpoint('')`); /* os testes abaixo partem do site sem Worker; a IA liga com setEndpoint mais adiante */
   check(await E(`!document.getElementById('wiz').hidden && !!document.getElementById('wGen')`), 'primeira visita: o assistente inicial oferece "Gerar briefing aqui"', '');
   let r = await realClick('#wGen'); check(!r.err && await E(`!document.getElementById('genBr').hidden && document.getElementById('wiz').hidden`), 'clique de verdade em "Gerar briefing aqui" abre o assistente e recolhe o inicial', r.err || 'não abriu');
   await key('Escape'); check(await E(`document.getElementById('genBr').hidden`), 'Esc fecha o assistente de Gerar briefing', '');
@@ -180,6 +183,13 @@ try {
   check(rq.length === 1 && rq[0].body.v === 1 && rq[0].body.images.length === 1 && /^data:image\/jpeg;base64,/.test(rq[0].body.images[0]) && rq[0].body.brief.concept.includes('jardim'), 'IA: uma chamada ao Worker com o briefing e 1 imagem reduzida (JPEG)', JSON.stringify(rq).slice(0, 200));
   check(o2.g.ai === true && o2.g.aiFilled.includes('density') && !o2.g.aiFilled.includes('energy') && o2.nm.includes('GLITCH'), 'IA: completou o que estava em branco (clima, densidade) e NÃO mexeu na energia respondida', JSON.stringify(o2.g) + o2.nm);
   check(o2.name === 'JARDIM' && !/HACK/.test(o2.words) && o2.c.some(v => ['rise', 'sink'].includes(v)), 'IA: nome e texto continuam da pessoa; verbos da IA entram no plano; lixo é descartado', JSON.stringify(o2));
+  /* 4b. a visão falhou no Worker: o texto vale e a pessoa é avisada */
+  await E(`window.fetch = async () => new Response(JSON.stringify({ ok: true, imageUsed: false, imageDetail: 'gemini:400', spec: { density: 'dense' } }), { status: 200 }); 1`);
+  await realClick('#genBtn'); await setVal('#bgConcept', 'Barras de luz azul que sobem devagar, como uma cidade vista de longe.');
+  await E(`(async () => { const c = document.createElement('canvas'); c.width = 32; c.height = 20; c.getContext('2d').fillRect(0, 0, 32, 20); const b = await new Promise(r => c.toBlob(r, 'image/png')); const dt = new DataTransfer(); dt.items.add(new File([b], 'ref2.png', { type: 'image/png' })); const i = document.getElementById('bgImgs'); i.files = dt.files; i.dispatchEvent(new Event('change', { bubbles: true })); return 1; })()`);
+  if (!(await E(`document.getElementById('bgAi').checked`))) await realClick('#genBr label.bgChip:has(#bgAi)');
+  await goAndWait();
+  check(/imagens não puderam ser analisadas/.test(await E(`document.getElementById('toast').textContent`)), 'IA sem visão: o aviso diz que as imagens não foram analisadas e a geração segue com o texto', await E(`document.getElementById('toast').textContent`));
   /* 5. cota esgotada: gera local, avisa */
   await E(`window.fetch = async () => new Response(JSON.stringify({ ok: false, error: 'budget', remaining: 0 }), { status: 429 }); 1`);
   await realClick('#genBtn'); await setVal('#bgConcept', 'Uma cidade sob chuva de dados, fria, rápida e sem pausa nenhuma.'); await realClick('#genBr label.bgChip:has(#bgAi)'); const ai2 = await E(`document.getElementById('bgAi').checked`); if (!ai2) await realClick('#genBr label.bgChip:has(#bgAi)');

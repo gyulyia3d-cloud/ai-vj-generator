@@ -5,7 +5,7 @@
 const BRIEFGEN = (() => {
   const LIMIT = 14;
   /* URL do Worker que fala com Groq e Gemini (worker/README.md). Vazio = este site gera só pelas regras locais e o assistente avisa. */
-  const ENDPOINT = '';
+  const ENDPOINT = 'https://ai-vj-generator-ia.gyulyia3d.workers.dev/brief';
   const MOODS = ['industrial', 'organic', 'cosmic', 'urban', 'ritual', 'glitch', 'minimal', 'liquid', 'crystalline', 'retro', 'aggressive', 'calm'];
   const MOOD_PT = { industrial: 'industrial', organic: 'orgânico', cosmic: 'cósmico', urban: 'urbano', ritual: 'ritual', glitch: 'glitch', minimal: 'minimalista', liquid: 'líquido', crystalline: 'cristalino', retro: 'retrô', aggressive: 'agressivo', calm: 'calmo' };
   const VERBS = ['grow', 'contract', 'accumulate', 'fracture', 'drift', 'orbit', 'breathe', 'pulse', 'erode', 'bloom', 'collapse', 'stretch', 'fold', 'scatter', 'converge', 'oscillate', 'morph', 'repel', 'attract', 'trace', 'flow', 'hesitate', 'freeze', 'release', 'compress', 'expand', 'fragment', 'assemble', 'dissolve', 'emerge', 'sink', 'rise'];
@@ -281,7 +281,7 @@ ${how('Gerar monta o projeto pelas regras locais e o abre no modo Briefing. Com 
         try {
           const images = []; for (const f of S.files.slice(0, 3)) { try { images.push(await shrink(f)); } catch (e) { /* imagem ilegível: segue sem ela */ } }
           const r = await callAI({ v: 1, lang: brief.lang, brief, images });
-          if (r.status === 200 && r.j && r.j.ok) { const spec = sanitizeSpec(r.j.spec), m = mergeSpec(brief, S.touched, spec); Object.assign(brief, m.brief); filled = m.filled; aiNote = spec.notes || ''; }
+          if (r.status === 200 && r.j && r.j.ok) { const spec = sanitizeSpec(r.j.spec), m = mergeSpec(brief, S.touched, spec); Object.assign(brief, m.brief); filled = m.filled; aiNote = spec.notes || ''; if (images.length && r.j.imageUsed === false) { aiMsg = T3('As imagens não puderam ser analisadas; usei só o texto.', 'The images could not be analysed; I used the text only.'); if (r.j.imageDetail) console.warn('briefgen: imagens não analisadas (' + r.j.imageDetail + ')'); } }
           else { const k = (r.j && r.j.error) || 'upstream'; aiMsg = T3(...(MSG[k] || MSG.upstream)); if (r.j && r.j.detail) console.warn('briefgen: IA indisponível (' + r.j.detail + ')'); }
         } catch (e) { aiMsg = T3(...MSG.upstream); }
       }

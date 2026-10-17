@@ -62,20 +62,20 @@ async function chat(url, key, model, messages, signal) {
 const briefForModel = b => ({ concept: b.concept, lang: b.lang, mood: b.mood, energy: b.energy, density: b.density, surface: b.surface && { type: b.surface.type, w: b.surface.w, h: b.surface.h }, time: b.time && { bpm: b.time.bpm }, verbs: b.verbs, focalEvent: b.focalEvent, banned: b.banned, palette: b.palette });
 
 async function generate(env, body, signal) {
-  let notes = null, imageUsed = false;
+  let notes = null, imageUsed = false, imageDetail = '';
   if (body.images.length && env.GEMINI_API_KEY) {
     try {
       const content = [{ type: 'text', text: IMAGE_PROMPT }, ...body.images.map(u => ({ type: 'image_url', image_url: { url: u } }))];
       notes = await chat(GEMINI_URL, env.GEMINI_API_KEY, env.GEMINI_MODEL || 'gemini-2.5-flash', [{ role: 'user', content }], signal); imageUsed = true;
-    } catch (e) { notes = null; }
-  }
+    } catch (e) { notes = null; imageDetail = 'gemini:' + (e && e.code || (e && e.name === 'AbortError' ? 'timeout' : 'erro')); }
+  } else if (body.images.length) imageDetail = 'sem GEMINI_API_KEY';
   const user = `<brief>${JSON.stringify(briefForModel(body.brief))}</brief>` + (notes ? `\n<notes>${JSON.stringify(notes).slice(0, 1500)}</notes>` : '');
   const messages = [{ role: 'system', content: systemPrompt() }, { role: 'user', content: user }];
   const tries = [];
   if (env.GROQ_API_KEY) tries.push(['groq', () => chat(GROQ_URL, env.GROQ_API_KEY, env.GROQ_MODEL || 'openai/gpt-oss-20b', messages, signal)]);
   if (env.GEMINI_API_KEY) tries.push(['gemini', () => chat(GEMINI_URL, env.GEMINI_API_KEY, env.GEMINI_MODEL || 'gemini-2.5-flash', messages, signal)]);
   const why = [];
-  for (const [name, t] of tries) { try { return { spec: await t(), imageUsed }; } catch (e) { why.push(name + ':' + (e && e.code || (e && e.name === 'AbortError' ? 'timeout' : 'erro'))); } }
+  for (const [name, t] of tries) { try { return { spec: await t(), imageUsed, imageDetail }; } catch (e) { why.push(name + ':' + (e && e.code || (e && e.name === 'AbortError' ? 'timeout' : 'erro'))); } }
   const err = new Error('upstream'); err.detail = why.join(','); throw err;
 }
 
@@ -98,7 +98,7 @@ export default {
     const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 40000);
     try {
       const out = await generate(env, { brief: b, images }, ctl.signal);
-      return reply(200, { ok: true, spec: out.spec, imageUsed: out.imageUsed, remaining: slot.remaining }, h);
+      return reply(200, { ok: true, spec: out.spec, imageUsed: out.imageUsed, imageDetail: out.imageDetail || undefined, remaining: slot.remaining }, h);
     } catch (e) {
       await refund(env, slot); return reply(502, { ok: false, error: 'upstream', detail: String(e && e.detail || '') }, h);
     } finally { clearTimeout(timer); }
