@@ -43,7 +43,7 @@ const ACC = [
   { n: 'Vermelho alarme', h: '#FF2A3D' }, { n: 'Amarelo sinal', h: '#E8FF00' }, { n: 'Osso', h: '#F4F3EF' }
 ];
 const PALS = {
-  STANDARD: { bg: '#050505', primary: '#F4F3EF', secondary: '#6B6F76', accent: '#00FF3C' },
+  STANDARD: { bg: '#050505', primary: '#F4F3EF', secondary: '#6B6F76', accent: '#FFFFFF' },
   MONO: { bg: '#000000', primary: '#FFFFFF', secondary: '#666666', accent: '#FFFFFF' },
   'BRANCO ALPHA': { bg: '#000000', primary: '#FFFFFF', secondary: '#B8B8B8', accent: '#FFFFFF', field: '#6E6E6E', mode: 'white-alpha' },
   INDUSTRIAL: { bg: '#060606', primary: '#E9E6DF', secondary: '#5A5D63', accent: '#FF4A1C' },

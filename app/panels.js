@@ -72,7 +72,7 @@ function rememberOrig() { P.compositions.forEach(c => { if (!ORIG[P.id + c.id]) 
 
 function renderLayers() {
   const el = pane('lay'), comp = cur();
-  el.innerHTML = `<h2 class="sec">Camadas · ${esc(comp.name)} <span class="lbl">0–9 liga · clique seleciona</span></h2>
+  el.innerHTML = `<h2 class="sec">Camadas · ${esc(comp.name)} <span class="lbl">0–9 liga · clique seleciona <button data-addpop aria-haspopup="dialog" aria-label="Adicionar camada" title="Adicionar camada">+</button></span></h2>
     <div id="lrows">${comp.layers.map((L, i) => `<div class="lrow ${ST.sel === i ? 'sel' : ''} ${ST.solo === i ? 'solo' : ''}" data-i="${i}">
       <button class="tg" data-vis aria-pressed="${L.on}" aria-label="Ligar ${esc(L.name)}"></button><span class="k">L${i}</span>
       <span style="min-width:0"><span class="nm">${esc(L.name)}</span><span class="ty">${esc((famOf(L.type) || [''])[0])} · ${esc(typeLabel(L.type))}${LAYER_ERR.has(L) ? ' · ERRO' : ''}</span></span>
