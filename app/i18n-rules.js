@@ -33,7 +33,7 @@ function setLang(l, quiet) {
   ST.lang = l === 'en' ? 'en' : 'pt'; store.set('lang', ST.lang); document.documentElement.lang = ST.lang === 'en' ? 'en' : 'pt-BR';
   trBusy = true; try { trTree(document.body); } finally { trBusy = false; } trObs.takeRecords();
   $('#langBtn').textContent = ST.lang === 'en' ? 'EN' : 'PT-BR'; $('#langBtn').setAttribute('aria-label', ST.lang === 'en' ? 'Language: English. Switch to Portuguese' : 'Idioma: português. Mudar para inglês');
-  renderGuide(); if (ST.tab === 'sur') renderSurface(); UX.refresh(); BRIEFGEN.refresh(); ADDUI.refresh(); if (!$('#howto').hidden) renderHow(); if (!quiet) toast(ST.lang === 'en' ? 'English' : 'Português (Brasil)', 1000);
+  renderGuide(); if (ST.tab === 'sur') renderSurface(); UX.refresh(); BRIEFGEN.refresh(); ADDUI.refresh(); TIMELINE.refresh(); if (!$('#howto').hidden) renderHow(); if (!quiet) toast(ST.lang === 'en' ? 'English' : 'Português (Brasil)', 1000);
 }
 $('#langBtn').onclick = () => setLang(ST.lang === 'en' ? 'pt' : 'en');
 

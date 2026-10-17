@@ -1,5 +1,17 @@
 # Changelog
 
+## Não lançado · Fase 14b-T1: timeline somente leitura
+
+Painel acoplado embaixo da vista (`docs/brand/UI-REDESIGN-PROPOSTA.md` §13, entrega T1). Mostra o que o Animation IR já guardava e só aparecia como números. Não muda projeto, formato nem render (os quadros de referência não são afetados: nada no caminho de render mudou).
+
+- **Módulo** `app/timeline.js` (`TIMELINE`). **Transporte:** início, quadro anterior, play/pausa, próximo quadro, áudio, zoom da timeline (1× a 16×), recolher. Leitura `0094/0218 · C02:3`.
+- **Régua:** compassos, tempos e, com espaço, semicolcheias; cabeça de leitura ligada ao quadro. Clicar ou arrastar na régua posiciona (pausa e vai ao quadro, como o scrub); pelo teclado, → 1 quadro, Shift+→ um tempo, Home e End. Com a timeline aberta ela **substitui a linha do scrub**; recolhida, o scrub volta.
+- **Fases** da composição (`meta.compositionIR[i].temporal.phases`) em faixas cinza e **eventos** na batida (`meta.animationIR[i].events`). Sem IR, a faixa diz que não há fases nem eventos.
+- **Uma faixa por camada**, na ordem do painel de Camadas: papel na hierarquia e comportamento do Animation IR, comportamento temporal e o que ouve (`L.temporal`), **atraso em semicolcheias** (`p.phase`: a barra começa deslocada e a sobra aparece dando a volta), ciclos das curvas LFO como marcas e **se o loop fecha** (↻; ≠ quando uma curva tem ciclo fracionário ou o loop sem emenda está desligado: o mesmo critério do arredondamento `cyc`). A régua mostra se todas fecham. Cada faixa tem rótulo acessível com tudo isso. O olho é o mesmo `toggleLayer` do painel. Não há trava: o painel de Camadas também não tem.
+- **Áudio:** bandas G, M, A, N e os golpes; sem áudio ao vivo, a fonte sintética do BPM (o loop inteiro); ao vivo, o que foi gravado ao tocar.
+- **Custo:** régua e áudio são redesenhados só quando algo muda (conferido a cada 30 quadros); a cada quadro só a cabeça de leitura anda. Altura arrastável (e pelo teclado no divisor), salva; aberta por padrão em tela larga e alta, recolhida no celular. A barra flutuante sobe para não cobrir a timeline.
+- **Teste novo** `timeline_check.mjs` (22 casos, clique de mouse de verdade; controles negativos: ciclo de 1,5 marca ≠, projeto sem IR; conferido por mutação: refazer o DOM a cada quadro e marcar sempre "fecha" reprovam).
+
 ## Não lançado · Fase 14a-3: popover Adicionar
 
 Escolher o que entra na composição sem passar pelo painel de propriedades (`docs/brand/UI-REDESIGN-PROPOSTA.md` §12). Só apresentação: sem mudança de render, de formato de projeto nem de migração. O Adicionar por categoria e tipo do painel de Camadas continua igual.
