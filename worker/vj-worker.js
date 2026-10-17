@@ -66,14 +66,14 @@ async function generate(env, body, signal) {
   if (body.images.length && env.GEMINI_API_KEY) {
     try {
       const content = [{ type: 'text', text: IMAGE_PROMPT }, ...body.images.map(u => ({ type: 'image_url', image_url: { url: u } }))];
-      notes = await chat(GEMINI_URL, env.GEMINI_API_KEY, env.GEMINI_MODEL || 'gemini-2.5-flash', [{ role: 'user', content }], signal); imageUsed = true;
+      notes = await chat(GEMINI_URL, env.GEMINI_API_KEY, env.GEMINI_MODEL || 'gemini-3.5-flash-lite', [{ role: 'user', content }], signal); imageUsed = true;
     } catch (e) { notes = null; imageDetail = 'gemini:' + (e && e.code || (e && e.name === 'AbortError' ? 'timeout' : 'erro')); }
   } else if (body.images.length) imageDetail = 'sem GEMINI_API_KEY';
   const user = `<brief>${JSON.stringify(briefForModel(body.brief))}</brief>` + (notes ? `\n<notes>${JSON.stringify(notes).slice(0, 1500)}</notes>` : '');
   const messages = [{ role: 'system', content: systemPrompt() }, { role: 'user', content: user }];
   const tries = [];
   if (env.GROQ_API_KEY) tries.push(['groq', () => chat(GROQ_URL, env.GROQ_API_KEY, env.GROQ_MODEL || 'openai/gpt-oss-20b', messages, signal)]);
-  if (env.GEMINI_API_KEY) tries.push(['gemini', () => chat(GEMINI_URL, env.GEMINI_API_KEY, env.GEMINI_MODEL || 'gemini-2.5-flash', messages, signal)]);
+  if (env.GEMINI_API_KEY) tries.push(['gemini', () => chat(GEMINI_URL, env.GEMINI_API_KEY, env.GEMINI_MODEL || 'gemini-3.5-flash-lite', messages, signal)]);
   const why = [];
   for (const [name, t] of tries) { try { return { spec: await t(), imageUsed, imageDetail }; } catch (e) { why.push(name + ':' + (e && e.code || (e && e.name === 'AbortError' ? 'timeout' : 'erro'))); } }
   const err = new Error('upstream'); err.detail = why.join(','); throw err;

@@ -37,7 +37,7 @@ O workflow **não foi executado ainda** (não há como rodá-lo daqui): o primei
 
 ## Limites honestos
 
-- Os nomes de modelo (`GROQ_MODEL`, `GEMINI_MODEL`) e as cotas dos planos gratuitos mudam; confira no console de cada serviço. Os valores de `wrangler.toml` são ponto de partida, **não foram testados contra as APIs reais**.
+- Os nomes de modelo (`GROQ_MODEL`, `GEMINI_MODEL`) e as cotas dos planos gratuitos mudam: o `gemini-2.5-flash` deu 404 numa chave nova (a documentação diz que ele só atende quem já o usou), por isso o padrão é `gemini-3.5-flash-lite` (lista em ai.google.dev/gemini-api/docs/models); confira no console de cada serviço. Os valores de `wrangler.toml` são ponto de partida, **não foram testados contra as APIs reais**.
 - O orçamento usa KV, que não é atômico: pode passar de 14 por uma ou duas gerações em acessos simultâneos. É um freio, não contabilidade.
 - A checagem de origem não é segurança (qualquer programa forja o cabeçalho). A defesa real é o limite diário, o corpo pequeno e as rotas fixas.
 - Origem `null` (abrir `app/index.html` por duplo clique) é aceita por padrão; defina `ALLOW_FILE_ORIGIN = "false"` para recusar.

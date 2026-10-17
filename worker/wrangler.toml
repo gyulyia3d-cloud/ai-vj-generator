@@ -8,7 +8,7 @@ ALLOWED_ORIGINS = "https://gyulyia3d-cloud.github.io"
 ALLOW_FILE_ORIGIN = "true"
 DAILY_LIMIT = "14"
 GROQ_MODEL = "openai/gpt-oss-20b"
-GEMINI_MODEL = "gemini-2.5-flash"
+GEMINI_MODEL = "gemini-3.5-flash-lite"
 
 # Orçamento diário. Crie com: npx wrangler kv namespace create BUDGET  e cole o id abaixo.
 [[kv_namespaces]]
