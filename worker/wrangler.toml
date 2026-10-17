@@ -1,0 +1,23 @@
+# Cloudflare Worker da IA gratuita (ver worker/README.md). Sem chaves aqui: elas entram por `wrangler secret put`.
+name = "ai-vj-generator-ia"
+main = "vj-worker.js"
+compatibility_date = "2026-01-01"
+
+[vars]
+ALLOWED_ORIGINS = "https://gyulyia3d-cloud.github.io"
+ALLOW_FILE_ORIGIN = "true"
+DAILY_LIMIT = "14"
+GROQ_MODEL = "openai/gpt-oss-20b"
+GEMINI_MODEL = "gemini-2.5-flash"
+
+# Orçamento diário. Crie com: npx wrangler kv namespace create BUDGET  e cole o id abaixo.
+[[kv_namespaces]]
+binding = "BUDGET"
+id = "COLE_O_ID_AQUI"
+
+# Opcional (confira se o seu plano oferece o Rate Limiting): freio por minuto.
+# [[unsafe.bindings]]
+# name = "RL"
+# type = "ratelimit"
+# namespace_id = "1001"
+# simple = { limit = 5, period = 60 }

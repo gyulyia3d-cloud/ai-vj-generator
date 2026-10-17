@@ -276,7 +276,9 @@ function setSeed(s) { P.seed = s; SEED = s; buildGrain(); commit(); renderProjec
 function copyText(s, msg) { try { navigator.clipboard.writeText(s).then(() => toast(msg), () => toast('Copie manualmente: a área de transferência foi recusada')); } catch (e) { toast('Copie manualmente'); } }
 function importJson(txt) {
   try {
-    const o = typeof txt === 'string' ? JSON.parse(txt.trim().replace(/^```(json)?|```$/g, '')) : txt;
+    let o = typeof txt === 'string' ? JSON.parse(txt.trim().replace(/^```(json)?|```$/g, '')) : txt;
+    /* um briefing (o JSON que uma IA de chat entrega) em vez de um projeto: o gerador local monta as composições; antes isto era recusado por não ter composições */
+    if (o && typeof o === 'object' && !Array.isArray(o.compositions) && typeof o.concept === 'string' && o.surface) { const errs = GENAI.checkBrief(o); if (errs.length) throw new Error(errs.join(' · ')); o = GENAI.build(o); }
     const pr = normalize(o);
     commit(true); SLOTS.briefing = pr; ST.ci = 0; setMode('briefing', true); commit(true);
     toast(`Importado: ${pr.meta.name} · ${pr.compositions.length} composições${WARN_LOAD.length ? ' · ' + WARN_LOAD.length + ' aviso(s)' : ''}`, 3600);

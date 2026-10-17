@@ -1,5 +1,17 @@
 # Changelog
 
+## Não lançado · Gerar briefing (IA gratuita opcional) e how-to das IAs
+
+Sem mudança de render nem de formato de projeto. O motor ganha um assistente que faz, na web e sem custo, o papel do `/vj`: a pessoa responde a auditoria, junta mídias e descreve o projeto, e o motor monta as composições pelas regras locais (`genai.js`); uma IA gratuita, opcional, só completa o que ficou em branco.
+
+- **Botão GERAR BRIEFING** ao lado de Carregar briefing (`app/briefgen.js`, módulo `BRIEFGEN`). Quatro seções, cada uma com o seu "Como fazer": 1 Auditoria (superfície, tempo, clima, energia, densidade, paleta, áudio, evento focal, proibidos, texto exato, entrega; com nota 0 a 100 e as perguntas pendentes, mesmos pesos de `brief_check.py`), 2 Mídias (até 3 imagens de referência; mapa de pixels em CSV ou PNG, medido localmente como regiões), 3 Descrição visual (e verbos visuais opcionais), 4 Gerar.
+- **Honestidade sobre o que foi respondido:** só conta como respondido o que a pessoa tocou; o resto usa o padrão do gerador e fica registrado em `meta.spec.assumed`. `meta.generator` diz se houve IA e o que ela preencheu. A IA nunca muda nome, conceito, superfície, tempo nem texto, e nunca sobrescreve o que a pessoa respondeu (`sanitizeSpec` e `mergeSpec`, listas fechadas).
+- **Aviso pequeno:** limite de 14 gerações por dia, compartilhado (cota gratuita); esgotado, o gerador por regras continua.
+- **Carregar briefing:** passo a passo para gerar o JSON em Gemini, GPT, Claude, Grok e DeepSeek, com o prompt pronto para copiar e a nota de como inserir as mídias (o JSON não leva imagens; elas entram na vista ou na aba Mídia). A importação agora aceita também o **briefing** em JSON (antes só projeto): o gerador local monta as composições.
+- **Worker opcional** (`worker/`, Cloudflare, sem dependências): esconde as chaves da Groq e do Gemini, impõe 14 por dia, só aceita origens autorizadas, estorna a geração se o provedor falha. **Vem desligado:** `ENDPOINT` em `app/briefgen.js` está vazio até alguém fazer o deploy (`worker/README.md`); sem ele a caixa da IA fica desativada e o assistente avisa. Os nomes de modelo e as cotas dos planos gratuitos não foram testados contra as APIs reais.
+- **Teste novo** `briefgen_check.mjs` (listas fechadas = esquema = registry = Worker, entradas hostis com controle negativo, o Worker com fetch simulado, a interface com clique de mouse de verdade em 3 larguras, idioma, Esc, IA simulada).
+- `window.AIVJ.briefgen` expõe o módulo (testes). Barra do topo: entre 701 e 920 px o botão novo recolhe (senão cobria o botão Briefing; medido) e o caminho é Carregar briefing > Gerar briefing aqui; até 700 px o topo rola na horizontal e o botão fica num grupo `.keep`. Ao abrir, o foco vai ao primeiro campo da auditoria.
+
 ## 3.20.0 (16/10/2026) · Fase 16: export verificável
 
 Fecha a fase 16. Sem mudança de render nem de formato de projeto (a base de quadros de referência continua em diferença 0.000); o manifesto de export sobe para o esquema 2 e o 1 continua legível. `check.mjs`: 141 verificações, todas verdes.
