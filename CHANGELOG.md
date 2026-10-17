@@ -1,5 +1,14 @@
 # Changelog
 
+## Não lançado · Elementos de interface animados e biometria
+
+Doze camadas novas, distribuídas nas categorias que já existem (o menu continua com 10 categorias). Vocabulário dos elementos animados do Layer Forge e dos módulos de leitura das gerações /vj, reescrito para o motor (`app/elements-ui.js`, módulo `ELEMENTSUI`). Sem mudança no render das camadas existentes.
+
+- **Dados:** `icon` (12 ícones que animam sozinhos), `ruler` (régua com cursor), `counter` (contador fixo, vai-e-volta ou sorteando no beat), `gauge` (dial de 270° ou anéis segmentados), `coords` (leitura cartesiana, polar ou geográfica), `progress` (barra de progresso), `chart` (mercado, barras ou linha), `network` (rede de nós com pacotes), `rack` (datacenter com LEDs no passo).
+- **Texto:** `ticker` (letreiro em rolagem entre réguas). **Formas:** `sacred` (flor da vida, árvore da vida, micélio, espiral áurea, grade polar).
+- **Elementos 3D:** `face` (biometria: rosto em malha 3D com pontos de referência, em pontos, linhas ou plexus, com glow).
+- Tempo só por ciclos inteiros, acaso só por `hr()`. **Teste novo** `elements_ui_check.mjs` (31 casos desenham e diferem, determinístico, o loop fecha pelo critério do `loop_check`, andam, ciclos 0 = parado; na primeira rodada pegou a emenda do ícone "sinal", corrigida). `elements3d_check.mjs` cobre `face`; `layers_check.mjs` lista os tipos novos de Dados.
+
 ## Não lançado · Elementos 3D (pontos, linhas, plexus, glow)
 
 Categoria de camada nova, **Elementos 3D**, com o **Organismo** (saiu de Formas) e cinco tipos novos de objeto em nuvem de pontos, desenhados por projetor próprio (`app/elements3d.js`, módulo `ELEMENTS3D`, sem biblioteca 3D). Projetos antigos não mudam: o organismo com os valores padrão sai idêntico (render `points`, glow 0).

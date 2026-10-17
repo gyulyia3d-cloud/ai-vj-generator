@@ -1,5 +1,5 @@
 /* Elementos 3D: objetos em nuvem de pontos com projetor próprio (sem biblioteca 3D) e render em pontos, linhas ou plexus, com glow.
-   Cinco tipos: botanic (flor, folhagem), molecule (DNA, molécula), sigil (astrológico, alquímico, magick), terrain (voo rasante) e
+   Seis tipos: botanic (flor, folhagem), molecule (DNA, molécula), sigil (astrológico, alquímico, magick), face (rosto em malha), terrain (voo rasante) e
    monument (torre, zigurate, corredor, corpo, globo, anel e toro: sólidos de caixas, esfera e toro com pontos amostrados nas faces).
    Cada forma devolve { P: [[x, y, z]], E: [[i, j]], H: [índices em acento], T: [[i, rótulo, acento]] } em espaço unitário (raio ~1).
    Tempo só entra por múltiplos inteiros de ph = TAU · fase do loop · ciclos inteiros: o loop fecha sem emenda. Sem relógio, sem acaso (hr).
@@ -192,6 +192,21 @@ function magick(ph, d) {
   return g;
 }
 
+/* ---------- biometria: malha de rosto (elipsoide com nariz, órbitas e boca), cabeça olhando de um lado ao outro, faixa de leitura descendo e subindo ---------- */
+function face(ph, d) {
+  const g = g3(), nu = nS(28, d), nv = nS(34, d), turn = 0.45 * Math.sin(ph), ct = Math.cos(turn), st = Math.sin(turn), scan = 0.5 - 0.5 * Math.cos(ph);
+  const bump = (x, y, cx, cy, sx, sy) => Math.exp(-((x - cx) * (x - cx)) / sx - ((y - cy) * (y - cy)) / sy);
+  const at = (x, y) => { const e = 1 - (x / 0.74) * (x / 0.74) - (y / 1) * (y / 1); if (e <= 0) return null;
+    const z = 0.78 * Math.sqrt(e) + 0.2 * bump(x, y, 0, -0.05, 0.006, 0.09) - 0.09 * bump(x, y, -0.3, 0.17, 0.012, 0.006) - 0.09 * bump(x, y, 0.3, 0.17, 0.012, 0.006) + 0.04 * bump(x, y, 0, -0.45, 0.03, 0.004) + 0.05 * bump(x, y, 0, -0.82, 0.02, 0.01);
+    return [x * ct + z * st, y, -x * st + z * ct]; };
+  const id = [];
+  for (let j = 0; j <= nv; j++) { id.push([]); const y = -0.98 + 1.96 * j / nv; for (let i = 0; i <= nu; i++) { const x = -0.74 + 1.48 * i / nu, q = at(x, y); if (!q) { id[j].push(-1); continue; } id[j].push(g.P.length); g.P.push(q); if (Math.abs((y + 0.98) / 1.96 - scan) < 0.025) g.H.push(g.P.length - 1); } }
+  for (let j = 0; j <= nv; j++) for (let i = 0; i <= nu; i++) { const a = id[j][i]; if (a < 0) continue; if (i < nu && id[j][i + 1] >= 0) g.E.push([a, id[j][i + 1]]); if (j < nv && id[j + 1][i] >= 0) g.E.push([a, id[j + 1][i]]); }
+  [[-0.3, 0.17, 'IRIS_L'], [0.3, 0.17, 'IRIS_R'], [0, -0.12, 'NARIZ'], [0, -0.45, 'BOCA'], [0, -0.85, 'QUEIXO']].forEach(([x, y, nm]) => { const q = at(x, y); q[2] += 0.03; g.P.push(q); g.H.push(g.P.length - 1); g.T.push([g.P.length - 1, nm, true]);
+    g3Circ(g, 12, (cc, ss) => { const r = at(x + cc * 0.07, y + ss * 0.05) || q; return [r[0], r[1], r[2] + 0.02]; }, true); });
+  return g;
+}
+
 /* ---------- terreno: relevo periódico na direção do voo (o quadro do fim do loop é o do começo) ---------- */
 function terrain(ph, d, sd, relief) {
   const g = g3(), G = Math.round(clamp(28 * Math.sqrt(d), 12, 80)), q = (((ph / TAU) % 1) + 1) % 1, o = sd * 37;
@@ -306,6 +321,10 @@ reg('molecule', 'Molecular · DNA e molécula', 'gen', [S('kind', 'Forma', 'dna'
 reg('sigil', 'Símbolos 3D · astrológico, alquímico, magick', 'gen', [S('kind', 'Forma', 'astrologico', ['astrologico', 'alquimico', 'magick']), B('labels', 'Rótulos', true), ...E3_COMMON()], (c, R) => {
   const { p, F } = R, ph = e3ph(F, p), d = e3d(p);
   e3Draw(c, R, p.kind === 'alquimico' ? alchemy(ph, d) : p.kind === 'magick' ? magick(ph, d) : armillary(ph, d, p.seed));
+});
+reg('face', 'Biometria · rosto em malha 3D', 'gen', [B('labels', 'Rótulos', true), ...E3_COMMON().map(x => x.k === 'render' ? S('render', 'Render', 'plexus', E3_RENDER) : x.k === 'spin' ? N('spin', 'Giro (ciclos/loop)', 0, 0, 6, 1) : x.k === 'tiltX' ? N('tiltX', 'Inclinação X °', 0, -90, 90, 0.1) : x.k === 'reach' ? N('reach', 'Raio do plexus', 0.14, 0.05, 0.6) : x)], (c, R) => {
+  const { p, F } = R;
+  e3Draw(c, R, face(e3ph(F, p), e3d(p)));
 });
 reg('terrain', 'Terreno 3D · voo rasante', 'gen', [N('relief', 'Relevo', 1, 0, 3), ...E3_COMMON().map(x => x.k === 'render' ? S('render', 'Render', 'lines', E3_RENDER) : x.k === 'spin' ? N('spin', 'Giro (ciclos/loop)', 0, 0, 6, 1) : x.k === 'tiltX' ? N('tiltX', 'Inclinação X °', 36, -90, 90, 0.1) : x)], (c, R) => {
   const { p, F } = R;

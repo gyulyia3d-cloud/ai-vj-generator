@@ -593,6 +593,162 @@
    "cost": "unmeasured",
    "maturity": "beta",
    "note": "Box corners take the accent."
+  },
+  "face": {
+   "family": "figure",
+   "role": "3D face mesh (biometric reading) with landmarks, points, lines or plexus, glow",
+   "surfaces": [
+    "screen",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "beta",
+   "note": "The head looks side to side in whole cycles; a reading band runs down and up."
+  },
+  "icon": {
+   "family": "information",
+   "role": "12 self-animating line icons (target, REC, play, arrow, eye, pin, globe, cube, wave, bars, signal, scan)",
+   "surfaces": [
+    "screen",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "beta",
+   "note": "Stroke of 3 px or more on LED."
+  },
+  "ruler": {
+   "family": "information",
+   "role": "ruler with ticks, numbers and a cursor that travels the scale",
+   "surfaces": [
+    "screen",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "beta",
+   "note": "Whole cycles close the loop."
+  },
+  "counter": {
+   "family": "information",
+   "role": "large number with label; fixed, up-and-back or scrambling on the beat",
+   "surfaces": [
+    "screen",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "beta",
+   "note": "Up-and-back closes the loop."
+  },
+  "gauge": {
+   "family": "information",
+   "role": "dial (270° arc) or segmented rings stepping around",
+   "surfaces": [
+    "screen",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "beta",
+   "note": "Rings step 24 times per cycle."
+  },
+  "coords": {
+   "family": "information",
+   "role": "Cartesian, polar or geographic readout of a point on a Lissajous path",
+   "surfaces": [
+    "screen",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "beta",
+   "note": ""
+  },
+  "progress": {
+   "family": "information",
+   "role": "progress bar with label; fixed, up-and-back or following the loop",
+   "surfaces": [
+    "screen",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "beta",
+   "note": "Following the loop jumps back at the seam on purpose."
+  },
+  "chart": {
+   "family": "information",
+   "role": "market chart (line and volume), bars or line, periodic in the loop",
+   "surfaces": [
+    "screen",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "beta",
+   "note": ""
+  },
+  "network": {
+   "family": "information",
+   "role": "node network: links by distance, blinking active nodes, packets travelling",
+   "surfaces": [
+    "screen",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "beta",
+   "note": "Labels every third node."
+  },
+  "rack": {
+   "family": "information",
+   "role": "datacenter racks with block LEDs blinking on the bar, beat or sixteenth",
+   "surfaces": [
+    "screen",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "beta",
+   "note": ""
+  },
+  "ticker": {
+   "family": "information",
+   "role": "scrolling text band between rules (marquee)",
+   "surfaces": [
+    "screen",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "beta",
+   "note": "Sign of the cycles sets the direction."
+  },
+  "sacred": {
+   "family": "structure",
+   "role": "flower of life, tree of life, mycelium, golden spiral and polar grid",
+   "surfaces": [
+    "screen",
+    "projection",
+    "mapping",
+    "multi"
+   ],
+   "cost": "unmeasured",
+   "maturity": "beta",
+   "note": "Mycelium grows and recedes once per cycle."
   }
  },
  "recipes": {
