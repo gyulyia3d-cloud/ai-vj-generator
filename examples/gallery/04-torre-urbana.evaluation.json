@@ -1,7 +1,7 @@
 {
   "lang": "en",
   "loopFrames": 206,
-  "set": 86,
+  "set": 85,
   "weights": {
     "hierarchy": 20,
     "contrast": 15,
@@ -21,24 +21,24 @@
         "contrast": 100,
         "density": 100,
         "breathing": 100,
-        "motion": 81,
+        "motion": 77,
         "arc": 100,
         "repetition": 100
       },
       "raw": {
         "declaredDensity": "dense",
-        "dominance": 0.13885532557907002,
+        "dominance": 0.13886514344823278,
         "p99": 0.9382525682449341,
-        "coverage": 0.39599609375000006,
-        "quiet": 0.3579282407407407,
-        "motion": 0.15586994614661545,
+        "coverage": 0.4112001269933128,
+        "quiet": 0.35011574074074064,
+        "motion": 0.1621085765488832,
         "dead": 0,
         "seamJump": false,
-        "arcRange": 1.0980897728511119,
+        "arcRange": 1.1107282229474262,
         "arcPeak": 0.6666666666666666,
         "strongLayers": 2,
         "layers": 13,
-        "maxCorrelation": 0.8272048438901882,
+        "maxCorrelation": 0.8153116124880068,
         "similarTo": 1
       },
       "notes": {
@@ -54,30 +54,30 @@
     {
       "index": 1,
       "name": "AGGRESSIVE II",
-      "total": 79,
+      "total": 78,
       "score": {
-        "hierarchy": 75,
+        "hierarchy": 80,
         "contrast": 62,
         "density": 100,
-        "breathing": 34,
-        "motion": 100,
+        "breathing": 47,
+        "motion": 99,
         "arc": 100,
-        "repetition": 100
+        "repetition": 56
       },
       "raw": {
         "declaredDensity": "dense",
-        "dominance": 0.16638310066654918,
+        "dominance": 0.1731946747957682,
         "p99": 0.5101591944694519,
-        "coverage": 0.2889640399948559,
-        "quiet": 0.7433449074074076,
-        "motion": 0.10728725209555272,
+        "coverage": 0.3025846756044239,
+        "quiet": 0.7083333333333335,
+        "motion": 0.11432960372619692,
         "dead": 0,
         "seamJump": false,
-        "arcRange": 1.741593237216761,
+        "arcRange": 1.8041572208337162,
         "arcPeak": 0.6666666666666666,
         "strongLayers": 2,
         "layers": 12,
-        "maxCorrelation": 0.8908692576596196,
+        "maxCorrelation": 0.9440074529997396,
         "similarTo": 2
       },
       "notes": {
@@ -87,36 +87,36 @@
         "breathing": "almost nothing but quiet: the piece may feel absent",
         "motion": "movement is present, continuous and the loop seam is clean",
         "arc": "the energy rises and falls over the loop",
-        "repetition": "this composition is clearly different from the others"
+        "repetition": "this composition looks like composition 3 of the same set: change topology, hero generator or spatial behaviour"
       }
     },
     {
       "index": 2,
       "name": "URBAN III",
-      "total": 92,
+      "total": 89,
       "score": {
-        "hierarchy": 72,
-        "contrast": 81,
+        "hierarchy": 77,
+        "contrast": 88,
         "density": 100,
         "breathing": 100,
         "motion": 100,
         "arc": 100,
-        "repetition": 100
+        "repetition": 56
       },
       "raw": {
         "declaredDensity": "dense",
-        "dominance": 0.16315356844164955,
-        "p99": 0.5744525194168091,
-        "coverage": 0.4065795396090535,
-        "quiet": 0.4690393518518519,
-        "motion": 0.09193207388121932,
+        "dominance": 0.17000658213583003,
+        "p99": 0.6019709706306458,
+        "coverage": 0.42783785847479416,
+        "quiet": 0.47540509259259256,
+        "motion": 0.09913857386870832,
         "dead": 0,
         "seamJump": false,
-        "arcRange": 1.5240828134741544,
+        "arcRange": 1.559649562184342,
         "arcPeak": 0.6666666666666666,
         "strongLayers": 2,
         "layers": 13,
-        "maxCorrelation": 0.8908692576596196,
+        "maxCorrelation": 0.9440074529997396,
         "similarTo": 1
       },
       "notes": {
@@ -126,7 +126,7 @@
         "breathing": "there is empty space for the figure to breathe",
         "motion": "movement is present, continuous and the loop seam is clean",
         "arc": "the energy rises and falls over the loop",
-        "repetition": "this composition is clearly different from the others"
+        "repetition": "this composition looks like composition 2 of the same set: change topology, hero generator or spatial behaviour"
       }
     }
   ]
