@@ -96,6 +96,33 @@ Loop length is rounded to whole frames: `round(60 / bpm × 4 × bars × fps)`. A
 | `tiltX` `tiltY` | -51.6, -20 (°) | |
 | `petals` | true | |
 | `color` `scanColor` | `primary`, `accent` | |
+| `render` | `"points"` (`"points"` `"lines"` `"plexus"`) | lines follow the 13 and 21 phyllotaxis spirals; plexus links 3D neighbours closer than `reach` |
+| `reach` | 0.25 (0.05…0.6) | plexus radius, fraction of the organism radius |
+| `glow` | 0 (0…1) | halo added from half-scale copies of the layer; 0 leaves the layer exactly as before |
+
+### Elementos 3D — `botanic`, `molecule`, `sigil`, `terrain`, `monument` (gen)
+Point-cloud objects drawn by the engine's own projector (no 3D library), in the **Elementos 3D** category with `organism`. Time enters only through whole cycles (`spin`, `cycles`), so the loop closes.
+- `botanic` — `kind` `"flor"` (three rings of 5, 8 and 13 petals around a phyllotaxis disc, opening and closing) · `"folhagem"` (three fern fronds that sway).
+- `molecule` — `kind` `"dna"` (double helix; half of the base pairs in accent) · `"molecula"` (atoms and bonds from the seed; larger atoms in accent).
+- `sigil` — `kind` `"astrologico"` (armillary sphere, ecliptic, zodiac and planet glyphs) · `"alquimico"` (squared circle stacked in depth, four element triangles) · `"magick"` (heptagram {7/3} and pentagram {5/2} on crossed planes); `labels` true draws the glyphs and names.
+- `terrain` — flyover; relief periodic along the flight. `relief` 1 (0…3). Defaults: `render` `"lines"`, `spin` 0, `tiltX` 36.
+- `monument` — `kind` `"torre"` `"zigurate"` `"corredor"` `"corpo"` `"globo"` `"anel"` `"toro"`: solids ported from TECNOFEUDO TOTAL (the author's own project), points sampled on the faces; box corners in accent.
+
+Shared keys:
+| key | default | notes |
+|---|---|---|
+| `render` | `"points"` (`"points"` `"lines"` `"plexus"`) | |
+| `glow` | 0 (0…1) | |
+| `reach` | 0.25 (0.05…0.6) | plexus radius in unit space |
+| `cx` `cy` | 0.5, 0.5 | center as fraction of canvas |
+| `size` | 1 (0.1…4) | |
+| `density` | 1 (0.2…4) | points and segments; multiplied by the quality density |
+| `dot` `weight` | 1, 1 | point size, line width |
+| `spin` | 1 (0…6, whole) | turns per loop |
+| `cycles` | 1 (0…8, whole) | breathing, sway and planet orbits per loop |
+| `tiltX` `tiltY` | 20, 0 (°) | |
+| `seed` | 1 (1…99) | |
+| `color` `hot` | `primary`, `accent` | |
 
 ### `structure` — grid, rulers, golden spiral and angle (standard)
 `grid` 120 (px) · `gridA` 0.07 · `rulers` true · `rings` true · `spiral` true · `angle` true · `drawOn` true (redraws after each event) · `ui` 1 (text scale) · `color` `primary` · `hot` `accent`.

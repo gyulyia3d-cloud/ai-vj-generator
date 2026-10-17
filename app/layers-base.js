@@ -41,7 +41,7 @@ function orgData(n) {
   ring(13, R * 0.75, 0.2, 0, 0.35); ring(21, R * 0.48, 0.11, Math.PI / 21, 0.12);
   const ringSegs = [];
   for (let k = 0; k < 96; k += 2) { const a1 = k / 96 * TAU, a2 = (k + 1) / 96 * TAU, rr = R * 1.95; ringSegs.push(rr * Math.cos(a1), rr * Math.sin(a1), -0.2, rr * Math.cos(a2), rr * Math.sin(a2), -0.2); }
-  Object.assign(ORGC, { n, seed: SEED, R, PX, PY, AR, RA, segs: new Float32Array(segs), ringSegs: new Float32Array(ringSegs) });
+  Object.assign(ORGC, { n, seed: SEED, R, PX, PY, AR, RA, segs: new Float32Array(segs), ringSegs: new Float32Array(ringSegs), E: null, P3: null });
   return ORGC;
 }
 function orgView(p, F, W, H, still) {
@@ -70,6 +70,18 @@ function orgPoint(D, i, p, v, o) {
   const z = 0.8 * (1 - rn * rn) + 0.12 * p.breathe * Math.sin(v.zA - rn * 9);
   return v.proj(D.PX[i] * k, D.PY[i] * k, z, o);
 }
+/* linhas e plexus do organismo (Elementos 3D): linhas seguem as espirais 13 e 21 da filotaxia; o plexus liga vizinhos no espaço 3D. Usa o render de app/elements3d.js. */
+function orgMesh(c, D, p, v, scan, u, prim, acc) {
+  const n = D.n, X = new Float32Array(n), Y = new Float32Array(n), Z = new Float32Array(n), K = new Float32Array(n), hot = new Uint8Array(n), o = {}, Q = { X, Y, Z, K, n };
+  for (let i = 0; i < n; i++) { orgPoint(D, i, p, v, o); X[i] = o.x; Y[i] = o.y; Z[i] = (10 - o.d) / 1.4; K[i] = 10 / o.d; if (Math.abs(D.AR[i] - scan) < 0.035) hot[i] = 1; }
+  if (p.render === 'lines') {
+    if (!D.E) { D.E = []; for (let i = 0; i < n; i++) { if (i >= 13) D.E.push([i, i - 13]); if (i >= 21) D.E.push([i, i - 21]); } }
+    e3Lines(c, Q, D.E, hot, Math.max(0.5, u * p.dot), prim, acc);
+  } else {
+    if (!D.P3) D.P3 = Array.from({ length: n }, (_, i) => [D.PX[i] / D.R, D.PY[i] / D.R, 0.8 * (1 - D.AR[i] * D.AR[i]) / D.R]);
+    e3Plexus(c, Q, D.P3, hot, p.reach, Math.max(0.5, u * p.dot), 2.4 * u * p.dot, prim, acc);
+  }
+}
 function orgParams(comp) { const L = comp.layers.find(l => l.type === 'organism'); return pm(L || { type: 'organism', p: {} }); }
 function orgCenter(comp, W, H) {
   const p = orgParams(comp), v = orgView(p, { ph: 0, t: 0 }, W, H, true);
@@ -80,7 +92,8 @@ reg('organism', 'Matéria · organismo', 'standard', [
   N('cx', 'Centro X', 0.62, 0, 1), N('cy', 'Centro Y', 0.5, 0, 1), N('size', 'Tamanho', 1, 0.1, 4), N('points', 'Pontos', 2400, 200, 8000, 10),
   N('dot', 'Ponto', 1, 0.2, 5), N('spin', 'Giro', 1, 0, 6), N('breathe', 'Respiração', 0.5, 0, 2),
   S('scanBars', 'Varredura (compassos)', '2', ['1', '2', '4', '8']), N('tiltX', 'Inclinação X °', -51.6, -90, 90, 0.1), N('tiltY', 'Inclinação Y °', -20, -90, 90, 0.1),
-  B('petals', 'Pétalas', true), C('color', 'Cor', 'primary'), C('scanColor', 'Cor da varredura', 'accent')
+  B('petals', 'Pétalas', true), C('color', 'Cor', 'primary'), C('scanColor', 'Cor da varredura', 'accent'),
+  S('render', 'Render', 'points', ['points', 'lines', 'plexus']), N('reach', 'Raio do plexus', 0.25, 0.05, 0.6), N('glow', 'Glow', 0, 0, 1)
 ], (c, R) => {
   const { p, F, comp, W, H, u } = R;
   const D = orgData(Math.max(50, Math.round(p.points * ST.dens))), v = orgView(p, F, W, H), o = {};
@@ -95,6 +108,7 @@ reg('organism', 'Matéria · organismo', 'standard', [
     for (let i = 0; i < r2.length; i += 6) { v.proj(r2[i], r2[i + 1], r2[i + 2], o); v.proj(r2[i + 3], r2[i + 4], r2[i + 5], o2); c.moveTo(o.x, o.y); c.lineTo(o2.x, o2.y); }
     c.stroke();
   }
+  if (p.render === 'lines' || p.render === 'plexus') { orgMesh(c, D, p, v, scan, u, prim, acc); e3Glow(c, comp, p.glow); c.globalAlpha = 1; return; }
   c.fillStyle = prim;
   const hot = [];
   for (let i = 0; i < D.n; i++) {
@@ -112,6 +126,7 @@ reg('organism', 'Matéria · organismo', 'standard', [
     c.globalAlpha = hot[i + 3]; c.fillRect(hot[i] - hot[i + 2] / 2, hot[i + 1] - hot[i + 2] / 2, hot[i + 2], hot[i + 2]);
   }
   c.globalAlpha = 1;
+  e3Glow(c, comp, p.glow);
 });
 
 /* ===== evento (compartilhado por L2, L4, L6) ===== */
