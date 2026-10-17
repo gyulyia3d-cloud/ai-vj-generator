@@ -106,7 +106,10 @@ try {
   e = env(); calls = []; await post(e, { body: { v: 1, brief, images: Array(6).fill(img) } }); check(calls.find(c => c.url.includes('generativelanguage')).body.messages[0].content.filter(p => p.type === 'image_url').length === 3, 'Worker: no máximo 3 imagens', '');
   behavior = { groq: 'fail', gemini: 'ok' }; e = env(); calls = []; const fb = await post(e); check(fb.status === 200 && calls.length === 2 && calls[1].url.includes('generativelanguage'), 'Worker: Groq cai, o Gemini responde no lugar', String(fb.status));
   behavior = { groq: 'fail', gemini: 'fail' }; e = env(); const dead = await post(e); const dj = await dead.json();
+  check(dj.detail === 'groq:500,gemini:500' && !JSON.stringify(dj).includes('SECRET'), 'Worker: a falha diz só o código HTTP de cada provedor (groq:500,gemini:500), sem chave nem texto', JSON.stringify(dj));
   check(dead.status === 502 && dj.error === 'upstream' && (+e.BUDGET.m.get(`d:${new Date().toISOString().slice(0, 10)}`) || 0) === 0, 'Worker: se tudo falha, 502 e a geração do dia é devolvida (estorno)', JSON.stringify([dead.status, [...e.BUDGET.m]]));
+  { const oldF = globalThis.fetch; let body0 = null; globalThis.fetch = async (u, i) => { body0 = JSON.parse(i.body); return oldF(u, i); }; behavior = { groq: 'ok', gemini: 'ok' }; e = env(); await post(e);
+    check(body0.model === 'openai/gpt-oss-20b' && body0.reasoning_effort === 'low' && body0.max_tokens >= 2000 && body0.response_format.type === 'json_object', 'Worker: gpt-oss pede raciocínio baixo e teto de tokens folgado (resposta não vem vazia)', JSON.stringify(body0).slice(0, 160)); globalThis.fetch = oldF; }
   behavior = { groq: 'ok', gemini: 'ok' };
   e = env(); check((await post(e, { headers: { Origin: 'https://evil.example' } })).status === 403, 'Worker: origem não autorizada recebe 403', '');
   const okh = await post(e); check(okh.headers.get('Access-Control-Allow-Origin') === 'https://gyulyia3d-cloud.github.io', 'Worker: CORS devolve a origem autorizada (nunca *)', String(okh.headers.get('Access-Control-Allow-Origin')));

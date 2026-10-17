@@ -50,12 +50,14 @@ async function reserve(env) {
 }
 const refund = async (env, r) => { try { const n = +(await env.BUDGET.get(r.key)) || 0; if (n > 0) await env.BUDGET.put(r.key, String(n - 1), { expirationTtl: 172800 }); } catch (e) { /* freio best effort */ } };
 
+/* modelos de raciocínio (gpt-oss, Gemini 2.5) gastam parte de max_tokens pensando: com pouco teto a resposta vem vazia. reasoning_effort baixo e teto folgado. */
 async function chat(url, key, model, messages, signal) {
-  const r = await fetch(url, { method: 'POST', signal, headers: { 'content-type': 'application/json', authorization: 'Bearer ' + key }, body: JSON.stringify({ model, messages, temperature: 0.6, max_tokens: 900, response_format: { type: 'json_object' } }) });
-  if (!r.ok) throw new Error('upstream ' + r.status);
-  const j = await r.json(), txt = j && j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content;
-  const m = typeof txt === 'string' ? txt.match(/\{[\s\S]*\}/) : null; if (!m) throw new Error('upstream empty');
-  return JSON.parse(m[0]);
+  const think = /gpt-oss|gemini-(2\.5|3)/.test(model) ? { reasoning_effort: 'low' } : {};
+  const r = await fetch(url, { method: 'POST', signal, headers: { 'content-type': 'application/json', authorization: 'Bearer ' + key }, body: JSON.stringify({ model, messages, temperature: 0.6, max_tokens: 3000, response_format: { type: 'json_object' }, ...think }) });
+  if (!r.ok) { const e = new Error('upstream ' + r.status); e.code = String(r.status); throw e; }
+  const j = await r.json().catch(() => null), txt = j && j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content;
+  const m = typeof txt === 'string' ? txt.match(/\{[\s\S]*\}/) : null; if (!m) { const e = new Error('upstream empty'); e.code = 'empty'; throw e; }
+  try { return JSON.parse(m[0]); } catch (e) { const x = new Error('upstream json'); x.code = 'json'; throw x; }
 }
 const briefForModel = b => ({ concept: b.concept, lang: b.lang, mood: b.mood, energy: b.energy, density: b.density, surface: b.surface && { type: b.surface.type, w: b.surface.w, h: b.surface.h }, time: b.time && { bpm: b.time.bpm }, verbs: b.verbs, focalEvent: b.focalEvent, banned: b.banned, palette: b.palette });
 
@@ -70,10 +72,11 @@ async function generate(env, body, signal) {
   const user = `<brief>${JSON.stringify(briefForModel(body.brief))}</brief>` + (notes ? `\n<notes>${JSON.stringify(notes).slice(0, 1500)}</notes>` : '');
   const messages = [{ role: 'system', content: systemPrompt() }, { role: 'user', content: user }];
   const tries = [];
-  if (env.GROQ_API_KEY) tries.push(() => chat(GROQ_URL, env.GROQ_API_KEY, env.GROQ_MODEL || 'openai/gpt-oss-20b', messages, signal));
-  if (env.GEMINI_API_KEY) tries.push(() => chat(GEMINI_URL, env.GEMINI_API_KEY, env.GEMINI_MODEL || 'gemini-2.5-flash', messages, signal));
-  for (const t of tries) { try { return { spec: await t(), imageUsed }; } catch (e) { /* tenta o próximo provedor */ } }
-  throw new Error('upstream');
+  if (env.GROQ_API_KEY) tries.push(['groq', () => chat(GROQ_URL, env.GROQ_API_KEY, env.GROQ_MODEL || 'openai/gpt-oss-20b', messages, signal)]);
+  if (env.GEMINI_API_KEY) tries.push(['gemini', () => chat(GEMINI_URL, env.GEMINI_API_KEY, env.GEMINI_MODEL || 'gemini-2.5-flash', messages, signal)]);
+  const why = [];
+  for (const [name, t] of tries) { try { return { spec: await t(), imageUsed }; } catch (e) { why.push(name + ':' + (e && e.code || (e && e.name === 'AbortError' ? 'timeout' : 'erro'))); } }
+  const err = new Error('upstream'); err.detail = why.join(','); throw err;
 }
 
 export default {
@@ -97,7 +100,7 @@ export default {
       const out = await generate(env, { brief: b, images }, ctl.signal);
       return reply(200, { ok: true, spec: out.spec, imageUsed: out.imageUsed, remaining: slot.remaining }, h);
     } catch (e) {
-      await refund(env, slot); return reply(502, { ok: false, error: 'upstream' }, h);
+      await refund(env, slot); return reply(502, { ok: false, error: 'upstream', detail: String(e && e.detail || '') }, h);
     } finally { clearTimeout(timer); }
   },
 };
