@@ -126,7 +126,20 @@ gl_FragColor=outc(mix(uC1,uC2,clamp(fill+uHigh*h,0.,1.)),k);}` },
   'INTERFERÊNCIA': { labels: ['Frequência', 'Ciclos', 'Espessura', 'Distância'], d: [9, 1, 0.5, 0.45], src:
 `void main(){vec2 uv=(gl_FragCoord.xy-.5*uRes)/uRes.y; vec2 c=loopv(uP.w*.5); float a=length(uv-c)*uP.x, b=length(uv+c)*uP.x; float ph=TAU*uPh*floor(uP.y+.5);
 float v=sin(a*TAU-ph)+sin(b*TAU+ph); float th=.35+uP.z*.5+uBass*.3; float k=smoothstep(th,th+.2,v*.5+.5)*(1.-smoothstep(.4,1.2,length(uv)));
-gl_FragColor=outc(mix(uC1,uC2,clamp(uHigh+uPulse*.4,0.,1.)),clamp(k+uHit*.1,0.,1.));}` }
+gl_FragColor=outc(mix(uC1,uC2,clamp(uHigh+uPulse*.4,0.,1.)),clamp(k+uHit*.1,0.,1.));}` },
+  'REDE MICÉLIO': { labels: ['Escala dos veios', 'Ciclos', 'Alcance', 'Brilho da ponta'], d: [3.2, 1, 0.75, 1], src:
+`void main(){vec2 uv=(gl_FragCoord.xy-.5*uRes)/uRes.y; vec2 o=vec2(-.62,-.36); float g=.08+.92*(.5-.5*cos(TAU*uPh*floor(uP.y+.5))); float R=g*uP.z*1.9; vec2 p=uv*uP.x+uSeed; float v1=1.-abs(fbm(p)*2.-1.), v2=1.-abs(fbm(p*2.3+5.3)*2.-1.); float vein=pow(v1,22.)+.6*pow(v2,30.);
+float dist=length(uv-o)+(fbm(uv*3.+uSeed)-.5)*.4; float grown=1.-smoothstep(R-.15,R,dist); float tip=exp(-pow((dist-R)*14.,2.)); float age=.35+.65*smoothstep(R-.8,R,dist);
+float k=clamp(vein*(grown*age+tip*1.5*uP.w),0.,1.); gl_FragColor=outc(mix(uC1,uC2,clamp(tip*1.4,0.,1.)),k);}` },
+  'CONTORNOS RESPIRANDO': { labels: ['Escala', 'Respirações', 'Densidade', 'Raio'], d: [1.6, 2, 1, 1], src:
+`void main(){vec2 uv=(gl_FragCoord.xy-.5*uRes)/uRes.y; vec2 c=vec2(-.38,-.14); float br=.5+.5*sin(TAU*uPh*floor(uP.y+.5)); vec2 L=loopv(.35)+uSeed;
+float f=fbm(uv*uP.x+L)*.8-length(uv-c)*(.95-.4*br); float d=abs(fract(f*uP.z*12.+.5)-.5); float line=1.-smoothstep(.015,.035,d);
+float k=line*smoothstep(-.62,-.12,f)*(1.-smoothstep(.55*uP.w,1.15*uP.w,length(uv-c))); vec3 col=mix(uC2,uC1,smoothstep(-.45,.15,f)); gl_FragColor=outc(col,k);}` },
+  'CARDUME': { labels: ['Densidade', 'Concentração', 'Traço', 'Espessura'], d: [1.6, 0.9, 1, 1], src:
+`void main(){vec2 uv=(gl_FragCoord.xy-.5*uRes)/uRes.y; float N=uP.x*40.; vec2 g=uv*N; vec2 id=floor(g); vec2 f=fract(g)-.5-(vec2(hash(id+3.1+uSeed),hash(id+9.7+uSeed))-.5)*.45; vec2 cp=(id+.5)/N;
+float a=fbm(cp*1.8+loopv(.3)+uSeed)*TAU*1.6; vec2 dir=vec2(cos(a),sin(a)); vec2 sc=vec2(.12+.5*cos(TAU*uPh),.2*sin(TAU*uPh*2.)); float m=exp(-pow(length((cp-sc)*vec2(1.,1.7))*uP.y*2.6,2.)); m*=step(.3,hash(id+uSeed));
+float along=dot(f,dir), across=dot(f,vec2(-dir.y,dir.x)); float seg=(1.-smoothstep(.035*uP.w,.07*uP.w,abs(across)))*(1.-smoothstep(.26*uP.z,.32*uP.z,abs(along)));
+float k=seg*smoothstep(.12,.55,m); gl_FragColor=outc(mix(uC2,uC1,smoothstep(.2,.8,m)),k);}` }
 };
 
 /* ---------- biblioteca de geradores ---------- */

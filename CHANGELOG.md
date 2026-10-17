@@ -1,5 +1,15 @@
 # Changelog
 
+## Não lançado · Presets GLSL vindos dos artefatos antigos
+
+Aditivo: três presets novos na camada Shader (categoria Shader), portados dos artefatos publicados do autor (build antiga do motor, "Matéria Lenta"). Nenhum preset nem quadro existente muda. Cada um tem 4 parâmetros editáveis e fecha o loop (`loop_check.mjs`: emenda 0,00003, 0,048 e 0,00087, contra passos de 0,006, 0,036 e 0,0009).
+
+- **REDE MICÉLIO**: veios que crescem de um canto, com ponta brilhante (escala, ciclos, alcance, brilho da ponta).
+- **CONTORNOS RESPIRANDO**: curvas de nível que respiram, com máscara radial (escala, respirações, densidade, raio).
+- **CARDUME**: traços orientados por um campo de fluxo dentro de uma massa que percorre o quadro (densidade, concentração, traço, espessura).
+
+Sem quadro de referência em `examples/reference/parity.json` ainda: `gl_parity.mjs --update` deve rodar numa máquina com GPU, não neste sandbox de software (que já reprova 105 quadros antigos na `main`). Inventário das demais animações dos artefatos: ainda em andamento.
+
 ## Não lançado · Gerar briefing (IA gratuita opcional) e how-to das IAs
 
 Sem mudança de render nem de formato de projeto. O motor ganha um assistente que faz, na web e sem custo, o papel do `/vj`: a pessoa responde a auditoria, junta mídias e descreve o projeto, e o motor monta as composições pelas regras locais (`genai.js`); uma IA gratuita, opcional, só completa o que ficou em branco.
