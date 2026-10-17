@@ -13,7 +13,7 @@ GEMINI_MODEL = "gemini-2.5-flash"
 # Orçamento diário. Crie com: npx wrangler kv namespace create BUDGET  e cole o id abaixo.
 [[kv_namespaces]]
 binding = "BUDGET"
-id = "COLE_O_ID_AQUI"
+id = "b6bccf5bb17243c1886ff6ebd4c6557b"
 
 # Opcional (confira se o seu plano oferece o Rate Limiting): freio por minuto.
 # [[unsafe.bindings]]
