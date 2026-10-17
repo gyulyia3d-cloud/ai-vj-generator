@@ -114,6 +114,20 @@ await session(join(tmp, 'g.html'), 1440, 900, async ({ E, J, realClick, key, at 
   r = await realClick('#tlTog');
   check(!r.err && !(await E(`AIVJ.timeline.state.open`)) && await E(`getComputedStyle(document.getElementById('scrub')).display !== 'none' && getComputedStyle(document.getElementById('tlBody')).display === 'none'`), 'recolher (clique de verdade) esconde as faixas e devolve o scrub', r.err || '');
   await realClick('#tlTog');
+  /* ocultar: some inteira, o scrub volta e o botão Timeline (no alto da vista) traz de volta */
+  r = await realClick('#tlHide');
+  const hd = await J(`JSON.stringify({ tl: getComputedStyle(document.getElementById('tl')).display, scrub: getComputedStyle(document.getElementById('scrub')).display, show: !document.getElementById('tlShow').hidden, h: getComputedStyle(document.documentElement).getPropertyValue('--tl-h').trim() })`);
+  check(!r.err && hd.tl === 'none' && hd.scrub !== 'none' && hd.show && hd.h === '0px', 'Ocultar (clique de verdade) tira a timeline inteira, devolve o scrub e mostra o botão Timeline', r.err || JSON.stringify(hd));
+  r = await realClick('#tlShow');
+  check(!r.err && await E(`getComputedStyle(document.getElementById('tl')).display !== 'none' && document.getElementById('tlShow').hidden && !AIVJ.timeline.state.hidden`), 'o botão Timeline (clique de verdade) traz a timeline de volta', r.err || '');
+  /* nenhum verde na interface (o acento passou a branco); o canvas da obra fica de fora */
+  const GREEN = `(() => { const g = s => { const m = String(s).match(/rgba?\\(([\\d.]+),\\s*([\\d.]+),\\s*([\\d.]+)(?:,\\s*([\\d.]+))?/); return m && (m[4] === undefined || +m[4] > 0.05) && +m[2] > +m[1] + 60 && +m[2] > +m[3] + 60; };
+    const out = []; document.querySelectorAll('body *').forEach(e => { if (e.closest('canvas,svg,#stage,#rig') || !e.getClientRects().length) return; const c = getComputedStyle(e); for (const k of ['color', 'backgroundColor', 'borderTopColor', 'borderBottomColor', 'borderLeftColor', 'outlineColor']) if (g(c[k])) out.push((e.id || e.className || e.tagName) + ':' + k); }); return JSON.stringify(out.slice(0, 8)); })()`;
+  const gr = await J(GREEN);
+  check(gr.length === 0 && /255,\s*255,\s*255|#fff/i.test(await E(`getComputedStyle(document.documentElement).getPropertyValue('--accent')`)), 'nenhum verde na interface: o acento é branco', JSON.stringify(gr));
+  await E(`(() => { const d = document.createElement('span'); d.id = 'greenCtl'; d.textContent = 'x'; d.style.color = '#00ff3c'; document.body.appendChild(d); return 1; })()`);
+  const gc = await J(GREEN); await E(`document.getElementById('greenCtl').remove(); 1`);
+  check(gc.some(x => x.startsWith('greenCtl')), 'controle negativo: um texto verde posto de propósito é achado', JSON.stringify(gc));
 });
 
 /* sem IR (STANDARD): controle, as faixas dizem que não há fases nem eventos */

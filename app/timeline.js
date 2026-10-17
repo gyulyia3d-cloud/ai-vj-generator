@@ -6,7 +6,7 @@
    Custo: a régua e o áudio são redesenhados só quando algo muda; a cada quadro só a cabeça de leitura anda (um transform).
    Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html entre os marcadores TIMELINE. Mesmo escopo do motor (IIFE): sem import/export. */
 const TIMELINE = (() => {
-  const S = { open: store.get('tlOpen', null), h: store.get('tlH', 200), zoom: 1, sig: '', k: 0, LF: 0, rec: null, recAt: 0, dirtyAud: true };
+  const S = { hidden: !!store.get('tlHidden', false), open: store.get('tlOpen', null), h: store.get('tlH', 200), zoom: 1, sig: '', k: 0, LF: 0, rec: null, recAt: 0, dirtyAud: true };
   const BEH_PT = { still: 'parada', drift: 'deriva', beat: 'na batida', follow: 'segue', accent: 'acento', section: 'seção', lead: 'lidera', counter: 'contra', ambient: 'ambiente', reveal: 'revela', hold: 'segura' };
   const TIER_PT = { hero: 'herói', structure: 'estrutura', ground: 'chão', instrument: 'instrumento', text: 'texto' };
   const BANDS = [['bass', 'G'], ['mid', 'M'], ['high', 'A'], ['rms', 'N']];
@@ -109,7 +109,7 @@ const TIMELINE = (() => {
   }
   /* a cada quadro: só a cabeça de leitura e o rótulo; a cada 30 quadros confere se o projeto mudou */
   function tick(F, force) {
-    const box = q('#tl'); if (!box || !S.open || !F) return;
+    const box = q('#tl'); if (!box || !S.open || S.hidden || !F) return;
     if (++S.k % 30 === 0 || force) { const s = sigOf(); if (s !== S.sig) { S.sig = s; if (!force) return build(); } if (S.zoom > 1 && !force) follow(F); }
     if (S.pz !== ST.paused) { S.pz = ST.paused; labels(); }
     const LF = F.LF || S.LF || 1, x = F.n / LF, hd = q('#tlHead'), rl = q('#tlRuler');
@@ -128,14 +128,23 @@ const TIMELINE = (() => {
   }
   function setOpen(v, quiet) {
     S.open = !!v; store.set('tlOpen', S.open); const box = q('#tl'); if (!box) return;
-    APP.classList.toggle('tlon', S.open); box.classList.toggle('closed', !S.open);
+    APP.classList.toggle('tlon', S.open && !S.hidden); box.classList.toggle('closed', !S.open);
     const b = q('#tlTog'); b.setAttribute('aria-expanded', String(S.open)); b.textContent = S.open ? T3('Timeline ▾', 'Timeline ▾') : T3('Timeline ▴', 'Timeline ▴');
-    applyH(); if (S.open) { S.sig = ''; build(); } setTimeout(fit, 30);
+    applyH(); if (S.open && !S.hidden) { S.sig = ''; build(); } setTimeout(fit, 30);
     if (!quiet) toast(S.open ? T3('Timeline aberta', 'Timeline open') : T3('Timeline recolhida: o scrub volta', 'Timeline collapsed: the scrub is back'), 1100);
+  }
+  /* ocultar: tira a timeline inteira (e devolve o scrub); o botão Timeline na régua da vista traz de volta, como o Ocultar e o Barra da barra flutuante */
+  function setHidden(v, quiet) {
+    S.hidden = !!v; store.set('tlHidden', S.hidden); APP.classList.toggle('tlhide', S.hidden);
+    const sh = q('#tlShow'); if (sh) sh.hidden = !S.hidden;
+    setOpen(S.open, true);
+    if (S.hidden) { const sh2 = q('#tlShow'); if (sh2 && quiet !== 'nofocus' && document.activeElement && document.activeElement.closest && document.activeElement.closest('#tl')) sh2.focus({ preventScroll: true }); }
+    else { const h = q('#tlHide'); if (h && quiet !== 'nofocus' && document.activeElement === q('#tlShow')) h.focus({ preventScroll: true }); }
+    if (!quiet) toast(S.hidden ? T3('Timeline oculta: o botão Timeline, no alto da vista, traz de volta', 'Timeline hidden: the Timeline button, above the view, brings it back') : T3('Timeline de volta', 'Timeline back'), 1400);
   }
   function applyH() {
     const box = q('#tl'); S.h = clamp(Math.round(S.h), 96, Math.max(120, Math.round(innerHeight * 0.6)));
-    box.style.height = S.open ? S.h + 'px' : ''; ROOT_EL.style.setProperty('--tl-h', (S.open ? S.h : box.offsetHeight || 0) + 'px');
+    box.style.height = S.open ? S.h + 'px' : ''; ROOT_EL.style.setProperty('--tl-h', (S.hidden ? 0 : S.open ? S.h : box.offsetHeight || 0) + 'px');
     const g = q('#tlGrip'); g.setAttribute('aria-valuenow', S.h); g.setAttribute('aria-valuemax', Math.max(120, Math.round(innerHeight * 0.6)));
   }
   function setZoom(z) { S.zoom = clamp(z, 1, 16); const inn = q('#tlIn'); if (inn) inn.style.width = S.zoom * 100 + '%'; q('#tlZv').textContent = S.zoom + '×'; drawRuler(); drawAudio(); }
@@ -145,6 +154,8 @@ const TIMELINE = (() => {
     L('#tlZo', 'Diminuir zoom da timeline', 'Timeline zoom out'); L('#tlZi', 'Aumentar zoom da timeline', 'Timeline zoom in');
     const pl = q('#tlPlay'); if (pl) { pl.textContent = ST.paused ? 'Play' : T3('Pausa', 'Pause'); pl.setAttribute('aria-pressed', String(!ST.paused)); }
     const au = q('#tlAud'); if (au) { au.textContent = T3('Áudio', 'Audio'); au.setAttribute('aria-pressed', $('#audBtn').getAttribute('aria-pressed')); }
+    const hi = q('#tlHide'); if (hi) { hi.textContent = T3('Ocultar', 'Hide'); hi.title = T3('Ocultar a timeline (o botão Timeline, no alto da vista, traz de volta)', 'Hide the timeline (the Timeline button above the view brings it back)'); }
+    const sh = q('#tlShow'); if (sh) { sh.textContent = T3('Timeline ▴', 'Timeline ▴'); sh.title = T3('Mostrar a timeline', 'Show the timeline'); sh.setAttribute('aria-label', T3('Mostrar a timeline', 'Show the timeline')); }
     const g = q('#tlGrip'); if (g) g.setAttribute('aria-label', T3('Altura da timeline, arraste ou use as setas', 'Timeline height, drag or use the arrows'));
   }
 
@@ -153,15 +164,16 @@ const TIMELINE = (() => {
     const box = document.createElement('section'); box.id = 'tl'; box.setAttribute('aria-label', 'Timeline');
     box.innerHTML = `<div id="tlGrip" role="separator" tabindex="0" aria-orientation="horizontal" aria-valuemin="96"></div>
       <div id="tlBar"><button id="tlStart">⏮</button><button id="tlPrev">‹</button><button id="tlPlay"></button><button id="tlNext">›</button><button id="tlAud"></button>
-      <span id="tlPos" class="rd">0000/0000</span><span class="sp"></span><button id="tlZo">−</button><span id="tlZv" class="rd">1×</span><button id="tlZi">+</button><button id="tlTog" aria-controls="tlBody"></button></div>
+      <span id="tlPos" class="rd">0000/0000</span><span class="sp"></span><button id="tlZo">−</button><span id="tlZv" class="rd">1×</span><button id="tlZi">+</button><button id="tlTog" aria-controls="tlBody"></button><button id="tlHide"></button></div>
       <div id="tlBody"><div id="tlNames"></div><div id="tlTracks"></div></div>`;
     const view = q('#view'); view.appendChild(box);
+    const vt = q('#vtool'); if (vt) { const sh = document.createElement('button'); sh.id = 'tlShow'; sh.hidden = true; sh.setAttribute('aria-controls', 'tl'); sh.onclick = () => setHidden(false); vt.appendChild(sh); }
     box.addEventListener('click', e => {
       const b = e.target.closest('button'); if (!b) return; const F = ST.F || frameAt(ST.n, cur());
       if (b.dataset.tlvis != null) { toggleLayer(+b.dataset.tlvis); S.sig = ''; build(); return; }
       if (b.id === 'tlStart') seek(0); else if (b.id === 'tlPrev') seek((F.n - 1 + F.LF) % F.LF); else if (b.id === 'tlNext') seek((F.n + 1) % F.LF);
       else if (b.id === 'tlPlay') setPause(!ST.paused); else if (b.id === 'tlAud') $('#audBtn').click();
-      else if (b.id === 'tlZo') setZoom(S.zoom / 2); else if (b.id === 'tlZi') setZoom(S.zoom * 2); else if (b.id === 'tlTog') setOpen(!S.open);
+      else if (b.id === 'tlHide') { setHidden(true); return; } else if (b.id === 'tlZo') setZoom(S.zoom / 2); else if (b.id === 'tlZi') setZoom(S.zoom * 2); else if (b.id === 'tlTog') setOpen(!S.open);
       labels();
     });
     /* régua e faixas: clicar ou arrastar posiciona a cabeça de leitura (não edita nada) */
@@ -192,9 +204,9 @@ const TIMELINE = (() => {
     new ResizeObserver(() => { if (S.open) { drawRuler(); S.dirtyAud = true; drawAudio(); } }).observe(q('#tlTracks'));
     /* aberta por padrão em tela larga e alta; o que a pessoa escolheu fica salvo */
     if (S.open == null) S.open = innerWidth > 900 && innerHeight >= 700;
-    labels(); setOpen(S.open, true);
+    labels(); setHidden(S.hidden, 'nofocus');
   }
   function refresh() { if (!q('#tl')) return; labels(); setOpen(S.open, true); }
   if (typeof document !== 'undefined' && typeof $ === 'function') init();
-  return { tick, build, seek, setOpen, setZoom, refresh, rowInfo, closes, get state() { return { open: S.open, h: S.h, zoom: S.zoom, LF: S.LF }; } };
+  return { tick, build, seek, setOpen, setHidden, setZoom, refresh, rowInfo, closes, get state() { return { hidden: S.hidden, open: S.open, h: S.h, zoom: S.zoom, LF: S.LF }; } };
 })();

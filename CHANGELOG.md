@@ -1,5 +1,12 @@
 # Changelog
 
+## Não lançado · Acento branco, Ocultar a timeline e correções de teste
+
+- **Verde → branco na interface:** o acento (`--accent`) passa de verde (`#00ff3c`; `#007a22` no tema claro) a **branco** no tema escuro e à cor do texto (preto) no tema claro, onde branco sumiria no fundo. Vale para Exportar, preenchimento dos sliders, abas, seleção das miniaturas, cabeça de leitura e o resto do que usava o acento. A cor de obra `#00FF3C` da paleta STANDARD (desenhada no canvas) **não mudou**. Teste: `timeline_check.mjs` varre a interface atrás de qualquer cor verde, com controle negativo.
+- **Ocultar a timeline:** botão **Ocultar** na barra da timeline tira o painel inteiro (o scrub volta); o botão **Timeline ▴**, no alto da vista, traz de volta. Estado salvo.
+- **Timeline no toque:** o olho tinha 12 px de altura em tela de toque (o `ui_layout_check` pede 24 px, WCAG 2.2); agora tem o tamanho do interruptor do painel e as linhas crescem junto. No tema claro, as faixas ficavam ilegíveis (a vista força o escuro, mas os tons de superfície vinham do claro): a timeline fixa os seus tons.
+- **`fx_check`, GLITCH EM BLOCOS:** o efeito acende por probabilidade em passos do loop, e o quadro único do teste (30% do loop) podia cair num passo sem nenhum bloco aceso, conforme o navegador calcula o hash `sin` do GLSL. Para efeitos intermitentes (tag `glitch`), o teste agora usa a maior mudança em 8 quadros do loop; conferido por mutação (um glitch que nunca acende reprova).
+
 ## Não lançado · Fase 14b-T1: timeline somente leitura
 
 Painel acoplado embaixo da vista (`docs/brand/UI-REDESIGN-PROPOSTA.md` §13, entrega T1). Mostra o que o Animation IR já guardava e só aparecia como números. Não muda projeto, formato nem render (os quadros de referência não são afetados: nada no caminho de render mudou).

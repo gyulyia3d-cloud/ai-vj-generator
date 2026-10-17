@@ -420,7 +420,7 @@ html.stagemode #toast,html.stagemode #hint{display:none!important}
    piso de 12px no texto de conteúdo (11px só em microrrótulo). Spec: docs/brand/UI-REDESIGN-PROPOSTA.md */
 :root{
   --s1:#0d0d0d; --s2:#161616; --s3:#202020;
-  --accent:#00ff3c; --accent-ink:#001a07; --accent-soft:rgb(0 255 60 / .18);
+  --accent:#ffffff; --accent-ink:#000000; --accent-soft:rgb(255 255 255 / .18);
   --r:3px;
   --fs-xs:11px; --fs-s:12px; --fs-m:13px; --fs-l:16px; --fs-xl:20px; --fs-2xl:25px;
   --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px;
@@ -429,8 +429,8 @@ html.stagemode #toast,html.stagemode #hint{display:none!important}
   --shadow-pop:0 8px 24px rgb(0 0 0 / .5);
   --well:var(--s2); --soft:var(--s1); --faint:#707070;
 }
-:root[data-theme="light"]{--s1:#f6f6f6; --s2:#ececec; --s3:#e2e2e2; --accent:#007a22; --accent-ink:#ffffff; --accent-soft:rgb(0 122 34 / .16); --track:#d0d0d0; --fill:#555555; --shadow-pop:0 8px 24px rgb(0 0 0 / .16)}
-@media (prefers-color-scheme:light){:root[data-theme="auto"]{--s1:#f6f6f6; --s2:#ececec; --s3:#e2e2e2; --accent:#007a22; --accent-ink:#ffffff; --accent-soft:rgb(0 122 34 / .16); --track:#d0d0d0; --fill:#555555; --shadow-pop:0 8px 24px rgb(0 0 0 / .16)}}
+:root[data-theme="light"]{--s1:#f6f6f6; --s2:#ececec; --s3:#e2e2e2; --accent:#000000; --accent-ink:#ffffff; --accent-soft:rgb(0 0 0 / .12); --track:#d0d0d0; --fill:#555555; --shadow-pop:0 8px 24px rgb(0 0 0 / .16)}
+@media (prefers-color-scheme:light){:root[data-theme="auto"]{--s1:#f6f6f6; --s2:#ececec; --s3:#e2e2e2; --accent:#000000; --accent-ink:#ffffff; --accent-soft:rgb(0 0 0 / .12); --track:#d0d0d0; --fill:#555555; --shadow-pop:0 8px 24px rgb(0 0 0 / .16)}}
 
 /* texto: caixa-alta só em abas, botões, títulos e microrrótulos; rótulos de parâmetro e ajuda em caixa normal */
 html,body{font-size:var(--fs-s);letter-spacing:.01em;text-transform:none}
@@ -667,10 +667,13 @@ input[type=range]:active::-webkit-slider-thumb{background:var(--accent);box-shad
 }
 
 /* 14b-T1 · timeline somente leitura (app/timeline.js): acoplada embaixo da vista, recolhível, altura arrastável; substitui a linha do scrub quando aberta */
-#tl{flex:0 0 auto;display:flex;flex-direction:column;min-height:0;border-top:1px solid var(--rule);background:var(--bg);position:relative}
+#tl{--s1:#0d0d0d;--s2:#161616;--s3:#202020;--accent:#ffffff;flex:0 0 auto;display:flex;flex-direction:column;min-height:0;border-top:1px solid var(--rule);background:var(--bg);position:relative}
 #tl.closed #tlBody,#tl.closed #tlGrip{display:none}
 #app.tlon #scrub{display:none}
 #app.clean #tl{display:none}
+#app.tlhide #tl{display:none}
+#tlShow{margin-left:auto}
+#tlShow[hidden]{display:none}
 #tlGrip{flex:0 0 6px;cursor:ns-resize;touch-action:none;margin-top:-3px}
 #tlGrip:hover,#tlGrip:focus-visible{background:var(--accent)}
 #tlBar{display:flex;align-items:center;gap:4px;padding:4px 8px;border-bottom:1px solid var(--rule);flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
@@ -714,3 +717,14 @@ input[type=range]:active::-webkit-slider-thumb{background:var(--accent);box-shad
   #barShow{bottom:calc(var(--tl-h,0px) + var(--sp-4))}
 }
 @media (max-width:700px){#tlBody{grid-template-columns:96px minmax(0,1fr)}}
+/* toque: o olho tem o tamanho do interruptor do painel (WCAG 2.2, 24 px ou mais) e as linhas crescem junto */
+@media (pointer:coarse){
+  .tln,.tlr{height:34px}
+  .tln .tg{width:44px;height:28px}
+  .tln .tg::after{width:20px;height:20px;top:3px;left:3px}
+  .tln .tg[aria-pressed="true"]::after{left:19px}
+  .tlbar{top:8px;bottom:8px}
+  .tlev,.tlend,.tlnone{line-height:34px}
+  .tlev i{top:13px}
+  #tlBar button{min-height:44px}
+}
