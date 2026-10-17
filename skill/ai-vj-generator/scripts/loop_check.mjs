@@ -15,7 +15,7 @@
 //
 // Sem dependências: usa o Node (WebSocket global, Node 22+) e o Chrome ou Edge já instalado.
 import { spawn } from 'node:child_process';
-import { chromeFlags, extraCandidates } from './chrome_env.mjs';
+import { chromeFlags, chromeEnv, extraCandidates } from './chrome_env.mjs';
 import { existsSync, mkdtempSync, rmSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -38,7 +38,7 @@ if (typeof WebSocket === 'undefined') { console.error('Este script precisa de No
 const port = 9300 + Math.floor(Math.random() * 600);
 const profile = mkdtempSync(join(tmpdir(), 'aivj-loop-'));
 const proc = spawn(chrome, [...chromeFlags, '--headless=new', '--disable-gpu', '--hide-scrollbars', '--allow-file-access-from-files', '--no-first-run',
-  '--no-default-browser-check', `--user-data-dir=${profile}`, `--remote-debugging-port=${port}`, '--window-size=1400,900', pathToFileURL(html).href], { stdio: 'ignore' });
+  '--no-default-browser-check', `--user-data-dir=${profile}`, `--remote-debugging-port=${port}`, '--window-size=1400,900', pathToFileURL(html).href], { stdio: 'ignore', env: chromeEnv });
 const cleanup = () => { try { proc.kill(); } catch {} setTimeout(() => { try { rmSync(profile, { recursive: true, force: true }); } catch {} }, 500); };
 process.on('exit', cleanup);
 
