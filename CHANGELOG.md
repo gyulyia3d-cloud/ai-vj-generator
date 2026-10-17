@@ -1,5 +1,13 @@
 # Changelog
 
+## Não lançado · Quadros de referência por ambiente, herói em LED, STANDARD sem verde
+
+O `check.mjs` falhava neste ambiente em três pontos que **já falhavam na 3.20.0** (reproduzido): GLITCH EM BLOCOS (resolvido acima, no teste), nota da galeria (GLITCH II 72 < 75) e 105 de 184 quadros de referência. A causa comum é o hash `fract(sin(x)*43758.5)` do GLSL e o rasterizador por software, que mudam com a versão do navegador: a mesma peça sai com outro padrão de ruído (comparado lado a lado com as folhas de contato da base).
+
+- **Base de quadros por ambiente** (`scripts/gl_parity.mjs`): a base vale para a versão principal do Chrome + o renderizador WebGL (`--env` mostra a chave, ex. `chrome141-swiftshader`). `--compare` usa `examples/reference/parity.<ambiente>.json` e, sem ela, a legada `parity.json` (a da máquina da autora); `--update` grava sempre a do ambiente atual e nunca sobrescreve a de outro. Nova: `parity.chrome141-swiftshader.json` (184 quadros, gerada depois de olhar as folhas de contato). **Na máquina da autora, a `parity.json` legada fica velha nos quadros da galeria 01** (mudança intencional abaixo): rode `node scripts/gl_parity.mjs --update` lá, depois de olhar os quadros.
+- **Herói em LED mais grosso** (`app/genai.js` e `brief_to_project.py`, iguais): o túnel herói em superfície de LED nasce com espessura 18 (era 9, que virava ~6,7 px numa parede de 800 px; ~26 mm a 3,9 mm de pitch, fino a 40 m). Galeria regenerada: só a 01 muda de conteúdo; GLITCH II vai de 72 a 87 e toda composição fica em 78 ou mais.
+- **Paleta STANDARD:** o acento `#00FF3C` vira `#FFFFFF` (pedido: nada verde). Projetos STANDARD já salvos no navegador guardam a paleta antiga até **Restaurar STANDARD original**. A amostra "Verde ácido" do seletor de cores continua como opção.
+
 ## Não lançado · Acento branco, Ocultar a timeline e correções de teste
 
 - **Verde → branco na interface:** o acento (`--accent`) passa de verde (`#00ff3c`; `#007a22` no tema claro) a **branco** no tema escuro e à cor do texto (preto) no tema claro, onde branco sumiria no fundo. Vale para Exportar, preenchimento dos sliders, abas, seleção das miniaturas, cabeça de leitura e o resto do que usava o acento. A cor de obra `#00FF3C` da paleta STANDARD (desenhada no canvas) **não mudou**. Teste: `timeline_check.mjs` varre a interface atrás de qualquer cor verde, com controle negativo.
