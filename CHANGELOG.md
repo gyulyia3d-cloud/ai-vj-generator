@@ -1,5 +1,16 @@
 # Changelog
 
+## Não lançado · Fase 14a-3: popover Adicionar
+
+Escolher o que entra na composição sem passar pelo painel de propriedades (`docs/brand/UI-REDESIGN-PROPOSTA.md` §12). Só apresentação: sem mudança de render, de formato de projeto nem de migração. O Adicionar por categoria e tipo do painel de Camadas continua igual.
+
+- **Popover** (`app/add-ui.js`, módulo `ADDUI`): abre pelo **+** no cabeçalho de Camadas e pelo botão **Adicionar** da barra flutuante. Abas pelas 10 categorias, grade de miniaturas e busca (sem acento, em todas as categorias). Ao escolher um tipo: prévia de **um quadro**, com lado maior de 256 px, na proporção da superfície, sobre as camadas de baixo, sem loop contínuo (redesenha só quando se escolhe, passa o mouse ou muda um valor); até 2 selects e 4 parâmetros em linha, com os rótulos de P1 a P4 do preset; e o botão **Adicionar camada**. Os outros parâmetros ficam no painel.
+- **Histórico:** o rascunho não toca o projeto; adicionar é **um passo** só, com rótulo, e um Ctrl+Z desfaz.
+- **Teclado e foco:** Esc e clique fora fecham e devolvem o foco a quem abriu; foco preso enquanto aberto; setas trocam a aba; Enter na busca escolhe o primeiro resultado; os atalhos da vista (espaço, 0 a 9, letras) não disparam enquanto se escolhe.
+- **Tela estreita** (até 700 px): vira gaveta encostada embaixo.
+- Tempo, Simulação e Código não têm miniatura ao vivo (precisam do histórico de quadros, assariam o loop inteiro, ou só rodam autorizados): a grade mostra um traço e a prévia avisa.
+- **Teste novo** `add_ui_check.mjs` (clique de mouse de verdade em tudo que abre e adiciona; controles negativos de canvas preto, busca vazia e dois passos de histórico; conferido por mutação: um commit a mais e o foco solto reprovam). Achado no caminho, fora desta fase e não mexido: qualquer desfazer troca `project.assets` ausente por `{}`.
+
 ## Não lançado · Elementos de interface animados e biometria
 
 Doze camadas novas, distribuídas nas categorias que já existem (o menu continua com 10 categorias). Vocabulário dos elementos animados do Layer Forge e dos módulos de leitura das gerações /vj, reescrito para o motor (`app/elements-ui.js`, módulo `ELEMENTSUI`). Sem mudança no render das camadas existentes.
