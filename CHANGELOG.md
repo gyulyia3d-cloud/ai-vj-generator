@@ -8,6 +8,44 @@
 - **Fontes embutidas:** Archivo Black, Bebas Neue e Martian Mono (OFL) vão no HTML em WOFF2 (`app/vendor/fonts.js`, ~150 KB) e o motor só sobe depois de registrá-las. Antes vinham do Google Fonts: sem rede, ou antes do download terminar, o texto do canvas caía na fonte do sistema, e o CI rendia `06-glitch-parede` (camada `typewall`) diferente da nuvem. O link externo saiu do `index.html`. Escondendo as fontes do sistema (Inter, Liberation) a paridade agora dá 0.000; antes 12 quadros mudavam.
 - **Base de referência regravada** (`node scripts/gl_parity.mjs --update`): o arranjo mudou em todo shader que usa `hash`, `noise` ou `fbm`. A `lib.glsl` (`vjHash22/31/33`, `vjRand`, `vjGrain`) ainda usa `sin` e fica para outro passo.
 
+## Não lançado · Quadros de referência por ambiente, herói em LED, STANDARD sem verde
+
+O `check.mjs` falhava neste ambiente em três pontos que **já falhavam na 3.20.0** (reproduzido): GLITCH EM BLOCOS (resolvido acima, no teste), nota da galeria (GLITCH II 72 < 75) e 105 de 184 quadros de referência. A causa comum é o hash `fract(sin(x)*43758.5)` do GLSL e o rasterizador por software, que mudam com a versão do navegador: a mesma peça sai com outro padrão de ruído (comparado lado a lado com as folhas de contato da base).
+
+- **Base de quadros por ambiente** (`scripts/gl_parity.mjs`): a base vale para a versão principal do Chrome + o renderizador WebGL (`--env` mostra a chave, ex. `chrome141-swiftshader`). `--compare` usa `examples/reference/parity.<ambiente>.json` e, sem ela, a legada `parity.json` (a da máquina da autora); `--update` grava sempre a do ambiente atual e nunca sobrescreve a de outro. Nova: `parity.chrome141-swiftshader.json` (184 quadros, gerada depois de olhar as folhas de contato). **Na máquina da autora, a `parity.json` legada fica velha nos quadros da galeria 01** (mudança intencional abaixo): rode `node scripts/gl_parity.mjs --update` lá, depois de olhar os quadros.
+- **Herói em LED mais grosso** (`app/genai.js` e `brief_to_project.py`, iguais): o túnel herói em superfície de LED nasce com espessura 18 (era 9, que virava ~6,7 px numa parede de 800 px; ~26 mm a 3,9 mm de pitch, fino a 40 m). Galeria regenerada: só a 01 muda de conteúdo; GLITCH II vai de 72 a 87 e toda composição fica em 78 ou mais.
+- **Paleta STANDARD:** o acento `#00FF3C` vira `#FFFFFF` (pedido: nada verde). Projetos STANDARD já salvos no navegador guardam a paleta antiga até **Restaurar STANDARD original**. A amostra "Verde ácido" do seletor de cores continua como opção.
+
+## Não lançado · Acento branco, Ocultar a timeline e correções de teste
+
+- **Verde → branco na interface:** o acento (`--accent`) passa de verde (`#00ff3c`; `#007a22` no tema claro) a **branco** no tema escuro e à cor do texto (preto) no tema claro, onde branco sumiria no fundo. Vale para Exportar, preenchimento dos sliders, abas, seleção das miniaturas, cabeça de leitura e o resto do que usava o acento. A cor de obra `#00FF3C` da paleta STANDARD (desenhada no canvas) **não mudou**. Teste: `timeline_check.mjs` varre a interface atrás de qualquer cor verde, com controle negativo.
+- **Ocultar a timeline:** botão **Ocultar** na barra da timeline tira o painel inteiro (o scrub volta); o botão **Timeline ▴**, no alto da vista, traz de volta. Estado salvo.
+- **Timeline no toque:** o olho tinha 12 px de altura em tela de toque (o `ui_layout_check` pede 24 px, WCAG 2.2); agora tem o tamanho do interruptor do painel e as linhas crescem junto. No tema claro, as faixas ficavam ilegíveis (a vista força o escuro, mas os tons de superfície vinham do claro): a timeline fixa os seus tons.
+- **`fx_check`, GLITCH EM BLOCOS:** o efeito acende por probabilidade em passos do loop, e o quadro único do teste (30% do loop) podia cair num passo sem nenhum bloco aceso, conforme o navegador calcula o hash `sin` do GLSL. Para efeitos intermitentes (tag `glitch`), o teste agora usa a maior mudança em 8 quadros do loop; conferido por mutação (um glitch que nunca acende reprova).
+
+## Não lançado · Fase 14b-T1: timeline somente leitura
+
+Painel acoplado embaixo da vista (`docs/brand/UI-REDESIGN-PROPOSTA.md` §13, entrega T1). Mostra o que o Animation IR já guardava e só aparecia como números. Não muda projeto, formato nem render (os quadros de referência não são afetados: nada no caminho de render mudou).
+
+- **Módulo** `app/timeline.js` (`TIMELINE`). **Transporte:** início, quadro anterior, play/pausa, próximo quadro, áudio, zoom da timeline (1× a 16×), recolher. Leitura `0094/0218 · C02:3`.
+- **Régua:** compassos, tempos e, com espaço, semicolcheias; cabeça de leitura ligada ao quadro. Clicar ou arrastar na régua posiciona (pausa e vai ao quadro, como o scrub); pelo teclado, → 1 quadro, Shift+→ um tempo, Home e End. Com a timeline aberta ela **substitui a linha do scrub**; recolhida, o scrub volta.
+- **Fases** da composição (`meta.compositionIR[i].temporal.phases`) em faixas cinza e **eventos** na batida (`meta.animationIR[i].events`). Sem IR, a faixa diz que não há fases nem eventos.
+- **Uma faixa por camada**, na ordem do painel de Camadas: papel na hierarquia e comportamento do Animation IR, comportamento temporal e o que ouve (`L.temporal`), **atraso em semicolcheias** (`p.phase`: a barra começa deslocada e a sobra aparece dando a volta), ciclos das curvas LFO como marcas e **se o loop fecha** (↻; ≠ quando uma curva tem ciclo fracionário ou o loop sem emenda está desligado: o mesmo critério do arredondamento `cyc`). A régua mostra se todas fecham. Cada faixa tem rótulo acessível com tudo isso. O olho é o mesmo `toggleLayer` do painel. Não há trava: o painel de Camadas também não tem.
+- **Áudio:** bandas G, M, A, N e os golpes; sem áudio ao vivo, a fonte sintética do BPM (o loop inteiro); ao vivo, o que foi gravado ao tocar.
+- **Custo:** régua e áudio são redesenhados só quando algo muda (conferido a cada 30 quadros); a cada quadro só a cabeça de leitura anda. Altura arrastável (e pelo teclado no divisor), salva; aberta por padrão em tela larga e alta, recolhida no celular. A barra flutuante sobe para não cobrir a timeline.
+- **Teste novo** `timeline_check.mjs` (22 casos, clique de mouse de verdade; controles negativos: ciclo de 1,5 marca ≠, projeto sem IR; conferido por mutação: refazer o DOM a cada quadro e marcar sempre "fecha" reprovam).
+
+## Não lançado · Fase 14a-3: popover Adicionar
+
+Escolher o que entra na composição sem passar pelo painel de propriedades (`docs/brand/UI-REDESIGN-PROPOSTA.md` §12). Só apresentação: sem mudança de render, de formato de projeto nem de migração. O Adicionar por categoria e tipo do painel de Camadas continua igual.
+
+- **Popover** (`app/add-ui.js`, módulo `ADDUI`): abre pelo **+** no cabeçalho de Camadas e pelo botão **Adicionar** da barra flutuante. Abas pelas 10 categorias, grade de miniaturas e busca (sem acento, em todas as categorias). Ao escolher um tipo: prévia de **um quadro**, com lado maior de 256 px, na proporção da superfície, sobre as camadas de baixo, sem loop contínuo (redesenha só quando se escolhe, passa o mouse ou muda um valor); até 2 selects e 4 parâmetros em linha, com os rótulos de P1 a P4 do preset; e o botão **Adicionar camada**. Os outros parâmetros ficam no painel.
+- **Histórico:** o rascunho não toca o projeto; adicionar é **um passo** só, com rótulo, e um Ctrl+Z desfaz.
+- **Teclado e foco:** Esc e clique fora fecham e devolvem o foco a quem abriu; foco preso enquanto aberto; setas trocam a aba; Enter na busca escolhe o primeiro resultado; os atalhos da vista (espaço, 0 a 9, letras) não disparam enquanto se escolhe.
+- **Tela estreita** (até 700 px): vira gaveta encostada embaixo.
+- Tempo, Simulação e Código não têm miniatura ao vivo (precisam do histórico de quadros, assariam o loop inteiro, ou só rodam autorizados): a grade mostra um traço e a prévia avisa.
+- **Teste novo** `add_ui_check.mjs` (clique de mouse de verdade em tudo que abre e adiciona; controles negativos de canvas preto, busca vazia e dois passos de histórico; conferido por mutação: um commit a mais e o foco solto reprovam). Achado no caminho, fora desta fase e não mexido: qualquer desfazer troca `project.assets` ausente por `{}`.
+
 ## Não lançado · Elementos de interface animados e biometria
 
 Doze camadas novas, distribuídas nas categorias que já existem (o menu continua com 10 categorias). Vocabulário dos elementos animados do Layer Forge e dos módulos de leitura das gerações /vj, reescrito para o motor (`app/elements-ui.js`, módulo `ELEMENTSUI`). Sem mudança no render das camadas existentes.

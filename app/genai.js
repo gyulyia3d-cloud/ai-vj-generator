@@ -129,7 +129,7 @@ const GENAI = (() => {
     }
     if (led) {
       for (const [k, f] of [['weight', 3], ['stroke', 3]]) if (['tunnel', 'lines', 'shape'].includes(heroT) && typeof heroP[k] === 'number') heroP[k] = pyRound(heroP[k] * f, 1);
-      if (heroT === 'tunnel' && heroP.weight === undefined) heroP.weight = 9;
+      if (heroT === 'tunnel' && heroP.weight === undefined) heroP.weight = 18;   /* 9 virava ~6,7 px numa parede de 800 px: fino demais a 40 m, o herói perdia contraste (galeria 01, GLITCH II) */
       if (heroT === 'bitfield') heroP.cell = Math.trunc((heroP.cell == null ? 14 : heroP.cell) * 2);
     }
     for (const k of ['count', 'points', 'rows']) if (typeof heroP[k] === 'number') heroP[k] = Math.max(1, pyRound(heroP[k] * dens));

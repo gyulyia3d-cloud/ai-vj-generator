@@ -82,6 +82,7 @@ function tick(now) {
   if (!scrubbing) { const s = $('#scrub'); s.max = F.LF - 1; s.value = F.n; }
   $('#vPos').textContent = `${pad(F.n, 4)}/${pad(F.LF, 4)} · C${pad(F.bar + 1, 2)}:${F.beat % 4 + 1}`;
   { const vf = $('#vFrame'); if (vf && document.activeElement !== vf) vf.value = F.n; }
+  TIMELINE.tick(F);   /* fase 14b-T1: só a cabeça de leitura anda a cada quadro */
   if (ST.tr) drawTransition(now);
   const needComp = REC.r || OUTS.length;
   if (needComp) {

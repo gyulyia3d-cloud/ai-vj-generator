@@ -4,21 +4,32 @@
 //   node scripts/gl_parity.mjs --compare base.json   renderiza de novo e compara com a base (sai com 1 se passar da tolerância)
 // Casos: as composições da galeria (quadros 0, meio e último, em escala reduzida) e uma camada de cada shader, filtro fx, cadeia synth e ISF original.
 // Tolerância: diferença média <= 1.5 de 255 e no máximo 2% dos pixels com diferença > 24 (GPUs e compiladores diferem em ruído e ponto flutuante).
-import { readFileSync, writeFileSync, readdirSync, mkdirSync } from 'node:fs';
+// Base por ambiente: o rasterizador por software e o ponto flutuante podem mudar com a versão do navegador, então a base vale para um ambiente
+// (versão principal do Chrome + renderizador WebGL). --compare usa examples/reference/parity.<ambiente>.json e, se não houver, parity.json (base legada, da máquina
+// da autora, sem ambiente registrado). --update grava sempre a base do ambiente atual: nunca sobrescreve a de outro ambiente.
+// O hash do GLSL deixou de ser fract(sin(x)*43758.5): agora é por bits inteiros e igual em toda GPU; as fontes vão embutidas.
+import { readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { deflateSync, inflateSync } from 'node:zlib';
 import { openPage } from '../skill/ai-vj-generator/scripts/cdp.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..'), a = process.argv.slice(2);
-const REF = join(ROOT, 'examples', 'reference', 'parity.json');
+const REFDIR = join(ROOT, 'examples', 'reference'), LEGACY = join(REFDIR, 'parity.json');
 const mode = a.includes('--update') ? 'save' : a.includes('--save') ? 'save' : a.includes('--compare') ? 'compare' : null;
-const file = a.includes('--update') ? REF : a[a.indexOf(mode === 'save' ? '--save' : '--compare') + 1] || (a.includes('--compare') ? REF : undefined);
-if (!mode || !file) { console.error('uso: node scripts/gl_parity.mjs --update | --compare [arquivo.json] | --save arquivo.json'); process.exit(2); }
+const given = mode && !a.includes('--update') ? a[a.indexOf(mode === 'save' ? '--save' : '--compare') + 1] : undefined;
+if (!a.includes('--env') && (!mode || (mode === 'save' && !a.includes('--update') && !given))) { console.error('uso: node scripts/gl_parity.mjs --update | --compare [arquivo.json] | --save arquivo.json | --env'); process.exit(2); }
 
 const open = () => openPage(join(ROOT, 'app', 'index.html'), { waitFor: '!!(window.AIVJ && window.AIVJ.renderFrame && window.AIVJ.isf)', width: 900, height: 600 });
 let page = await open();
 const E = x => page.evaluate(x);
+/* ambiente: Chrome principal + renderizador WebGL (UNMASKED_RENDERER quando o navegador expõe) */
+const ENV = JSON.parse(await E(`(() => { const m = navigator.userAgent.match(/(?:Chrome|Chromium)\\/(\\d+)/), g = document.createElement('canvas').getContext('webgl2'), x = g && g.getExtension('WEBGL_debug_renderer_info'), r = g ? String(x ? g.getParameter(x.UNMASKED_RENDERER_WEBGL) : g.getParameter(g.RENDERER)) : 'sem-webgl2'; return JSON.stringify({ chrome: m ? m[1] : '0', renderer: r }); })()`));
+const slug = r => /swiftshader/i.test(r) ? 'swiftshader' : r.toLowerCase().replace(/angle \(|\)|direct3d\S*|opengl\S*|vulkan\S*/g, ' ').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'desconhecido';
+const ENVKEY = `chrome${ENV.chrome}-${slug(ENV.renderer)}`, ENVREF = join(REFDIR, `parity.${ENVKEY}.json`);
+if (a.includes('--env')) { console.log(ENVKEY + '  (' + ENV.renderer + ')'); await page.close(); process.exit(0); }
+const file = a.includes('--update') ? ENVREF : given || (existsSync(ENVREF) ? ENVREF : LEGACY);
+console.log(`ambiente: ${ENVKEY} (${ENV.renderer}) · base: ${file.replace(ROOT + '/', '')}${mode === 'compare' && file === LEGACY ? ' (legada: não há base deste ambiente; gere com --update depois de olhar os quadros)' : ''}`);
 const cases = [];   // { name, project, ci, frames, scale }
 const gdir = join(ROOT, 'examples', 'gallery');
 for (const f of readdirSync(gdir).filter(f => f.endsWith('.aivj.json'))) { const pr = JSON.parse(readFileSync(join(gdir, f), 'utf8')); pr.compositions.forEach(c => { c.layers = c.layers.filter(l => l.type !== 'sim'); }); cases.push({ name: 'galeria/' + f.replace('.aivj.json', ''), project: pr, all: true, scale: 0 }); }   // sim assa o loop em canvas 2D (lento no render por software e fora do escopo do WebGL)

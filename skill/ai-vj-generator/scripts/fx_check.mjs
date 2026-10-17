@@ -38,10 +38,13 @@ try {
       const fx = px(n0), fx0 = px(0), fxF = px(F);
       c.layers[3].p.mix = 0; const off = px(n0); delete c.layers[3].p.mix;
       const b = A.fx.body(A.fx.FX[${JSON.stringify(nm)}].src); const L = c.layers[3];
-      return JSON.stringify({ change: dif(plain, fx), seam: dif(fx0, fxF), ident: dif(plain, off), lit: mean(fx), err: [...A.GLERR.values()].filter(Boolean).join(' | ') });
+      /* efeito intermitente (tag glitch: acende por probabilidade em passos do loop): vale a maior mudança em 8 quadros do loop, não só no quadro de 30% */
+      let change = dif(plain, fx);
+      if (A.fx.FX[${JSON.stringify(nm)}].tag === 'glitch' && change <= 0.8) { const keep = c.layers; for (let k = 0; k < 8; k++) { const n = Math.floor(F * k / 8); c.layers = base.slice(); const pl = px(n); c.layers = keep; change = Math.max(change, dif(pl, px(n))); } }
+      return JSON.stringify({ tag: A.fx.FX[${JSON.stringify(nm)}].tag, change, seam: dif(fx0, fxF), ident: dif(plain, off), lit: mean(fx), err: [...A.GLERR.values()].filter(Boolean).join(' | ') });
     })()`));
     check(!r.err, `compila: ${nm}`, r.err);
-    check(r.change > 0.8, `muda a imagem: ${nm} (${r.change.toFixed(1)})`, 'igual à entrada');
+    check(r.change > 0.8, `muda a imagem: ${nm} (${r.change.toFixed(1)}; efeito intermitente: maior mudança em 8 quadros do loop)`.replace(/; efeito intermitente[^)]*/, s => r.tag === 'glitch' ? s : ''), 'igual à entrada');
     check(r.seam < 1.2, `fecha o loop: ${nm} (emenda ${r.seam.toFixed(2)})`, 'emenda grande');
     check(r.ident < 0.6, `mistura 0 devolve a entrada: ${nm} (${r.ident.toFixed(2)})`, 'diferente');
     check(r.lit > 3, `não sai preto: ${nm}`, String(r.lit));
