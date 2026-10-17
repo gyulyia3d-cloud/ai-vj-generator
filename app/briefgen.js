@@ -282,7 +282,7 @@ ${how('Gerar monta o projeto pelas regras locais e o abre no modo Briefing. Com 
           const images = []; for (const f of S.files.slice(0, 3)) { try { images.push(await shrink(f)); } catch (e) { /* imagem ilegível: segue sem ela */ } }
           const r = await callAI({ v: 1, lang: brief.lang, brief, images });
           if (r.status === 200 && r.j && r.j.ok) { const spec = sanitizeSpec(r.j.spec), m = mergeSpec(brief, S.touched, spec); Object.assign(brief, m.brief); filled = m.filled; aiNote = spec.notes || ''; }
-          else { const k = (r.j && r.j.error) || 'upstream'; aiMsg = T3(...(MSG[k] || MSG.upstream)); }
+          else { const k = (r.j && r.j.error) || 'upstream'; aiMsg = T3(...(MSG[k] || MSG.upstream)); if (r.j && r.j.detail) console.warn('briefgen: IA indisponível (' + r.j.detail + ')'); }
         } catch (e) { aiMsg = T3(...MSG.upstream); }
       }
       errs = GENAI.checkBrief(brief); if (errs.length) { status(errs.join(' · '), true); return; }
