@@ -28,7 +28,7 @@ try {
   check(!f.long.length && f.cats <= 10, 'nomes de categoria e de tipo têm até duas palavras', f.long.join(','));
   await E(`document.querySelector('#tabs [data-tab="lay"]').click()`);
   const m = JSON.parse(await E(`(() => { const c = document.getElementById('addCat'); c.value = 'Dados'; c.dispatchEvent(new Event('change')); return JSON.stringify({ cats: c.options.length, types: [...document.getElementById('addType').options].map(o => o.value) }); })()`));
-  check(m.cats === 10 && m.types.join() === 'measure,data,hud,instrument,blobs', 'o menu Adicionar mostra categoria e, dentro dela, o tipo', JSON.stringify(m));
+  check(m.cats === 10 && m.types.join() === 'measure,data,hud,instrument,blobs,icon,ruler,counter,gauge,coords,progress,chart,network,rack', 'o menu Adicionar mostra categoria e, dentro dela, o tipo', JSON.stringify(m));
   await E(`AIVJ.state.sel = 1; document.querySelector('#tabs [data-tab="par"]').click()`);
   const s = JSON.parse(await E(`(() => { const t = document.getElementById('pTyp'); t.value = 'measure'; t.dispatchEvent(new Event('change', { bubbles: true })); const L = AIVJ.project.compositions[0].layers[1]; return JSON.stringify({ type: L.type, x: L.p.x, keys: Object.keys(L.p) }); })()`));
   check(s.type === 'measure' && s.x === 10 && s.keys.join() === 'x', 'trocar o tipo nos parâmetros muda L.type, guarda a posição e zera o resto', JSON.stringify(s));

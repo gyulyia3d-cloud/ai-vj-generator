@@ -44,6 +44,7 @@ the single dominant thing a composition is about.
 | `sigil` | generator | 3D astrological armillary sphere, alchemical squared circle, magick heptagram and pentagram | screen, projection, mapping, multi | unmeasured | beta | Glyph labels need a font with astrological symbols; turn labels off on LED if they read as dust. |
 | `terrain` | generator | 3D terrain flyover, relief periodic along the flight so the loop closes | screen, projection, mapping, multi | unmeasured | beta | Lines render reads best; spin defaults to 0. |
 | `monument` | generator | 3D solids ported from TECNOFEUDO TOTAL (tower, ziggurat, corridor, body, globe, ring, torus) | screen, projection, mapping, multi | unmeasured | beta | Box corners take the accent. |
+| `face` | generator | 3D face mesh (biometric reading) with landmarks, points, lines or plexus, glow | screen, projection, mapping, multi | unmeasured | beta | The head looks side to side in whole cycles; a reading band runs down and up. |
 
 ## structure
 
@@ -53,6 +54,7 @@ grid, rhythm and texture that measure the figure.
 |---|---|---|---|---|---|---|
 | `structure` | generator | grid and rulers | any | low | stable | The measure the eye reads the hero against. |
 | `bitfield` | generator | bitwise cell field | any | medium | stable | Fills about half the frame by nature: use at 10-20% opacity as texture, never as the hero. |
+| `sacred` | generator | flower of life, tree of life, mycelium, golden spiral and polar grid | screen, projection, mapping, multi | unmeasured | beta | Mycelium grows and recedes once per cycle. |
 | `hilbert-curve` | recipe | Hilbert curve: one line that covers a grid, a head runs it once per loop | any | unmeasured | stable | Tested starting move; set tiles to the canvas aspect. |
 | `greeble-plate` | recipe | Greeble plate: recursive panel detail from a seed, a light scans it once per loop | any | unmeasured | stable | Keep opacity under 0.6 behind information. |
 
@@ -72,6 +74,16 @@ type, instruments and data: what the viewer reads.
 | `temporal` | generator | effects that depend on earlier frames: trail, feedback, slit scan, temporal displacement (GPU history, deterministic) | any | high | stable | Reads the layers below like fx, so put it above what it should change. Slit scan keeps up to 24 frames in GPU memory: lower the internal resolution on very wide surfaces. A jump in time rebuilds the history by replaying earlier frames. |
 | `blobs` | generator | detect and mark blobs in the image below (by brightness, contrast, colour or luminance zone): boxes, ids, links | any | low | stable | Reads the stack below it like fx. Stateless: ids follow area order, not identity over time. |
 | `glyphs` | generator | generative typography: a grid of characters chosen from a ramp by a field (noise, radial, wave, spiral or an image) | any | medium | stable | The ramp is any string, from emptiest to fullest; the brief title becomes the ramp when the concept picks it. Cell size is in px at 1080 high. |
+| `icon` | generator | 12 self-animating line icons (target, REC, play, arrow, eye, pin, globe, cube, wave, bars, signal, scan) | screen, projection, mapping, multi | unmeasured | beta | Stroke of 3 px or more on LED. |
+| `ruler` | generator | ruler with ticks, numbers and a cursor that travels the scale | screen, projection, mapping, multi | unmeasured | beta | Whole cycles close the loop. |
+| `counter` | generator | large number with label; fixed, up-and-back or scrambling on the beat | screen, projection, mapping, multi | unmeasured | beta | Up-and-back closes the loop. |
+| `gauge` | generator | dial (270° arc) or segmented rings stepping around | screen, projection, mapping, multi | unmeasured | beta | Rings step 24 times per cycle. |
+| `coords` | generator | Cartesian, polar or geographic readout of a point on a Lissajous path | screen, projection, mapping, multi | unmeasured | beta |  |
+| `progress` | generator | progress bar with label; fixed, up-and-back or following the loop | screen, projection, mapping, multi | unmeasured | beta | Following the loop jumps back at the seam on purpose. |
+| `chart` | generator | market chart (line and volume), bars or line, periodic in the loop | screen, projection, mapping, multi | unmeasured | beta |  |
+| `network` | generator | node network: links by distance, blinking active nodes, packets travelling | screen, projection, mapping, multi | unmeasured | beta | Labels every third node. |
+| `rack` | generator | datacenter racks with block LEDs blinking on the bar, beat or sixteenth | screen, projection, mapping, multi | unmeasured | beta |  |
+| `ticker` | generator | scrolling text band between rules (marquee) | screen, projection, mapping, multi | unmeasured | beta | Sign of the cycles sets the direction. |
 
 ## finish
 

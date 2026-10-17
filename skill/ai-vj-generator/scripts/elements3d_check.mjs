@@ -38,10 +38,10 @@ const J = async s => JSON.parse(await E(`(async () => { const { A, L, load, fram
 try {
   /* 1) a categoria existe, com o organismo; Formas não tem mais o organismo */
   const fam = await J(`const f = A.FAMILIES.find(x => x[0] === 'Elementos 3D'), fo = A.FAMILIES.find(x => x[0] === 'Formas'); return JSON.stringify({ types: f ? f[1].map(x => x[0]) : null, formas: fo[1].map(x => x[0]) });`);
-  check(fam.types && fam.types.join() === 'organism,botanic,molecule,sigil,terrain,monument' && !fam.formas.includes('organism'), 'a categoria Elementos 3D tem organismo, botânica, molecular, símbolos 3D, terreno e monumento; Formas não tem mais o organismo', JSON.stringify(fam));
+  check(fam.types && fam.types.join() === 'organism,botanic,molecule,sigil,face,terrain,monument' && !fam.formas.includes('organism'), 'a categoria Elementos 3D tem organismo, botânica, molecular, símbolos 3D, biometria, terreno e monumento; Formas não tem mais o organismo', JSON.stringify(fam));
 
   /* 2) todas as formas: desenham, diferem, determinísticas */
-  const CASES = await J(`const out = []; ['botanic', 'molecule', 'sigil', 'monument'].forEach(t => A.GEN[t].params.find(d => d.k === 'kind').opts.forEach(k => out.push([t, k]))); out.push(['terrain', null], ['organism', null]); return JSON.stringify(out);`);
+  const CASES = await J(`const out = []; ['botanic', 'molecule', 'sigil', 'monument'].forEach(t => A.GEN[t].params.find(d => d.k === 'kind').opts.forEach(k => out.push([t, k]))); out.push(['face', null], ['terrain', null], ['organism', null]); return JSON.stringify(out);`);
   const draws = await J(`const out = {}; for (const [t, k] of ${JSON.stringify(CASES)}) { load(proj([L(t, k ? { kind: k } : {})])); const a = frame(9), b = frame(9); out[t + ':' + k] = { s: sum(a), h: hash(a), same: diff(a, b), errs: A.layerErrors() }; } load(proj([])); out.bg = { s: sum(frame(9)) }; return JSON.stringify(out);`);
   const names = CASES.map(([t, k]) => t + ':' + k), hs = names.map(n => draws[n].h), base = draws.bg.s;
   check(names.every(n => draws[n].s > base + 4000 && !draws[n].errs.length), `as ${names.length} formas desenham sem erro (fundo sozinho soma ${base})`, names.filter(n => draws[n].s <= base + 4000 || draws[n].errs.length).map(n => n + ' ' + draws[n].s + ' ' + JSON.stringify(draws[n].errs)).join(' | '));
@@ -62,7 +62,7 @@ try {
   check(loop.still === 0 && loop.stillT === 0, 'controle negativo: giro 0 e ciclos 0 dão imagem parada (DNA e terreno; nenhum relógio escondido)', JSON.stringify([loop.still, loop.stillT]));
 
   /* 4) pontos, linhas e plexus dão imagens diferentes, também no organismo */
-  const modes = await J(`const out = {}; for (const [t, k] of [['botanic', 'flor'], ['molecule', 'dna'], ['sigil', 'magick'], ['terrain', null], ['monument', 'globo'], ['organism', null]]) { const h = ['points', 'lines', 'plexus'].map(r => { load(proj([L(t, Object.assign(k ? { kind: k } : {}, { render: r }))])); return hash(frame(9)); }); out[t] = h; } return JSON.stringify(out);`);
+  const modes = await J(`const out = {}; for (const [t, k] of [['botanic', 'flor'], ['molecule', 'dna'], ['sigil', 'magick'], ['terrain', null], ['monument', 'globo'], ['face', null], ['organism', null]]) { const h = ['points', 'lines', 'plexus'].map(r => { load(proj([L(t, Object.assign(k ? { kind: k } : {}, { render: r }))])); return hash(frame(9)); }); out[t] = h; } return JSON.stringify(out);`);
   check(Object.values(modes).every(h => new Set(h).size === 3), 'pontos, linhas e plexus dão três imagens diferentes em cada tipo (organismo incluso)', JSON.stringify(modes));
 
   /* 5) glow acende pixels a mais; glow 0 = não declarar glow (projetos antigos do organismo não mudam) */

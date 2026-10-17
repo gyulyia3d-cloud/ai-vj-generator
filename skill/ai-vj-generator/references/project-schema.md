@@ -100,11 +100,12 @@ Loop length is rounded to whole frames: `round(60 / bpm × 4 × bars × fps)`. A
 | `reach` | 0.25 (0.05…0.6) | plexus radius, fraction of the organism radius |
 | `glow` | 0 (0…1) | halo added from half-scale copies of the layer; 0 leaves the layer exactly as before |
 
-### Elementos 3D — `botanic`, `molecule`, `sigil`, `terrain`, `monument` (gen)
+### Elementos 3D — `botanic`, `molecule`, `sigil`, `face`, `terrain`, `monument` (gen)
 Point-cloud objects drawn by the engine's own projector (no 3D library), in the **Elementos 3D** category with `organism`. Time enters only through whole cycles (`spin`, `cycles`), so the loop closes.
 - `botanic` — `kind` `"flor"` (three rings of 5, 8 and 13 petals around a phyllotaxis disc, opening and closing) · `"folhagem"` (three fern fronds that sway).
 - `molecule` — `kind` `"dna"` (double helix; half of the base pairs in accent) · `"molecula"` (atoms and bonds from the seed; larger atoms in accent).
 - `sigil` — `kind` `"astrologico"` (armillary sphere, ecliptic, zodiac and planet glyphs) · `"alquimico"` (squared circle stacked in depth, four element triangles) · `"magick"` (heptagram {7/3} and pentagram {5/2} on crossed planes); `labels` true draws the glyphs and names.
+- `face` — biometric face mesh: ellipsoid with nose, eye sockets, mouth and chin; landmarks IRIS_L, IRIS_R, NARIZ, BOCA, QUEIXO in accent (`labels`); the head looks side to side and a reading band runs down and up, in whole `cycles`. Defaults: `render` `"plexus"`, `reach` 0.14, `spin` 0, `tiltX` 0.
 - `terrain` — flyover; relief periodic along the flight. `relief` 1 (0…3). Defaults: `render` `"lines"`, `spin` 0, `tiltX` 36.
 - `monument` — `kind` `"torre"` `"zigurate"` `"corredor"` `"corpo"` `"globo"` `"anel"` `"toro"`: solids ported from TECNOFEUDO TOTAL (the author's own project), points sampled on the faces; box corners in accent.
 
@@ -271,3 +272,17 @@ The interface groups the types in nine categories of at most two words: Fundo, S
 ```
 
 The repository's `examples/` folder holds two projects that show the **file format** only. Do not open them to start a project and never copy their names, words, palettes or compositions: every project is derived from its own briefing.
+
+### Animated interface elements (gen)
+Position is `cx` `cy` (fraction of the canvas); sizes are px at the 1080 reference. Time enters only through whole `cycles`, so the loop closes; `color` and `hot` are palette keys.
+- `icon` (Dados) — `icon` `"target"` `"rec"` `"play"` `"arrow"` `"eye"` `"pin"` `"globe"` `"cube"` `"wave"` `"bars"` `"signal"` `"scan"` · `size` 120 · `weight` 3 · `cycles` 1.
+- `ruler` (Dados) — `dir` `"h"`/`"v"` · `len` 0.8 (fraction) · `div` 40 · `major` 5 · `from` 0 · `to` 100 · `numbers` · `cursor` (travels the scale and back) · `cycles` · `ui` · `weight`.
+- `counter` (Dados) — `value` 128 · `decimals` · `pre` · `suf` · `label` · `motion` `"fixo"` `"vai-e-volta"` (0 → value → 0) `"sorteio"` (digits scramble at the start of each beat) · `size` 200 · `align` · `font` · `wgt`.
+- `gauge` (Dados) — `kind` `"dial"` (270° arc, ticks, percentage) or `"aneis"` (three segmented rings stepping 24 times per cycle) · `size` (radius) 260 · `value` 72 · `motion` · `label` · `density` (rings).
+- `coords` (Dados) — `mode` `"cart"` `"polar"` `"geo"` (from `lat` `lon`) · `w` `h` 600 · a point on a Lissajous path with its trail and readout.
+- `progress` (Dados) — `w` 900 · `h` 22 · `value` 64 (−1 follows the loop and jumps back at the seam on purpose) · `motion` · `label` (`{pct}`).
+- `chart` (Dados) — `kind` `"mercado"` (line and volume) `"barras"` `"linha"` · `w` 1200 · `h` 380 · `n` 120 points · `grid` · `label` (`{n}` volume, `{d}` delta).
+- `network` (Dados) — `nodes` 48 · `reach` 0.22 (link distance, fraction) · `active` 0.3 · `packets` 12 · `w` `h` (fractions) · `labels` · `prefix` `"DC_"` · `seed`.
+- `rack` (Dados) — `racks` 6 · `units` 12 · `fill` 0.58 · `step` `"bar"` `"beat"` `"sub"` (LED change) · `gap` · `labels` · `frame` colour · `seed`.
+- `ticker` (Texto) — `text` · `sep` · `cy` 0.9 · `h` 70 · `fill` 0.55 · `cycles` 1 (sign = direction) · `rules` · `font` · `wgt` · `upper` · `rule` colour.
+- `sacred` (Formas) — `kind` `"flor"` (flower of life) `"arvore"` (tree of life, a pulse runs the 22 paths) `"micelio"` (grows and recedes) `"espiral"` (golden spiral, 137.508°) `"polar"` (polar grid with sweep) · `size` (radius) 360 · `density` · `labels` · `seed`.
