@@ -51,7 +51,7 @@ const SYN = (() => {
     const c = chain(); ws(); if (i < n) throw new Error(E(`sobrou texto: "${str.slice(i, i + 16)}"`, `trailing text: "${str.slice(i, i + 16)}"`)); return c;
   }
 
-  const HELP = `float syH(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+  const HELP = `float syH(vec2 p){return hash(p);}
 vec2 syAc(vec2 s){return (s-.5)*vec2(uRes.x/uRes.y,1.);} vec2 syBk(vec2 s){return s/vec2(uRes.x/uRes.y,1.)+.5;}
 vec2 syRot(vec2 s,float a){s=syAc(s);float c=cos(a),n=sin(a);s=mat2(c,-n,n,c)*s;return syBk(s);}
 vec2 syKal(vec2 s,float k){s=syAc(s);float a=atan(s.y,s.x),r=length(s),g=TAU/max(2.,floor(k+.5));a=abs(mod(a,g)-.5*g);return syBk(r*vec2(cos(a),sin(a)));}

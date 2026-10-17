@@ -4,7 +4,8 @@ const GL = { cv: null, gl: null, r: null, failure: '', progs: new Map(), err: ne
 const GL_HEAD = `precision highp float;
 uniform vec2 uRes; uniform float uPh,uT,uBeat,uBp,uPulse,uAud,uAlpha,uSeed,uBass,uMid,uHigh,uRms,uHit,uMidHit,uHighHit,uBassT,uMidT,uHighT,uAudT,uPres,uOnBeat,uBSin,uBTri,uBSin2,uBSin4,uBpm; uniform vec3 uC1,uC2,uBg; uniform vec4 uP;
 #define TAU 6.28318530718
-float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123);}
+uint vjU32(uint x){x^=x>>16u;x*=0x7feb352du;x^=x>>15u;x*=0x846ca68bu;x^=x>>16u;return x;}
+float hash(vec2 p){uvec2 q=floatBitsToUint(p);q.x=q.x==0x80000000u?0u:q.x;q.y=q.y==0x80000000u?0u:q.y;return float(vjU32(q.x^vjU32(q.y))>>8u)*(1./16777216.);}
 float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1.,0.)),f.x),mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),f.x),f.y);}
 float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*noise(p);p=p*2.03+vec2(1.7,9.2);a*=.5;}return v;}
 vec2 loopv(float r){return vec2(cos(TAU*uPh),sin(TAU*uPh))*r;}

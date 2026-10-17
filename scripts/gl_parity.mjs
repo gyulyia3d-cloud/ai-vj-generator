@@ -4,9 +4,10 @@
 //   node scripts/gl_parity.mjs --compare base.json   renderiza de novo e compara com a base (sai com 1 se passar da tolerância)
 // Casos: as composições da galeria (quadros 0, meio e último, em escala reduzida) e uma camada de cada shader, filtro fx, cadeia synth e ISF original.
 // Tolerância: diferença média <= 1.5 de 255 e no máximo 2% dos pixels com diferença > 24 (GPUs e compiladores diferem em ruído e ponto flutuante).
-// Base por ambiente: o hash fract(sin(x)*43758.5) do GLSL e o rasterizador por software mudam com a versão do navegador, então a base vale para um ambiente
+// Base por ambiente: o rasterizador por software e o ponto flutuante podem mudar com a versão do navegador, então a base vale para um ambiente
 // (versão principal do Chrome + renderizador WebGL). --compare usa examples/reference/parity.<ambiente>.json e, se não houver, parity.json (base legada, da máquina
 // da autora, sem ambiente registrado). --update grava sempre a base do ambiente atual: nunca sobrescreve a de outro ambiente.
+// O hash do GLSL deixou de ser fract(sin(x)*43758.5): agora é por bits inteiros e igual em toda GPU; as fontes vão embutidas.
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
