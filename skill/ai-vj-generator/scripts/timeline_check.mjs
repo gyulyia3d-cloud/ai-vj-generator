@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Fase 14b-T1: timeline somente leitura. Clique de mouse de verdade (Input.dispatchMouseEvent) nos botões e na régua; teclas por Input.dispatchKeyEvent.
+// Fase 14b-T1/T2: timeline (T1 leitura; T2 arrasta a barra da camada e muda só p.phase, em semicolcheias, um passo de histórico). Clique de mouse de verdade (Input.dispatchMouseEvent) nos botões e na régua; teclas por Input.dispatchKeyEvent.
 // Confere, com um projeto da galeria (tem Composition IR e Animation IR): uma faixa por camada na ordem do painel; fases e eventos nas posições do IR;
 // atraso em semicolcheias (p.phase) desloca a barra e a parte que dá a volta; ↻ quando o loop fecha e ≠ quando uma curva tem ciclo fracionário (controle negativo);
 // a cabeça de leitura segue o quadro e só ela anda (o DOM não é refeito ao tocar); clicar na régua posiciona sem editar o projeto; transporte; olho = o do painel;
@@ -33,10 +33,10 @@ async function session(file, width, height, fn) {
     if (!top) return { err: sel + ' coberto por ' + await E(`(() => { const e = document.elementFromPoint(${x}, ${y}); return e ? (e.id || e.className || e.tagName) : 'nada'; })()`) };
     await clickAt(x, y); return {};
   };
-  const key = async (k, o = {}) => { const vk = { ArrowRight: 39, ArrowLeft: 37, ArrowUp: 38, ArrowDown: 40, Home: 36, End: 35 }[k] || 0;
+  const key = async (k, o = {}) => { const vk = { ArrowRight: 39, ArrowLeft: 37, ArrowUp: 38, ArrowDown: 40, Home: 36, End: 35, z: 90, Escape: 27 }[k] || 0;
     for (const type of ['keyDown', 'keyUp']) await page.send('Input.dispatchKeyEvent', { type, key: k, code: k, windowsVirtualKeyCode: vk, modifiers: o.mod || 0 }); await sleep(120); };
   await E(`(() => { const w = document.getElementById('wiz'); if (w && !w.hidden) document.getElementById('wClose').click(); return 1; })()`); await sleep(400);
-  try { await fn({ E, J, realClick, clickAt, key, at }); } catch (e) { bad('exceção: ' + (e.message || e)); }
+  try { await fn({ E, J, realClick, clickAt, key, at, send: (m, a) => page.send(m, a) }); } catch (e) { bad('exceção: ' + (e.message || e)); }
   await page.close();
 }
 const POS = `AIVJ.state.F.n`;
@@ -128,6 +128,47 @@ await session(join(tmp, 'g.html'), 1440, 900, async ({ E, J, realClick, key, at 
   await E(`(() => { const d = document.createElement('span'); d.id = 'greenCtl'; d.textContent = 'x'; d.style.color = '#00ff3c'; document.body.appendChild(d); return 1; })()`);
   const gc = await J(GREEN); await E(`document.getElementById('greenCtl').remove(); 1`);
   check(gc.some(x => x.startsWith('greenCtl')), 'controle negativo: um texto verde posto de propósito é achado', JSON.stringify(gc));
+});
+
+
+/* T2: arrastar a barra da camada muda p.phase em semicolcheias inteiras, um passo de histórico, Ctrl+Z desfaz; clique sem mover, Esc e evento não mudam nada */
+await session(join(tmp, 'g.html'), 1440, 900, async ({ E, J, realClick, key, at, send }) => {
+  if (!(await E(`AIVJ.timeline.state.open`))) await realClick('#tlTog');
+  if (!(await E(`AIVJ.state.paused`))) await realClick('#tlPlay');
+  const sx = proj.time.bars * 16, I = 1, row = `#tlIn .tlr.ly[data-tlrow="${I}"]`;
+  const st = () => J(`JSON.stringify({ ph: AIVJ.project.compositions[0].layers[${I}].p.phase || 0, h: AIVJ.hist, lab: AIVJ.histLabels.slice(-1)[0] || '', vn: +document.querySelector(${JSON.stringify(row)}).getAttribute('aria-valuenow') })`);
+  const mouse = async (type, x, y) => { await send('Input.dispatchMouseEvent', { type, x, y, button: type === 'mouseMoved' ? 'none' : 'left', buttons: type === 'mouseReleased' ? 0 : 1, clickCount: 1 }); await sleep(120); };
+  const geo = async () => { const r = await at(row), w = await J(`document.getElementById('tlIn').getBoundingClientRect().width`); return { x: r.x + r.w * 0.5, y: r.y + r.h / 2, step: w / sx }; };
+  const a = await st(), k0 = Math.round(a.ph * sx), g = await geo();
+  check(await E(`document.querySelector(${JSON.stringify(row)}).getAttribute('role') === 'slider' && document.querySelector(${JSON.stringify(row)}).tabIndex === 0`), 'a faixa da camada é um slider focável (rótulo e valor para leitor de tela)', '');
+  /* arrastar 3 semicolcheias */
+  await mouse('mousePressed', g.x, g.y); await mouse('mouseMoved', g.x + g.step * 1.4, g.y); await mouse('mouseMoved', g.x + g.step * 3.2, g.y); await mouse('mouseReleased', g.x + g.step * 3.2, g.y);
+  let b = await st(); const k1 = Math.round(b.ph * sx);
+  check(k1 === (k0 + 3) % sx && Math.abs(b.ph * sx - k1) < 1e-9 && b.vn === k1, `arrastar 3 semicolcheias: p.phase vai de ${k0}/${sx} a ${k1}/${sx} (inteiro de semicolcheias)`, JSON.stringify({ a, b, k0 }));
+  check(b.h === a.h + 1 && /Atraso/i.test(b.lab), 'o arraste inteiro é UM passo de histórico, com rótulo', JSON.stringify({ a, b }));
+  check(await E(`[...document.querySelectorAll('#tlIn .tlr.ly .tlend')].every(e => e.classList.contains('ok'))`), 'o loop continua fechando (↻ em toda faixa) depois do arraste', '');
+  await E(`document.activeElement && document.activeElement.blur(); 1`); await key('z', { mod: 2 });
+  b = await st(); check(Math.abs(b.ph - a.ph) < 1e-12 && b.h === a.h, 'Ctrl+Z devolve o p.phase exato e tira o passo do histórico', JSON.stringify({ a, b }));
+  /* clicar sem mover */
+  const g2 = await geo(); await mouse('mousePressed', g2.x, g2.y); await mouse('mouseReleased', g2.x, g2.y);
+  b = await st(); check(b.ph === a.ph && b.h === a.h, 'clicar na faixa sem mover não muda o projeto nem o histórico', JSON.stringify({ a, b }));
+  /* Esc cancela no meio do arraste */
+  await mouse('mousePressed', g2.x, g2.y); await mouse('mouseMoved', g2.x + g2.step * 5, g2.y);
+  const mid = await st(); await key('Escape'); await mouse('mouseReleased', g2.x + g2.step * 5, g2.y);
+  b = await st(); check(mid.ph !== a.ph && b.ph === a.ph && b.h === a.h, 'Esc no meio do arraste devolve o atraso e não grava histórico (controle: no meio ele tinha mudado)', JSON.stringify({ mid, b }));
+  /* limite: arrastar para a esquerda passa de 0 e dá a volta */
+  const g3 = await geo(); await mouse('mousePressed', g3.x, g3.y); await mouse('mouseMoved', g3.x - g3.step * (k0 + 2), g3.y); await mouse('mouseReleased', g3.x - g3.step * (k0 + 2), g3.y);
+  b = await st(); check(Math.round(b.ph * sx) === sx - 2 && b.ph >= 0 && b.ph < 1, `passar de 0 para a esquerda dá a volta no loop (k = ${sx - 2})`, JSON.stringify(b));
+  await E(`document.activeElement && document.activeElement.blur(); 1`); await key('z', { mod: 2 });
+  /* teclado: setas movem 1, Shift move 1 tempo (4); toques rápidos viram um passo de histórico */
+  await E(`document.querySelector(${JSON.stringify(row)}).focus(); 1`); const h0 = (await st()).h;
+  await key('ArrowRight'); await key('ArrowRight'); await key('ArrowLeft', { mod: 8 }); await sleep(600);
+  b = await st(); check(Math.round(b.ph * sx) === ((k0 + 2 - 4) % sx + sx) % sx && b.h === h0 + 1, 'teclado: →→ (+2) e Shift+← (−1 tempo = 4) em sequência = um passo de histórico', JSON.stringify({ b, k0, h0 }));
+  await E(`document.activeElement && document.activeElement.blur(); 1`); await key('z', { mod: 2 });
+  /* o evento continua somente leitura: arrastar não muda o Animation IR */
+  const ev0 = await E(`JSON.stringify(AIVJ.project.meta.animationIR[0].events)`), er = await at('#tlEv .tlev');
+  if (er) { await mouse('mousePressed', er.x + 4, er.y + er.h / 2); await mouse('mouseMoved', er.x + 60, er.y + er.h / 2); await mouse('mouseReleased', er.x + 60, er.y + er.h / 2); }
+  check(!!er && await E(`JSON.stringify(AIVJ.project.meta.animationIR[0].events)`) === ev0, 'arrastar um evento não muda o Animation IR (eventos são só de leitura: nada no render os lê)', '');
 });
 
 /* sem IR (STANDARD): controle, as faixas dizem que não há fases nem eventos */

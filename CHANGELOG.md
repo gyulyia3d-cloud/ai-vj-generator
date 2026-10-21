@@ -1,5 +1,16 @@
 # Changelog
 
+## Não lançado · Fase 14b-T2: timeline editável (atraso da camada)
+
+Arrastar a barra de uma camada na timeline muda o atraso (`p.phase`) em semicolcheias inteiras. Só campo que já existe: sem esquema novo, migração nem mudança de render (quadros de referência não afetados).
+
+- **Arrastar** (`app/timeline.js`): relativo ao ponto de partida (clicar sem mover não muda nada). O atraso é sempre `k / (compassos×16)` com `k` inteiro, módulo o loop (passar de 0 para a esquerda dá a volta), então o loop continua fechando. Durante o arraste só a faixa da camada e o painel de Parâm. são regravados; **um passo de histórico ao soltar** ("Atraso da camada: NOME"), Ctrl+Z devolve o valor exato; **Esc** no meio devolve o valor original exato e não grava histórico.
+- **Teclado e leitor de tela:** a faixa agora é um `slider` focável (`aria-valuenow` em semicolcheias, `aria-valuetext`, rótulo com comportamento e ciclos como antes). ← / → move 1 semicolcheia, Shift+← / → move 1 tempo (4), Home volta a 0; toques seguidos viram um passo de histórico (mesma regra dos sliders).
+- **Eventos continuam somente leitura** (decisão 1B do relatório): nada no render lê `meta.animationIR[i].events`, então arrastá-los não mudaria nenhum quadro e deixaria o nome da fase incoerente com a batida. Entram junto de um consumidor (T3 ou fase 15).
+- **Regerar sobrescreve:** `ANIMATION.apply` reescreve `p.phase` ao gerar pelo briefing (`genai.js`); uma edição manual vale até a próxima geração.
+- Um valor de atraso que não está na grade (vindo do IR) só vai para a grade no primeiro passo; cancelar com Esc devolve o valor original sem arredondar (bug achado no teste e corrigido).
+- **Testes:** `timeline_check.mjs` ganhou 9 casos com mouse e teclado de verdade (arraste de 3 passos, passo de histórico único com rótulo, loop segue fechando, Ctrl+Z exato, clique sem mover, Esc com controle de que no meio mudou, volta ao passar de 0, teclado com Shift, evento não muda o IR).
+
 ## Não lançado · Quadros de referência por ambiente, herói em LED, STANDARD sem verde
 
 O `check.mjs` falhava neste ambiente em três pontos que **já falhavam na 3.20.0** (reproduzido): GLITCH EM BLOCOS (resolvido acima, no teste), nota da galeria (GLITCH II 72 < 75) e 105 de 184 quadros de referência. A causa comum é o hash `fract(sin(x)*43758.5)` do GLSL e o rasterizador por software, que mudam com a versão do navegador: a mesma peça sai com outro padrão de ruído (comparado lado a lado com as folhas de contato da base).

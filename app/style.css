@@ -706,6 +706,8 @@ input[type=range]:active::-webkit-slider-thumb{background:var(--accent);box-shad
 .tlbar.hero{border-left-color:var(--accent)}
 .tlbar.wrap{border-left:0;opacity:.55}
 .tlbar.off{opacity:.3}
+.tlr.ly{cursor:ew-resize;touch-action:none}
+.tlr.ly:focus-visible{outline:1px solid var(--accent);outline-offset:-1px}
 .tlend{position:absolute;right:2px;top:0;line-height:20px;font-size:var(--fs-xs);color:var(--faint)}
 .tlend.no{color:var(--fg);font-weight:700}
 .tlr.rl .tlend{line-height:24px;background:var(--bg);padding:0 4px;right:0}
