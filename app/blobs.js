@@ -40,7 +40,7 @@ reg('blobs', 'Manchas · detectar e marcar (lê as camadas abaixo)', 'gen', [
   N('hue', 'Cor alvo (matiz 0 a 1)', 0.08, 0, 1, 0.005), N('tol', 'Tolerância da cor', 0.06, 0.01, 0.5, 0.005), N('sat', 'Saturação mínima (cor)', 0.25, 0, 1, 0.01),
   N('zones', 'Zonas (nº de faixas de luminância)', 4, 2, 8, 1), N('zone', 'Zona escolhida (0 = mais escura)', 3, 0, 7, 1),
   N('minArea', 'Área mínima (fração da imagem)', 0.002, 0.0002, 0.2, 0.0002), N('max', 'Máximo de manchas', 12, 1, 64, 1), N('grid', 'Resolução da análise (colunas)', 128, 32, 320, 8),
-  B('box', 'Caixas (cantos)', true), B('ids', 'Números e valores', true), B('cross', 'Cruz no centro', true), B('links', 'Linhas entre manchas vizinhas', true), B('fill', 'Preencher a mancha', false),
+  B('box', 'Caixas (cantos)', true), B('ids', 'Números e valores', true), B('cross', 'Cruz no centro', true), B('links', 'Linhas entre manchas vizinhas', true), B('fill', 'Preencher a mancha', false), B('invert', 'Máscara invertida (cor sólida, furo nas manchas)', false), C('maskColor', 'Cor da máscara invertida', 'primary'),
   N('weight', 'Espessura', 3.5, 0.5, 40, 0.5), N('pad', 'Folga da caixa', 0.01, 0, 0.1, 0.002), C('color', 'Cor', 'primary'), C('hot', 'Cor do destaque', 'accent'),
 ], (c, R) => {
   const { p, F, comp, W, H, below, u } = R; if (!below) return;
@@ -48,6 +48,9 @@ reg('blobs', 'Manchas · detectar e marcar (lê as camadas abaixo)', 'gen', [
   if (!BLOBCV || BLOBCV.width !== gw || BLOBCV.height !== gh) { BLOBCV = document.createElement('canvas'); BLOBCV.width = gw; BLOBCV.height = gh; }
   const bx = BLOBCV.getContext('2d', { willReadFrequently: true }); bx.setTransform(1, 0, 0, 1, 0, 0); bx.clearRect(0, 0, gw, gh); bx.imageSmoothingEnabled = true; bx.drawImage(below, 0, 0, gw, gh);
   const im = bx.getImageData(0, 0, gw, gh), r = BLOBX.analyze(im.data, gw, gh, p), A = col(comp, p.color), Hc = col(comp, p.hot), lw = p.weight * u;
+  if (p.invert) { const mc = hexRgb(col(comp, p.maskColor)), cvs = document.createElement('canvas'); cvs.width = gw; cvs.height = gh; const cx = cvs.getContext('2d'), out = cx.createImageData(gw, gh), keep = new Set(r.blobs.map(b => b.root));
+    for (let i = 0; i < gw * gh; i++) { const o = i * 4, hole = r.mask[i] && keep.has(r.find(i)); out.data[o] = mc[0]; out.data[o + 1] = mc[1]; out.data[o + 2] = mc[2]; out.data[o + 3] = hole ? 0 : 255; }
+    cx.putImageData(out, 0, 0); const f0 = c.filter; c.filter = 'none'; c.imageSmoothingEnabled = false; c.drawImage(cvs, 0, 0, W, H); c.imageSmoothingEnabled = true; c.filter = f0; }   /* filter none: o p.sat da camada (mínimo do modo cor) colide com o sat comum de aparência e dessaturaria a máscara */
   if (!r.blobs.length) return;
   if (p.fill) { const hot = hexRgb(Hc), cvs = document.createElement('canvas'); cvs.width = gw; cvs.height = gh; const cx = cvs.getContext('2d'), out = cx.createImageData(gw, gh), keep = new Set(r.blobs.map(b => b.root));
     for (let i = 0; i < gw * gh; i++) if (r.mask[i] && keep.has(r.find(i))) { const o = i * 4; out.data[o] = hot[0]; out.data[o + 1] = hot[1]; out.data[o + 2] = hot[2]; out.data[o + 3] = 110; }

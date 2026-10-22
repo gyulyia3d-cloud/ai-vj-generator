@@ -64,6 +64,20 @@ try {
   check(L.det < 1e-6, 'determinística: o mesmo quadro dá o mesmo desenho', String(L.det));
   check(L.seam < 1.5, `fecha o loop junto com a imagem de baixo (emenda ${L.seam.toFixed(2)})`, String(L.seam));
   check(L.modeDiff > 0.3, 'trocar o modo muda o desenho', String(L.modeDiff));
+  /* máscara invertida: cor sólida onde não há mancha, furo (alpha 0) onde há; controle negativo: sem invert o canto não é a cor da máscara */
+  const V = JSON.parse(await E(`(() => { const A = AIVJ, P = A.project, c = P.compositions[0], w = P.canvas.w, h = P.canvas.h, sh = (nm, x, sz) => ({ type: 'shape', name: nm, on: true, opacity: 1, blend: 'normal', p: { kind: 'circle', size: sz, fill: true, color: 'primary', x } }), base = [{ type: 'bg', name: 'F' }, sh('A', -150, 90), sh('B', 150, 60)];
+    const frame = () => A.renderFrame(0, 6, 1, false).data, px = (d, x, y) => { const i = (y * w + x) * 4; return [d[i], d[i + 1], d[i + 2], d[i + 3]]; };
+    const mk = inv => { c.layers = base.concat([{ type: 'blobs', name: 'B', on: true, opacity: 1, blend: 'normal', p: { mode: 'brilho', thr: 0.45, invert: inv, maskColor: '#00FF00', box: false, ids: false, cross: false, links: false } }]); };
+    c.layers = base.slice(); const d0 = frame(); let sx = 0, sy = 0, n = 0;
+    for (let y = 0; y < h; y++) for (let x = 0; x < w / 2; x++) if (d0[(y * w + x) * 4] > 100) { sx += x; sy += y; n++; }
+    const cx = Math.round(sx / n), cy = Math.round(sy / n);
+    mk(true); const di = frame(), corner = px(di, 4, 4), hole = px(di, cx, cy);
+    mk(false); const cornerOff = px(frame(), 4, 4);
+    return JSON.stringify({ corner, hole, cornerOff, n }); })()`));
+  check(V.n > 50, `a figura de teste existe (${V.n} pixels claros na metade esquerda)`, JSON.stringify(V));
+  check(V.corner[0] === 0 && V.corner[1] === 255 && V.corner[2] === 0 && V.corner[3] === 255, 'invert: fora das manchas a máscara tem exatamente a cor pedida, opaca', JSON.stringify(V.corner));
+  check(!(V.hole[0] === 0 && V.hole[1] === 255 && V.hole[2] === 0) && V.hole[0] > 100, 'invert: no centro da mancha a máscara abre um furo e mostra a imagem de baixo', JSON.stringify(V.hole));
+  check(!(V.cornerOff[0] === 0 && V.cornerOff[1] === 255 && V.cornerOff[2] === 0), 'controle negativo: sem invert o canto não é a cor da máscara', JSON.stringify(V.cornerOff));
   check(L.blobsFirst < 0.01, 'só vê o que está abaixo: um shader ACIMA da camada não é analisado', String(L.blobsFirst));
 } catch (e) { bad('exceção: ' + (e.message || e)); }
 await page.close();

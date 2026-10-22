@@ -8871,6 +8871,30 @@
      "semanticRole": "generator"
     },
     {
+     "id": "invert",
+     "type": "boolean",
+     "default": false,
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Máscara invertida (cor sólida, furo nas manchas)",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
+     "id": "maskColor",
+     "type": "color",
+     "default": "primary",
+     "min": null,
+     "max": null,
+     "step": null,
+     "label": "Cor da máscara invertida",
+     "options": null,
+     "unit": null,
+     "semanticRole": "generator"
+    },
+    {
      "id": "weight",
      "type": "number",
      "default": 3.5,

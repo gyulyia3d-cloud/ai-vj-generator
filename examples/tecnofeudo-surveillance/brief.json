@@ -1,0 +1,16 @@
+{
+  "name": "TECNOFEUDO SURVEILLANCE",
+  "lang": "pt",
+  "concept": "Vigilância como arquitetura: a câmera vê, o sistema cobre o mundo com placas sólidas e só abre furos onde detecta um corpo. Contenção, medição, ordem.",
+  "mood": ["industrial", "minimal", "glitch"],
+  "energy": 0.6,
+  "density": "balanced",
+  "surface": { "type": "led", "w": 3840, "h": 1080, "fps": 30, "pitchMm": 3.9, "viewingDistanceM": [8, 40] },
+  "time": { "bpm": 120, "bars": 4 },
+  "audio": { "strategy": "structural" },
+  "output": { "mode": "alpha" },
+  "palette": { "bg": "#050505", "primary": "#FF1F3D", "secondary": "#8A8A8A", "accent": "#E8E8E8" },
+  "focalEvent": "A placa sólida vermelha abre furos exatamente onde o blob é detectado, e o contador de alvos salta",
+  "banned": ["neon glow", "lens flares", "partículas aleatórias"],
+  "compositions": 4
+}
