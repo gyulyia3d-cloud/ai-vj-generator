@@ -1,0 +1,3418 @@
+{
+  "schema": "ai-vj-generator/2",
+  "id": "tecnofeudo-smart-sampa",
+  "seed": 130191,
+  "meta": {
+    "formatVersion": 2,
+    "name": "TECNOFEUDO SMART SAMPA",
+    "lang": "pt",
+    "brief": "Vigilância urbana como arquitetura de extração: câmeras, drones e dados de pessoas alimentam uma tecnocracia; o sistema lê a cidade em calor e em pixels.",
+    "contract": {
+      "concept": "Vigilância urbana como arquitetura de extração: câmeras, drones e dados de pessoas alimentam uma tecnocracia; o sistema lê a cidade em calor e em pixels.",
+      "audienceEffect": "O público deve sentir Vigilância urbana como arquitetura de extração: câmeras, drones e dados de pessoas alimentam uma tec",
+      "semioticIntent": "signal: pulse + oscillate + accumulate + trace",
+      "visualLanguage": "Concept signal: verbs pulse, oscillate, accumulate, trace; motifs beat stamp, pendulum, stacked strata, drawn path; one dominant figure per composition over a quiet ground.",
+      "formLanguage": "Forms follow the hero generator of each composition; the structure layer keeps one module and one grid.",
+      "materialLanguage": "Light on a dark ground: lamp, signal; pendulum, wave.",
+      "colorLogic": "analogous scheme, OKLCH hue 250 (cold steel and signal blue); one accent used for events only.",
+      "spatialLogic": "Canvas 3840x1920 (led); the hero sits on the focal zone, structure on the grid, information at the edge.",
+      "motionLanguage": "Profile: smooth, eased; springy (zeta 0.7774, 2% overshoot); with a wind-up dip before each hit; 16 move(s) per loop of 4 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py). Animation IR archetypes: pulse, glide, breathe, pulse (the hero is hit on the beat and rings out; the structure answers a sixteenth later).",
+      "typographyLanguage": "Uppercase, one family; text only when the brief supplies exact words.",
+      "temporalArc": "a figure that returns to where it began; on every beat; over 4 bars per composition, the set follows establish, turn, turn, turn.",
+      "loopGrammar": "cyclic: the loop closes on whole bars and every layer moves in whole cycles",
+      "technicalStrategy": "Generated without AI by brief_to_project.py from the structured brief; native pixels, deterministic seed, engine generators only.",
+      "forbiddenShortcuts": "neon glow, lens flares, partículas aleatórias",
+      "focalEvent": "Os lasers infravermelhos do poste travam no chão e o contador de câmeras sorteia",
+      "releaseZone": "The ground field and the empty third of the frame; no layer fills it.",
+      "banned": "neon glow, lens flares, partículas aleatórias",
+      "tension": "assertive"
+    },
+    "artBible": {
+      "thesis": "Vigilância urbana como arquitetura de extração: câmeras, drones e dados de pessoas alimentam uma tecnocracia; o sistema lê a cidade em calor e em pixels.",
+      "material": "Light on a dark ground (industrial, glitch, aggressive); lamp, signal; pendulum, wave; no fake materials, no gradients that pretend to be objects.",
+      "space": "Read from far away: heavy strokes, large forms, the hero on the focal third, information at the edge.",
+      "motion": "Profile: smooth, eased; springy (zeta 0.7774, 2% overshoot); with a wind-up dip before each hit; 16 move(s) per loop of 4 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py). Animation IR archetypes: pulse, glide, breathe, pulse (the hero is hit on the beat and rings out; the structure answers a sixteenth later).",
+      "dramaturgy": "a figure that returns to where it began; on every beat; over 4 bars per composition, the set follows establish, turn, turn, turn. Tension: assertive; one dominant figure per composition; the ground field is the release.",
+      "color": "analogous scheme, OKLCH hue 250 (cold steel and signal blue); one accent used for events only.",
+      "typography": "No text unless the brief supplies exact words; if added: uppercase, one family, three sizes at most.",
+      "audio": "Strategy structural: the music drives structure and scale, never every hit.",
+      "banned": "neon glow, lens flares, partículas aleatórias",
+      "motionProfile": {
+        "energy": 0.581,
+        "elasticity": 0.253,
+        "anticipation": 0.34,
+        "continuity": 0.513,
+        "rhythm": 0.584
+      },
+      "density": "balanced"
+    },
+    "spec": {
+      "archetype": [
+        "stage-led"
+      ],
+      "confirmed": {
+        "pixelMap": [
+          3840,
+          1920
+        ],
+        "pitchMm": 3.9,
+        "viewingDistanceM": [
+          8,
+          40
+        ]
+      },
+      "assumed": [
+        {
+          "field": "surface",
+          "why": "generated from the brief without AI; the facts are the brief's own",
+          "risk": "confirm the pixel map and distances with the venue before delivery"
+        }
+      ]
+    },
+    "creativeIR": {
+      "version": 1,
+      "drives": true,
+      "concept": "signal",
+      "concepts": [
+        "order",
+        "signal"
+      ],
+      "visualVerbs": [
+        "pulse",
+        "oscillate",
+        "accumulate",
+        "trace"
+      ],
+      "verbScores": {
+        "pulse": 28,
+        "oscillate": 24,
+        "accumulate": 18,
+        "trace": 18
+      },
+      "hierarchy": {
+        "hero": [
+          "lines",
+          "shape",
+          "flow"
+        ],
+        "structure": [
+          "lines",
+          "tunnel"
+        ],
+        "ground": [
+          "FAIXAS",
+          "INTERFERÊNCIA",
+          "FLUXO WARP"
+        ]
+      },
+      "visualMotifs": [
+        "beat stamp",
+        "pendulum",
+        "stacked strata",
+        "drawn path"
+      ],
+      "motion": {
+        "axes": {
+          "energy": 0.517,
+          "elasticity": 0.308,
+          "anticipation": 0.469,
+          "continuity": 0.709,
+          "rhythm": 0.603
+        }
+      },
+      "density": 1.0,
+      "rhythm": 0.603,
+      "scale": "small",
+      "arc": {
+        "id": "cycle",
+        "sequence": [
+          "ESTABLISH",
+          "TURN",
+          "TURN",
+          "TURN",
+          "RETURN",
+          "CODA"
+        ],
+        "energy": [
+          0.5,
+          0.7,
+          0.5,
+          0.7,
+          0.5,
+          0.4
+        ],
+        "description": "a figure that returns to where it began"
+      },
+      "spatialBehavior": "from the hero; back and forth",
+      "temporalBehavior": "a figure that returns to where it began; on every beat",
+      "materialBehavior": "lamp, signal; pendulum, wave",
+      "audioRole": "the kick drives the pulse",
+      "compositionStrategy": "the hero stamps on the kick; the hero swings across the frame",
+      "animationStrategy": "sharp attack, fast decay (beat to beat); sine or triangle, whole cycles (A to B to A)",
+      "audienceEffect": "Vigilância urbana como arquitetura de extração: câmeras, drones e dados de pessoas alimentam uma tecnocracia; o sistema lê a cidade em calor",
+      "semioticIntent": "signal: pulse + oscillate + accumulate + trace",
+      "forbiddenMotifs": [
+        "neon glow",
+        "lens flares",
+        "partículas aleatórias"
+      ],
+      "novelty": 0.67,
+      "colorLogic": "analogous scheme, OKLCH hue 250 (cold steel and signal blue)"
+    },
+    "compositionIR": [
+      {
+        "version": 1,
+        "grammar": "offset",
+        "grammarSet": [
+          "offset",
+          "diagonal",
+          "asymmetric"
+        ],
+        "aspectClass": "wide",
+        "canvas": {
+          "w": 3840,
+          "h": 1920,
+          "aspect": 2.0,
+          "orientation": "wide"
+        },
+        "hierarchy": {
+          "primary": "hero",
+          "secondary": "structure",
+          "tertiary": "ground"
+        },
+        "zones": {
+          "hero": {
+            "x": 0.14,
+            "y": 0.12,
+            "w": 0.4,
+            "h": 0.8
+          },
+          "secondary": {
+            "x": 0.575,
+            "y": 0.17,
+            "w": 0.25,
+            "h": 0.5
+          },
+          "support": {
+            "x": 0.625,
+            "y": 0.7,
+            "w": 0.15,
+            "h": 0.3
+          },
+          "background": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          }
+        },
+        "negativeSpace": [
+          {
+            "x": 0.6,
+            "y": 0.55,
+            "w": 0.4,
+            "h": 0.45,
+            "why": "left empty on purpose: nothing is placed here"
+          }
+        ],
+        "focalPoint": {
+          "x": 0.34,
+          "y": 0.52
+        },
+        "visualMass": {
+          "hero": 0.6,
+          "secondary": 0.24,
+          "support": 0.16
+        },
+        "balance": {
+          "type": "asymmetric",
+          "centre": {
+            "x": 0.484,
+            "y": 0.549
+          }
+        },
+        "alignment": "left",
+        "movementAxis": "x",
+        "densityMap": [
+          [
+            0.9,
+            0.9,
+            0.25
+          ],
+          [
+            0.9,
+            0.9,
+            0.25
+          ],
+          [
+            0.9,
+            0.9,
+            0.05
+          ]
+        ],
+        "scaleHierarchy": {
+          "hero": 1.14,
+          "secondary": 0.71,
+          "support": 0.4
+        },
+        "depthHierarchy": {
+          "hero": "foreground",
+          "secondary": "midground",
+          "support": "midground",
+          "background": "background"
+        },
+        "safeAreas": {
+          "x": 0.05,
+          "y": 0.05,
+          "w": 0.9,
+          "h": 0.9
+        },
+        "edgeBehavior": "contain",
+        "textAnchor": {
+          "cx": 0.68,
+          "cy": 0.5,
+          "align": "left"
+        },
+        "temporal": {
+          "arc": "cycle",
+          "phases": [
+            {
+              "name": "establish",
+              "at": 0.0,
+              "heroScale": 1.0,
+              "density": 1.0,
+              "contrast": 1.0,
+              "rotation": 0,
+              "motion": 1.0
+            },
+            {
+              "name": "develop",
+              "at": 0.2,
+              "heroScale": 1.1,
+              "density": 1.1,
+              "contrast": 1.05,
+              "rotation": 2,
+              "motion": 1.1
+            },
+            {
+              "name": "transform",
+              "at": 0.4,
+              "heroScale": 0.95,
+              "density": 1.0,
+              "contrast": 1.0,
+              "rotation": 0,
+              "motion": 1.0
+            },
+            {
+              "name": "peak",
+              "at": 0.6,
+              "heroScale": 1.1,
+              "density": 1.1,
+              "contrast": 1.1,
+              "rotation": -2,
+              "motion": 1.1
+            },
+            {
+              "name": "release",
+              "at": 0.8,
+              "heroScale": 1.0,
+              "density": 1.0,
+              "contrast": 1.0,
+              "rotation": 0,
+              "motion": 1.0
+            }
+          ]
+        },
+        "description": "the figure sits off centre and the open third answers it"
+      },
+      {
+        "version": 1,
+        "grammar": "diagonal",
+        "grammarSet": [
+          "offset",
+          "diagonal",
+          "asymmetric"
+        ],
+        "aspectClass": "wide",
+        "canvas": {
+          "w": 3840,
+          "h": 1920,
+          "aspect": 2.0,
+          "orientation": "wide"
+        },
+        "hierarchy": {
+          "primary": "hero",
+          "secondary": "structure",
+          "tertiary": "ground"
+        },
+        "zones": {
+          "hero": {
+            "x": 0.112,
+            "y": 0.0,
+            "w": 0.375,
+            "h": 0.75
+          },
+          "secondary": {
+            "x": 0.583,
+            "y": 0.425,
+            "w": 0.275,
+            "h": 0.55
+          },
+          "support": {
+            "x": 0.425,
+            "y": 0.7,
+            "w": 0.15,
+            "h": 0.3
+          },
+          "background": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          }
+        },
+        "negativeSpace": [
+          {
+            "x": 0,
+            "y": 0.6,
+            "w": 0.3,
+            "h": 0.4,
+            "why": "left empty on purpose: nothing is placed here"
+          }
+        ],
+        "focalPoint": {
+          "x": 0.299,
+          "y": 0.375
+        },
+        "visualMass": {
+          "hero": 0.5,
+          "secondary": 0.3,
+          "support": 0.2
+        },
+        "balance": {
+          "type": "asymmetric",
+          "centre": {
+            "x": 0.466,
+            "y": 0.568
+          }
+        },
+        "alignment": "left",
+        "movementAxis": "diag",
+        "densityMap": [
+          [
+            0.9,
+            0.25,
+            0.25
+          ],
+          [
+            0.9,
+            0.25,
+            0.55
+          ],
+          [
+            0.05,
+            0.25,
+            0.55
+          ]
+        ],
+        "scaleHierarchy": {
+          "hero": 1.07,
+          "secondary": 0.79,
+          "support": 0.4
+        },
+        "depthHierarchy": {
+          "hero": "foreground",
+          "secondary": "midground",
+          "support": "midground",
+          "background": "background"
+        },
+        "safeAreas": {
+          "x": 0.05,
+          "y": 0.05,
+          "w": 0.9,
+          "h": 0.9
+        },
+        "edgeBehavior": "bleed",
+        "textAnchor": {
+          "cx": 0.72,
+          "cy": 0.3,
+          "align": "left"
+        },
+        "temporal": {
+          "arc": "cycle",
+          "phases": [
+            {
+              "name": "establish",
+              "at": 0.0,
+              "heroScale": 1.0,
+              "density": 1.0,
+              "contrast": 1.0,
+              "rotation": 0,
+              "motion": 1.0
+            },
+            {
+              "name": "develop",
+              "at": 0.2,
+              "heroScale": 1.1,
+              "density": 1.1,
+              "contrast": 1.05,
+              "rotation": 2,
+              "motion": 1.1
+            },
+            {
+              "name": "transform",
+              "at": 0.4,
+              "heroScale": 0.95,
+              "density": 1.0,
+              "contrast": 1.0,
+              "rotation": 0,
+              "motion": 1.0
+            },
+            {
+              "name": "peak",
+              "at": 0.6,
+              "heroScale": 1.1,
+              "density": 1.1,
+              "contrast": 1.1,
+              "rotation": -2,
+              "motion": 1.1
+            },
+            {
+              "name": "release",
+              "at": 0.8,
+              "heroScale": 1.0,
+              "density": 1.0,
+              "contrast": 1.0,
+              "rotation": 0,
+              "motion": 1.0
+            }
+          ]
+        },
+        "description": "the eye travels from the upper left to the lower right"
+      },
+      {
+        "version": 1,
+        "grammar": "asymmetric",
+        "grammarSet": [
+          "offset",
+          "diagonal",
+          "asymmetric"
+        ],
+        "aspectClass": "wide",
+        "canvas": {
+          "w": 3840,
+          "h": 1920,
+          "aspect": 2.0,
+          "orientation": "wide"
+        },
+        "hierarchy": {
+          "primary": "hero",
+          "secondary": "structure",
+          "tertiary": "ground"
+        },
+        "zones": {
+          "hero": {
+            "x": 0.035,
+            "y": 0.1,
+            "w": 0.45,
+            "h": 0.9
+          },
+          "secondary": {
+            "x": 0.713,
+            "y": 0.125,
+            "w": 0.175,
+            "h": 0.35
+          },
+          "support": {
+            "x": 0.725,
+            "y": 0.7,
+            "w": 0.15,
+            "h": 0.3
+          },
+          "background": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          }
+        },
+        "negativeSpace": [
+          {
+            "x": 0.5,
+            "y": 0.7,
+            "w": 0.5,
+            "h": 0.3,
+            "why": "left empty on purpose: nothing is placed here"
+          }
+        ],
+        "focalPoint": {
+          "x": 0.26,
+          "y": 0.55
+        },
+        "visualMass": {
+          "hero": 0.62,
+          "secondary": 0.23,
+          "support": 0.15
+        },
+        "balance": {
+          "type": "asymmetric",
+          "centre": {
+            "x": 0.465,
+            "y": 0.538
+          }
+        },
+        "alignment": "left",
+        "movementAxis": "diag",
+        "densityMap": [
+          [
+            0.9,
+            0.25,
+            0.55
+          ],
+          [
+            0.9,
+            0.25,
+            0.25
+          ],
+          [
+            0.9,
+            0.05,
+            0.05
+          ]
+        ],
+        "scaleHierarchy": {
+          "hero": 1.29,
+          "secondary": 0.5,
+          "support": 0.4
+        },
+        "depthHierarchy": {
+          "hero": "foreground",
+          "secondary": "midground",
+          "support": "midground",
+          "background": "background"
+        },
+        "safeAreas": {
+          "x": 0.05,
+          "y": 0.05,
+          "w": 0.9,
+          "h": 0.9
+        },
+        "edgeBehavior": "bleed",
+        "textAnchor": {
+          "cx": 0.78,
+          "cy": 0.55,
+          "align": "left"
+        },
+        "temporal": {
+          "arc": "cycle",
+          "phases": [
+            {
+              "name": "establish",
+              "at": 0.0,
+              "heroScale": 1.0,
+              "density": 1.0,
+              "contrast": 1.0,
+              "rotation": 0,
+              "motion": 1.0
+            },
+            {
+              "name": "develop",
+              "at": 0.2,
+              "heroScale": 1.1,
+              "density": 1.1,
+              "contrast": 1.05,
+              "rotation": 2,
+              "motion": 1.1
+            },
+            {
+              "name": "transform",
+              "at": 0.4,
+              "heroScale": 0.95,
+              "density": 1.0,
+              "contrast": 1.0,
+              "rotation": 0,
+              "motion": 1.0
+            },
+            {
+              "name": "peak",
+              "at": 0.6,
+              "heroScale": 1.1,
+              "density": 1.1,
+              "contrast": 1.1,
+              "rotation": -2,
+              "motion": 1.1
+            },
+            {
+              "name": "release",
+              "at": 0.8,
+              "heroScale": 1.0,
+              "density": 1.0,
+              "contrast": 1.0,
+              "rotation": 0,
+              "motion": 1.0
+            }
+          ]
+        },
+        "description": "a large figure against one small counterweight"
+      },
+      {
+        "version": 1,
+        "grammar": "offset",
+        "grammarSet": [
+          "offset",
+          "diagonal",
+          "asymmetric"
+        ],
+        "aspectClass": "wide",
+        "canvas": {
+          "w": 3840,
+          "h": 1920,
+          "aspect": 2.0,
+          "orientation": "wide"
+        },
+        "hierarchy": {
+          "primary": "hero",
+          "secondary": "structure",
+          "tertiary": "ground"
+        },
+        "zones": {
+          "hero": {
+            "x": 0.14,
+            "y": 0.12,
+            "w": 0.4,
+            "h": 0.8
+          },
+          "secondary": {
+            "x": 0.575,
+            "y": 0.17,
+            "w": 0.25,
+            "h": 0.5
+          },
+          "support": {
+            "x": 0.625,
+            "y": 0.7,
+            "w": 0.15,
+            "h": 0.3
+          },
+          "background": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 1
+          }
+        },
+        "negativeSpace": [
+          {
+            "x": 0.6,
+            "y": 0.55,
+            "w": 0.4,
+            "h": 0.45,
+            "why": "left empty on purpose: nothing is placed here"
+          }
+        ],
+        "focalPoint": {
+          "x": 0.34,
+          "y": 0.52
+        },
+        "visualMass": {
+          "hero": 0.6,
+          "secondary": 0.24,
+          "support": 0.16
+        },
+        "balance": {
+          "type": "asymmetric",
+          "centre": {
+            "x": 0.484,
+            "y": 0.549
+          }
+        },
+        "alignment": "left",
+        "movementAxis": "x",
+        "densityMap": [
+          [
+            0.9,
+            0.9,
+            0.25
+          ],
+          [
+            0.9,
+            0.9,
+            0.25
+          ],
+          [
+            0.9,
+            0.9,
+            0.05
+          ]
+        ],
+        "scaleHierarchy": {
+          "hero": 1.14,
+          "secondary": 0.71,
+          "support": 0.4
+        },
+        "depthHierarchy": {
+          "hero": "foreground",
+          "secondary": "midground",
+          "support": "midground",
+          "background": "background"
+        },
+        "safeAreas": {
+          "x": 0.05,
+          "y": 0.05,
+          "w": 0.9,
+          "h": 0.9
+        },
+        "edgeBehavior": "contain",
+        "textAnchor": {
+          "cx": 0.68,
+          "cy": 0.5,
+          "align": "left"
+        },
+        "temporal": {
+          "arc": "cycle",
+          "phases": [
+            {
+              "name": "establish",
+              "at": 0.0,
+              "heroScale": 1.0,
+              "density": 1.0,
+              "contrast": 1.0,
+              "rotation": 0,
+              "motion": 1.0
+            },
+            {
+              "name": "develop",
+              "at": 0.2,
+              "heroScale": 1.1,
+              "density": 1.1,
+              "contrast": 1.05,
+              "rotation": 2,
+              "motion": 1.1
+            },
+            {
+              "name": "transform",
+              "at": 0.4,
+              "heroScale": 0.95,
+              "density": 1.0,
+              "contrast": 1.0,
+              "rotation": 0,
+              "motion": 1.0
+            },
+            {
+              "name": "peak",
+              "at": 0.6,
+              "heroScale": 1.1,
+              "density": 1.1,
+              "contrast": 1.1,
+              "rotation": -2,
+              "motion": 1.1
+            },
+            {
+              "name": "release",
+              "at": 0.8,
+              "heroScale": 1.0,
+              "density": 1.0,
+              "contrast": 1.0,
+              "rotation": 0,
+              "motion": 1.0
+            }
+          ]
+        },
+        "description": "the figure sits off centre and the open third answers it"
+      }
+    ],
+    "animationIR": [
+      {
+        "version": 1,
+        "archetype": "pulse",
+        "archetypeSet": [
+          "pulse",
+          "glide",
+          "breathe"
+        ],
+        "axes": {
+          "energy": 0.581,
+          "elasticity": 0.253,
+          "anticipation": 0.34,
+          "continuity": 0.513,
+          "rhythm": 0.584
+        },
+        "timing": {
+          "bpm": 120,
+          "bars": 4,
+          "fps": 30,
+          "loopFrames": 240,
+          "cyclesPerLoop": 16,
+          "framesPerCycle": 15.0,
+          "beatsPerCycle": 1.0,
+          "sixteenthFrames": 3.75
+        },
+        "easing": {
+          "id": "spring",
+          "description": "kick and ring: fast out, rings down (motion_profiles.py)"
+        },
+        "spring": {
+          "zeta": 0.7774,
+          "wn": 13.391,
+          "ta": 0.0476,
+          "depth": 0.102,
+          "steps": 18,
+          "cycles": 16,
+          "amp": 0.3905,
+          "overshoot": 0.0206
+        },
+        "anticipation": {
+          "fraction": 0.0476,
+          "frames": 0.71
+        },
+        "settle": {
+          "fraction": 0.384,
+          "frames": 5.76
+        },
+        "hold": 0.0,
+        "hierarchy": {
+          "hero": {
+            "behavior": "lead",
+            "shape": "spring",
+            "cycles": 16,
+            "drive": "target",
+            "amp": 0.3905,
+            "spring": {
+              "zeta": 0.7774,
+              "wn": 13.391,
+              "ta": 0.0476,
+              "depth": 0.102,
+              "steps": 18
+            },
+            "lag": {
+              "steps": 0,
+              "lag": 0.0,
+              "frames": 0.0
+            }
+          },
+          "structure": {
+            "behavior": "follow",
+            "shape": "spring",
+            "cycles": 16,
+            "drive": "target",
+            "amp": 0.1953,
+            "spring": {
+              "zeta": 0.8887,
+              "wn": 11.474,
+              "ta": 0,
+              "depth": 0,
+              "steps": 18
+            },
+            "lag": {
+              "steps": 1,
+              "lag": 0.0156,
+              "frames": 3.75
+            }
+          },
+          "ground": {
+            "behavior": "ambient",
+            "lag": {
+              "steps": 2,
+              "lag": 0.0312,
+              "frames": 7.5
+            }
+          },
+          "instrument": {
+            "behavior": "accent"
+          },
+          "text": {
+            "behavior": "reveal"
+          }
+        },
+        "choreography": [
+          {
+            "name": "establish",
+            "at": 0.0,
+            "lead": "hero",
+            "energy": 1.0,
+            "transition": "ease"
+          },
+          {
+            "name": "develop",
+            "at": 0.2,
+            "lead": "hero",
+            "energy": 1.1,
+            "transition": "ease"
+          },
+          {
+            "name": "transform",
+            "at": 0.4,
+            "lead": "structure",
+            "energy": 1.0,
+            "transition": "ease"
+          },
+          {
+            "name": "peak",
+            "at": 0.6,
+            "lead": "hero",
+            "energy": 1.1,
+            "transition": "ease"
+          },
+          {
+            "name": "release",
+            "at": 0.8,
+            "lead": "ground",
+            "energy": 1.0,
+            "transition": "ease"
+          }
+        ],
+        "events": [
+          {
+            "name": "establish",
+            "phase": "establish",
+            "beat": 0,
+            "at": 0.0
+          },
+          {
+            "name": "build",
+            "phase": "develop",
+            "beat": 3,
+            "at": 0.1875
+          },
+          {
+            "name": "turn",
+            "phase": "transform",
+            "beat": 6,
+            "at": 0.375
+          },
+          {
+            "name": "focal",
+            "phase": "peak",
+            "beat": 10,
+            "at": 0.625
+          },
+          {
+            "name": "release",
+            "phase": "release",
+            "beat": 13,
+            "at": 0.8125
+          }
+        ],
+        "transitions": {
+          "phases": "ease",
+          "description": "phases blend with a smooth ease"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "seamless": true
+        },
+        "description": "the hero is hit on the beat and rings out; the structure answers a sixteenth later"
+      },
+      {
+        "version": 1,
+        "archetype": "glide",
+        "archetypeSet": [
+          "pulse",
+          "glide",
+          "breathe"
+        ],
+        "axes": {
+          "energy": 0.581,
+          "elasticity": 0.218,
+          "anticipation": 0.305,
+          "continuity": 0.478,
+          "rhythm": 0.707
+        },
+        "timing": {
+          "bpm": 120,
+          "bars": 4,
+          "fps": 30,
+          "loopFrames": 240,
+          "cyclesPerLoop": 1,
+          "framesPerCycle": 240.0,
+          "beatsPerCycle": 16.0,
+          "sixteenthFrames": 3.75
+        },
+        "easing": {
+          "id": "ease-in-out",
+          "description": "smooth start and stop"
+        },
+        "spring": {
+          "zeta": 0.8082,
+          "wn": 13.391,
+          "ta": 0.0,
+          "depth": 0.0,
+          "steps": 17,
+          "cycles": 1,
+          "amp": 0.2343,
+          "overshoot": 0.0134
+        },
+        "anticipation": {
+          "fraction": 0.0,
+          "frames": 0.0
+        },
+        "settle": {
+          "fraction": 0.37,
+          "frames": 88.8
+        },
+        "hold": 0.0,
+        "hierarchy": {
+          "hero": {
+            "behavior": "lead",
+            "shape": "tri",
+            "cycles": 1,
+            "drive": "target",
+            "amp": 0.2343,
+            "spring": {
+              "zeta": 0.8082,
+              "wn": 13.391,
+              "ta": 0.0,
+              "depth": 0.0,
+              "steps": 17
+            },
+            "lag": {
+              "steps": 0,
+              "lag": 0.0,
+              "frames": 0.0
+            }
+          },
+          "structure": {
+            "behavior": "follow",
+            "shape": "tri",
+            "cycles": 1,
+            "drive": "target",
+            "amp": 0.1172,
+            "spring": {
+              "zeta": 0.9041,
+              "wn": 11.474,
+              "ta": 0,
+              "depth": 0,
+              "steps": 17
+            },
+            "lag": {
+              "steps": 4,
+              "lag": 0.0625,
+              "frames": 15.0
+            }
+          },
+          "ground": {
+            "behavior": "ambient",
+            "lag": {
+              "steps": 8,
+              "lag": 0.125,
+              "frames": 30.0
+            }
+          },
+          "instrument": {
+            "behavior": "accent"
+          },
+          "text": {
+            "behavior": "reveal"
+          }
+        },
+        "choreography": [
+          {
+            "name": "establish",
+            "at": 0.0,
+            "lead": "ground",
+            "energy": 1.0,
+            "transition": "morph"
+          },
+          {
+            "name": "develop",
+            "at": 0.2,
+            "lead": "hero",
+            "energy": 1.1,
+            "transition": "morph"
+          },
+          {
+            "name": "transform",
+            "at": 0.4,
+            "lead": "hero",
+            "energy": 1.0,
+            "transition": "morph"
+          },
+          {
+            "name": "peak",
+            "at": 0.6,
+            "lead": "structure",
+            "energy": 1.1,
+            "transition": "morph"
+          },
+          {
+            "name": "release",
+            "at": 0.8,
+            "lead": "ground",
+            "energy": 1.0,
+            "transition": "morph"
+          }
+        ],
+        "events": [
+          {
+            "name": "establish",
+            "phase": "establish",
+            "beat": 0,
+            "at": 0.0
+          },
+          {
+            "name": "build",
+            "phase": "develop",
+            "beat": 3,
+            "at": 0.1875
+          },
+          {
+            "name": "turn",
+            "phase": "transform",
+            "beat": 6,
+            "at": 0.375
+          },
+          {
+            "name": "focal",
+            "phase": "peak",
+            "beat": 10,
+            "at": 0.625
+          },
+          {
+            "name": "release",
+            "phase": "release",
+            "beat": 13,
+            "at": 0.8125
+          }
+        ],
+        "transitions": {
+          "phases": "morph",
+          "description": "phases flow into each other without a visible edge"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "seamless": true
+        },
+        "description": "one continuous move per loop at a steady pace; no accent"
+      },
+      {
+        "version": 1,
+        "archetype": "breathe",
+        "archetypeSet": [
+          "pulse",
+          "glide",
+          "breathe"
+        ],
+        "axes": {
+          "energy": 0.581,
+          "elasticity": 0.323,
+          "anticipation": 0.48,
+          "continuity": 0.496,
+          "rhythm": 0.689
+        },
+        "timing": {
+          "bpm": 120,
+          "bars": 4,
+          "fps": 30,
+          "loopFrames": 240,
+          "cyclesPerLoop": 2,
+          "framesPerCycle": 120.0,
+          "beatsPerCycle": 8.0,
+          "sixteenthFrames": 3.75
+        },
+        "easing": {
+          "id": "ease-in-out",
+          "description": "smooth start and stop"
+        },
+        "spring": {
+          "zeta": 0.7158,
+          "wn": 13.391,
+          "ta": 0.0,
+          "depth": 0.0,
+          "steps": 18,
+          "cycles": 2,
+          "amp": 0.3124,
+          "overshoot": 0.0399
+        },
+        "anticipation": {
+          "fraction": 0.0,
+          "frames": 0.0
+        },
+        "settle": {
+          "fraction": 0.417,
+          "frames": 50.04
+        },
+        "hold": 0.0,
+        "hierarchy": {
+          "hero": {
+            "behavior": "lead",
+            "shape": "sin",
+            "cycles": 2,
+            "drive": "target",
+            "amp": 0.3124,
+            "spring": {
+              "zeta": 0.7158,
+              "wn": 13.391,
+              "ta": 0.0,
+              "depth": 0.0,
+              "steps": 18
+            },
+            "lag": {
+              "steps": 0,
+              "lag": 0.0,
+              "frames": 0.0
+            }
+          },
+          "structure": {
+            "behavior": "follow",
+            "shape": "sin",
+            "cycles": 2,
+            "drive": "target",
+            "amp": 0.1562,
+            "spring": {
+              "zeta": 0.8579,
+              "wn": 11.474,
+              "ta": 0,
+              "depth": 0,
+              "steps": 18
+            },
+            "lag": {
+              "steps": 2,
+              "lag": 0.0312,
+              "frames": 7.5
+            }
+          },
+          "ground": {
+            "behavior": "ambient",
+            "lag": {
+              "steps": 4,
+              "lag": 0.0625,
+              "frames": 15.0
+            }
+          },
+          "instrument": {
+            "behavior": "accent"
+          },
+          "text": {
+            "behavior": "reveal"
+          }
+        },
+        "choreography": [
+          {
+            "name": "establish",
+            "at": 0.0,
+            "lead": "hero",
+            "energy": 1.0,
+            "transition": "morph"
+          },
+          {
+            "name": "develop",
+            "at": 0.2,
+            "lead": "ground",
+            "energy": 1.1,
+            "transition": "morph"
+          },
+          {
+            "name": "transform",
+            "at": 0.4,
+            "lead": "hero",
+            "energy": 1.0,
+            "transition": "morph"
+          },
+          {
+            "name": "peak",
+            "at": 0.6,
+            "lead": "hero",
+            "energy": 1.1,
+            "transition": "morph"
+          },
+          {
+            "name": "release",
+            "at": 0.8,
+            "lead": "ground",
+            "energy": 1.0,
+            "transition": "morph"
+          }
+        ],
+        "events": [
+          {
+            "name": "establish",
+            "phase": "establish",
+            "beat": 0,
+            "at": 0.0
+          },
+          {
+            "name": "build",
+            "phase": "develop",
+            "beat": 3,
+            "at": 0.1875
+          },
+          {
+            "name": "turn",
+            "phase": "transform",
+            "beat": 6,
+            "at": 0.375
+          },
+          {
+            "name": "focal",
+            "phase": "peak",
+            "beat": 10,
+            "at": 0.625
+          },
+          {
+            "name": "release",
+            "phase": "release",
+            "beat": 13,
+            "at": 0.8125
+          }
+        ],
+        "transitions": {
+          "phases": "morph",
+          "description": "phases flow into each other without a visible edge"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "seamless": true
+        },
+        "description": "one slow breath every two bars; nothing is hit"
+      },
+      {
+        "version": 1,
+        "archetype": "pulse",
+        "archetypeSet": [
+          "pulse",
+          "glide",
+          "breathe"
+        ],
+        "axes": {
+          "energy": 0.581,
+          "elasticity": 0.253,
+          "anticipation": 0.34,
+          "continuity": 0.513,
+          "rhythm": 0.584
+        },
+        "timing": {
+          "bpm": 120,
+          "bars": 4,
+          "fps": 30,
+          "loopFrames": 240,
+          "cyclesPerLoop": 16,
+          "framesPerCycle": 15.0,
+          "beatsPerCycle": 1.0,
+          "sixteenthFrames": 3.75
+        },
+        "easing": {
+          "id": "spring",
+          "description": "kick and ring: fast out, rings down (motion_profiles.py)"
+        },
+        "spring": {
+          "zeta": 0.7774,
+          "wn": 13.391,
+          "ta": 0.0476,
+          "depth": 0.102,
+          "steps": 18,
+          "cycles": 16,
+          "amp": 0.3905,
+          "overshoot": 0.0206
+        },
+        "anticipation": {
+          "fraction": 0.0476,
+          "frames": 0.71
+        },
+        "settle": {
+          "fraction": 0.384,
+          "frames": 5.76
+        },
+        "hold": 0.0,
+        "hierarchy": {
+          "hero": {
+            "behavior": "lead",
+            "shape": "spring",
+            "cycles": 16,
+            "drive": "target",
+            "amp": 0.3905,
+            "spring": {
+              "zeta": 0.7774,
+              "wn": 13.391,
+              "ta": 0.0476,
+              "depth": 0.102,
+              "steps": 18
+            },
+            "lag": {
+              "steps": 0,
+              "lag": 0.0,
+              "frames": 0.0
+            }
+          },
+          "structure": {
+            "behavior": "follow",
+            "shape": "spring",
+            "cycles": 16,
+            "drive": "target",
+            "amp": 0.1953,
+            "spring": {
+              "zeta": 0.8887,
+              "wn": 11.474,
+              "ta": 0,
+              "depth": 0,
+              "steps": 18
+            },
+            "lag": {
+              "steps": 1,
+              "lag": 0.0156,
+              "frames": 3.75
+            }
+          },
+          "ground": {
+            "behavior": "ambient",
+            "lag": {
+              "steps": 2,
+              "lag": 0.0312,
+              "frames": 7.5
+            }
+          },
+          "instrument": {
+            "behavior": "accent"
+          },
+          "text": {
+            "behavior": "reveal"
+          }
+        },
+        "choreography": [
+          {
+            "name": "establish",
+            "at": 0.0,
+            "lead": "hero",
+            "energy": 1.0,
+            "transition": "ease"
+          },
+          {
+            "name": "develop",
+            "at": 0.2,
+            "lead": "hero",
+            "energy": 1.1,
+            "transition": "ease"
+          },
+          {
+            "name": "transform",
+            "at": 0.4,
+            "lead": "structure",
+            "energy": 1.0,
+            "transition": "ease"
+          },
+          {
+            "name": "peak",
+            "at": 0.6,
+            "lead": "hero",
+            "energy": 1.1,
+            "transition": "ease"
+          },
+          {
+            "name": "release",
+            "at": 0.8,
+            "lead": "ground",
+            "energy": 1.0,
+            "transition": "ease"
+          }
+        ],
+        "events": [
+          {
+            "name": "establish",
+            "phase": "establish",
+            "beat": 0,
+            "at": 0.0
+          },
+          {
+            "name": "build",
+            "phase": "develop",
+            "beat": 3,
+            "at": 0.1875
+          },
+          {
+            "name": "turn",
+            "phase": "transform",
+            "beat": 6,
+            "at": 0.375
+          },
+          {
+            "name": "focal",
+            "phase": "peak",
+            "beat": 10,
+            "at": 0.625
+          },
+          {
+            "name": "release",
+            "phase": "release",
+            "beat": 13,
+            "at": 0.8125
+          }
+        ],
+        "transitions": {
+          "phases": "ease",
+          "description": "phases blend with a smooth ease"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "seamless": true
+        },
+        "description": "the hero is hit on the beat and rings out; the structure answers a sixteenth later"
+      }
+    ],
+    "audioSemantics": [
+      {
+        "version": 1,
+        "strategy": "structural",
+        "budget": 2,
+        "archetype": "pulse",
+        "reactive": 2,
+        "layers": [
+          {
+            "name": "FUNDO",
+            "tier": "background",
+            "behavior": "still",
+            "listens": []
+          },
+          {
+            "name": "CAMPO INDUSTRIAL I",
+            "tier": "ground",
+            "behavior": "section",
+            "listens": [
+              "level"
+            ]
+          },
+          {
+            "name": "ATMOSFERA I",
+            "tier": "ground",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "HERÓI INDUSTRIAL I",
+            "tier": "hero",
+            "behavior": "follow",
+            "listens": [
+              "bass"
+            ]
+          },
+          {
+            "name": "ESTRUTURA I",
+            "tier": "structure",
+            "behavior": "beat",
+            "listens": []
+          },
+          {
+            "name": "INSTRUMENTO I",
+            "tier": "instrument",
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ]
+          },
+          {
+            "name": "INFORMAÇÃO I",
+            "tier": "information",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "ACABAMENTO",
+            "tier": "finish",
+            "behavior": "beat",
+            "listens": []
+          }
+        ]
+      },
+      {
+        "version": 1,
+        "strategy": "structural",
+        "budget": 2,
+        "archetype": "glide",
+        "reactive": 2,
+        "layers": [
+          {
+            "name": "FUNDO",
+            "tier": "background",
+            "behavior": "still",
+            "listens": []
+          },
+          {
+            "name": "CAMPO GLITCH II",
+            "tier": "ground",
+            "behavior": "section",
+            "listens": [
+              "level"
+            ]
+          },
+          {
+            "name": "ATMOSFERA II",
+            "tier": "ground",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "HERÓI GLITCH II",
+            "tier": "hero",
+            "behavior": "follow",
+            "listens": [
+              "bass"
+            ]
+          },
+          {
+            "name": "ESTRUTURA II",
+            "tier": "structure",
+            "behavior": "beat",
+            "listens": []
+          },
+          {
+            "name": "INSTRUMENTO II",
+            "tier": "instrument",
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ]
+          },
+          {
+            "name": "INFORMAÇÃO II",
+            "tier": "information",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "ACABAMENTO",
+            "tier": "finish",
+            "behavior": "beat",
+            "listens": []
+          }
+        ]
+      },
+      {
+        "version": 1,
+        "strategy": "structural",
+        "budget": 2,
+        "archetype": "breathe",
+        "reactive": 2,
+        "layers": [
+          {
+            "name": "FUNDO",
+            "tier": "background",
+            "behavior": "still",
+            "listens": []
+          },
+          {
+            "name": "CAMPO AGGRESSIVE III",
+            "tier": "ground",
+            "behavior": "section",
+            "listens": [
+              "level"
+            ]
+          },
+          {
+            "name": "ATMOSFERA III",
+            "tier": "ground",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "HERÓI AGGRESSIVE III",
+            "tier": "hero",
+            "behavior": "follow",
+            "listens": [
+              "bass"
+            ]
+          },
+          {
+            "name": "ESTRUTURA III",
+            "tier": "structure",
+            "behavior": "beat",
+            "listens": []
+          },
+          {
+            "name": "INSTRUMENTO III",
+            "tier": "instrument",
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ]
+          },
+          {
+            "name": "INFORMAÇÃO III",
+            "tier": "information",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "ACABAMENTO",
+            "tier": "finish",
+            "behavior": "beat",
+            "listens": []
+          }
+        ]
+      },
+      {
+        "version": 1,
+        "strategy": "structural",
+        "budget": 2,
+        "archetype": "pulse",
+        "reactive": 2,
+        "layers": [
+          {
+            "name": "FUNDO",
+            "tier": "background",
+            "behavior": "still",
+            "listens": []
+          },
+          {
+            "name": "CAMPO INDUSTRIAL IV",
+            "tier": "ground",
+            "behavior": "section",
+            "listens": [
+              "level"
+            ]
+          },
+          {
+            "name": "ATMOSFERA IV",
+            "tier": "ground",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "HERÓI INDUSTRIAL IV",
+            "tier": "hero",
+            "behavior": "follow",
+            "listens": [
+              "bass"
+            ]
+          },
+          {
+            "name": "ESTRUTURA IV",
+            "tier": "structure",
+            "behavior": "beat",
+            "listens": []
+          },
+          {
+            "name": "INSTRUMENTO IV",
+            "tier": "instrument",
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ]
+          },
+          {
+            "name": "INFORMAÇÃO IV",
+            "tier": "information",
+            "behavior": "drift",
+            "listens": []
+          },
+          {
+            "name": "ACABAMENTO",
+            "tier": "finish",
+            "behavior": "beat",
+            "listens": []
+          }
+        ]
+      }
+    ],
+    "depthIR": [
+      {
+        "version": 1,
+        "archetype": "pulse",
+        "camera": {
+          "move": "dolly",
+          "amp": 0.1278,
+          "cycles": 2,
+          "phase": 0,
+          "focus": 0.2,
+          "fog": 0.1,
+          "dof": 0.01
+        },
+        "description": "the scene breathes with the pulse: the camera pushes in and out",
+        "focus": {
+          "z": 0.2,
+          "tier": "hero"
+        },
+        "planes": [
+          {
+            "name": "CAMPO INDUSTRIAL I",
+            "tier": "ground",
+            "z": -0.9,
+            "fog": 0.073,
+            "blurPx": 16.32
+          },
+          {
+            "name": "ATMOSFERA I",
+            "tier": "ground",
+            "z": -0.5,
+            "fog": 0.047,
+            "blurPx": 8.64
+          },
+          {
+            "name": "HERÓI INDUSTRIAL I",
+            "tier": "hero",
+            "z": 0.2,
+            "fog": 0.0,
+            "blurPx": 0.0
+          },
+          {
+            "name": "ESTRUTURA I",
+            "tier": "structure",
+            "z": -0.3,
+            "fog": 0.033,
+            "blurPx": 4.8
+          }
+        ],
+        "screen": [
+          "FUNDO",
+          "INSTRUMENTO I",
+          "INFORMAÇÃO I",
+          "ACABAMENTO"
+        ],
+        "parallax": {
+          "shiftXPx": 0,
+          "shiftYPx": 0,
+          "scalePct": 7.67,
+          "unitPx": 1920,
+          "blurMaxPx": 16.32,
+          "fogMax": 0.073
+        },
+        "seam": {
+          "hard": false,
+          "rule": null,
+          "from": "dolly"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "audio": false
+        }
+      },
+      {
+        "version": 1,
+        "archetype": "glide",
+        "camera": {
+          "move": "sway",
+          "amp": 0.0532,
+          "cycles": 1,
+          "phase": 0,
+          "focus": 0.2,
+          "fog": 0.1,
+          "dof": 0.01
+        },
+        "description": "the scene glides: the camera sways so planes slide against each other",
+        "focus": {
+          "z": 0.2,
+          "tier": "hero"
+        },
+        "planes": [
+          {
+            "name": "CAMPO GLITCH II",
+            "tier": "ground",
+            "z": -0.9,
+            "fog": 0.073,
+            "blurPx": 16.32
+          },
+          {
+            "name": "ATMOSFERA II",
+            "tier": "ground",
+            "z": -0.5,
+            "fog": 0.047,
+            "blurPx": 8.64
+          },
+          {
+            "name": "HERÓI GLITCH II",
+            "tier": "hero",
+            "z": 0.2,
+            "fog": 0.0,
+            "blurPx": 0.0
+          },
+          {
+            "name": "ESTRUTURA II",
+            "tier": "structure",
+            "z": -0.3,
+            "fog": 0.033,
+            "blurPx": 4.8
+          }
+        ],
+        "screen": [
+          "FUNDO",
+          "INSTRUMENTO II",
+          "INFORMAÇÃO II",
+          "ACABAMENTO"
+        ],
+        "parallax": {
+          "shiftXPx": 112.36,
+          "shiftYPx": 0,
+          "scalePct": 0,
+          "unitPx": 1920,
+          "blurMaxPx": 16.32,
+          "fogMax": 0.073
+        },
+        "seam": {
+          "hard": false,
+          "rule": null,
+          "from": "sway"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "audio": false
+        }
+      },
+      {
+        "version": 1,
+        "archetype": "breathe",
+        "camera": {
+          "move": "dolly",
+          "amp": 0.1278,
+          "cycles": 2,
+          "phase": 0,
+          "focus": 0.2,
+          "fog": 0.1,
+          "dof": 0.01
+        },
+        "description": "a slow breath: the camera pushes in and out",
+        "focus": {
+          "z": 0.2,
+          "tier": "hero"
+        },
+        "planes": [
+          {
+            "name": "CAMPO AGGRESSIVE III",
+            "tier": "ground",
+            "z": -0.9,
+            "fog": 0.073,
+            "blurPx": 16.32
+          },
+          {
+            "name": "ATMOSFERA III",
+            "tier": "ground",
+            "z": -0.5,
+            "fog": 0.047,
+            "blurPx": 8.64
+          },
+          {
+            "name": "HERÓI AGGRESSIVE III",
+            "tier": "hero",
+            "z": 0.2,
+            "fog": 0.0,
+            "blurPx": 0.0
+          },
+          {
+            "name": "ESTRUTURA III",
+            "tier": "structure",
+            "z": -0.3,
+            "fog": 0.033,
+            "blurPx": 4.8
+          }
+        ],
+        "screen": [
+          "FUNDO",
+          "INSTRUMENTO III",
+          "INFORMAÇÃO III",
+          "ACABAMENTO"
+        ],
+        "parallax": {
+          "shiftXPx": 0,
+          "shiftYPx": 0,
+          "scalePct": 7.67,
+          "unitPx": 1920,
+          "blurMaxPx": 16.32,
+          "fogMax": 0.073
+        },
+        "seam": {
+          "hard": false,
+          "rule": null,
+          "from": "dolly"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "audio": false
+        }
+      },
+      {
+        "version": 1,
+        "archetype": "pulse",
+        "camera": {
+          "move": "dolly",
+          "amp": 0.1278,
+          "cycles": 2,
+          "phase": 0,
+          "focus": 0.2,
+          "fog": 0.1,
+          "dof": 0.01
+        },
+        "description": "the scene breathes with the pulse: the camera pushes in and out",
+        "focus": {
+          "z": 0.2,
+          "tier": "hero"
+        },
+        "planes": [
+          {
+            "name": "CAMPO INDUSTRIAL IV",
+            "tier": "ground",
+            "z": -0.9,
+            "fog": 0.073,
+            "blurPx": 16.32
+          },
+          {
+            "name": "ATMOSFERA IV",
+            "tier": "ground",
+            "z": -0.5,
+            "fog": 0.047,
+            "blurPx": 8.64
+          },
+          {
+            "name": "HERÓI INDUSTRIAL IV",
+            "tier": "hero",
+            "z": 0.2,
+            "fog": 0.0,
+            "blurPx": 0.0
+          },
+          {
+            "name": "ESTRUTURA IV",
+            "tier": "structure",
+            "z": -0.3,
+            "fog": 0.033,
+            "blurPx": 4.8
+          }
+        ],
+        "screen": [
+          "FUNDO",
+          "INSTRUMENTO IV",
+          "INFORMAÇÃO IV",
+          "ACABAMENTO"
+        ],
+        "parallax": {
+          "shiftXPx": 0,
+          "shiftYPx": 0,
+          "scalePct": 7.67,
+          "unitPx": 1920,
+          "blurMaxPx": 16.32,
+          "fogMax": 0.073
+        },
+        "seam": {
+          "hard": false,
+          "rule": null,
+          "from": "dolly"
+        },
+        "loop": {
+          "closes": true,
+          "wholeCycles": true,
+          "audio": false
+        }
+      }
+    ],
+    "surfaceIR": {
+      "version": 1,
+      "canvas": {
+        "w": 3840,
+        "h": 1920,
+        "aspect": 2.0,
+        "aspectClass": "wide",
+        "orientation": "wide"
+      },
+      "facts": [
+        {
+          "id": "size",
+          "value": [
+            3840,
+            1920
+          ],
+          "confidence": "EXPLICIT",
+          "basis": "declared canvas size in pixels"
+        },
+        {
+          "id": "aspect",
+          "value": 2.0,
+          "confidence": "EXPLICIT",
+          "basis": "exact arithmetic on the declared size"
+        },
+        {
+          "id": "walls",
+          "value": 1,
+          "confidence": "INFERRED",
+          "basis": "no folds declared: one wall is assumed"
+        },
+        {
+          "id": "activeArea",
+          "value": 1.0,
+          "confidence": "INFERRED",
+          "basis": "no regions given: the whole canvas is treated as surface"
+        },
+        {
+          "id": "layout",
+          "value": null,
+          "confidence": "UNKNOWN",
+          "basis": "no regions to measure"
+        },
+        {
+          "id": "symmetry",
+          "value": null,
+          "confidence": "UNKNOWN",
+          "basis": "no regions to measure"
+        },
+        {
+          "id": "readingAxis",
+          "value": "x",
+          "confidence": "INFERRED",
+          "basis": "the long side of the canvas is where the eye travels"
+        },
+        {
+          "id": "pitch",
+          "value": 3.9,
+          "confidence": "EXPLICIT",
+          "basis": "declared by the author"
+        },
+        {
+          "id": "viewingDistance",
+          "value": 40,
+          "confidence": "EXPLICIT",
+          "basis": "declared by the author (the farthest viewer)"
+        },
+        {
+          "id": "legibility",
+          "value": {
+            "capPx": 54,
+            "linePx": 9
+          },
+          "confidence": "INFERRED",
+          "basis": "visual-angle rules of thumb applied to the declared pitch and distance"
+        }
+      ],
+      "walls": [
+        {
+          "from": 0.0,
+          "to": 1.0
+        }
+      ],
+      "regions": null,
+      "grid": null,
+      "constraints": [
+        {
+          "id": "safeArea",
+          "kind": "margin",
+          "strength": "soft",
+          "confidence": "INFERRED",
+          "value": {
+            "x": 0.05,
+            "y": 0.05,
+            "w": 0.9,
+            "h": 0.9
+          },
+          "rule": "default margin: no regions to measure"
+        },
+        {
+          "id": "readingAxis",
+          "kind": "advice",
+          "strength": "soft",
+          "confidence": "INFERRED",
+          "value": "x",
+          "rule": "movement along the long side reads better than across it"
+        },
+        {
+          "id": "legibility",
+          "kind": "advice",
+          "strength": "soft",
+          "confidence": "INFERRED",
+          "value": {
+            "capPx": 54,
+            "linePx": 9
+          },
+          "rule": "smallest text and stroke that read, in pixels (rules of thumb)"
+        }
+      ],
+      "unknowns": [
+        {
+          "id": "depth",
+          "why": "a imagem 2D não diz se a superfície tem relevo ou profundidade",
+          "ask": "A superfície é plana ou tem relevo (volumes, recortes)?"
+        },
+        {
+          "id": "curvature",
+          "why": "curvatura não aparece em largura e altura",
+          "ask": "A superfície é plana, côncava, convexa ou em cilindro?"
+        },
+        {
+          "id": "ambientLight",
+          "why": "a luz do local muda contraste e cor percebidos",
+          "ask": "O local é escuro, penumbra ou com luz do dia?"
+        },
+        {
+          "id": "material",
+          "why": "o acabamento do painel muda brilho e moiré",
+          "ask": "Qual o acabamento (LED, tela, parede branca, outro)?"
+        },
+        {
+          "id": "regions",
+          "why": "sem as regiões ativas o canvas inteiro é tratado como superfície",
+          "ask": "Importe um CSV ou uma máscara PNG: há partes do canvas que não existem fisicamente?"
+        }
+      ],
+      "summary": {
+        "EXPLICIT": 4,
+        "DETECTED": 0,
+        "INFERRED": 4,
+        "UNKNOWN": 2
+      }
+    }
+  },
+  "canvas": {
+    "w": 3840,
+    "h": 1920,
+    "fps": 30,
+    "target": "led"
+  },
+  "time": {
+    "bpm": 120,
+    "bars": 4,
+    "loop": true,
+    "seamless": true,
+    "mode": "loop",
+    "transition": "fade"
+  },
+  "audio": {
+    "reactive": true,
+    "sens": 1,
+    "smooth": 0.7,
+    "strategy": "structural"
+  },
+  "palette": {
+    "bg": "#000103",
+    "primary": "#DEE9F5",
+    "secondary": "#648E9B",
+    "accent": "#9398FF"
+  },
+  "compositions": [
+    {
+      "name": "INDUSTRIAL I",
+      "hypothesis": "ESTABLISH: Vigilância urbana como arquitetura de extração: câmeras, drones e dados de pessoas alimentam uma tecnocracia; o sistema lê a cidade em calor",
+      "motion": "smooth",
+      "layers": [
+        {
+          "type": "bg",
+          "name": "FUNDO",
+          "on": true,
+          "opacity": 1,
+          "blend": "normal",
+          "role": "ground colour of the piece; the quiet reference everything else is read against",
+          "p": {
+            "grain": 0
+          },
+          "temporal": {
+            "behavior": "still",
+            "listens": [],
+            "reason": "ground colour: nothing in it moves"
+          }
+        },
+        {
+          "type": "shader",
+          "name": "CAMPO INDUSTRIAL I",
+          "on": true,
+          "opacity": 0.3,
+          "blend": "normal",
+          "role": "ground field: slow matter that gives the figure something to cut against",
+          "p": {
+            "preset": "FAIXAS",
+            "p1": 8,
+            "p2": 1,
+            "p3": 0.35,
+            "p4": 0.15,
+            "c1": "secondary",
+            "c2": "secondary",
+            "res": 0.5,
+            "alphaMode": "alpha",
+            "phase": 0.0312
+          },
+          "temporal": {
+            "behavior": "section",
+            "listens": [
+              "level"
+            ],
+            "reason": "follows the presence of the track (build, drop, break), never single hits"
+          },
+          "z": -0.9
+        },
+        {
+          "type": "shader",
+          "name": "ATMOSFERA I",
+          "on": true,
+          "opacity": 0.12,
+          "blend": "add",
+          "role": "atmosphere: a second, fainter field in the accent that adds depth without competing with the hero",
+          "p": {
+            "preset": "INTERFERÊNCIA",
+            "p1": 6,
+            "p2": 1,
+            "p3": 0.25,
+            "p4": 0.3,
+            "c1": "accent",
+            "c2": "accent",
+            "res": 0.5,
+            "alphaMode": "alpha",
+            "phase": 0.0312
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
+          },
+          "z": -0.5
+        },
+        {
+          "type": "lines",
+          "name": "HERÓI INDUSTRIAL I",
+          "on": true,
+          "opacity": 1,
+          "blend": "normal",
+          "role": "hero: the single dominant figure of this composition (Os lasers infravermelhos do poste travam no chão e o contador de câmeras sorteia)",
+          "p": {
+            "dir": "h",
+            "count": 8,
+            "weight": 9,
+            "stepped": true,
+            "audio": 0.73,
+            "band": "bass",
+            "contrast": 1,
+            "speed": 1
+          },
+          "mod": [
+            {
+              "k": "contrast",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": 1.0,
+              "max": 1.1,
+              "mode": "mul",
+              "keys": [
+                0.0,
+                0.5,
+                0.0,
+                1.0,
+                0.0
+              ]
+            },
+            {
+              "k": "speed",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": 1.0,
+              "max": 1.1,
+              "mode": "mul",
+              "keys": [
+                0.0,
+                1.0,
+                0.0,
+                1.0,
+                0.0
+              ]
+            },
+            {
+              "k": "count",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": 1.0,
+              "max": 1.1,
+              "mode": "mul",
+              "keys": [
+                0.0,
+                1.0,
+                0.0,
+                1.0,
+                0.0
+              ]
+            },
+            {
+              "k": "weight",
+              "src": "lfo",
+              "shape": "spring",
+              "cycles": 16,
+              "zeta": 0.7774,
+              "wn": 13.391,
+              "min": 1.0,
+              "max": 1.3905,
+              "mode": "mul",
+              "ta": 0.0476,
+              "depth": 0.102,
+              "steps": 18
+            }
+          ],
+          "temporal": {
+            "behavior": "follow",
+            "listens": [
+              "bass"
+            ],
+            "reason": "carries the bass story: it swells and settles with the low end"
+          },
+          "z": 0.2
+        },
+        {
+          "type": "lines",
+          "name": "ESTRUTURA I",
+          "on": true,
+          "opacity": 0.3,
+          "blend": "normal",
+          "role": "structure: the grid or rhythm the eye measures the hero against",
+          "p": {
+            "dir": "h",
+            "count": 18,
+            "weight": 2
+          },
+          "mod": [],
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
+          },
+          "z": -0.3
+        },
+        {
+          "type": "instrument",
+          "name": "INSTRUMENTO I",
+          "on": true,
+          "opacity": 0.8,
+          "blend": "normal",
+          "role": "instrument: shows the real signal that drives the picture (cause and effect)",
+          "p": {
+            "kind": "bars",
+            "size": 0.28,
+            "cx": 0.7,
+            "cy": 0.85,
+            "n": 36,
+            "weight": 3
+          },
+          "temporal": {
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ],
+            "reason": "shows the real signal; it is the meter, not part of the picture"
+          }
+        },
+        {
+          "type": "hud",
+          "name": "INFORMAÇÃO I",
+          "on": true,
+          "opacity": 0.8,
+          "blend": "normal",
+          "role": "information: small, calm, always the same place; it tells the viewer the system is alive",
+          "p": {
+            "title": "TECNOFEUDO SMART SAMPA"
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
+          }
+        },
+        {
+          "type": "post",
+          "name": "ACABAMENTO",
+          "on": true,
+          "opacity": 1,
+          "blend": "normal",
+          "role": "finish: vignette and a touch of tension; scanlines only where the surface is a screen",
+          "p": {
+            "scan": 0,
+            "vig": 0.35,
+            "prob": 0.31
+          },
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
+          }
+        }
+      ],
+      "camera": {
+        "move": "dolly",
+        "amp": 0.1278,
+        "cycles": 2,
+        "phase": 0,
+        "focus": 0.2,
+        "fog": 0.1,
+        "dof": 0.01
+      }
+    },
+    {
+      "name": "GLITCH II",
+      "hypothesis": "TURN: Vigilância urbana como arquitetura de extração: câmeras, drones e dados de pessoas alimentam uma tecnocracia; o sistema lê a cidade em calor",
+      "motion": "step",
+      "layers": [
+        {
+          "type": "bg",
+          "name": "FUNDO",
+          "on": true,
+          "opacity": 1,
+          "blend": "normal",
+          "role": "ground colour of the piece; the quiet reference everything else is read against",
+          "p": {
+            "grain": 0
+          },
+          "temporal": {
+            "behavior": "still",
+            "listens": [],
+            "reason": "ground colour: nothing in it moves"
+          }
+        },
+        {
+          "type": "shader",
+          "name": "CAMPO GLITCH II",
+          "on": true,
+          "opacity": 0.22,
+          "blend": "normal",
+          "role": "ground field: slow matter that gives the figure something to cut against",
+          "p": {
+            "preset": "INTERFERÊNCIA",
+            "p1": 6,
+            "p2": 1,
+            "p3": 0.25,
+            "p4": 0.3,
+            "c1": "secondary",
+            "c2": "secondary",
+            "res": 0.5,
+            "alphaMode": "alpha",
+            "phase": 0.125
+          },
+          "temporal": {
+            "behavior": "section",
+            "listens": [
+              "level"
+            ],
+            "reason": "follows the presence of the track (build, drop, break), never single hits"
+          },
+          "z": -0.9
+        },
+        {
+          "type": "shader",
+          "name": "ATMOSFERA II",
+          "on": true,
+          "opacity": 0.18,
+          "blend": "add",
+          "role": "atmosphere: a second, fainter field in the accent that adds depth without competing with the hero",
+          "p": {
+            "preset": "FLUXO WARP",
+            "p1": 1.2,
+            "p2": 0.8,
+            "p3": 0.4,
+            "p4": 1.0,
+            "c1": "accent",
+            "c2": "accent",
+            "res": 0.5,
+            "alphaMode": "alpha",
+            "phase": 0.125
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
+          },
+          "z": -0.5
+        },
+        {
+          "type": "shape",
+          "name": "HERÓI GLITCH II",
+          "on": true,
+          "opacity": 1,
+          "blend": "normal",
+          "role": "hero: the single dominant figure of this composition (Os lasers infravermelhos do poste travam no chão e o contador de câmeras sorteia)",
+          "p": {
+            "kind": "ring",
+            "layout": "radial",
+            "count": 9,
+            "size": 150,
+            "spread": 260,
+            "audio": 0.73,
+            "band": "bass",
+            "x": -770,
+            "y": -240,
+            "sx": 1.07,
+            "sy": 1.07,
+            "rot": 0,
+            "contrast": 1,
+            "speed": 1
+          },
+          "mod": [
+            {
+              "k": "sx",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": 0.95,
+              "max": 1.1,
+              "mode": "mul",
+              "keys": [
+                0.3333,
+                1.0,
+                0.0,
+                1.0,
+                0.3333
+              ]
+            },
+            {
+              "k": "sy",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": 0.95,
+              "max": 1.1,
+              "mode": "mul",
+              "keys": [
+                0.3333,
+                1.0,
+                0.0,
+                1.0,
+                0.3333
+              ]
+            },
+            {
+              "k": "rot",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": -2,
+              "max": 2,
+              "mode": "add",
+              "keys": [
+                0.5,
+                1.0,
+                0.5,
+                0.0,
+                0.5
+              ]
+            },
+            {
+              "k": "contrast",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": 1.0,
+              "max": 1.1,
+              "mode": "mul",
+              "keys": [
+                0.0,
+                0.5,
+                0.0,
+                1.0,
+                0.0
+              ]
+            },
+            {
+              "k": "speed",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": 1.0,
+              "max": 1.1,
+              "mode": "mul",
+              "keys": [
+                0.0,
+                1.0,
+                0.0,
+                1.0,
+                0.0
+              ]
+            },
+            {
+              "k": "count",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": 1.0,
+              "max": 1.1,
+              "mode": "mul",
+              "keys": [
+                0.0,
+                1.0,
+                0.0,
+                1.0,
+                0.0
+              ]
+            },
+            {
+              "k": "size",
+              "src": "lfo",
+              "shape": "tri",
+              "cycles": 1,
+              "min": 1.0,
+              "max": 1.2343,
+              "mode": "mul"
+            }
+          ],
+          "temporal": {
+            "behavior": "follow",
+            "listens": [
+              "bass"
+            ],
+            "reason": "carries the bass story: it swells and settles with the low end"
+          },
+          "z": 0.2
+        },
+        {
+          "type": "tunnel",
+          "name": "ESTRUTURA II",
+          "on": true,
+          "opacity": 0.3,
+          "blend": "normal",
+          "role": "structure: the grid or rhythm the eye measures the hero against",
+          "p": {
+            "shape": "circle",
+            "count": 10,
+            "cycles": 1,
+            "band": "high",
+            "size": 1,
+            "x": 847,
+            "y": 384,
+            "sx": 0.79,
+            "sy": 0.79,
+            "phase": 0.0625
+          },
+          "mod": [
+            {
+              "k": "size",
+              "src": "lfo",
+              "shape": "tri",
+              "cycles": 1,
+              "min": 1.0,
+              "max": 1.1172,
+              "mode": "mul"
+            }
+          ],
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
+          },
+          "z": -0.3
+        },
+        {
+          "type": "instrument",
+          "name": "INSTRUMENTO II",
+          "on": true,
+          "opacity": 0.8,
+          "blend": "normal",
+          "role": "instrument: shows the real signal that drives the picture (cause and effect)",
+          "p": {
+            "kind": "radial",
+            "size": 0.28,
+            "cx": 0.5,
+            "cy": 0.85,
+            "n": 36,
+            "weight": 3
+          },
+          "temporal": {
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ],
+            "reason": "shows the real signal; it is the meter, not part of the picture"
+          }
+        },
+        {
+          "type": "hud",
+          "name": "INFORMAÇÃO II",
+          "on": true,
+          "opacity": 0.8,
+          "blend": "normal",
+          "role": "information: small, calm, always the same place; it tells the viewer the system is alive",
+          "p": {
+            "title": "TECNOFEUDO SMART SAMPA"
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
+          }
+        },
+        {
+          "type": "post",
+          "name": "ACABAMENTO",
+          "on": true,
+          "opacity": 1,
+          "blend": "normal",
+          "role": "finish: vignette and a touch of tension; scanlines only where the surface is a screen",
+          "p": {
+            "scan": 0,
+            "vig": 0.35,
+            "prob": 0.31
+          },
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
+          }
+        }
+      ],
+      "camera": {
+        "move": "sway",
+        "amp": 0.0532,
+        "cycles": 1,
+        "phase": 0,
+        "focus": 0.2,
+        "fog": 0.1,
+        "dof": 0.01
+      }
+    },
+    {
+      "name": "AGGRESSIVE III",
+      "hypothesis": "TURN: Vigilância urbana como arquitetura de extração: câmeras, drones e dados de pessoas alimentam uma tecnocracia; o sistema lê a cidade em calor",
+      "motion": "step",
+      "layers": [
+        {
+          "type": "bg",
+          "name": "FUNDO",
+          "on": true,
+          "opacity": 1,
+          "blend": "normal",
+          "role": "ground colour of the piece; the quiet reference everything else is read against",
+          "p": {
+            "grain": 0
+          },
+          "temporal": {
+            "behavior": "still",
+            "listens": [],
+            "reason": "ground colour: nothing in it moves"
+          }
+        },
+        {
+          "type": "shader",
+          "name": "CAMPO AGGRESSIVE III",
+          "on": true,
+          "opacity": 0.3,
+          "blend": "normal",
+          "role": "ground field: slow matter that gives the figure something to cut against",
+          "p": {
+            "preset": "FLUXO WARP",
+            "p1": 1.2,
+            "p2": 0.8,
+            "p3": 0.4,
+            "p4": 1.0,
+            "c1": "secondary",
+            "c2": "secondary",
+            "res": 0.5,
+            "alphaMode": "alpha",
+            "phase": 0.0625
+          },
+          "temporal": {
+            "behavior": "section",
+            "listens": [
+              "level"
+            ],
+            "reason": "follows the presence of the track (build, drop, break), never single hits"
+          },
+          "z": -0.9
+        },
+        {
+          "type": "shader",
+          "name": "ATMOSFERA III",
+          "on": true,
+          "opacity": 0.12,
+          "blend": "add",
+          "role": "atmosphere: a second, fainter field in the accent that adds depth without competing with the hero",
+          "p": {
+            "preset": "FAIXAS",
+            "p1": 8,
+            "p2": 1,
+            "p3": 0.35,
+            "p4": 0.15,
+            "c1": "accent",
+            "c2": "accent",
+            "res": 0.5,
+            "alphaMode": "alpha",
+            "phase": 0.0625
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
+          },
+          "z": -0.5
+        },
+        {
+          "type": "flow",
+          "name": "HERÓI AGGRESSIVE III",
+          "on": true,
+          "opacity": 1,
+          "blend": "normal",
+          "role": "hero: the single dominant figure of this composition (Os lasers infravermelhos do poste travam no chão e o contador de câmeras sorteia)",
+          "p": {
+            "count": 900,
+            "trail": 10,
+            "audio": 0.73,
+            "band": "bass",
+            "width": 2.4,
+            "alpha": 0.9,
+            "amp": 0.12,
+            "contrast": 1,
+            "speed": 1
+          },
+          "mod": [
+            {
+              "k": "contrast",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": 1.0,
+              "max": 1.1,
+              "mode": "mul",
+              "keys": [
+                0.0,
+                0.5,
+                0.0,
+                1.0,
+                0.0
+              ]
+            },
+            {
+              "k": "speed",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": 1.0,
+              "max": 1.1,
+              "mode": "mul",
+              "keys": [
+                0.0,
+                1.0,
+                0.0,
+                1.0,
+                0.0
+              ]
+            },
+            {
+              "k": "count",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": 1.0,
+              "max": 1.1,
+              "mode": "mul",
+              "keys": [
+                0.0,
+                1.0,
+                0.0,
+                1.0,
+                0.0
+              ]
+            },
+            {
+              "k": "amp",
+              "src": "lfo",
+              "shape": "sin",
+              "cycles": 2,
+              "min": 1.0,
+              "max": 1.3124,
+              "mode": "mul"
+            }
+          ],
+          "temporal": {
+            "behavior": "follow",
+            "listens": [
+              "bass"
+            ],
+            "reason": "carries the bass story: it swells and settles with the low end"
+          },
+          "z": 0.2
+        },
+        {
+          "type": "lines",
+          "name": "ESTRUTURA III",
+          "on": true,
+          "opacity": 0.3,
+          "blend": "normal",
+          "role": "structure: the grid or rhythm the eye measures the hero against",
+          "p": {
+            "dir": "d",
+            "count": 18,
+            "weight": 2,
+            "band": "high",
+            "phase": 0.0312
+          },
+          "mod": [
+            {
+              "k": "weight",
+              "src": "lfo",
+              "shape": "sin",
+              "cycles": 2,
+              "min": 1.0,
+              "max": 1.1562,
+              "mode": "mul"
+            }
+          ],
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
+          },
+          "z": -0.3
+        },
+        {
+          "type": "instrument",
+          "name": "INSTRUMENTO III",
+          "on": true,
+          "opacity": 0.8,
+          "blend": "normal",
+          "role": "instrument: shows the real signal that drives the picture (cause and effect)",
+          "p": {
+            "kind": "heat",
+            "size": 0.28,
+            "cx": 0.8,
+            "cy": 0.85,
+            "n": 36,
+            "weight": 3
+          },
+          "temporal": {
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ],
+            "reason": "shows the real signal; it is the meter, not part of the picture"
+          }
+        },
+        {
+          "type": "hud",
+          "name": "INFORMAÇÃO III",
+          "on": true,
+          "opacity": 0.8,
+          "blend": "normal",
+          "role": "information: small, calm, always the same place; it tells the viewer the system is alive",
+          "p": {
+            "title": "TECNOFEUDO SMART SAMPA"
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
+          }
+        },
+        {
+          "type": "post",
+          "name": "ACABAMENTO",
+          "on": true,
+          "opacity": 1,
+          "blend": "normal",
+          "role": "finish: vignette and a touch of tension; scanlines only where the surface is a screen",
+          "p": {
+            "scan": 0,
+            "vig": 0.35,
+            "prob": 0.31
+          },
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
+          }
+        }
+      ],
+      "camera": {
+        "move": "dolly",
+        "amp": 0.1278,
+        "cycles": 2,
+        "phase": 0,
+        "focus": 0.2,
+        "fog": 0.1,
+        "dof": 0.01
+      }
+    },
+    {
+      "name": "INDUSTRIAL IV",
+      "hypothesis": "TURN: Vigilância urbana como arquitetura de extração: câmeras, drones e dados de pessoas alimentam uma tecnocracia; o sistema lê a cidade em calor",
+      "motion": "smooth",
+      "layers": [
+        {
+          "type": "bg",
+          "name": "FUNDO",
+          "on": true,
+          "opacity": 1,
+          "blend": "normal",
+          "role": "ground colour of the piece; the quiet reference everything else is read against",
+          "p": {
+            "grain": 0
+          },
+          "temporal": {
+            "behavior": "still",
+            "listens": [],
+            "reason": "ground colour: nothing in it moves"
+          }
+        },
+        {
+          "type": "shader",
+          "name": "CAMPO INDUSTRIAL IV",
+          "on": true,
+          "opacity": 0.22,
+          "blend": "normal",
+          "role": "ground field: slow matter that gives the figure something to cut against",
+          "p": {
+            "preset": "FAIXAS",
+            "p1": 8,
+            "p2": 1,
+            "p3": 0.35,
+            "p4": 0.15,
+            "c1": "secondary",
+            "c2": "secondary",
+            "res": 0.5,
+            "alphaMode": "alpha",
+            "phase": 0.0312
+          },
+          "temporal": {
+            "behavior": "section",
+            "listens": [
+              "level"
+            ],
+            "reason": "follows the presence of the track (build, drop, break), never single hits"
+          },
+          "z": -0.9
+        },
+        {
+          "type": "shader",
+          "name": "ATMOSFERA IV",
+          "on": true,
+          "opacity": 0.18,
+          "blend": "add",
+          "role": "atmosphere: a second, fainter field in the accent that adds depth without competing with the hero",
+          "p": {
+            "preset": "INTERFERÊNCIA",
+            "p1": 6,
+            "p2": 1,
+            "p3": 0.25,
+            "p4": 0.3,
+            "c1": "accent",
+            "c2": "accent",
+            "res": 0.5,
+            "alphaMode": "alpha",
+            "phase": 0.0312
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
+          },
+          "z": -0.5
+        },
+        {
+          "type": "lines",
+          "name": "HERÓI INDUSTRIAL IV",
+          "on": true,
+          "opacity": 1,
+          "blend": "normal",
+          "role": "hero: the single dominant figure of this composition (Os lasers infravermelhos do poste travam no chão e o contador de câmeras sorteia)",
+          "p": {
+            "dir": "h",
+            "count": 8,
+            "weight": 9,
+            "stepped": true,
+            "audio": 0.73,
+            "band": "bass",
+            "contrast": 1,
+            "speed": 1
+          },
+          "mod": [
+            {
+              "k": "contrast",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": 1.0,
+              "max": 1.1,
+              "mode": "mul",
+              "keys": [
+                0.0,
+                0.5,
+                0.0,
+                1.0,
+                0.0
+              ]
+            },
+            {
+              "k": "speed",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": 1.0,
+              "max": 1.1,
+              "mode": "mul",
+              "keys": [
+                0.0,
+                1.0,
+                0.0,
+                1.0,
+                0.0
+              ]
+            },
+            {
+              "k": "count",
+              "src": "lfo",
+              "shape": "env",
+              "cycles": 1,
+              "min": 1.0,
+              "max": 1.1,
+              "mode": "mul",
+              "keys": [
+                0.0,
+                1.0,
+                0.0,
+                1.0,
+                0.0
+              ]
+            },
+            {
+              "k": "weight",
+              "src": "lfo",
+              "shape": "spring",
+              "cycles": 16,
+              "zeta": 0.7774,
+              "wn": 13.391,
+              "min": 1.0,
+              "max": 1.3905,
+              "mode": "mul",
+              "ta": 0.0476,
+              "depth": 0.102,
+              "steps": 18
+            }
+          ],
+          "temporal": {
+            "behavior": "follow",
+            "listens": [
+              "bass"
+            ],
+            "reason": "carries the bass story: it swells and settles with the low end"
+          },
+          "z": 0.2
+        },
+        {
+          "type": "tunnel",
+          "name": "ESTRUTURA IV",
+          "on": true,
+          "opacity": 0.3,
+          "blend": "normal",
+          "role": "structure: the grid or rhythm the eye measures the hero against",
+          "p": {
+            "shape": "circle",
+            "count": 10,
+            "cycles": 1,
+            "band": "high",
+            "size": 1,
+            "x": 768,
+            "y": -154,
+            "sx": 0.71,
+            "sy": 0.71,
+            "phase": 0.0156
+          },
+          "mod": [
+            {
+              "k": "size",
+              "src": "lfo",
+              "shape": "spring",
+              "cycles": 16,
+              "zeta": 0.8887,
+              "wn": 11.474,
+              "min": 1.0,
+              "max": 1.1953,
+              "mode": "mul",
+              "steps": 18
+            }
+          ],
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
+          },
+          "z": -0.3
+        },
+        {
+          "type": "instrument",
+          "name": "INSTRUMENTO IV",
+          "on": true,
+          "opacity": 0.8,
+          "blend": "normal",
+          "role": "instrument: shows the real signal that drives the picture (cause and effect)",
+          "p": {
+            "kind": "bars",
+            "size": 0.28,
+            "cx": 0.7,
+            "cy": 0.85,
+            "n": 36,
+            "weight": 3
+          },
+          "temporal": {
+            "behavior": "follow",
+            "listens": [
+              "bass",
+              "mid",
+              "high",
+              "hit",
+              "level"
+            ],
+            "reason": "shows the real signal; it is the meter, not part of the picture"
+          }
+        },
+        {
+          "type": "hud",
+          "name": "INFORMAÇÃO IV",
+          "on": true,
+          "opacity": 0.8,
+          "blend": "normal",
+          "role": "information: small, calm, always the same place; it tells the viewer the system is alive",
+          "p": {
+            "title": "TECNOFEUDO SMART SAMPA"
+          },
+          "temporal": {
+            "behavior": "drift",
+            "listens": [],
+            "reason": "moves with the loop and the BPM only; the music is not its job"
+          }
+        },
+        {
+          "type": "post",
+          "name": "ACABAMENTO",
+          "on": true,
+          "opacity": 1,
+          "blend": "normal",
+          "role": "finish: vignette and a touch of tension; scanlines only where the surface is a screen",
+          "p": {
+            "scan": 0,
+            "vig": 0.35,
+            "prob": 0.31
+          },
+          "temporal": {
+            "behavior": "beat",
+            "listens": [],
+            "reason": "lands on the beat grid; the audio does not push it"
+          }
+        }
+      ],
+      "camera": {
+        "move": "dolly",
+        "amp": 0.1278,
+        "cycles": 2,
+        "phase": 0,
+        "focus": 0.2,
+        "fog": 0.1,
+        "dof": 0.01
+      }
+    }
+  ]
+}

@@ -4,6 +4,7 @@
 
 - **`blobs` · `invert` e `maskColor`** (`app/blobs.js`; opcionais, padrão desligado, projetos antigos não mudam): cobre o quadro com cor sólida opaca e abre furo (alpha 0) exatamente nas manchas detectadas, o blob track invertido para usar sobre captura de câmera. A máscara é desenhada sem o filtro de saturação, porque o `sat` do modo cor (mínimo, padrão 0,25) colide com o `sat` comum de aparência e dessaturaria a cor; **a colisão continua nas marcações antigas** (não alterada). Teste em `blobs_check.mjs` com controle negativo; mutação (tirar o `filter = 'none'`) derruba o teste.
 - **Exemplo** `examples/tecnofeudo-surveillance/` (3840×1080, 30 fps, alpha): 4 composições, vermelho/preto/branco, câmera como slot e STAND-IN.
+- **Exemplo** `examples/tecnofeudo-smartsampa/` (3840×1920, 30 fps, alpha): poste com câmeras e lasers IR, drones e helicóptero, perfis pixelados fluindo, prints de notícias (slots) e terreno térmico 3D; modelos OBJ procedurais CC0 embutidos.
 
 ## Não lançado · Quadros de referência por ambiente, herói em LED, STANDARD sem verde
 
