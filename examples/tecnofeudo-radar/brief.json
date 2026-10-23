@@ -1,0 +1,46 @@
+{
+ "name": "TECNOFEUDO RADAR",
+ "lang": "pt",
+ "concept": "Vigilância como infraestrutura de poder, lida de dentro: radar, câmera, sigilo e painel de terreno. Resistência visual: o sistema é exposto, medido e devolvido ao público.",
+ "mood": [
+  "industrial",
+  "glitch",
+  "aggressive"
+ ],
+ "energy": 0.8,
+ "density": "balanced",
+ "surface": {
+  "type": "led",
+  "w": 3840,
+  "h": 1920,
+  "fps": 30,
+  "pitchMm": 3.9,
+  "viewingDistanceM": [
+   8,
+   40
+  ]
+ },
+ "time": {
+  "bpm": 120,
+  "bars": 4
+ },
+ "audio": {
+  "strategy": "structural"
+ },
+ "output": {
+  "mode": "alpha"
+ },
+ "palette": {
+  "bg": "#060608",
+  "primary": "#FF2A3D",
+  "secondary": "#8C8C96",
+  "accent": "#F2F2F2"
+ },
+ "focalEvent": "A varredura do radar trava um alvo e o quadro desloca em glitch",
+ "banned": [
+  "neon glow",
+  "lens flares",
+  "partículas aleatórias"
+ ],
+ "compositions": 4
+}

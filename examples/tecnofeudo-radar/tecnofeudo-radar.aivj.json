@@ -1,0 +1,4013 @@
+{
+ "schema": "ai-vj-generator/2",
+ "id": "tecnofeudo-radar",
+ "seed": 800907,
+ "meta": {
+  "formatVersion": 2,
+  "name": "TECNOFEUDO RADAR",
+  "lang": "pt",
+  "brief": "Vigilância como infraestrutura de poder, lida de dentro: radar, câmera, sigilo e painel de terreno. Resistência visual: o sistema é exposto, medido e devolvido ao público.",
+  "contract": {
+   "concept": "Vigilância como infraestrutura de poder, lida de dentro: radar, câmera, sigilo e painel de terreno. Resistência visual: o sistema é exposto, medido e devolvido ao público.",
+   "audienceEffect": "O público deve sentir Vigilância como infraestrutura de poder, lida de dentro: radar, câmera, sigilo e painel de terreno. ",
+   "semioticIntent": "fracture: fracture + fragment + scatter + pulse",
+   "visualLanguage": "Concept fracture: verbs fracture, fragment, scatter, pulse; motifs fault lines, shards, scattered marks, beat stamp; one dominant figure per composition over a quiet ground.",
+   "formLanguage": "Forms follow the hero generator of each composition; the structure layer keeps one module and one grid.",
+   "materialLanguage": "Light on a dark ground: glass, concrete; shards, tiles.",
+   "colorLogic": "analogous scheme, OKLCH hue 250 (cold steel and signal blue); one accent used for events only.",
+   "spatialLogic": "Canvas 3840x1920 (led); the hero sits on the focal zone, structure on the grid, information at the edge.",
+   "motionLanguage": "Profile: stepped, quantised to the beat grid; springy (zeta 0.8082, 1% overshoot); with a wind-up dip before each hit; 16 move(s) per loop of 4 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py). Animation IR archetypes: stutter, pulse, ripple, stutter (quantised, hard steps on the beat; everything moves together, nothing rings).",
+   "typographyLanguage": "Uppercase, one family; text only when the brief supplies exact words.",
+   "temporalArc": "whole, stress, break, scatter, residue; tension, snap, aftermath; over 4 bars per composition, the set follows whole, stress, fracture, scatter.",
+   "loopGrammar": "cyclic: the loop closes on whole bars and every layer moves in whole cycles",
+   "technicalStrategy": "Generated without AI by brief_to_project.py from the structured brief; native pixels, deterministic seed, engine generators only.",
+   "forbiddenShortcuts": "neon glow, lens flares, partículas aleatórias",
+   "focalEvent": "A varredura do radar trava um alvo e o quadro desloca em glitch",
+   "releaseZone": "The ground field and the empty third of the frame; no layer fills it.",
+   "banned": "neon glow, lens flares, partículas aleatórias",
+   "tension": "assertive"
+  },
+  "artBible": {
+   "thesis": "Vigilância como infraestrutura de poder, lida de dentro: radar, câmera, sigilo e painel de terreno. Resistência visual: o sistema é exposto, medido e devolvido ao público.",
+   "material": "Light on a dark ground (industrial, glitch, aggressive); glass, concrete; shards, tiles; no fake materials, no gradients that pretend to be objects.",
+   "space": "Read from far away: heavy strokes, large forms, the hero on the focal third, information at the edge.",
+   "motion": "Profile: stepped, quantised to the beat grid; springy (zeta 0.8082, 1% overshoot); with a wind-up dip before each hit; 16 move(s) per loop of 4 bar(s), so the loop closes. Played as layer.mod spring curves (scripts/motion_profiles.py). Animation IR archetypes: stutter, pulse, ripple, stutter (quantised, hard steps on the beat; everything moves together, nothing rings).",
+   "dramaturgy": "whole, stress, break, scatter, residue; tension, snap, aftermath; over 4 bars per composition, the set follows whole, stress, fracture, scatter. Tension: assertive; one dominant figure per composition; the ground field is the release.",
+   "color": "analogous scheme, OKLCH hue 250 (cold steel and signal blue); one accent used for events only.",
+   "typography": "No text unless the brief supplies exact words; if added: uppercase, one family, three sizes at most.",
+   "audio": "Strategy structural: the music drives structure and scale, never every hit.",
+   "banned": "neon glow, lens flares, partículas aleatórias",
+   "motionProfile": {
+    "energy": 0.743,
+    "elasticity": 0.218,
+    "anticipation": 0.459,
+    "continuity": 0.284,
+    "rhythm": 0.636
+   },
+   "density": "balanced"
+  },
+  "spec": {
+   "archetype": [
+    "stage-led"
+   ],
+   "confirmed": {
+    "pixelMap": [
+     3840,
+     1920
+    ],
+    "pitchMm": 3.9,
+    "viewingDistanceM": [
+     8,
+     40
+    ]
+   },
+   "assumed": [
+    {
+     "field": "surface",
+     "why": "generated from the brief without AI; the facts are the brief's own",
+     "risk": "confirm the pixel map and distances with the venue before delivery"
+    }
+   ]
+  },
+  "creativeIR": {
+   "version": 1,
+   "drives": true,
+   "concept": "fracture",
+   "concepts": [
+    "fracture"
+   ],
+   "visualVerbs": [
+    "fracture",
+    "fragment",
+    "scatter",
+    "pulse"
+   ],
+   "verbScores": {
+    "fracture": 19,
+    "fragment": 14,
+    "scatter": 11,
+    "pulse": 10
+   },
+   "hierarchy": {
+    "hero": [
+     "lines",
+     "shape",
+     "typewall"
+    ],
+    "structure": [
+     "lines",
+     "structure"
+    ],
+    "ground": [
+     "INTERFERÊNCIA",
+     "FAIXAS",
+     "CÉLULAS"
+    ]
+   },
+   "visualMotifs": [
+    "fault lines",
+    "shards",
+    "scattered marks",
+    "beat stamp"
+   ],
+   "motion": {
+    "axes": {
+     "energy": 0.713,
+     "elasticity": 0.255,
+     "anticipation": 0.652,
+     "continuity": 0.356,
+     "rhythm": 0.683
+    }
+   },
+   "density": 1.26,
+   "rhythm": 0.683,
+   "scale": "small",
+   "arc": {
+    "id": "erode",
+    "sequence": [
+     "WHOLE",
+     "STRESS",
+     "FRACTURE",
+     "SCATTER",
+     "RESIDUE",
+     "CODA"
+    ],
+    "energy": [
+     0.5,
+     0.7,
+     1.0,
+     0.8,
+     0.35,
+     0.15
+    ],
+    "description": "whole, stress, break, scatter, residue"
+   },
+   "spatialBehavior": "fault lines across the frame; across the frame",
+   "temporalBehavior": "whole, stress, break, scatter, residue; tension, snap, aftermath",
+   "materialBehavior": "glass, concrete; shards, tiles",
+   "audioRole": "hits trigger the cracks",
+   "compositionStrategy": "a fault line crosses the hero; the image is cut into tiles that drift",
+   "animationStrategy": "sudden steps with a short recoil (whole to pieces); stepped and uneven (one to many)",
+   "audienceEffect": "Vigilância como infraestrutura de poder, lida de dentro: radar, câmera, sigilo e painel de terreno. Resistência visual: o sistema é exposto,",
+   "semioticIntent": "fracture: fracture + fragment + scatter + pulse",
+   "forbiddenMotifs": [
+    "neon glow",
+    "lens flares",
+    "partículas aleatórias"
+   ],
+   "novelty": null,
+   "colorLogic": "one accent used for events only"
+  },
+  "compositionIR": [
+   {
+    "version": 1,
+    "grammar": "offset",
+    "grammarSet": [
+     "offset",
+     "diagonal",
+     "asymmetric"
+    ],
+    "aspectClass": "wide",
+    "canvas": {
+     "w": 3840,
+     "h": 1920,
+     "aspect": 2.0,
+     "orientation": "wide"
+    },
+    "hierarchy": {
+     "primary": "hero",
+     "secondary": "structure",
+     "tertiary": "ground"
+    },
+    "zones": {
+     "hero": {
+      "x": 0.14,
+      "y": 0.12,
+      "w": 0.4,
+      "h": 0.8
+     },
+     "secondary": {
+      "x": 0.575,
+      "y": 0.17,
+      "w": 0.25,
+      "h": 0.5
+     },
+     "support": {
+      "x": 0.625,
+      "y": 0.7,
+      "w": 0.15,
+      "h": 0.3
+     },
+     "background": {
+      "x": 0,
+      "y": 0,
+      "w": 1,
+      "h": 1
+     }
+    },
+    "negativeSpace": [
+     {
+      "x": 0.6,
+      "y": 0.55,
+      "w": 0.4,
+      "h": 0.45,
+      "why": "left empty on purpose: nothing is placed here"
+     }
+    ],
+    "focalPoint": {
+     "x": 0.34,
+     "y": 0.52
+    },
+    "visualMass": {
+     "hero": 0.6,
+     "secondary": 0.24,
+     "support": 0.16
+    },
+    "balance": {
+     "type": "asymmetric",
+     "centre": {
+      "x": 0.484,
+      "y": 0.549
+     }
+    },
+    "alignment": "left",
+    "movementAxis": "x",
+    "densityMap": [
+     [
+      0.9,
+      0.9,
+      0.25
+     ],
+     [
+      0.9,
+      0.9,
+      0.25
+     ],
+     [
+      0.9,
+      0.9,
+      0.05
+     ]
+    ],
+    "scaleHierarchy": {
+     "hero": 1.14,
+     "secondary": 0.71,
+     "support": 0.4
+    },
+    "depthHierarchy": {
+     "hero": "foreground",
+     "secondary": "midground",
+     "support": "midground",
+     "background": "background"
+    },
+    "safeAreas": {
+     "x": 0.05,
+     "y": 0.05,
+     "w": 0.9,
+     "h": 0.9
+    },
+    "edgeBehavior": "contain",
+    "textAnchor": {
+     "cx": 0.68,
+     "cy": 0.5,
+     "align": "left"
+    },
+    "temporal": {
+     "arc": "erode",
+     "phases": [
+      {
+       "name": "establish",
+       "at": 0.0,
+       "heroScale": 1.1,
+       "density": 1.2,
+       "contrast": 1.1,
+       "rotation": 0,
+       "motion": 0.8
+      },
+      {
+       "name": "develop",
+       "at": 0.2,
+       "heroScale": 1.05,
+       "density": 1.15,
+       "contrast": 1.15,
+       "rotation": 0,
+       "motion": 1.0
+      },
+      {
+       "name": "transform",
+       "at": 0.4,
+       "heroScale": 0.95,
+       "density": 1.0,
+       "contrast": 1.2,
+       "rotation": 1,
+       "motion": 1.3
+      },
+      {
+       "name": "peak",
+       "at": 0.6,
+       "heroScale": 0.8,
+       "density": 0.7,
+       "contrast": 1.0,
+       "rotation": 3,
+       "motion": 1.0
+      },
+      {
+       "name": "release",
+       "at": 0.8,
+       "heroScale": 0.7,
+       "density": 0.5,
+       "contrast": 0.85,
+       "rotation": 4,
+       "motion": 0.6
+      }
+     ]
+    },
+    "description": "the figure sits off centre and the open third answers it"
+   },
+   {
+    "version": 1,
+    "grammar": "diagonal",
+    "grammarSet": [
+     "offset",
+     "diagonal",
+     "asymmetric"
+    ],
+    "aspectClass": "wide",
+    "canvas": {
+     "w": 3840,
+     "h": 1920,
+     "aspect": 2.0,
+     "orientation": "wide"
+    },
+    "hierarchy": {
+     "primary": "hero",
+     "secondary": "structure",
+     "tertiary": "ground"
+    },
+    "zones": {
+     "hero": {
+      "x": 0.112,
+      "y": 0.0,
+      "w": 0.375,
+      "h": 0.75
+     },
+     "secondary": {
+      "x": 0.583,
+      "y": 0.425,
+      "w": 0.275,
+      "h": 0.55
+     },
+     "support": {
+      "x": 0.425,
+      "y": 0.7,
+      "w": 0.15,
+      "h": 0.3
+     },
+     "background": {
+      "x": 0,
+      "y": 0,
+      "w": 1,
+      "h": 1
+     }
+    },
+    "negativeSpace": [
+     {
+      "x": 0,
+      "y": 0.6,
+      "w": 0.3,
+      "h": 0.4,
+      "why": "left empty on purpose: nothing is placed here"
+     }
+    ],
+    "focalPoint": {
+     "x": 0.299,
+     "y": 0.375
+    },
+    "visualMass": {
+     "hero": 0.5,
+     "secondary": 0.3,
+     "support": 0.2
+    },
+    "balance": {
+     "type": "asymmetric",
+     "centre": {
+      "x": 0.466,
+      "y": 0.568
+     }
+    },
+    "alignment": "left",
+    "movementAxis": "diag",
+    "densityMap": [
+     [
+      0.9,
+      0.25,
+      0.25
+     ],
+     [
+      0.9,
+      0.25,
+      0.55
+     ],
+     [
+      0.05,
+      0.25,
+      0.55
+     ]
+    ],
+    "scaleHierarchy": {
+     "hero": 1.07,
+     "secondary": 0.79,
+     "support": 0.4
+    },
+    "depthHierarchy": {
+     "hero": "foreground",
+     "secondary": "midground",
+     "support": "midground",
+     "background": "background"
+    },
+    "safeAreas": {
+     "x": 0.05,
+     "y": 0.05,
+     "w": 0.9,
+     "h": 0.9
+    },
+    "edgeBehavior": "bleed",
+    "textAnchor": {
+     "cx": 0.72,
+     "cy": 0.3,
+     "align": "left"
+    },
+    "temporal": {
+     "arc": "erode",
+     "phases": [
+      {
+       "name": "establish",
+       "at": 0.0,
+       "heroScale": 1.1,
+       "density": 1.2,
+       "contrast": 1.1,
+       "rotation": 0,
+       "motion": 0.8
+      },
+      {
+       "name": "develop",
+       "at": 0.2,
+       "heroScale": 1.05,
+       "density": 1.15,
+       "contrast": 1.15,
+       "rotation": 0,
+       "motion": 1.0
+      },
+      {
+       "name": "transform",
+       "at": 0.4,
+       "heroScale": 0.95,
+       "density": 1.0,
+       "contrast": 1.2,
+       "rotation": 1,
+       "motion": 1.3
+      },
+      {
+       "name": "peak",
+       "at": 0.6,
+       "heroScale": 0.8,
+       "density": 0.7,
+       "contrast": 1.0,
+       "rotation": 3,
+       "motion": 1.0
+      },
+      {
+       "name": "release",
+       "at": 0.8,
+       "heroScale": 0.7,
+       "density": 0.5,
+       "contrast": 0.85,
+       "rotation": 4,
+       "motion": 0.6
+      }
+     ]
+    },
+    "description": "the eye travels from the upper left to the lower right"
+   },
+   {
+    "version": 1,
+    "grammar": "asymmetric",
+    "grammarSet": [
+     "offset",
+     "diagonal",
+     "asymmetric"
+    ],
+    "aspectClass": "wide",
+    "canvas": {
+     "w": 3840,
+     "h": 1920,
+     "aspect": 2.0,
+     "orientation": "wide"
+    },
+    "hierarchy": {
+     "primary": "hero",
+     "secondary": "structure",
+     "tertiary": "ground"
+    },
+    "zones": {
+     "hero": {
+      "x": 0.035,
+      "y": 0.1,
+      "w": 0.45,
+      "h": 0.9
+     },
+     "secondary": {
+      "x": 0.713,
+      "y": 0.125,
+      "w": 0.175,
+      "h": 0.35
+     },
+     "support": {
+      "x": 0.725,
+      "y": 0.7,
+      "w": 0.15,
+      "h": 0.3
+     },
+     "background": {
+      "x": 0,
+      "y": 0,
+      "w": 1,
+      "h": 1
+     }
+    },
+    "negativeSpace": [
+     {
+      "x": 0.5,
+      "y": 0.7,
+      "w": 0.5,
+      "h": 0.3,
+      "why": "left empty on purpose: nothing is placed here"
+     }
+    ],
+    "focalPoint": {
+     "x": 0.26,
+     "y": 0.55
+    },
+    "visualMass": {
+     "hero": 0.62,
+     "secondary": 0.23,
+     "support": 0.15
+    },
+    "balance": {
+     "type": "asymmetric",
+     "centre": {
+      "x": 0.465,
+      "y": 0.538
+     }
+    },
+    "alignment": "left",
+    "movementAxis": "diag",
+    "densityMap": [
+     [
+      0.9,
+      0.25,
+      0.55
+     ],
+     [
+      0.9,
+      0.25,
+      0.25
+     ],
+     [
+      0.9,
+      0.05,
+      0.05
+     ]
+    ],
+    "scaleHierarchy": {
+     "hero": 1.29,
+     "secondary": 0.5,
+     "support": 0.4
+    },
+    "depthHierarchy": {
+     "hero": "foreground",
+     "secondary": "midground",
+     "support": "midground",
+     "background": "background"
+    },
+    "safeAreas": {
+     "x": 0.05,
+     "y": 0.05,
+     "w": 0.9,
+     "h": 0.9
+    },
+    "edgeBehavior": "bleed",
+    "textAnchor": {
+     "cx": 0.78,
+     "cy": 0.55,
+     "align": "left"
+    },
+    "temporal": {
+     "arc": "erode",
+     "phases": [
+      {
+       "name": "establish",
+       "at": 0.0,
+       "heroScale": 1.1,
+       "density": 1.2,
+       "contrast": 1.1,
+       "rotation": 0,
+       "motion": 0.8
+      },
+      {
+       "name": "develop",
+       "at": 0.2,
+       "heroScale": 1.05,
+       "density": 1.15,
+       "contrast": 1.15,
+       "rotation": 0,
+       "motion": 1.0
+      },
+      {
+       "name": "transform",
+       "at": 0.4,
+       "heroScale": 0.95,
+       "density": 1.0,
+       "contrast": 1.2,
+       "rotation": 1,
+       "motion": 1.3
+      },
+      {
+       "name": "peak",
+       "at": 0.6,
+       "heroScale": 0.8,
+       "density": 0.7,
+       "contrast": 1.0,
+       "rotation": 3,
+       "motion": 1.0
+      },
+      {
+       "name": "release",
+       "at": 0.8,
+       "heroScale": 0.7,
+       "density": 0.5,
+       "contrast": 0.85,
+       "rotation": 4,
+       "motion": 0.6
+      }
+     ]
+    },
+    "description": "a large figure against one small counterweight"
+   },
+   {
+    "version": 1,
+    "grammar": "offset",
+    "grammarSet": [
+     "offset",
+     "diagonal",
+     "asymmetric"
+    ],
+    "aspectClass": "wide",
+    "canvas": {
+     "w": 3840,
+     "h": 1920,
+     "aspect": 2.0,
+     "orientation": "wide"
+    },
+    "hierarchy": {
+     "primary": "hero",
+     "secondary": "structure",
+     "tertiary": "ground"
+    },
+    "zones": {
+     "hero": {
+      "x": 0.14,
+      "y": 0.12,
+      "w": 0.4,
+      "h": 0.8
+     },
+     "secondary": {
+      "x": 0.575,
+      "y": 0.17,
+      "w": 0.25,
+      "h": 0.5
+     },
+     "support": {
+      "x": 0.625,
+      "y": 0.7,
+      "w": 0.15,
+      "h": 0.3
+     },
+     "background": {
+      "x": 0,
+      "y": 0,
+      "w": 1,
+      "h": 1
+     }
+    },
+    "negativeSpace": [
+     {
+      "x": 0.6,
+      "y": 0.55,
+      "w": 0.4,
+      "h": 0.45,
+      "why": "left empty on purpose: nothing is placed here"
+     }
+    ],
+    "focalPoint": {
+     "x": 0.34,
+     "y": 0.52
+    },
+    "visualMass": {
+     "hero": 0.6,
+     "secondary": 0.24,
+     "support": 0.16
+    },
+    "balance": {
+     "type": "asymmetric",
+     "centre": {
+      "x": 0.484,
+      "y": 0.549
+     }
+    },
+    "alignment": "left",
+    "movementAxis": "x",
+    "densityMap": [
+     [
+      0.9,
+      0.9,
+      0.25
+     ],
+     [
+      0.9,
+      0.9,
+      0.25
+     ],
+     [
+      0.9,
+      0.9,
+      0.05
+     ]
+    ],
+    "scaleHierarchy": {
+     "hero": 1.14,
+     "secondary": 0.71,
+     "support": 0.4
+    },
+    "depthHierarchy": {
+     "hero": "foreground",
+     "secondary": "midground",
+     "support": "midground",
+     "background": "background"
+    },
+    "safeAreas": {
+     "x": 0.05,
+     "y": 0.05,
+     "w": 0.9,
+     "h": 0.9
+    },
+    "edgeBehavior": "contain",
+    "textAnchor": {
+     "cx": 0.68,
+     "cy": 0.5,
+     "align": "left"
+    },
+    "temporal": {
+     "arc": "erode",
+     "phases": [
+      {
+       "name": "establish",
+       "at": 0.0,
+       "heroScale": 1.1,
+       "density": 1.2,
+       "contrast": 1.1,
+       "rotation": 0,
+       "motion": 0.8
+      },
+      {
+       "name": "develop",
+       "at": 0.2,
+       "heroScale": 1.05,
+       "density": 1.15,
+       "contrast": 1.15,
+       "rotation": 0,
+       "motion": 1.0
+      },
+      {
+       "name": "transform",
+       "at": 0.4,
+       "heroScale": 0.95,
+       "density": 1.0,
+       "contrast": 1.2,
+       "rotation": 1,
+       "motion": 1.3
+      },
+      {
+       "name": "peak",
+       "at": 0.6,
+       "heroScale": 0.8,
+       "density": 0.7,
+       "contrast": 1.0,
+       "rotation": 3,
+       "motion": 1.0
+      },
+      {
+       "name": "release",
+       "at": 0.8,
+       "heroScale": 0.7,
+       "density": 0.5,
+       "contrast": 0.85,
+       "rotation": 4,
+       "motion": 0.6
+      }
+     ]
+    },
+    "description": "the figure sits off centre and the open third answers it"
+   }
+  ],
+  "animationIR": [
+   {
+    "version": 1,
+    "archetype": "stutter",
+    "archetypeSet": [
+     "stutter",
+     "pulse",
+     "ripple"
+    ],
+    "axes": {
+     "energy": 0.713,
+     "elasticity": 0.255,
+     "anticipation": 0.652,
+     "continuity": 0.356,
+     "rhythm": 0.683
+    },
+    "timing": {
+     "bpm": 120,
+     "bars": 4,
+     "fps": 30,
+     "loopFrames": 240,
+     "cyclesPerLoop": 16,
+     "framesPerCycle": 15.0,
+     "beatsPerCycle": 1.0,
+     "sixteenthFrames": 3.75
+    },
+    "easing": {
+     "id": "steps",
+     "description": "the phase is quantised: hard, interface-like steps"
+    },
+    "spring": {
+     "zeta": 1.0,
+     "wn": 14.843,
+     "ta": 0.0,
+     "depth": 0.0,
+     "steps": 6,
+     "cycles": 16,
+     "amp": 0.4565,
+     "overshoot": 0.0
+    },
+    "anticipation": {
+     "fraction": 0.0,
+     "frames": 0.0
+    },
+    "settle": {
+     "fraction": 0.269,
+     "frames": 4.04
+    },
+    "hold": 0.0,
+    "hierarchy": {
+     "hero": {
+      "behavior": "lead",
+      "shape": "spring",
+      "cycles": 16,
+      "drive": "target",
+      "amp": 0.4565,
+      "spring": {
+       "zeta": 1.0,
+       "wn": 14.843,
+       "ta": 0.0,
+       "depth": 0.0,
+       "steps": 6
+      },
+      "lag": {
+       "steps": 0,
+       "lag": 0.0,
+       "frames": 0.0
+      }
+     },
+     "structure": {
+      "behavior": "follow",
+      "shape": "spring",
+      "cycles": 16,
+      "drive": "target",
+      "amp": 0.2283,
+      "spring": {
+       "zeta": 1.0,
+       "wn": 12.49,
+       "ta": 0,
+       "depth": 0,
+       "steps": 6
+      },
+      "lag": {
+       "steps": 0,
+       "lag": 0.0,
+       "frames": 0.0
+      }
+     },
+     "ground": {
+      "behavior": "hold",
+      "lag": {
+       "steps": 0,
+       "lag": 0.0,
+       "frames": 0.0
+      }
+     },
+     "instrument": {
+      "behavior": "accent"
+     },
+     "text": {
+      "behavior": "reveal"
+     }
+    },
+    "choreography": [
+     {
+      "name": "establish",
+      "at": 0.0,
+      "lead": "hero",
+      "energy": 0.8,
+      "transition": "cut"
+     },
+     {
+      "name": "develop",
+      "at": 0.2,
+      "lead": "all",
+      "energy": 1.0,
+      "transition": "cut"
+     },
+     {
+      "name": "transform",
+      "at": 0.4,
+      "lead": "hero",
+      "energy": 1.3,
+      "transition": "cut"
+     },
+     {
+      "name": "peak",
+      "at": 0.6,
+      "lead": "all",
+      "energy": 1.0,
+      "transition": "cut"
+     },
+     {
+      "name": "release",
+      "at": 0.8,
+      "lead": "hero",
+      "energy": 0.6,
+      "transition": "cut"
+     }
+    ],
+    "events": [
+     {
+      "name": "establish",
+      "phase": "establish",
+      "beat": 0,
+      "at": 0.0
+     },
+     {
+      "name": "build",
+      "phase": "develop",
+      "beat": 3,
+      "at": 0.1875
+     },
+     {
+      "name": "turn",
+      "phase": "transform",
+      "beat": 6,
+      "at": 0.375
+     },
+     {
+      "name": "focal",
+      "phase": "peak",
+      "beat": 10,
+      "at": 0.625
+     },
+     {
+      "name": "release",
+      "phase": "release",
+      "beat": 13,
+      "at": 0.8125
+     }
+    ],
+    "transitions": {
+     "phases": "cut",
+     "description": "phases change on the beat, no blend"
+    },
+    "loop": {
+     "closes": true,
+     "wholeCycles": true,
+     "seamless": true
+    },
+    "description": "quantised, hard steps on the beat; everything moves together, nothing rings"
+   },
+   {
+    "version": 1,
+    "archetype": "pulse",
+    "archetypeSet": [
+     "stutter",
+     "pulse",
+     "ripple"
+    ],
+    "axes": {
+     "energy": 0.713,
+     "elasticity": 0.255,
+     "anticipation": 0.652,
+     "continuity": 0.356,
+     "rhythm": 0.683
+    },
+    "timing": {
+     "bpm": 120,
+     "bars": 4,
+     "fps": 30,
+     "loopFrames": 240,
+     "cyclesPerLoop": 16,
+     "framesPerCycle": 15.0,
+     "beatsPerCycle": 1.0,
+     "sixteenthFrames": 3.75
+    },
+    "easing": {
+     "id": "spring",
+     "description": "kick and ring: fast out, rings down (motion_profiles.py)"
+    },
+    "spring": {
+     "zeta": 0.7756,
+     "wn": 14.843,
+     "ta": 0.0913,
+     "depth": 0.1956,
+     "steps": 14,
+     "cycles": 16,
+     "amp": 0.4565,
+     "overshoot": 0.0211
+    },
+    "anticipation": {
+     "fraction": 0.0913,
+     "frames": 1.37
+    },
+    "settle": {
+     "fraction": 0.347,
+     "frames": 5.21
+    },
+    "hold": 0.0,
+    "hierarchy": {
+     "hero": {
+      "behavior": "lead",
+      "shape": "spring",
+      "cycles": 16,
+      "drive": "target",
+      "amp": 0.4565,
+      "spring": {
+       "zeta": 0.7756,
+       "wn": 14.843,
+       "ta": 0.0913,
+       "depth": 0.1956,
+       "steps": 14
+      },
+      "lag": {
+       "steps": 0,
+       "lag": 0.0,
+       "frames": 0.0
+      }
+     },
+     "structure": {
+      "behavior": "follow",
+      "shape": "spring",
+      "cycles": 16,
+      "drive": "target",
+      "amp": 0.2283,
+      "spring": {
+       "zeta": 0.8878,
+       "wn": 12.49,
+       "ta": 0,
+       "depth": 0,
+       "steps": 14
+      },
+      "lag": {
+       "steps": 1,
+       "lag": 0.0156,
+       "frames": 3.75
+      }
+     },
+     "ground": {
+      "behavior": "ambient",
+      "lag": {
+       "steps": 2,
+       "lag": 0.0312,
+       "frames": 7.5
+      }
+     },
+     "instrument": {
+      "behavior": "accent"
+     },
+     "text": {
+      "behavior": "reveal"
+     }
+    },
+    "choreography": [
+     {
+      "name": "establish",
+      "at": 0.0,
+      "lead": "hero",
+      "energy": 0.8,
+      "transition": "ease"
+     },
+     {
+      "name": "develop",
+      "at": 0.2,
+      "lead": "hero",
+      "energy": 1.0,
+      "transition": "ease"
+     },
+     {
+      "name": "transform",
+      "at": 0.4,
+      "lead": "structure",
+      "energy": 1.3,
+      "transition": "ease"
+     },
+     {
+      "name": "peak",
+      "at": 0.6,
+      "lead": "hero",
+      "energy": 1.0,
+      "transition": "ease"
+     },
+     {
+      "name": "release",
+      "at": 0.8,
+      "lead": "ground",
+      "energy": 0.6,
+      "transition": "ease"
+     }
+    ],
+    "events": [
+     {
+      "name": "establish",
+      "phase": "establish",
+      "beat": 0,
+      "at": 0.0
+     },
+     {
+      "name": "build",
+      "phase": "develop",
+      "beat": 3,
+      "at": 0.1875
+     },
+     {
+      "name": "turn",
+      "phase": "transform",
+      "beat": 6,
+      "at": 0.375
+     },
+     {
+      "name": "focal",
+      "phase": "peak",
+      "beat": 10,
+      "at": 0.625
+     },
+     {
+      "name": "release",
+      "phase": "release",
+      "beat": 13,
+      "at": 0.8125
+     }
+    ],
+    "transitions": {
+     "phases": "ease",
+     "description": "phases blend with a smooth ease"
+    },
+    "loop": {
+     "closes": true,
+     "wholeCycles": true,
+     "seamless": true
+    },
+    "description": "the hero is hit on the beat and rings out; the structure answers a sixteenth later"
+   },
+   {
+    "version": 1,
+    "archetype": "ripple",
+    "archetypeSet": [
+     "stutter",
+     "pulse",
+     "ripple"
+    ],
+    "axes": {
+     "energy": 0.713,
+     "elasticity": 0.255,
+     "anticipation": 0.652,
+     "continuity": 0.356,
+     "rhythm": 0.683
+    },
+    "timing": {
+     "bpm": 120,
+     "bars": 4,
+     "fps": 30,
+     "loopFrames": 240,
+     "cyclesPerLoop": 16,
+     "framesPerCycle": 15.0,
+     "beatsPerCycle": 1.0,
+     "sixteenthFrames": 3.75
+    },
+    "easing": {
+     "id": "spring",
+     "description": "kick and ring: fast out, rings down (motion_profiles.py)"
+    },
+    "spring": {
+     "zeta": 0.7756,
+     "wn": 14.843,
+     "ta": 0.0,
+     "depth": 0.0,
+     "steps": 14,
+     "cycles": 16,
+     "amp": 0.4565,
+     "overshoot": 0.0211
+    },
+    "anticipation": {
+     "fraction": 0.0,
+     "frames": 0.0
+    },
+    "settle": {
+     "fraction": 0.347,
+     "frames": 5.21
+    },
+    "hold": 0.0,
+    "hierarchy": {
+     "hero": {
+      "behavior": "lead",
+      "shape": "rubber",
+      "cycles": 16,
+      "drive": "target",
+      "amp": 0.4565,
+      "spring": {
+       "zeta": 0.7756,
+       "wn": 14.843,
+       "ta": 0.0,
+       "depth": 0.0,
+       "steps": 14
+      },
+      "lag": {
+       "steps": 0,
+       "lag": 0.0,
+       "frames": 0.0
+      }
+     },
+     "structure": {
+      "behavior": "follow",
+      "shape": "rubber",
+      "cycles": 16,
+      "drive": "target",
+      "amp": 0.2283,
+      "spring": {
+       "zeta": 0.8878,
+       "wn": 12.49,
+       "ta": 0,
+       "depth": 0,
+       "steps": 14
+      },
+      "lag": {
+       "steps": 2,
+       "lag": 0.0312,
+       "frames": 7.5
+      }
+     },
+     "ground": {
+      "behavior": "ambient",
+      "lag": {
+       "steps": 4,
+       "lag": 0.0625,
+       "frames": 15.0
+      }
+     },
+     "instrument": {
+      "behavior": "accent"
+     },
+     "text": {
+      "behavior": "reveal"
+     }
+    },
+    "choreography": [
+     {
+      "name": "establish",
+      "at": 0.0,
+      "lead": "hero",
+      "energy": 0.8,
+      "transition": "ease"
+     },
+     {
+      "name": "develop",
+      "at": 0.2,
+      "lead": "structure",
+      "energy": 1.0,
+      "transition": "ease"
+     },
+     {
+      "name": "transform",
+      "at": 0.4,
+      "lead": "ground",
+      "energy": 1.3,
+      "transition": "ease"
+     },
+     {
+      "name": "peak",
+      "at": 0.6,
+      "lead": "hero",
+      "energy": 1.0,
+      "transition": "ease"
+     },
+     {
+      "name": "release",
+      "at": 0.8,
+      "lead": "ground",
+      "energy": 0.6,
+      "transition": "ease"
+     }
+    ],
+    "events": [
+     {
+      "name": "establish",
+      "phase": "establish",
+      "beat": 0,
+      "at": 0.0
+     },
+     {
+      "name": "build",
+      "phase": "develop",
+      "beat": 3,
+      "at": 0.1875
+     },
+     {
+      "name": "turn",
+      "phase": "transform",
+      "beat": 6,
+      "at": 0.375
+     },
+     {
+      "name": "focal",
+      "phase": "peak",
+      "beat": 10,
+      "at": 0.625
+     },
+     {
+      "name": "release",
+      "phase": "release",
+      "beat": 13,
+      "at": 0.8125
+     }
+    ],
+    "transitions": {
+     "phases": "ease",
+     "description": "phases blend with a smooth ease"
+    },
+    "loop": {
+     "closes": true,
+     "wholeCycles": true,
+     "seamless": true
+    },
+    "description": "a damped wobble that travels outward: hero first, then structure, then ground"
+   },
+   {
+    "version": 1,
+    "archetype": "stutter",
+    "archetypeSet": [
+     "stutter",
+     "pulse",
+     "ripple"
+    ],
+    "axes": {
+     "energy": 0.713,
+     "elasticity": 0.255,
+     "anticipation": 0.652,
+     "continuity": 0.356,
+     "rhythm": 0.683
+    },
+    "timing": {
+     "bpm": 120,
+     "bars": 4,
+     "fps": 30,
+     "loopFrames": 240,
+     "cyclesPerLoop": 16,
+     "framesPerCycle": 15.0,
+     "beatsPerCycle": 1.0,
+     "sixteenthFrames": 3.75
+    },
+    "easing": {
+     "id": "steps",
+     "description": "the phase is quantised: hard, interface-like steps"
+    },
+    "spring": {
+     "zeta": 1.0,
+     "wn": 14.843,
+     "ta": 0.0,
+     "depth": 0.0,
+     "steps": 6,
+     "cycles": 16,
+     "amp": 0.4565,
+     "overshoot": 0.0
+    },
+    "anticipation": {
+     "fraction": 0.0,
+     "frames": 0.0
+    },
+    "settle": {
+     "fraction": 0.269,
+     "frames": 4.04
+    },
+    "hold": 0.0,
+    "hierarchy": {
+     "hero": {
+      "behavior": "lead",
+      "shape": "spring",
+      "cycles": 16,
+      "drive": "target",
+      "amp": 0.4565,
+      "spring": {
+       "zeta": 1.0,
+       "wn": 14.843,
+       "ta": 0.0,
+       "depth": 0.0,
+       "steps": 6
+      },
+      "lag": {
+       "steps": 0,
+       "lag": 0.0,
+       "frames": 0.0
+      }
+     },
+     "structure": {
+      "behavior": "follow",
+      "shape": "spring",
+      "cycles": 16,
+      "drive": "target",
+      "amp": 0.2283,
+      "spring": {
+       "zeta": 1.0,
+       "wn": 12.49,
+       "ta": 0,
+       "depth": 0,
+       "steps": 6
+      },
+      "lag": {
+       "steps": 0,
+       "lag": 0.0,
+       "frames": 0.0
+      }
+     },
+     "ground": {
+      "behavior": "hold",
+      "lag": {
+       "steps": 0,
+       "lag": 0.0,
+       "frames": 0.0
+      }
+     },
+     "instrument": {
+      "behavior": "accent"
+     },
+     "text": {
+      "behavior": "reveal"
+     }
+    },
+    "choreography": [
+     {
+      "name": "establish",
+      "at": 0.0,
+      "lead": "hero",
+      "energy": 0.8,
+      "transition": "cut"
+     },
+     {
+      "name": "develop",
+      "at": 0.2,
+      "lead": "all",
+      "energy": 1.0,
+      "transition": "cut"
+     },
+     {
+      "name": "transform",
+      "at": 0.4,
+      "lead": "hero",
+      "energy": 1.3,
+      "transition": "cut"
+     },
+     {
+      "name": "peak",
+      "at": 0.6,
+      "lead": "all",
+      "energy": 1.0,
+      "transition": "cut"
+     },
+     {
+      "name": "release",
+      "at": 0.8,
+      "lead": "hero",
+      "energy": 0.6,
+      "transition": "cut"
+     }
+    ],
+    "events": [
+     {
+      "name": "establish",
+      "phase": "establish",
+      "beat": 0,
+      "at": 0.0
+     },
+     {
+      "name": "build",
+      "phase": "develop",
+      "beat": 3,
+      "at": 0.1875
+     },
+     {
+      "name": "turn",
+      "phase": "transform",
+      "beat": 6,
+      "at": 0.375
+     },
+     {
+      "name": "focal",
+      "phase": "peak",
+      "beat": 10,
+      "at": 0.625
+     },
+     {
+      "name": "release",
+      "phase": "release",
+      "beat": 13,
+      "at": 0.8125
+     }
+    ],
+    "transitions": {
+     "phases": "cut",
+     "description": "phases change on the beat, no blend"
+    },
+    "loop": {
+     "closes": true,
+     "wholeCycles": true,
+     "seamless": true
+    },
+    "description": "quantised, hard steps on the beat; everything moves together, nothing rings"
+   }
+  ],
+  "audioSemantics": [
+   {
+    "version": 1,
+    "strategy": "structural",
+    "budget": 2,
+    "archetype": "stutter",
+    "reactive": 2,
+    "layers": [
+     {
+      "name": "FUNDO",
+      "tier": "background",
+      "behavior": "still",
+      "listens": []
+     },
+     {
+      "name": "CÂMERA",
+      "tier": "other",
+      "behavior": "drift",
+      "listens": []
+     },
+     {
+      "name": "STAND-IN CÂMERA",
+      "tier": "ground",
+      "behavior": "section",
+      "listens": [
+       "level"
+      ]
+     },
+     {
+      "name": "TERRENO",
+      "tier": "other",
+      "behavior": "drift",
+      "listens": []
+     },
+     {
+      "name": "PLACAS MODULARES",
+      "tier": "structure",
+      "behavior": "beat",
+      "listens": []
+     },
+     {
+      "name": "RADAR",
+      "tier": "hero",
+      "behavior": "follow",
+      "listens": [
+       "bass"
+      ]
+     },
+     {
+      "name": "ALVOS",
+      "tier": "information",
+      "behavior": "drift",
+      "listens": []
+     },
+     {
+      "name": "TELEMETRIA",
+      "tier": "information",
+      "behavior": "drift",
+      "listens": []
+     },
+     {
+      "name": "COORDENADAS",
+      "tier": "information",
+      "behavior": "drift",
+      "listens": []
+     },
+     {
+      "name": "CONFIANÇA",
+      "tier": "information",
+      "behavior": "drift",
+      "listens": []
+     },
+     {
+      "name": "FLUXO",
+      "tier": "information",
+      "behavior": "drift",
+      "listens": []
+     },
+     {
+      "name": "FITA",
+      "tier": "information",
+      "behavior": "drift",
+      "listens": []
+     },
+     {
+      "name": "DESLOCAMENTO",
+      "tier": "finish",
+      "behavior": "beat",
+      "listens": []
+     },
+     {
+      "name": "GLITCH EM BLOCOS",
+      "tier": "finish",
+      "behavior": "beat",
+      "listens": []
+     }
+    ]
+   },
+   {
+    "version": 1,
+    "strategy": "structural",
+    "budget": 2,
+    "archetype": "pulse",
+    "reactive": 2,
+    "layers": [
+     {
+      "name": "FUNDO",
+      "tier": "background",
+      "behavior": "still",
+      "listens": []
+     },
+     {
+      "name": "CÂMERA",
+      "tier": "other",
+      "behavior": "drift",
+      "listens": []
+     },
+     {
+      "name": "STAND-IN CÂMERA",
+      "tier": "ground",
+      "behavior": "section",
+      "listens": [
+       "level"
+      ]
+     },
+     {
+      "name": "CÂMERA DE SEGURANÇA",
+      "tier": "hero",
+      "behavior": "follow",
+      "listens": [
+       "bass"
+      ]
+     },
+     {
+      "name": "CÂMERA ARAME",
+      "tier": "structure",
+      "behavior": "beat",
+      "listens": []
+     },
+     {
+      "name": "CONE IR",
+      "tier": "event",
+      "behavior": "beat",
+      "listens": []
+     },
+     {
+      "name": "PLACAS MODULARES",
+      "tier": "structure",
+      "behavior": "beat",
+      "listens": []
+     },
+     {
+      "name": "DRONE A",
+      "tier": "structure",
+      "behavior": "beat",
+      "listens": []
+     },
+     {
+      "name": "DRONE B",
+      "tier": "structure",
+      "behavior": "beat",
+      "listens": []
+     },
+     {
+      "name": "CÂMERAS",
+      "tier": "information",
+      "behavior": "drift",
+      "listens": []
+     },
+     {
+      "name": "IR",
+      "tier": "information",
+      "behavior": "drift",
+      "listens": []
+     },
+     {
+      "name": "POSIÇÃO",
+      "tier": "information",
+      "behavior": "drift",
+      "listens": []
+     },
+     {
+      "name": "FITA",
+      "tier": "information",
+      "behavior": "drift",
+      "listens": []
+     },
+     {
+      "name": "DESLOCAMENTO",
+      "tier": "finish",
+      "behavior": "beat",
+      "listens": []
+     },
+     {
+      "name": "GLITCH EM BLOCOS",
+      "tier": "finish",
+      "behavior": "beat",
+      "listens": []
+     }
+    ]
+   },
+   {
+    "version": 1,
+    "strategy": "structural",
+    "budget": 2,
+    "archetype": "ripple",
+    "reactive": 2,
+    "layers": [
+     {
+      "name": "FUNDO",
+      "tier": "background",
+      "behavior": "still",
+      "listens": []
+     },
+     {
+      "name": "CÂMERA",
+      "tier": "other",
+      "behavior": "drift",
+      "listens": []
+     },
+     {
+      "name": "STAND-IN CÂMERA",
+      "tier": "ground",
+      "behavior": "section",
+      "listens": [
+       "level"
+      ]
+     },
+     {
+      "name": "PALAVRAS",
+      "tier": "other",
+      "behavior": "drift",
+      "listens": []
+     },
+     {
+      "name": "FLOR DA VIDA",
+      "tier": "other",
+      "behavior": "drift",
+      "listens": []
+     },
+     {
+      "name": "CIBERSIGILO",
+      "tier": "hero",
+      "behavior": "follow",
+      "listens": [
+       "bass"
+      ]
+     },
+     {
+      "name": "PLACAS MODULARES",
+      "tier": "structure",
+      "behavior": "beat",
+      "listens": []
+     },
+     {
+      "name": "DRONE A",
+      "tier": "structure",
+      "behavior": "beat",
+      "listens": []
+     },
+     {
+      "name": "DRONE B",
+      "tier": "structure",
+      "behavior": "beat",
+      "listens": []
+     },
+     {
+      "name": "NÚMERO",
+      "tier": "information",
+      "behavior": "drift",
+      "listens": []
+     },
+     {
+      "name": "FAIXA",
+      "tier": "structure",
+      "behavior": "beat",
+      "listens": []
+     },
+     {
+      "name": "DESLOCAMENTO",
+      "tier": "finish",
+      "behavior": "beat",
+      "listens": []
+     },
+     {
+      "name": "GLITCH EM BLOCOS",
+      "tier": "finish",
+      "behavior": "beat",
+      "listens": []
+     }
+    ]
+   },
+   {
+    "version": 1,
+    "strategy": "structural",
+    "budget": 2,
+    "archetype": "stutter",
+    "reactive": 2,
+    "layers": [
+     {
+      "name": "FUNDO",
+      "tier": "background",
+      "behavior": "still",
+      "listens": []
+     },
+     {
+      "name": "CÂMERA",
+      "tier": "other",
+      "behavior": "drift",
+      "listens": []
+     },
+     {
+      "name": "STAND-IN CÂMERA",
+      "tier": "ground",
+      "behavior": "section",
+      "listens": [
+       "level"
+      ]
+     },
+     {
+      "name": "TERRENO TÉRMICO",
+      "tier": "hero",
+      "behavior": "follow",
+      "listens": [
+       "bass"
+      ]
+     },
+     {
+      "name": "MAPA TÉRMICO",
+      "tier": "finish",
+      "behavior": "beat",
+      "listens": []
+     },
+     {
+      "name": "RASTREIO",
+      "tier": "information",
+      "behavior": "drift",
+      "listens": []
+     },
+     {
+      "name": "PLACAS MODULARES",
+      "tier": "structure",
+      "behavior": "beat",
+      "listens": []
+     },
+     {
+      "name": "ENTIDADES",
+      "tier": "information",
+      "behavior": "drift",
+      "listens": []
+     },
+     {
+      "name": "GRAFO",
+      "tier": "information",
+      "behavior": "drift",
+      "listens": []
+     },
+     {
+      "name": "FLUXO",
+      "tier": "information",
+      "behavior": "drift",
+      "listens": []
+     },
+     {
+      "name": "POSIÇÃO",
+      "tier": "information",
+      "behavior": "drift",
+      "listens": []
+     },
+     {
+      "name": "STATUS",
+      "tier": "information",
+      "behavior": "drift",
+      "listens": []
+     },
+     {
+      "name": "DESLOCAMENTO",
+      "tier": "finish",
+      "behavior": "beat",
+      "listens": []
+     },
+     {
+      "name": "GLITCH EM BLOCOS",
+      "tier": "finish",
+      "behavior": "beat",
+      "listens": []
+     }
+    ]
+   }
+  ],
+  "depthIR": [
+   {
+    "version": 1,
+    "archetype": "stutter",
+    "camera": {
+     "move": "still",
+     "amp": 0,
+     "cycles": 1,
+     "phase": 0,
+     "focus": 0.2,
+     "fog": 0.0,
+     "dof": 0.0
+    },
+    "description": "stepped motion: the camera sways in eight held steps",
+    "focus": {
+     "z": 0.2,
+     "tier": "hero"
+    },
+    "planes": [
+     {
+      "name": "STAND-IN CÂMERA",
+      "tier": "ground",
+      "z": -0.7,
+      "fog": 0.06,
+      "blurPx": 12.48
+     },
+     {
+      "name": "PLACAS MODULARES",
+      "tier": "structure",
+      "z": -0.3,
+      "fog": 0.033,
+      "blurPx": 4.8
+     },
+     {
+      "name": "RADAR",
+      "tier": "hero",
+      "z": 0.2,
+      "fog": 0.0,
+      "blurPx": 0.0
+     }
+    ],
+    "screen": [
+     "FUNDO",
+     "TERRENO",
+     "ALVOS",
+     "TELEMETRIA",
+     "COORDENADAS",
+     "CONFIANÇA",
+     "FLUXO",
+     "FITA",
+     "DESLOCAMENTO",
+     "GLITCH EM BLOCOS"
+    ],
+    "parallax": {
+     "shiftXPx": 101.09,
+     "shiftYPx": 0,
+     "scalePct": 0,
+     "unitPx": 1920,
+     "blurMaxPx": 12.48,
+     "fogMax": 0.06
+    },
+    "seam": {
+     "hard": false,
+     "rule": null,
+     "from": "sway"
+    },
+    "loop": {
+     "closes": true,
+     "wholeCycles": true,
+     "audio": false
+    }
+   },
+   {
+    "version": 1,
+    "archetype": "pulse",
+    "camera": {
+     "move": "still",
+     "amp": 0,
+     "cycles": 1,
+     "phase": 0,
+     "focus": 0.2,
+     "fog": 0.0,
+     "dof": 0.0
+    },
+    "description": "the scene breathes with the pulse: the camera pushes in and out",
+    "focus": {
+     "z": 0.2,
+     "tier": "hero"
+    },
+    "planes": [
+     {
+      "name": "STAND-IN CÂMERA",
+      "tier": "ground",
+      "z": -0.7,
+      "fog": 0.06,
+      "blurPx": 12.48
+     },
+     {
+      "name": "CÂMERA DE SEGURANÇA",
+      "tier": "hero",
+      "z": 0.2,
+      "fog": 0.0,
+      "blurPx": 0.0
+     },
+     {
+      "name": "CÂMERA ARAME",
+      "tier": "structure",
+      "z": -0.4,
+      "fog": 0.04,
+      "blurPx": 6.72
+     },
+     {
+      "name": "CONE IR",
+      "tier": "event",
+      "z": 0.7,
+      "fog": 0.0,
+      "blurPx": 4.8
+     },
+     {
+      "name": "PLACAS MODULARES",
+      "tier": "structure",
+      "z": -0.33,
+      "fog": 0.035,
+      "blurPx": 5.38
+     },
+     {
+      "name": "DRONE A",
+      "tier": "structure",
+      "z": -0.27,
+      "fog": 0.031,
+      "blurPx": 4.22
+     },
+     {
+      "name": "DRONE B",
+      "tier": "structure",
+      "z": -0.2,
+      "fog": 0.027,
+      "blurPx": 2.88
+     }
+    ],
+    "screen": [
+     "FUNDO",
+     "CÂMERAS",
+     "IR",
+     "POSIÇÃO",
+     "FITA",
+     "DESLOCAMENTO",
+     "GLITCH EM BLOCOS"
+    ],
+    "parallax": {
+     "shiftXPx": 0,
+     "shiftYPx": 0,
+     "scalePct": 11.93,
+     "unitPx": 1920,
+     "blurMaxPx": 12.48,
+     "fogMax": 0.06
+    },
+    "seam": {
+     "hard": false,
+     "rule": null,
+     "from": "dolly"
+    },
+    "loop": {
+     "closes": true,
+     "wholeCycles": true,
+     "audio": false
+    }
+   },
+   {
+    "version": 1,
+    "archetype": "ripple",
+    "camera": {
+     "move": "still",
+     "amp": 0,
+     "cycles": 1,
+     "phase": 0,
+     "focus": 0.2,
+     "fog": 0.0,
+     "dof": 0.0
+    },
+    "description": "a ripple through the planes: the focus is pulled from far to near",
+    "focus": {
+     "z": 0.2,
+     "tier": "hero"
+    },
+    "planes": [
+     {
+      "name": "STAND-IN CÂMERA",
+      "tier": "ground",
+      "z": -0.7,
+      "fog": 0.0,
+      "blurPx": 24.96
+     },
+     {
+      "name": "CIBERSIGILO",
+      "tier": "hero",
+      "z": 0.2,
+      "fog": 0.0,
+      "blurPx": 0.0
+     },
+     {
+      "name": "PLACAS MODULARES",
+      "tier": "structure",
+      "z": -0.4,
+      "fog": 0.0,
+      "blurPx": 13.44
+     },
+     {
+      "name": "DRONE A",
+      "tier": "structure",
+      "z": -0.33,
+      "fog": 0.0,
+      "blurPx": 10.75
+     },
+     {
+      "name": "DRONE B",
+      "tier": "structure",
+      "z": -0.27,
+      "fog": 0.0,
+      "blurPx": 8.45
+     },
+     {
+      "name": "FAIXA",
+      "tier": "structure",
+      "z": -0.2,
+      "fog": 0.0,
+      "blurPx": 5.76
+     }
+    ],
+    "screen": [
+     "FUNDO",
+     "PALAVRAS",
+     "FLOR DA VIDA",
+     "NÚMERO",
+     "DESLOCAMENTO",
+     "GLITCH EM BLOCOS"
+    ],
+    "parallax": {
+     "shiftXPx": 0,
+     "shiftYPx": 0,
+     "scalePct": 0,
+     "unitPx": 1920,
+     "blurMaxPx": 24.96,
+     "fogMax": 0.0
+    },
+    "seam": {
+     "hard": false,
+     "rule": null,
+     "from": "rack"
+    },
+    "loop": {
+     "closes": true,
+     "wholeCycles": true,
+     "audio": false
+    }
+   },
+   {
+    "version": 1,
+    "archetype": "stutter",
+    "camera": {
+     "move": "still",
+     "amp": 0,
+     "cycles": 1,
+     "phase": 0,
+     "focus": 0.2,
+     "fog": 0.0,
+     "dof": 0.0
+    },
+    "description": "stepped motion: the camera sways in eight held steps",
+    "focus": {
+     "z": 0.2,
+     "tier": "hero"
+    },
+    "planes": [
+     {
+      "name": "STAND-IN CÂMERA",
+      "tier": "ground",
+      "z": -0.7,
+      "fog": 0.06,
+      "blurPx": 12.48
+     },
+     {
+      "name": "TERRENO TÉRMICO",
+      "tier": "hero",
+      "z": 0.2,
+      "fog": 0.0,
+      "blurPx": 0.0
+     },
+     {
+      "name": "PLACAS MODULARES",
+      "tier": "structure",
+      "z": -0.3,
+      "fog": 0.033,
+      "blurPx": 4.8
+     }
+    ],
+    "screen": [
+     "FUNDO",
+     "MAPA TÉRMICO",
+     "RASTREIO",
+     "ENTIDADES",
+     "GRAFO",
+     "FLUXO",
+     "POSIÇÃO",
+     "STATUS",
+     "DESLOCAMENTO",
+     "GLITCH EM BLOCOS"
+    ],
+    "parallax": {
+     "shiftXPx": 101.09,
+     "shiftYPx": 0,
+     "scalePct": 0,
+     "unitPx": 1920,
+     "blurMaxPx": 12.48,
+     "fogMax": 0.06
+    },
+    "seam": {
+     "hard": false,
+     "rule": null,
+     "from": "sway"
+    },
+    "loop": {
+     "closes": true,
+     "wholeCycles": true,
+     "audio": false
+    }
+   }
+  ],
+  "surfaceIR": {
+   "version": 1,
+   "canvas": {
+    "w": 3840,
+    "h": 1920,
+    "aspect": 2.0,
+    "aspectClass": "wide",
+    "orientation": "wide"
+   },
+   "facts": [
+    {
+     "id": "size",
+     "value": [
+      3840,
+      1920
+     ],
+     "confidence": "EXPLICIT",
+     "basis": "declared canvas size in pixels"
+    },
+    {
+     "id": "aspect",
+     "value": 2.0,
+     "confidence": "EXPLICIT",
+     "basis": "exact arithmetic on the declared size"
+    },
+    {
+     "id": "walls",
+     "value": 1,
+     "confidence": "INFERRED",
+     "basis": "no folds declared: one wall is assumed"
+    },
+    {
+     "id": "activeArea",
+     "value": 1.0,
+     "confidence": "INFERRED",
+     "basis": "no regions given: the whole canvas is treated as surface"
+    },
+    {
+     "id": "layout",
+     "value": null,
+     "confidence": "UNKNOWN",
+     "basis": "no regions to measure"
+    },
+    {
+     "id": "symmetry",
+     "value": null,
+     "confidence": "UNKNOWN",
+     "basis": "no regions to measure"
+    },
+    {
+     "id": "readingAxis",
+     "value": "x",
+     "confidence": "INFERRED",
+     "basis": "the long side of the canvas is where the eye travels"
+    },
+    {
+     "id": "pitch",
+     "value": 3.9,
+     "confidence": "EXPLICIT",
+     "basis": "declared by the author"
+    },
+    {
+     "id": "viewingDistance",
+     "value": 40,
+     "confidence": "EXPLICIT",
+     "basis": "declared by the author (the farthest viewer)"
+    },
+    {
+     "id": "legibility",
+     "value": {
+      "capPx": 54,
+      "linePx": 9
+     },
+     "confidence": "INFERRED",
+     "basis": "visual-angle rules of thumb applied to the declared pitch and distance"
+    }
+   ],
+   "walls": [
+    {
+     "from": 0.0,
+     "to": 1.0
+    }
+   ],
+   "regions": null,
+   "grid": null,
+   "constraints": [
+    {
+     "id": "safeArea",
+     "kind": "margin",
+     "strength": "soft",
+     "confidence": "INFERRED",
+     "value": {
+      "x": 0.05,
+      "y": 0.05,
+      "w": 0.9,
+      "h": 0.9
+     },
+     "rule": "default margin: no regions to measure"
+    },
+    {
+     "id": "readingAxis",
+     "kind": "advice",
+     "strength": "soft",
+     "confidence": "INFERRED",
+     "value": "x",
+     "rule": "movement along the long side reads better than across it"
+    },
+    {
+     "id": "legibility",
+     "kind": "advice",
+     "strength": "soft",
+     "confidence": "INFERRED",
+     "value": {
+      "capPx": 54,
+      "linePx": 9
+     },
+     "rule": "smallest text and stroke that read, in pixels (rules of thumb)"
+    }
+   ],
+   "unknowns": [
+    {
+     "id": "depth",
+     "why": "a imagem 2D não diz se a superfície tem relevo ou profundidade",
+     "ask": "A superfície é plana ou tem relevo (volumes, recortes)?"
+    },
+    {
+     "id": "curvature",
+     "why": "curvatura não aparece em largura e altura",
+     "ask": "A superfície é plana, côncava, convexa ou em cilindro?"
+    },
+    {
+     "id": "ambientLight",
+     "why": "a luz do local muda contraste e cor percebidos",
+     "ask": "O local é escuro, penumbra ou com luz do dia?"
+    },
+    {
+     "id": "material",
+     "why": "o acabamento do painel muda brilho e moiré",
+     "ask": "Qual o acabamento (LED, tela, parede branca, outro)?"
+    },
+    {
+     "id": "regions",
+     "why": "sem as regiões ativas o canvas inteiro é tratado como superfície",
+     "ask": "Importe um CSV ou uma máscara PNG: há partes do canvas que não existem fisicamente?"
+    }
+   ],
+   "summary": {
+    "EXPLICIT": 4,
+    "DETECTED": 0,
+    "INFERRED": 4,
+    "UNKNOWN": 2
+   }
+  }
+ },
+ "canvas": {
+  "w": 3840,
+  "h": 1920,
+  "fps": 30,
+  "target": "led",
+  "safe": 0.04,
+  "pitch": 3.9,
+  "dist": 20
+ },
+ "time": {
+  "bpm": 120,
+  "bars": 4,
+  "loop": true,
+  "seamless": true,
+  "mode": "loop",
+  "transition": "slices"
+ },
+ "audio": {
+  "reactive": true,
+  "sens": 1,
+  "smooth": 0.7,
+  "strategy": "structural"
+ },
+ "palette": {
+  "bg": "#050505",
+  "primary": "#FF1F2E",
+  "secondary": "#8C8C96",
+  "accent": "#F2F2F2"
+ },
+ "compositions": [
+  {
+   "name": "RADAR",
+   "hypothesis": "LEITURA — um radar central varre a cidade; cada alvo travado vira registro em uma placa da grade.",
+   "motion": "step",
+   "layers": [
+    {
+     "type": "bg",
+     "name": "FUNDO",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "ground colour; transparent in alpha delivery",
+     "p": {
+      "fill": false,
+      "grain": 0
+     },
+     "temporal": {
+      "behavior": "still",
+      "listens": [],
+      "reason": "ground colour: nothing in it moves"
+     }
+    },
+    {
+     "type": "video",
+     "name": "CÂMERA",
+     "on": false,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "ground: captura de câmera do usuário (importar em MÍDIA como camera.mp4, ligar esta camada e desligar o STAND-IN)",
+     "p": {
+      "media": "camera.mp4",
+      "fit": "cover"
+     },
+     "temporal": {
+      "behavior": "drift",
+      "listens": [],
+      "reason": "moves with the loop and the BPM only; the music is not its job"
+     }
+    },
+    {
+     "type": "shader",
+     "name": "STAND-IN CÂMERA",
+     "on": true,
+     "opacity": 0.35,
+     "blend": "normal",
+     "role": "ground: campo que faz o papel da câmera no preview; DESLIGAR quando camera.mp4 estiver carregada",
+     "p": {
+      "preset": "CAMPO FBM",
+      "p1": 1.6,
+      "p2": 0.6,
+      "p3": 0.8,
+      "p4": 1.5,
+      "c1": "secondary",
+      "c2": "accent",
+      "cbg": "bg",
+      "res": 0.5,
+      "alphaMode": "opaque",
+      "audio": 0.7,
+      "band": "rms"
+     },
+     "temporal": {
+      "behavior": "section",
+      "listens": [
+       "level"
+      ],
+      "reason": "follows the presence of the track (build, drop, break), never single hits"
+     },
+     "z": -0.7
+    },
+    {
+     "type": "terrain",
+     "name": "TERRENO",
+     "on": true,
+     "opacity": 0.5,
+     "blend": "normal",
+     "role": "ground: terreno em linhas sob o radar",
+     "p": {
+      "render": "lines",
+      "relief": 1.2,
+      "cx": 0.5,
+      "cy": 0.75,
+      "size": 2.6,
+      "tiltX": 64,
+      "weight": 1.2,
+      "density": 0.9,
+      "color": "secondary",
+      "hot": "primary"
+     },
+     "temporal": {
+      "behavior": "drift",
+      "listens": [],
+      "reason": "moves with the loop and the BPM only; the music is not its job"
+     }
+    },
+    {
+     "type": "code",
+     "name": "PLACAS MODULARES",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "structure: grade modular 12×6 de placas em silhueta chanfrada (cheia, vazada, hachurada, escura ou moldura com janela)",
+     "p": {
+      "src": "\nconst W=K.w,H=K.h,ph=K.t.ph,TAU=Math.PI*2,M=36,GU=18,CW=(W-2*M-11*GU)/12,RH=(H-2*M-5*GU)/6,CUT=24;\nconst B=[[0, 0, 2, 2, \"fill\", \"M-01 ALVOS\"], [0, 2, 2, 2, \"line\", \"M-02 REDE\"], [0, 4, 2, 2, \"hatch\", \"M-03 ALERTA\"], [10, 0, 2, 2, \"line\", \"M-04 GPS\"], [10, 2, 2, 2, \"fill\", \"M-05 REGISTRO\"], [10, 4, 2, 2, \"dark\", \"M-06 FLUXO\"]];\nconst poly=(x,y,w,h,k)=>{c.moveTo(x+k,y);c.lineTo(x+w,y);c.lineTo(x+w,y+h-k);c.lineTo(x+w-k,y+h);c.lineTo(x,y+h);c.lineTo(x,y+k);c.closePath();};\nc.save();\nB.forEach((b,i)=>{\n  let x=M+b[0]*(CW+GU), y=M+b[1]*(RH+GU), w=b[2]*CW+(b[2]-1)*GU, h=b[3]*RH+(b[3]-1)*GU; const st=b[4];\n  const g=K.hash(i,Math.floor(K.t.n/(K.t.fps/2)))>0.9 && (K.t.n%15)<3; if(g) x+=(K.hash(i,K.t.n)-0.5)*60;\n  c.globalAlpha=1; c.beginPath();\n  if(st==='frame'){ const ins=b[6]||60; poly(x,y,w,h,CUT*1.5); c.rect(x+ins,y+ins,w-2*ins,h-2*ins); c.fillStyle=K.col('bg'); c.fill('evenodd'); c.strokeStyle=K.col('primary'); c.lineWidth=4; c.beginPath(); poly(x,y,w,h,CUT*1.5); c.stroke(); c.lineWidth=2; c.strokeStyle=K.col('accent'); c.strokeRect(x+ins,y+ins,w-2*ins,h-2*ins);\n    c.fillStyle=K.col('primary'); [[x+ins,y+ins],[x+w-ins,y+ins],[x+ins,y+h-ins],[x+w-ins,y+h-ins]].forEach(q=>{ c.fillRect(q[0]-8,q[1]-8,16,16); }); }\n  else {\n    poly(x,y,w,h,CUT);\n    if(st==='fill'){ c.fillStyle=K.col('primary'); c.fill(); }\n    else if(st==='dark'){ c.fillStyle=K.col('bg'); c.globalAlpha=0.9; c.fill(); c.globalAlpha=1; c.strokeStyle=K.col('secondary'); c.lineWidth=2; c.stroke(); }\n    else if(st==='hatch'){ c.save(); c.clip(); c.strokeStyle=K.col('primary'); c.lineWidth=5; c.globalAlpha=0.8; const off=(ph*64)%32; for(let k=-h;k<w+h;k+=32){ c.beginPath(); c.moveTo(x+k+off,y+h); c.lineTo(x+k+off+h,y); c.stroke(); } c.restore(); c.globalAlpha=1; c.strokeStyle=K.col('accent'); c.lineWidth=3; c.beginPath(); poly(x,y,w,h,CUT); c.stroke(); }\n    else { c.strokeStyle=K.col('accent'); c.lineWidth=3; c.stroke(); }\n  }\n  c.globalAlpha=1; c.font='700 15px monospace'; c.fillStyle=K.col(st==='fill'?'bg':'accent'); c.fillText((b[5]||'M-'+String(i+1).padStart(2,'0'))+'  '+(x/W*100).toFixed(1)+'/'+(y/H*100).toFixed(1),x+CUT+8,y+h-12);\n  const t=(ph*2+i*0.17)%1; c.fillStyle=K.col(st==='fill'?'bg':'primary'); c.fillRect(x+w-CUT-6-120*t,y+h-14,10,10);\n});\nc.restore();\n"
+     },
+     "temporal": {
+      "behavior": "beat",
+      "listens": [],
+      "reason": "lands on the beat grid; the audio does not push it"
+     },
+     "mod": [],
+     "z": -0.3
+    },
+    {
+     "type": "code",
+     "name": "RADAR",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "hero: radar central com anéis, rosa dos ventos de 5 em 5°, varredura e alvos que travam quando a varredura passa",
+     "p": {
+      "src": "\nconst W=K.w,H=K.h,ph=K.t.ph,TAU=Math.PI*2,cx=W/2,cy=H/2,R=H*0.41,sw=TAU*ph;\nconst ang=(a)=>[Math.sin(a),-Math.cos(a)];\nc.save(); c.translate(cx,cy); c.textAlign='center'; c.lineCap='butt';\nc.fillStyle=K.col('bg'); c.globalAlpha=0.55; c.beginPath(); c.arc(0,0,R*1.02,0,TAU); c.fill();\nc.strokeStyle=K.col('accent');\nfor(let i=1;i<=5;i++){ c.globalAlpha=i===5?0.95:0.32; c.lineWidth=i===5?4:1.6; c.beginPath(); c.arc(0,0,R*i/5,0,TAU); c.stroke(); c.globalAlpha=0.6; c.font='600 14px monospace'; c.fillStyle=K.col('accent'); c.fillText((i*20)+' KM',R*i/5+30,-6); }\nfor(let a=0;a<72;a++){ const t=a*TAU/72, big=a%6===0, L=big?30:14, u=ang(t); c.globalAlpha=0.85; c.lineWidth=big?3:1.4; c.strokeStyle=K.col('accent'); c.beginPath(); c.moveTo(u[0]*R,u[1]*R); c.lineTo(u[0]*(R+L),u[1]*(R+L)); c.stroke();\n  if(big){ c.font='700 18px monospace'; c.fillStyle=K.col('accent'); c.fillText(String(a*5).padStart(3,'0'),u[0]*(R+60),u[1]*(R+60)+6); } }\nc.globalAlpha=0.5; c.lineWidth=1.6; c.beginPath(); c.moveTo(-R*1.08,0); c.lineTo(R*1.08,0); c.moveTo(0,-R*1.08); c.lineTo(0,R*1.08); c.stroke();\nfor(let k=0;k<30;k++){ const a1=sw-k*0.03, a0=a1-0.03; c.globalAlpha=0.34*(1-k/30); c.fillStyle=K.col('primary'); c.beginPath(); c.moveTo(0,0); c.arc(0,0,R,a0-Math.PI/2,a1-Math.PI/2); c.closePath(); c.fill(); }\nconst u=ang(sw); c.globalAlpha=1; c.strokeStyle=K.col('primary'); c.lineWidth=4; c.beginPath(); c.moveTo(0,0); c.lineTo(u[0]*R,u[1]*R); c.stroke();\nfor(let i=0;i<16;i++){ const a=K.hash(i,1)*TAU+0.12*Math.sin(TAU*(ph+i*0.13)), rr=R*(0.12+0.84*K.hash(i,2)), d=(((sw-a)%TAU)+TAU)%TAU, fd=Math.max(0,1-d/(TAU*0.55)), p=ang(a), x=p[0]*rr, y=p[1]*rr;\n  c.globalAlpha=0.18+0.82*fd; c.fillStyle=K.col(fd>0.8?'primary':'accent'); c.fillRect(x-6,y-6,12,12);\n  if(fd>0.55){ c.strokeStyle=K.col('primary'); c.lineWidth=2.4; const s=24; c.beginPath(); [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(q=>{ c.moveTo(x+q[0]*s,y+q[1]*s*0.4); c.lineTo(x+q[0]*s,y+q[1]*s); c.lineTo(x+q[0]*s*0.4,y+q[1]*s); }); c.stroke();\n    c.textAlign='left'; c.font='700 15px monospace'; c.fillStyle=K.col('accent'); c.fillText('ALVO '+String(i+1).padStart(2,'0'),x+32,y-8); c.font='500 13px monospace'; c.fillStyle=K.col('secondary'); c.fillText('AZ '+((a/TAU*360)|0)+'°  DIST '+((rr/R*100)|0)+' KM',x+32,y+10); c.textAlign='center'; }\n}\nc.restore();\n",
+      "audio": 0.7,
+      "band": "bass",
+      "contrast": 1,
+      "speed": 1
+     },
+     "temporal": {
+      "behavior": "follow",
+      "listens": [
+       "bass"
+      ],
+      "reason": "carries the bass story: it swells and settles with the low end"
+     },
+     "mod": [
+      {
+       "k": "contrast",
+       "src": "lfo",
+       "shape": "env",
+       "cycles": 1,
+       "min": 0.85,
+       "max": 1.2,
+       "mode": "mul",
+       "keys": [
+        0.7143,
+        0.8571,
+        1.0,
+        0.4286,
+        0.0
+       ]
+      },
+      {
+       "k": "speed",
+       "src": "lfo",
+       "shape": "env",
+       "cycles": 1,
+       "min": 0.6,
+       "max": 1.3,
+       "mode": "mul",
+       "keys": [
+        0.2857,
+        0.5714,
+        1.0,
+        0.5714,
+        0.0
+       ]
+      }
+     ],
+     "z": 0.2
+    },
+    {
+     "type": "counter",
+     "name": "ALVOS",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "information: contador de alvos sobre a placa cheia",
+     "p": {
+      "value": 128,
+      "motion": "sorteio",
+      "label": "",
+      "pre": "",
+      "size": 96,
+      "align": "center",
+      "cx": 0.094,
+      "cy": 0.2,
+      "font": "mono",
+      "wgt": 800,
+      "color": "bg"
+     },
+     "temporal": {
+      "behavior": "drift",
+      "listens": [],
+      "reason": "moves with the loop and the BPM only; the music is not its job"
+     }
+    },
+    {
+     "type": "data",
+     "name": "TELEMETRIA",
+     "on": true,
+     "opacity": 0.8,
+     "blend": "normal",
+     "role": "information: log na placa de rede",
+     "p": {
+      "rows": 10,
+      "tags": "RADAR,ALVO,SCAN,LOCK",
+      "log": true,
+      "tele": false,
+      "ui": 1.1,
+      "color": "accent",
+      "hot": "primary"
+     },
+     "temporal": {
+      "behavior": "drift",
+      "listens": [],
+      "reason": "moves with the loop and the BPM only; the music is not its job"
+     }
+    },
+    {
+     "type": "coords",
+     "name": "COORDENADAS",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "information: leitura de posição na placa GPS",
+     "p": {
+      "mode": "geo",
+      "lat": -23.5505,
+      "lon": -46.6333,
+      "w": 330,
+      "h": 300,
+      "cx": 0.906,
+      "cy": 0.2,
+      "ui": 1.1,
+      "color": "accent",
+      "hot": "primary"
+     },
+     "temporal": {
+      "behavior": "drift",
+      "listens": [],
+      "reason": "moves with the loop and the BPM only; the music is not its job"
+     }
+    },
+    {
+     "type": "gauge",
+     "name": "CONFIANÇA",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "information: medidor na placa de registro",
+     "p": {
+      "kind": "dial",
+      "size": 90,
+      "value": 78,
+      "motion": "vai-e-volta",
+      "label": "CONF",
+      "cx": 0.906,
+      "cy": 0.5,
+      "color": "bg",
+      "hot": "accent"
+     },
+     "temporal": {
+      "behavior": "drift",
+      "listens": [],
+      "reason": "moves with the loop and the BPM only; the music is not its job"
+     }
+    },
+    {
+     "type": "chart",
+     "name": "FLUXO",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "information: barras de fluxo na placa escura",
+     "p": {
+      "kind": "barras",
+      "w": 300,
+      "h": 230,
+      "n": 20,
+      "grid": true,
+      "cx": 0.906,
+      "cy": 0.82,
+      "ui": 1.0,
+      "color": "accent",
+      "hot": "primary"
+     },
+     "temporal": {
+      "behavior": "drift",
+      "listens": [],
+      "reason": "moves with the loop and the BPM only; the music is not its job"
+     }
+    },
+    {
+     "type": "ticker",
+     "name": "FITA",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "information: fita de palavras",
+     "p": {
+      "text": "VIGILÂNCIA NÃO É SEGURANÇA · DADOS SÃO NOSSOS · ",
+      "cy": 0.955,
+      "h": 64,
+      "fill": 0.5,
+      "cycles": 1,
+      "rules": true,
+      "upper": true,
+      "rule": "primary",
+      "font": "mono",
+      "wgt": 700,
+      "color": "accent"
+     },
+     "temporal": {
+      "behavior": "drift",
+      "listens": [],
+      "reason": "moves with the loop and the BPM only; the music is not its job"
+     }
+    },
+    {
+     "type": "fx",
+     "name": "DESLOCAMENTO",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "finish: deslocamento por ruído, a imagem inteira ondula e racha",
+     "p": {
+      "preset": "DESLOCAR",
+      "p1": 6,
+      "p2": 3,
+      "p3": 1,
+      "p4": 0,
+      "mix": 0.35
+     },
+     "temporal": {
+      "behavior": "beat",
+      "listens": [],
+      "reason": "lands on the beat grid; the audio does not push it"
+     }
+    },
+    {
+     "type": "fx",
+     "name": "GLITCH EM BLOCOS",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "finish: blocos deslocados na batida (célula grossa para LED)",
+     "p": {
+      "preset": "GLITCH EM BLOCOS",
+      "p1": 36,
+      "p2": 80,
+      "p3": 0.16,
+      "p4": 12,
+      "mix": 1
+     },
+     "temporal": {
+      "behavior": "beat",
+      "listens": [],
+      "reason": "lands on the beat grid; the audio does not push it"
+     }
+    }
+   ],
+   "camera": {
+    "move": "still",
+    "amp": 0,
+    "cycles": 1,
+    "phase": 0,
+    "focus": 0.2,
+    "fog": 0.0,
+    "dof": 0.0
+   }
+  },
+  {
+   "name": "CÂMERA",
+   "hypothesis": "OLHAR — uma câmera de segurança em escala monumental emite infravermelho; drones a cercam.",
+   "motion": "step",
+   "layers": [
+    {
+     "type": "bg",
+     "name": "FUNDO",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "ground colour; transparent in alpha delivery",
+     "p": {
+      "fill": false,
+      "grain": 0
+     },
+     "temporal": {
+      "behavior": "still",
+      "listens": [],
+      "reason": "ground colour: nothing in it moves"
+     }
+    },
+    {
+     "type": "video",
+     "name": "CÂMERA",
+     "on": false,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "ground: captura de câmera do usuário (importar em MÍDIA como camera.mp4, ligar esta camada e desligar o STAND-IN)",
+     "p": {
+      "media": "camera.mp4",
+      "fit": "cover"
+     },
+     "temporal": {
+      "behavior": "drift",
+      "listens": [],
+      "reason": "moves with the loop and the BPM only; the music is not its job"
+     }
+    },
+    {
+     "type": "shader",
+     "name": "STAND-IN CÂMERA",
+     "on": true,
+     "opacity": 0.4,
+     "blend": "normal",
+     "role": "ground: campo que faz o papel da câmera no preview; DESLIGAR quando camera.mp4 estiver carregada",
+     "p": {
+      "preset": "CAMPO FBM",
+      "p1": 1.6,
+      "p2": 0.6,
+      "p3": 0.8,
+      "p4": 1.5,
+      "c1": "secondary",
+      "c2": "accent",
+      "cbg": "bg",
+      "res": 0.5,
+      "alphaMode": "opaque",
+      "audio": 0.7,
+      "band": "rms",
+      "phase": 0.0312
+     },
+     "temporal": {
+      "behavior": "section",
+      "listens": [
+       "level"
+      ],
+      "reason": "follows the presence of the track (build, drop, break), never single hits"
+     },
+     "z": -0.7
+    },
+    {
+     "type": "model",
+     "name": "CÂMERA DE SEGURANÇA",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "hero: câmera bullet monumental com anel de LEDs infravermelhos em nuvem de pontos",
+     "p": {
+      "media": "camera.obj",
+      "mode": "pointcloud",
+      "spin": 0,
+      "tilt": 8,
+      "roll": -6,
+      "persp": 0.3,
+      "pointSize": 3.6,
+      "density": 1.0,
+      "pulseAmt": 0.05,
+      "c1": "primary",
+      "c2": "accent",
+      "size": 96,
+      "px": 0,
+      "py": 0.02,
+      "audio": 0.7,
+      "band": "bass",
+      "contrast": 1,
+      "speed": 1
+     },
+     "temporal": {
+      "behavior": "follow",
+      "listens": [
+       "bass"
+      ],
+      "reason": "carries the bass story: it swells and settles with the low end"
+     },
+     "mod": [
+      {
+       "k": "contrast",
+       "src": "lfo",
+       "shape": "env",
+       "cycles": 1,
+       "min": 0.85,
+       "max": 1.2,
+       "mode": "mul",
+       "keys": [
+        0.7143,
+        0.8571,
+        1.0,
+        0.4286,
+        0.0
+       ]
+      },
+      {
+       "k": "speed",
+       "src": "lfo",
+       "shape": "env",
+       "cycles": 1,
+       "min": 0.6,
+       "max": 1.3,
+       "mode": "mul",
+       "keys": [
+        0.2857,
+        0.5714,
+        1.0,
+        0.5714,
+        0.0
+       ]
+      }
+     ],
+     "z": 0.2
+    },
+    {
+     "type": "model",
+     "name": "CÂMERA ARAME",
+     "on": true,
+     "opacity": 0.35,
+     "blend": "normal",
+     "role": "structure: contorno em arame da câmera para dar volume",
+     "p": {
+      "media": "camera.obj",
+      "mode": "wireframe",
+      "spin": 0,
+      "tilt": 8,
+      "roll": -6,
+      "persp": 0.3,
+      "pointSize": 3.2,
+      "density": 0.9,
+      "pulseAmt": 0.05,
+      "c1": "accent",
+      "c2": "primary",
+      "size": 96,
+      "px": 0,
+      "py": 0.02,
+      "lineW": 1.6
+     },
+     "temporal": {
+      "behavior": "beat",
+      "listens": [],
+      "reason": "lands on the beat grid; the audio does not push it"
+     },
+     "mod": [],
+     "z": -0.4
+    },
+    {
+     "type": "code",
+     "name": "CONE IR",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "event: cone infravermelho que sai da lente e varre o chão",
+     "p": {
+      "src": "\nconst W=K.w,H=K.h,ph=K.t.ph,TAU=Math.PI*2, x=W*0.665, y=H*0.5, th=Math.PI*0.5-0.35+0.22*Math.sin(TAU*ph), L0=H*0.9, wd=0.2;\nc.save(); const g=c.createLinearGradient(x,y,x+Math.cos(th)*L0,y+Math.sin(th)*L0); g.addColorStop(0,K.col('primary')); g.addColorStop(1,K.col('bg'));\nc.globalAlpha=0.28; c.fillStyle=g; c.beginPath(); c.moveTo(x,y); c.lineTo(x+Math.cos(th-wd)*L0,y+Math.sin(th-wd)*L0); c.lineTo(x+Math.cos(th+wd)*L0,y+Math.sin(th+wd)*L0); c.closePath(); c.fill();\nc.globalAlpha=0.95; c.strokeStyle=K.col('primary'); c.lineWidth=2.4; c.setLineDash([18,12]); c.lineDashOffset=-ph*30*2; c.beginPath(); c.moveTo(x,y); c.lineTo(x+Math.cos(th)*L0,y+Math.sin(th)*L0); c.stroke(); c.setLineDash([]);\nfor(let k=1;k<=4;k++){ c.globalAlpha=0.7; c.lineWidth=2; c.beginPath(); c.ellipse(x+Math.cos(th)*L0*0.9,y+Math.sin(th)*L0*0.9,L0*0.05*k,L0*0.016*k,0,0,TAU); c.stroke(); }\nc.globalAlpha=1; c.font='700 18px monospace'; c.fillStyle=K.col('accent'); c.fillText('LENTE IR · '+((th*57.3)|0)+'°',x+30,y-24); c.restore();\n"
+     },
+     "temporal": {
+      "behavior": "beat",
+      "listens": [],
+      "reason": "lands on the beat grid; the audio does not push it"
+     },
+     "z": 0.7
+    },
+    {
+     "type": "code",
+     "name": "PLACAS MODULARES",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "structure: grade modular 12×6 de placas em silhueta chanfrada (cheia, vazada, hachurada, escura ou moldura com janela)",
+     "p": {
+      "src": "\nconst W=K.w,H=K.h,ph=K.t.ph,TAU=Math.PI*2,M=36,GU=18,CW=(W-2*M-11*GU)/12,RH=(H-2*M-5*GU)/6,CUT=24;\nconst B=[[2, 0, 8, 6, \"frame\", \"JANELA 01\", 54], [0, 0, 2, 3, \"fill\", \"M-01 C\\u00c2M\"], [0, 3, 2, 3, \"line\", \"M-02 IR\"], [10, 0, 2, 3, \"line\", \"M-03 LENTE\"], [10, 3, 2, 3, \"fill\", \"M-04 ALERTA\"]];\nconst poly=(x,y,w,h,k)=>{c.moveTo(x+k,y);c.lineTo(x+w,y);c.lineTo(x+w,y+h-k);c.lineTo(x+w-k,y+h);c.lineTo(x,y+h);c.lineTo(x,y+k);c.closePath();};\nc.save();\nB.forEach((b,i)=>{\n  let x=M+b[0]*(CW+GU), y=M+b[1]*(RH+GU), w=b[2]*CW+(b[2]-1)*GU, h=b[3]*RH+(b[3]-1)*GU; const st=b[4];\n  const g=K.hash(i,Math.floor(K.t.n/(K.t.fps/2)))>0.9 && (K.t.n%15)<3; if(g) x+=(K.hash(i,K.t.n)-0.5)*60;\n  c.globalAlpha=1; c.beginPath();\n  if(st==='frame'){ const ins=b[6]||60; poly(x,y,w,h,CUT*1.5); c.rect(x+ins,y+ins,w-2*ins,h-2*ins); c.fillStyle=K.col('bg'); c.fill('evenodd'); c.strokeStyle=K.col('primary'); c.lineWidth=4; c.beginPath(); poly(x,y,w,h,CUT*1.5); c.stroke(); c.lineWidth=2; c.strokeStyle=K.col('accent'); c.strokeRect(x+ins,y+ins,w-2*ins,h-2*ins);\n    c.fillStyle=K.col('primary'); [[x+ins,y+ins],[x+w-ins,y+ins],[x+ins,y+h-ins],[x+w-ins,y+h-ins]].forEach(q=>{ c.fillRect(q[0]-8,q[1]-8,16,16); }); }\n  else {\n    poly(x,y,w,h,CUT);\n    if(st==='fill'){ c.fillStyle=K.col('primary'); c.fill(); }\n    else if(st==='dark'){ c.fillStyle=K.col('bg'); c.globalAlpha=0.9; c.fill(); c.globalAlpha=1; c.strokeStyle=K.col('secondary'); c.lineWidth=2; c.stroke(); }\n    else if(st==='hatch'){ c.save(); c.clip(); c.strokeStyle=K.col('primary'); c.lineWidth=5; c.globalAlpha=0.8; const off=(ph*64)%32; for(let k=-h;k<w+h;k+=32){ c.beginPath(); c.moveTo(x+k+off,y+h); c.lineTo(x+k+off+h,y); c.stroke(); } c.restore(); c.globalAlpha=1; c.strokeStyle=K.col('accent'); c.lineWidth=3; c.beginPath(); poly(x,y,w,h,CUT); c.stroke(); }\n    else { c.strokeStyle=K.col('accent'); c.lineWidth=3; c.stroke(); }\n  }\n  c.globalAlpha=1; c.font='700 15px monospace'; c.fillStyle=K.col(st==='fill'?'bg':'accent'); c.fillText((b[5]||'M-'+String(i+1).padStart(2,'0'))+'  '+(x/W*100).toFixed(1)+'/'+(y/H*100).toFixed(1),x+CUT+8,y+h-12);\n  const t=(ph*2+i*0.17)%1; c.fillStyle=K.col(st==='fill'?'bg':'primary'); c.fillRect(x+w-CUT-6-120*t,y+h-14,10,10);\n});\nc.restore();\n"
+     },
+     "temporal": {
+      "behavior": "beat",
+      "listens": [],
+      "reason": "lands on the beat grid; the audio does not push it"
+     },
+     "mod": [],
+     "z": -0.33
+    },
+    {
+     "type": "model",
+     "name": "DRONE A",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "structure: drone sobrevoando o canto esquerdo",
+     "p": {
+      "media": "drone.obj",
+      "mode": "pointcloud",
+      "spin": 2,
+      "tilt": 24,
+      "roll": 0,
+      "persp": 0.45,
+      "pointSize": 2.4,
+      "density": 0.9,
+      "pulseAmt": 0.05,
+      "c1": "primary",
+      "c2": "accent",
+      "size": 20,
+      "px": -0.58,
+      "py": -0.5
+     },
+     "temporal": {
+      "behavior": "beat",
+      "listens": [],
+      "reason": "lands on the beat grid; the audio does not push it"
+     },
+     "mod": [],
+     "z": -0.27
+    },
+    {
+     "type": "model",
+     "name": "DRONE B",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "structure: drone sobrevoando o canto direito",
+     "p": {
+      "media": "drone.obj",
+      "mode": "pointcloud",
+      "spin": -2,
+      "tilt": 20,
+      "roll": 0,
+      "persp": 0.45,
+      "pointSize": 2.4,
+      "density": 0.9,
+      "pulseAmt": 0.05,
+      "c1": "accent",
+      "c2": "primary",
+      "size": 20,
+      "px": 0.58,
+      "py": 0.5
+     },
+     "temporal": {
+      "behavior": "beat",
+      "listens": [],
+      "reason": "lands on the beat grid; the audio does not push it"
+     },
+     "mod": [],
+     "z": -0.2
+    },
+    {
+     "type": "counter",
+     "name": "CÂMERAS",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "information: contador na placa cheia",
+     "p": {
+      "value": 12800,
+      "motion": "sorteio",
+      "label": "",
+      "pre": "",
+      "size": 76,
+      "align": "center",
+      "cx": 0.094,
+      "cy": 0.2,
+      "font": "mono",
+      "wgt": 800,
+      "color": "bg"
+     },
+     "temporal": {
+      "behavior": "drift",
+      "listens": [],
+      "reason": "moves with the loop and the BPM only; the music is not its job"
+     }
+    },
+    {
+     "type": "gauge",
+     "name": "IR",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "information: medidor de intensidade IR na placa cheia da direita",
+     "p": {
+      "kind": "dial",
+      "size": 100,
+      "value": 64,
+      "motion": "vai-e-volta",
+      "label": "IR",
+      "cx": 0.906,
+      "cy": 0.75,
+      "color": "bg",
+      "hot": "accent"
+     },
+     "temporal": {
+      "behavior": "drift",
+      "listens": [],
+      "reason": "moves with the loop and the BPM only; the music is not its job"
+     }
+    },
+    {
+     "type": "coords",
+     "name": "POSIÇÃO",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "information: coordenadas na placa da lente",
+     "p": {
+      "mode": "geo",
+      "lat": -23.5505,
+      "lon": -46.6333,
+      "w": 330,
+      "h": 300,
+      "cx": 0.906,
+      "cy": 0.25,
+      "ui": 1.1,
+      "color": "accent",
+      "hot": "primary"
+     },
+     "temporal": {
+      "behavior": "drift",
+      "listens": [],
+      "reason": "moves with the loop and the BPM only; the music is not its job"
+     }
+    },
+    {
+     "type": "ticker",
+     "name": "FITA",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "information: fita de palavras",
+     "p": {
+      "text": "SMART SAMPA · VIGILÂNCIA · ROUBO DE DADOS · ",
+      "cy": 0.955,
+      "h": 64,
+      "fill": 0.5,
+      "cycles": 1,
+      "rules": true,
+      "upper": true,
+      "rule": "primary",
+      "font": "mono",
+      "wgt": 700,
+      "color": "accent"
+     },
+     "temporal": {
+      "behavior": "drift",
+      "listens": [],
+      "reason": "moves with the loop and the BPM only; the music is not its job"
+     }
+    },
+    {
+     "type": "fx",
+     "name": "DESLOCAMENTO",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "finish: deslocamento por ruído, a imagem inteira ondula e racha",
+     "p": {
+      "preset": "DESLOCAR",
+      "p1": 6,
+      "p2": 3,
+      "p3": 1,
+      "p4": 0,
+      "mix": 0.35
+     },
+     "temporal": {
+      "behavior": "beat",
+      "listens": [],
+      "reason": "lands on the beat grid; the audio does not push it"
+     }
+    },
+    {
+     "type": "fx",
+     "name": "GLITCH EM BLOCOS",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "finish: blocos deslocados na batida (célula grossa para LED)",
+     "p": {
+      "preset": "GLITCH EM BLOCOS",
+      "p1": 36,
+      "p2": 80,
+      "p3": 0.16,
+      "p4": 12,
+      "mix": 1
+     },
+     "temporal": {
+      "behavior": "beat",
+      "listens": [],
+      "reason": "lands on the beat grid; the audio does not push it"
+     }
+    }
+   ],
+   "camera": {
+    "move": "still",
+    "amp": 0,
+    "cycles": 1,
+    "phase": 0,
+    "focus": 0.2,
+    "fog": 0.0,
+    "dof": 0.0
+   }
+  },
+  {
+   "name": "SIGILO",
+   "hypothesis": "RITUAL — um cibersigilo simétrico, afiado e vermelho, ocupa o centro; palavras de resistência correm atrás.",
+   "motion": "smooth",
+   "layers": [
+    {
+     "type": "bg",
+     "name": "FUNDO",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "ground colour; transparent in alpha delivery",
+     "p": {
+      "fill": false,
+      "grain": 0
+     },
+     "temporal": {
+      "behavior": "still",
+      "listens": [],
+      "reason": "ground colour: nothing in it moves"
+     }
+    },
+    {
+     "type": "video",
+     "name": "CÂMERA",
+     "on": false,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "ground: captura de câmera do usuário (importar em MÍDIA como camera.mp4, ligar esta camada e desligar o STAND-IN)",
+     "p": {
+      "media": "camera.mp4",
+      "fit": "cover"
+     },
+     "temporal": {
+      "behavior": "drift",
+      "listens": [],
+      "reason": "moves with the loop and the BPM only; the music is not its job"
+     }
+    },
+    {
+     "type": "shader",
+     "name": "STAND-IN CÂMERA",
+     "on": true,
+     "opacity": 0.3,
+     "blend": "normal",
+     "role": "ground: campo que faz o papel da câmera no preview; DESLIGAR quando camera.mp4 estiver carregada",
+     "p": {
+      "preset": "CAMPO FBM",
+      "p1": 1.6,
+      "p2": 0.6,
+      "p3": 0.8,
+      "p4": 1.5,
+      "c1": "secondary",
+      "c2": "accent",
+      "cbg": "bg",
+      "res": 0.5,
+      "alphaMode": "opaque",
+      "audio": 0.7,
+      "band": "rms",
+      "phase": 0.0625
+     },
+     "temporal": {
+      "behavior": "section",
+      "listens": [
+       "level"
+      ],
+      "reason": "follows the presence of the track (build, drop, break), never single hits"
+     },
+     "z": -0.7
+    },
+    {
+     "type": "typewall",
+     "name": "PALAVRAS",
+     "on": true,
+     "opacity": 0.45,
+     "blend": "normal",
+     "role": "ground: palavras de resistência contornadas atrás do sigilo",
+     "p": {
+      "words": "DADOS SÃO NOSSOS|VIGILÂNCIA NÃO É SEGURANÇA|ABAIXO O TECNOFEUDALISMO|RESISTA",
+      "rows": 1,
+      "fill": 0.34,
+      "font": "archivo",
+      "weight": 800,
+      "scroll": 1,
+      "change": true,
+      "outline": "all",
+      "stroke": 4,
+      "color": "secondary",
+      "hot": "primary",
+      "hit": false
+     },
+     "temporal": {
+      "behavior": "drift",
+      "listens": [],
+      "reason": "moves with the loop and the BPM only; the music is not its job"
+     }
+    },
+    {
+     "type": "sacred",
+     "name": "FLOR DA VIDA",
+     "on": true,
+     "opacity": 0.35,
+     "blend": "normal",
+     "role": "ground: flor da vida em cinza atrás do sigilo",
+     "p": {
+      "kind": "flor",
+      "size": 520,
+      "density": 1,
+      "labels": false,
+      "color": "secondary",
+      "hot": "primary"
+     },
+     "temporal": {
+      "behavior": "drift",
+      "listens": [],
+      "reason": "moves with the loop and the BPM only; the music is not its job"
+     }
+    },
+    {
+     "type": "code",
+     "name": "CIBERSIGILO",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "hero: cibersigilo de quatro dobras com lâminas afiadas vermelhas e brancas que pulsam",
+     "p": {
+      "src": "\nconst W=K.w,H=K.h,ph=K.t.ph,TAU=Math.PI*2,cx=W/2,cy=H/2,R=H*0.64;\nc.save(); c.translate(cx,cy);\nconst blade=(L,w,bend,a)=>{ c.save(); c.rotate(a); c.beginPath(); c.moveTo(0,0); c.quadraticCurveTo(L*0.5,bend*L*0.5,L,bend*L*0.12); c.quadraticCurveTo(L*0.55,bend*L*0.5+w,0,w*0.35); c.closePath(); c.fill(); c.restore(); };\nconst Ls=[0.98,0.72,0.88,0.58,0.8,0.46,0.66,0.36], An=[0.1,0.28,0.46,0.62,0.78,0.95,1.15,1.35];\n[[1,1],[-1,1],[1,-1],[-1,-1]].forEach((q,qi)=>{ c.save(); c.scale(q[0],q[1]);\n  c.fillStyle=K.col('primary'); c.globalAlpha=1;\n  for(let i=0;i<8;i++){ const pul=1+0.07*Math.sin(TAU*(ph*2+i*0.125)); blade(R*Ls[i]*pul,16-i,(i%2?-1:1)*0.34,-An[i]); }\n  c.fillStyle=K.col('accent'); c.globalAlpha=0.95;\n  for(let i=0;i<8;i+=2){ const pul=1+0.05*Math.sin(TAU*(ph*2+i*0.2+0.3)); blade(R*Ls[i]*0.52*pul,7,(i%2?1:-1)*0.5,-An[i]-0.05); }\n  c.restore(); });\nc.globalAlpha=1; c.strokeStyle=K.col('accent'); c.lineWidth=3; c.beginPath(); c.arc(0,0,R*0.17,0,TAU); c.stroke(); c.lineWidth=1.5; c.globalAlpha=0.7; c.beginPath(); c.arc(0,0,R*0.24,0,TAU); c.stroke();\nc.globalAlpha=1; c.fillStyle=K.col('primary'); c.beginPath(); c.moveTo(0,-R*0.1); c.lineTo(R*0.085,R*0.06); c.lineTo(-R*0.085,R*0.06); c.closePath(); c.fill();\nc.fillStyle=K.col('bg'); c.beginPath(); c.arc(0,R*0.0,R*0.028,0,TAU); c.fill();\nfor(let i=0;i<24;i++){ const a=i*TAU/24+TAU*ph*0, r=R*0.3; c.fillStyle=K.col(i%6===0?'primary':'accent'); c.globalAlpha=i%6===0?1:0.6; c.fillRect(Math.cos(a)*r-3,Math.sin(a)*r-3,6,6); }\nc.restore();\n",
+      "audio": 0.7,
+      "band": "bass",
+      "contrast": 1,
+      "speed": 1
+     },
+     "temporal": {
+      "behavior": "follow",
+      "listens": [
+       "bass"
+      ],
+      "reason": "carries the bass story: it swells and settles with the low end"
+     },
+     "mod": [
+      {
+       "k": "contrast",
+       "src": "lfo",
+       "shape": "env",
+       "cycles": 1,
+       "min": 0.85,
+       "max": 1.2,
+       "mode": "mul",
+       "keys": [
+        0.7143,
+        0.8571,
+        1.0,
+        0.4286,
+        0.0
+       ]
+      },
+      {
+       "k": "speed",
+       "src": "lfo",
+       "shape": "env",
+       "cycles": 1,
+       "min": 0.6,
+       "max": 1.3,
+       "mode": "mul",
+       "keys": [
+        0.2857,
+        0.5714,
+        1.0,
+        0.5714,
+        0.0
+       ]
+      }
+     ],
+     "z": 0.2
+    },
+    {
+     "type": "code",
+     "name": "PLACAS MODULARES",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "structure: grade modular 12×6 de placas em silhueta chanfrada (cheia, vazada, hachurada, escura ou moldura com janela)",
+     "p": {
+      "src": "\nconst W=K.w,H=K.h,ph=K.t.ph,TAU=Math.PI*2,M=36,GU=18,CW=(W-2*M-11*GU)/12,RH=(H-2*M-5*GU)/6,CUT=24;\nconst B=[[0, 0, 3, 2, \"fill\", \"M-01 RITO\"], [9, 4, 3, 2, \"fill\", \"M-02 RITO\"], [0, 4, 3, 2, \"line\", \"M-03 SELO\"], [9, 0, 3, 2, \"line\", \"M-04 SELO\"]];\nconst poly=(x,y,w,h,k)=>{c.moveTo(x+k,y);c.lineTo(x+w,y);c.lineTo(x+w,y+h-k);c.lineTo(x+w-k,y+h);c.lineTo(x,y+h);c.lineTo(x,y+k);c.closePath();};\nc.save();\nB.forEach((b,i)=>{\n  let x=M+b[0]*(CW+GU), y=M+b[1]*(RH+GU), w=b[2]*CW+(b[2]-1)*GU, h=b[3]*RH+(b[3]-1)*GU; const st=b[4];\n  const g=K.hash(i,Math.floor(K.t.n/(K.t.fps/2)))>0.9 && (K.t.n%15)<3; if(g) x+=(K.hash(i,K.t.n)-0.5)*60;\n  c.globalAlpha=1; c.beginPath();\n  if(st==='frame'){ const ins=b[6]||60; poly(x,y,w,h,CUT*1.5); c.rect(x+ins,y+ins,w-2*ins,h-2*ins); c.fillStyle=K.col('bg'); c.fill('evenodd'); c.strokeStyle=K.col('primary'); c.lineWidth=4; c.beginPath(); poly(x,y,w,h,CUT*1.5); c.stroke(); c.lineWidth=2; c.strokeStyle=K.col('accent'); c.strokeRect(x+ins,y+ins,w-2*ins,h-2*ins);\n    c.fillStyle=K.col('primary'); [[x+ins,y+ins],[x+w-ins,y+ins],[x+ins,y+h-ins],[x+w-ins,y+h-ins]].forEach(q=>{ c.fillRect(q[0]-8,q[1]-8,16,16); }); }\n  else {\n    poly(x,y,w,h,CUT);\n    if(st==='fill'){ c.fillStyle=K.col('primary'); c.fill(); }\n    else if(st==='dark'){ c.fillStyle=K.col('bg'); c.globalAlpha=0.9; c.fill(); c.globalAlpha=1; c.strokeStyle=K.col('secondary'); c.lineWidth=2; c.stroke(); }\n    else if(st==='hatch'){ c.save(); c.clip(); c.strokeStyle=K.col('primary'); c.lineWidth=5; c.globalAlpha=0.8; const off=(ph*64)%32; for(let k=-h;k<w+h;k+=32){ c.beginPath(); c.moveTo(x+k+off,y+h); c.lineTo(x+k+off+h,y); c.stroke(); } c.restore(); c.globalAlpha=1; c.strokeStyle=K.col('accent'); c.lineWidth=3; c.beginPath(); poly(x,y,w,h,CUT); c.stroke(); }\n    else { c.strokeStyle=K.col('accent'); c.lineWidth=3; c.stroke(); }\n  }\n  c.globalAlpha=1; c.font='700 15px monospace'; c.fillStyle=K.col(st==='fill'?'bg':'accent'); c.fillText((b[5]||'M-'+String(i+1).padStart(2,'0'))+'  '+(x/W*100).toFixed(1)+'/'+(y/H*100).toFixed(1),x+CUT+8,y+h-12);\n  const t=(ph*2+i*0.17)%1; c.fillStyle=K.col(st==='fill'?'bg':'primary'); c.fillRect(x+w-CUT-6-120*t,y+h-14,10,10);\n});\nc.restore();\n"
+     },
+     "temporal": {
+      "behavior": "beat",
+      "listens": [],
+      "reason": "lands on the beat grid; the audio does not push it"
+     },
+     "mod": [],
+     "z": -0.4
+    },
+    {
+     "type": "model",
+     "name": "DRONE A",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "structure: drone pairing o sigilo",
+     "p": {
+      "media": "drone.obj",
+      "mode": "pointcloud",
+      "spin": 2,
+      "tilt": 26,
+      "roll": 0,
+      "persp": 0.45,
+      "pointSize": 2.4,
+      "density": 0.9,
+      "pulseAmt": 0.05,
+      "c1": "primary",
+      "c2": "accent",
+      "size": 22,
+      "px": -0.78,
+      "py": 0.0
+     },
+     "temporal": {
+      "behavior": "beat",
+      "listens": [],
+      "reason": "lands on the beat grid; the audio does not push it"
+     },
+     "mod": [],
+     "z": -0.33
+    },
+    {
+     "type": "model",
+     "name": "DRONE B",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "structure: drone pairing o sigilo",
+     "p": {
+      "media": "drone.obj",
+      "mode": "pointcloud",
+      "spin": -2,
+      "tilt": 20,
+      "roll": 0,
+      "persp": 0.45,
+      "pointSize": 2.4,
+      "density": 0.9,
+      "pulseAmt": 0.05,
+      "c1": "accent",
+      "c2": "primary",
+      "size": 22,
+      "px": 0.78,
+      "py": -0.0
+     },
+     "temporal": {
+      "behavior": "beat",
+      "listens": [],
+      "reason": "lands on the beat grid; the audio does not push it"
+     },
+     "mod": [],
+     "z": -0.27
+    },
+    {
+     "type": "counter",
+     "name": "NÚMERO",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "information: contador na placa cheia",
+     "p": {
+      "value": 666,
+      "motion": "sorteio",
+      "label": "",
+      "pre": "",
+      "size": 110,
+      "align": "center",
+      "cx": 0.095,
+      "cy": 0.17,
+      "font": "mono",
+      "wgt": 800,
+      "color": "bg"
+     },
+     "temporal": {
+      "behavior": "drift",
+      "listens": [],
+      "reason": "moves with the loop and the BPM only; the music is not its job"
+     }
+    },
+    {
+     "type": "hazard",
+     "name": "FAIXA",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "structure: faixa de perigo na base",
+     "p": {
+      "y": 0.955,
+      "h": 64,
+      "step": 80,
+      "motion": "beat",
+      "lean": "/",
+      "reach": 1,
+      "color": "primary"
+     },
+     "temporal": {
+      "behavior": "beat",
+      "listens": [],
+      "reason": "lands on the beat grid; the audio does not push it"
+     },
+     "mod": [],
+     "z": -0.2
+    },
+    {
+     "type": "fx",
+     "name": "DESLOCAMENTO",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "finish: deslocamento por ruído, a imagem inteira ondula e racha",
+     "p": {
+      "preset": "DESLOCAR",
+      "p1": 6,
+      "p2": 3,
+      "p3": 1,
+      "p4": 0,
+      "mix": 0.35
+     },
+     "temporal": {
+      "behavior": "beat",
+      "listens": [],
+      "reason": "lands on the beat grid; the audio does not push it"
+     }
+    },
+    {
+     "type": "fx",
+     "name": "GLITCH EM BLOCOS",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "finish: blocos deslocados na batida (célula grossa para LED)",
+     "p": {
+      "preset": "GLITCH EM BLOCOS",
+      "p1": 36,
+      "p2": 80,
+      "p3": 0.16,
+      "p4": 12,
+      "mix": 1
+     },
+     "temporal": {
+      "behavior": "beat",
+      "listens": [],
+      "reason": "lands on the beat grid; the audio does not push it"
+     }
+    }
+   ],
+   "camera": {
+    "move": "still",
+    "amp": 0,
+    "cycles": 1,
+    "phase": 0,
+    "focus": 0.2,
+    "fog": 0.0,
+    "dof": 0.0
+   }
+  },
+  {
+   "name": "PAINEL",
+   "hypothesis": "COMANDO — um painel de operações rastreia o terreno térmico 3D; entidades, grafo e fluxo cercam a janela.",
+   "palette": {
+    "bg": "#14002E",
+    "primary": "#FF1F2E",
+    "secondary": "#FF8A1F",
+    "accent": "#FFE45C"
+   },
+   "motion": "step",
+   "layers": [
+    {
+     "type": "bg",
+     "name": "FUNDO",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "ground colour; transparent in alpha delivery",
+     "p": {
+      "fill": false,
+      "grain": 0
+     },
+     "temporal": {
+      "behavior": "still",
+      "listens": [],
+      "reason": "ground colour: nothing in it moves"
+     }
+    },
+    {
+     "type": "video",
+     "name": "CÂMERA",
+     "on": false,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "ground: captura de câmera do usuário (importar em MÍDIA como camera.mp4, ligar esta camada e desligar o STAND-IN)",
+     "p": {
+      "media": "camera.mp4",
+      "fit": "cover"
+     },
+     "temporal": {
+      "behavior": "drift",
+      "listens": [],
+      "reason": "moves with the loop and the BPM only; the music is not its job"
+     }
+    },
+    {
+     "type": "shader",
+     "name": "STAND-IN CÂMERA",
+     "on": true,
+     "opacity": 0.6,
+     "blend": "normal",
+     "role": "ground: campo que faz o papel da câmera no preview; DESLIGAR quando camera.mp4 estiver carregada",
+     "p": {
+      "preset": "CAMPO FBM",
+      "p1": 1.6,
+      "p2": 0.6,
+      "p3": 0.8,
+      "p4": 1.5,
+      "c1": "secondary",
+      "c2": "accent",
+      "cbg": "bg",
+      "res": 0.5,
+      "alphaMode": "opaque",
+      "audio": 0.7,
+      "band": "rms"
+     },
+     "temporal": {
+      "behavior": "section",
+      "listens": [
+       "level"
+      ],
+      "reason": "follows the presence of the track (build, drop, break), never single hits"
+     },
+     "z": -0.7
+    },
+    {
+     "type": "terrain",
+     "name": "TERRENO TÉRMICO",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "hero: relevo 3D em linhas lido pelo mapa de gradiente térmico",
+     "p": {
+      "render": "lines",
+      "relief": 2.2,
+      "cx": 0.5,
+      "cy": 0.6,
+      "size": 2.7,
+      "tiltX": 54,
+      "weight": 2.2,
+      "density": 1.1,
+      "spin": 0,
+      "color": "accent",
+      "hot": "primary",
+      "audio": 0.7,
+      "band": "bass",
+      "contrast": 1,
+      "speed": 1
+     },
+     "temporal": {
+      "behavior": "follow",
+      "listens": [
+       "bass"
+      ],
+      "reason": "carries the bass story: it swells and settles with the low end"
+     },
+     "mod": [
+      {
+       "k": "contrast",
+       "src": "lfo",
+       "shape": "env",
+       "cycles": 1,
+       "min": 0.85,
+       "max": 1.2,
+       "mode": "mul",
+       "keys": [
+        0.7143,
+        0.8571,
+        1.0,
+        0.4286,
+        0.0
+       ]
+      },
+      {
+       "k": "speed",
+       "src": "lfo",
+       "shape": "env",
+       "cycles": 1,
+       "min": 0.6,
+       "max": 1.3,
+       "mode": "mul",
+       "keys": [
+        0.2857,
+        0.5714,
+        1.0,
+        0.5714,
+        0.0
+       ]
+      }
+     ],
+     "z": 0.2
+    },
+    {
+     "type": "fx",
+     "name": "MAPA TÉRMICO",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "finish: mapa de gradiente que converte luminância em calor",
+     "p": {
+      "preset": "MAPA DE GRADIENTE",
+      "p1": 0,
+      "p2": 1.5,
+      "p3": 0.0,
+      "p4": 0.4,
+      "c1": "accent",
+      "c2": "primary",
+      "cbg": "bg",
+      "mix": 1
+     },
+     "temporal": {
+      "behavior": "beat",
+      "listens": [],
+      "reason": "lands on the beat grid; the audio does not push it"
+     }
+    },
+    {
+     "type": "blobs",
+     "name": "RASTREIO",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "information: manchas de calor detectadas no terreno, com caixas, números e ligações",
+     "p": {
+      "mode": "brilho",
+      "thr": 0.5,
+      "max": 8,
+      "minArea": 0.0015,
+      "grid": 160,
+      "box": true,
+      "ids": true,
+      "cross": true,
+      "links": true,
+      "weight": 3,
+      "color": "accent",
+      "hot": "primary"
+     },
+     "temporal": {
+      "behavior": "drift",
+      "listens": [],
+      "reason": "moves with the loop and the BPM only; the music is not its job"
+     }
+    },
+    {
+     "type": "code",
+     "name": "PLACAS MODULARES",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "structure: grade modular 12×6 de placas em silhueta chanfrada (cheia, vazada, hachurada, escura ou moldura com janela)",
+     "p": {
+      "src": "\nconst W=K.w,H=K.h,ph=K.t.ph,TAU=Math.PI*2,M=36,GU=18,CW=(W-2*M-11*GU)/12,RH=(H-2*M-5*GU)/6,CUT=24;\nconst B=[[2, 0, 8, 5, \"frame\", \"JANELA T\\u00c9RMICA\", 54], [0, 0, 2, 6, \"dark\", \"M-01 ENTIDADES\"], [10, 0, 2, 6, \"dark\", \"M-02 GRAFO\"], [2, 5, 8, 1, \"fill\", \"M-03 STATUS\"]];\nconst poly=(x,y,w,h,k)=>{c.moveTo(x+k,y);c.lineTo(x+w,y);c.lineTo(x+w,y+h-k);c.lineTo(x+w-k,y+h);c.lineTo(x,y+h);c.lineTo(x,y+k);c.closePath();};\nc.save();\nB.forEach((b,i)=>{\n  let x=M+b[0]*(CW+GU), y=M+b[1]*(RH+GU), w=b[2]*CW+(b[2]-1)*GU, h=b[3]*RH+(b[3]-1)*GU; const st=b[4];\n  const g=K.hash(i,Math.floor(K.t.n/(K.t.fps/2)))>0.9 && (K.t.n%15)<3; if(g) x+=(K.hash(i,K.t.n)-0.5)*60;\n  c.globalAlpha=1; c.beginPath();\n  if(st==='frame'){ const ins=b[6]||60; poly(x,y,w,h,CUT*1.5); c.rect(x+ins,y+ins,w-2*ins,h-2*ins); c.fillStyle=K.col('bg'); c.fill('evenodd'); c.strokeStyle=K.col('primary'); c.lineWidth=4; c.beginPath(); poly(x,y,w,h,CUT*1.5); c.stroke(); c.lineWidth=2; c.strokeStyle=K.col('accent'); c.strokeRect(x+ins,y+ins,w-2*ins,h-2*ins);\n    c.fillStyle=K.col('primary'); [[x+ins,y+ins],[x+w-ins,y+ins],[x+ins,y+h-ins],[x+w-ins,y+h-ins]].forEach(q=>{ c.fillRect(q[0]-8,q[1]-8,16,16); }); }\n  else {\n    poly(x,y,w,h,CUT);\n    if(st==='fill'){ c.fillStyle=K.col('primary'); c.fill(); }\n    else if(st==='dark'){ c.fillStyle=K.col('bg'); c.globalAlpha=0.9; c.fill(); c.globalAlpha=1; c.strokeStyle=K.col('secondary'); c.lineWidth=2; c.stroke(); }\n    else if(st==='hatch'){ c.save(); c.clip(); c.strokeStyle=K.col('primary'); c.lineWidth=5; c.globalAlpha=0.8; const off=(ph*64)%32; for(let k=-h;k<w+h;k+=32){ c.beginPath(); c.moveTo(x+k+off,y+h); c.lineTo(x+k+off+h,y); c.stroke(); } c.restore(); c.globalAlpha=1; c.strokeStyle=K.col('accent'); c.lineWidth=3; c.beginPath(); poly(x,y,w,h,CUT); c.stroke(); }\n    else { c.strokeStyle=K.col('accent'); c.lineWidth=3; c.stroke(); }\n  }\n  c.globalAlpha=1; c.font='700 15px monospace'; c.fillStyle=K.col(st==='fill'?'bg':'accent'); c.fillText((b[5]||'M-'+String(i+1).padStart(2,'0'))+'  '+(x/W*100).toFixed(1)+'/'+(y/H*100).toFixed(1),x+CUT+8,y+h-12);\n  const t=(ph*2+i*0.17)%1; c.fillStyle=K.col(st==='fill'?'bg':'primary'); c.fillRect(x+w-CUT-6-120*t,y+h-14,10,10);\n});\nc.restore();\n"
+     },
+     "temporal": {
+      "behavior": "beat",
+      "listens": [],
+      "reason": "lands on the beat grid; the audio does not push it"
+     },
+     "mod": [],
+     "z": -0.3
+    },
+    {
+     "type": "data",
+     "name": "ENTIDADES",
+     "on": true,
+     "opacity": 0.95,
+     "blend": "normal",
+     "role": "information: lista de entidades monitoradas na coluna esquerda",
+     "p": {
+      "rows": 22,
+      "tags": "ID,LOC,SCORE,REGISTRO",
+      "log": true,
+      "tele": false,
+      "ui": 1.05,
+      "color": "accent",
+      "hot": "primary"
+     },
+     "temporal": {
+      "behavior": "drift",
+      "listens": [],
+      "reason": "moves with the loop and the BPM only; the music is not its job"
+     }
+    },
+    {
+     "type": "network",
+     "name": "GRAFO",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "information: grafo de relações na coluna direita",
+     "p": {
+      "nodes": 30,
+      "reach": 0.3,
+      "active": 0.35,
+      "packets": 8,
+      "cx": 0.906,
+      "cy": 0.35,
+      "w": 0.14,
+      "h": 0.4,
+      "labels": false,
+      "ui": 1.0,
+      "color": "accent",
+      "hot": "primary"
+     },
+     "temporal": {
+      "behavior": "drift",
+      "listens": [],
+      "reason": "moves with the loop and the BPM only; the music is not its job"
+     }
+    },
+    {
+     "type": "chart",
+     "name": "FLUXO",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "information: barras de fluxo na coluna direita",
+     "p": {
+      "kind": "barras",
+      "w": 300,
+      "h": 200,
+      "n": 20,
+      "grid": true,
+      "cx": 0.906,
+      "cy": 0.8,
+      "ui": 1.0,
+      "color": "accent",
+      "hot": "primary"
+     },
+     "temporal": {
+      "behavior": "drift",
+      "listens": [],
+      "reason": "moves with the loop and the BPM only; the music is not its job"
+     }
+    },
+    {
+     "type": "coords",
+     "name": "POSIÇÃO",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "information: leitura de posição na janela",
+     "p": {
+      "mode": "geo",
+      "lat": -23.5505,
+      "lon": -46.6333,
+      "w": 330,
+      "h": 240,
+      "cx": 0.8,
+      "cy": 0.2,
+      "ui": 1.1,
+      "color": "accent",
+      "hot": "primary"
+     },
+     "temporal": {
+      "behavior": "drift",
+      "listens": [],
+      "reason": "moves with the loop and the BPM only; the music is not its job"
+     }
+    },
+    {
+     "type": "counter",
+     "name": "STATUS",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "information: contador na placa inferior",
+     "p": {
+      "value": 4096,
+      "motion": "sorteio",
+      "label": "",
+      "pre": "EXPOSTOS ",
+      "size": 56,
+      "align": "center",
+      "cx": 0.5,
+      "cy": 0.935,
+      "font": "mono",
+      "wgt": 800,
+      "color": "bg"
+     },
+     "temporal": {
+      "behavior": "drift",
+      "listens": [],
+      "reason": "moves with the loop and the BPM only; the music is not its job"
+     }
+    },
+    {
+     "type": "fx",
+     "name": "DESLOCAMENTO",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "finish: deslocamento por ruído, a imagem inteira ondula e racha",
+     "p": {
+      "preset": "DESLOCAR",
+      "p1": 6,
+      "p2": 3,
+      "p3": 1,
+      "p4": 0,
+      "mix": 0.35
+     },
+     "temporal": {
+      "behavior": "beat",
+      "listens": [],
+      "reason": "lands on the beat grid; the audio does not push it"
+     }
+    },
+    {
+     "type": "fx",
+     "name": "GLITCH EM BLOCOS",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "role": "finish: blocos deslocados na batida (célula grossa para LED)",
+     "p": {
+      "preset": "GLITCH EM BLOCOS",
+      "p1": 36,
+      "p2": 80,
+      "p3": 0.16,
+      "p4": 12,
+      "mix": 1
+     },
+     "temporal": {
+      "behavior": "beat",
+      "listens": [],
+      "reason": "lands on the beat grid; the audio does not push it"
+     }
+    }
+   ],
+   "camera": {
+    "move": "still",
+    "amp": 0,
+    "cycles": 1,
+    "phase": 0,
+    "focus": 0.2,
+    "fog": 0.0,
+    "dof": 0.0
+   }
+  }
+ ],
+ "assets": {
+  "camera.obj": {
+   "kind": "model",
+   "name": "camera.obj",
+   "data": "data:text/plain;base64,IyBwcm9jZWR1cmFsLCBwdWJsaWMgZG9tYWluIChDQzApLCB3cml0dGVuIGZvciBBSSBWSiBHZW5lcmF0b3IKdiAwLjY5NzMgMC40NDk5IDAuMDAwMAp2IC0wLjI4NDMgMC40NDk5IDAuMDAwMAp2IDAuNjk3MyAwLjQyOTYgMC4wODg3CnYgLTAuMjg0MyAwLjQyOTYgMC4wODg3CnYgMC42OTczIDAuMzcyOSAwLjE1OTkKdiAtMC4yODQzIDAuMzcyOSAwLjE1OTkKdiAwLjY5NzMgMC4yOTA5IDAuMTk5NAp2IC0wLjI4NDMgMC4yOTA5IDAuMTk5NAp2IDAuNjk3MyAwLjE5OTkgMC4xOTk0CnYgLTAuMjg0MyAwLjE5OTkgMC4xOTk0CnYgMC42OTczIDAuMTE3OSAwLjE1OTkKdiAtMC4yODQzIDAuMTE3OSAwLjE1OTkKdiAwLjY5NzMgMC4wNjEyIDAuMDg4Nwp2IC0wLjI4NDMgMC4wNjEyIDAuMDg4Nwp2IDAuNjk3MyAwLjA0MDkgMC4wMDAwCnYgLTAuMjg0MyAwLjA0MDkgMC4wMDAwCnYgMC42OTczIDAuMDYxMiAtMC4wODg3CnYgLTAuMjg0MyAwLjA2MTIgLTAuMDg4Nwp2IDAuNjk3MyAwLjExNzkgLTAuMTU5OQp2IC0wLjI4NDMgMC4xMTc5IC0wLjE1OTkKdiAwLjY5NzMgMC4xOTk5IC0wLjE5OTQKdiAtMC4yODQzIDAuMTk5OSAtMC4xOTk0CnYgMC42OTczIDAuMjkwOSAtMC4xOTk0CnYgLTAuMjg0MyAwLjI5MDkgLTAuMTk5NAp2IDAuNjk3MyAwLjM3MjkgLTAuMTU5OQp2IC0wLjI4NDMgMC4zNzI5IC0wLjE1OTkKdiAwLjY5NzMgMC40Mjk2IC0wLjA4ODcKdiAtMC4yODQzIDAuNDI5NiAtMC4wODg3CnYgMC42OTczIDAuMjQ1NCAwLjAwMDAKdiAtMC4yODQzIDAuMjQ1NCAwLjAwMDAKdiAtMC4yODQzIDAuNDc4NSAtMC4yNTU2CnYgMC43NzkxIDAuNDc4NSAtMC4yNTU2CnYgMC43NzkxIDAuNTE5NCAtMC4yNTU2CnYgLTAuMjg0MyAwLjUxOTQgLTAuMjU1Ngp2IC0wLjI4NDMgMC40Nzg1IDAuMjU1Ngp2IDAuNzc5MSAwLjQ3ODUgMC4yNTU2CnYgMC43NzkxIDAuNTE5NCAwLjI1NTYKdiAtMC4yODQzIDAuNTE5NCAwLjI1NTYKdiAwLjgwOTggMC40OTkwIDAuMDAwMAp2IDAuNjY2NyAwLjQ5OTAgMC4wMDAwCnYgMC44MDk4IDAuNDczOSAwLjExMDAKdiAwLjY2NjcgMC40NzM5IDAuMTEwMAp2IDAuODA5OCAwLjQwMzUgMC4xOTgzCnYgMC42NjY3IDAuNDAzNSAwLjE5ODMKdiAwLjgwOTggMC4zMDE4IDAuMjQ3Mgp2IDAuNjY2NyAwLjMwMTggMC4yNDcyCnYgMC44MDk4IDAuMTg5MCAwLjI0NzIKdiAwLjY2NjcgMC4xODkwIDAuMjQ3Mgp2IDAuODA5OCAwLjA4NzMgMC4xOTgzCnYgMC42NjY3IDAuMDg3MyAwLjE5ODMKdiAwLjgwOTggMC4wMTY5IDAuMTEwMAp2IDAuNjY2NyAwLjAxNjkgMC4xMTAwCnYgMC44MDk4IC0wLjAwODIgMC4wMDAwCnYgMC42NjY3IC0wLjAwODIgMC4wMDAwCnYgMC44MDk4IDAuMDE2OSAtMC4xMTAwCnYgMC42NjY3IDAuMDE2OSAtMC4xMTAwCnYgMC44MDk4IDAuMDg3MyAtMC4xOTgzCnYgMC42NjY3IDAuMDg3MyAtMC4xOTgzCnYgMC44MDk4IDAuMTg5MCAtMC4yNDcyCnYgMC42NjY3IDAuMTg5MCAtMC4yNDcyCnYgMC44MDk4IDAuMzAxOCAtMC4yNDcyCnYgMC42NjY3IDAuMzAxOCAtMC4yNDcyCnYgMC44MDk4IDAuNDAzNSAtMC4xOTgzCnYgMC42NjY3IDAuNDAzNSAtMC4xOTgzCnYgMC44MDk4IDAuNDczOSAtMC4xMTAwCnYgMC42NjY3IDAuNDczOSAtMC4xMTAwCnYgMC44MDk4IDAuMjQ1NCAwLjAwMDAKdiAwLjY2NjcgMC4yNDU0IDAuMDAwMAp2IDAuODY5MSAwLjQwMDggMC4wMDAwCnYgMC43ODczIDAuNDAwOCAwLjAwMDAKdiAwLjg2OTEgMC4zODU0IDAuMDY3NAp2IDAuNzg3MyAwLjM4NTQgMC4wNjc0CnYgMC44NjkxIDAuMzQyMyAwLjEyMTUKdiAwLjc4NzMgMC4zNDIzIDAuMTIxNQp2IDAuODY5MSAwLjI4MDAgMC4xNTE1CnYgMC43ODczIDAuMjgwMCAwLjE1MTUKdiAwLjg2OTEgMC4yMTA4IDAuMTUxNQp2IDAuNzg3MyAwLjIxMDggMC4xNTE1CnYgMC44NjkxIDAuMTQ4NSAwLjEyMTUKdiAwLjc4NzMgMC4xNDg1IDAuMTIxNQp2IDAuODY5MSAwLjEwNTQgMC4wNjc0CnYgMC43ODczIDAuMTA1NCAwLjA2NzQKdiAwLjg2OTEgMC4wOTAwIDAuMDAwMAp2IDAuNzg3MyAwLjA5MDAgMC4wMDAwCnYgMC44NjkxIDAuMTA1NCAtMC4wNjc0CnYgMC43ODczIDAuMTA1NCAtMC4wNjc0CnYgMC44NjkxIDAuMTQ4NSAtMC4xMjE1CnYgMC43ODczIDAuMTQ4NSAtMC4xMjE1CnYgMC44NjkxIDAuMjEwOCAtMC4xNTE1CnYgMC43ODczIDAuMjEwOCAtMC4xNTE1CnYgMC44NjkxIDAuMjgwMCAtMC4xNTE1CnYgMC43ODczIDAuMjgwMCAtMC4xNTE1CnYgMC44NjkxIDAuMzQyMyAtMC4xMjE1CnYgMC43ODczIDAuMzQyMyAtMC4xMjE1CnYgMC44NjkxIDAuMzg1NCAtMC4wNjc0CnYgMC43ODczIDAuMzg1NCAtMC4wNjc0CnYgMC44NjkxIDAuMjQ1NCAwLjAwMDAKdiAwLjc4NzMgMC4yNDU0IDAuMDAwMAp2IDAuODg1NSAwLjM1OTkgMC4wMDAwCnYgMC44ODU1IDAuMzU5OSAwLjAwMDAKdiAwLjg4NTUgMC4zNTk5IDAuMDAwMAp2IDAuODg1NSAwLjM1OTkgMC4wMDAwCnYgMC44ODU1IDAuMzU5OSAwLjAwMDAKdiAwLjg4NTUgMC4zNTk5IDAuMDAwMAp2IDAuODg1NSAwLjM1OTkgMC4wMDAwCnYgMC44ODU1IDAuMzU5OSAwLjAwMDAKdiAwLjg4NTUgMC4zNTk5IDAuMDAwMAp2IDAuODg1NSAwLjM1OTkgMC4wMDAwCnYgMC45NDI3IDAuMzQ0NiAwLjAwMDAKdiAwLjkzMTggMC4zNDQ2IDAuMDMzNwp2IDAuOTAzMiAwLjM0NDYgMC4wNTQ1CnYgMC44Njc4IDAuMzQ0NiAwLjA1NDUKdiAwLjgzOTIgMC4zNDQ2IDAuMDMzNwp2IDAuODI4MiAwLjM0NDYgMC4wMDAwCnYgMC44MzkyIDAuMzQ0NiAtMC4wMzM3CnYgMC44Njc4IDAuMzQ0NiAtMC4wNTQ1CnYgMC45MDMyIDAuMzQ0NiAtMC4wNTQ1CnYgMC45MzE4IDAuMzQ0NiAtMC4wMzM3CnYgMC45ODQ3IDAuMzAyNyAwLjAwMDAKdiAwLjk2NTcgMC4zMDI3IDAuMDU4Mwp2IDAuOTE2MSAwLjMwMjcgMC4wOTQzCnYgMC44NTQ4IDAuMzAyNyAwLjA5NDMKdiAwLjgwNTIgMC4zMDI3IDAuMDU4Mwp2IDAuNzg2MyAwLjMwMjcgMC4wMDAwCnYgMC44MDUyIDAuMzAyNyAtMC4wNTgzCnYgMC44NTQ4IDAuMzAyNyAtMC4wOTQzCnYgMC45MTYxIDAuMzAyNyAtMC4wOTQzCnYgMC45NjU3IDAuMzAyNyAtMC4wNTgzCnYgMS4wMDAwIDAuMjQ1NCAwLjAwMDAKdiAwLjk3ODEgMC4yNDU0IDAuMDY3Mwp2IDAuOTIwOSAwLjI0NTQgMC4xMDg5CnYgMC44NTAxIDAuMjQ1NCAwLjEwODkKdiAwLjc5MjggMC4yNDU0IDAuMDY3Mwp2IDAuNzcxMCAwLjI0NTQgMC4wMDAwCnYgMC43OTI4IDAuMjQ1NCAtMC4wNjczCnYgMC44NTAxIDAuMjQ1NCAtMC4xMDg5CnYgMC45MjA5IDAuMjQ1NCAtMC4xMDg5CnYgMC45NzgxIDAuMjQ1NCAtMC4wNjczCnYgMC45ODQ3IDAuMTg4MSAwLjAwMDAKdiAwLjk2NTcgMC4xODgxIDAuMDU4Mwp2IDAuOTE2MSAwLjE4ODEgMC4wOTQzCnYgMC44NTQ4IDAuMTg4MSAwLjA5NDMKdiAwLjgwNTIgMC4xODgxIDAuMDU4Mwp2IDAuNzg2MyAwLjE4ODEgMC4wMDAwCnYgMC44MDUyIDAuMTg4MSAtMC4wNTgzCnYgMC44NTQ4IDAuMTg4MSAtMC4wOTQzCnYgMC45MTYxIDAuMTg4MSAtMC4wOTQzCnYgMC45NjU3IDAuMTg4MSAtMC4wNTgzCnYgMC45NDI3IDAuMTQ2MiAwLjAwMDAKdiAwLjkzMTggMC4xNDYyIDAuMDMzNwp2IDAuOTAzMiAwLjE0NjIgMC4wNTQ1CnYgMC44Njc4IDAuMTQ2MiAwLjA1NDUKdiAwLjgzOTIgMC4xNDYyIDAuMDMzNwp2IDAuODI4MiAwLjE0NjIgMC4wMDAwCnYgMC44MzkyIDAuMTQ2MiAtMC4wMzM3CnYgMC44Njc4IDAuMTQ2MiAtMC4wNTQ1CnYgMC45MDMyIDAuMTQ2MiAtMC4wNTQ1CnYgMC45MzE4IDAuMTQ2MiAtMC4wMzM3CnYgMC44ODU1IDAuMTMwOSAwLjAwMDAKdiAwLjg4NTUgMC4xMzA5IDAuMDAwMAp2IDAuODg1NSAwLjEzMDkgMC4wMDAwCnYgMC44ODU1IDAuMTMwOSAwLjAwMDAKdiAwLjg4NTUgMC4xMzA5IDAuMDAwMAp2IDAuODg1NSAwLjEzMDkgMC4wMDAwCnYgMC44ODU1IDAuMTMwOSAwLjAwMDAKdiAwLjg4NTUgMC4xMzA5IDAuMDAwMAp2IDAuODg1NSAwLjEzMDkgMC4wMDAwCnYgMC44ODU1IDAuMTMwOSAwLjAwMDAKdiAwLjg0NDYgMC40Nzg1IDAuMDAwMAp2IDAuNzk1NSAwLjQ3ODUgMC4wMDAwCnYgMC44NDQ2IDAuNDY0MiAwLjAyNDgKdiAwLjc5NTUgMC40NjQyIDAuMDI0OAp2IDAuODQ0NiAwLjQzNTYgMC4wMjQ4CnYgMC43OTU1IDAuNDM1NiAwLjAyNDgKdiAwLjg0NDYgMC40MjEzIDAuMDAwMAp2IDAuNzk1NSAwLjQyMTMgMC4wMDAwCnYgMC44NDQ2IDAuNDM1NiAtMC4wMjQ4CnYgMC43OTU1IDAuNDM1NiAtMC4wMjQ4CnYgMC44NDQ2IDAuNDY0MiAtMC4wMjQ4CnYgMC43OTU1IDAuNDY0MiAtMC4wMjQ4CnYgMC44NDQ2IDAuNDQ5OSAwLjAwMDAKdiAwLjc5NTUgMC40NDk5IDAuMDAwMAp2IDAuODQ0NiAwLjQzOTUgMC4xMjAyCnYgMC43OTU1IDAuNDM5NSAwLjEyMDIKdiAwLjg0NDYgMC40MjUyIDAuMTQ1MAp2IDAuNzk1NSAwLjQyNTIgMC4xNDUwCnYgMC44NDQ2IDAuMzk2NSAwLjE0NTAKdiAwLjc5NTUgMC4zOTY1IDAuMTQ1MAp2IDAuODQ0NiAwLjM4MjIgMC4xMjAyCnYgMC43OTU1IDAuMzgyMiAwLjEyMDIKdiAwLjg0NDYgMC4zOTY1IDAuMDk1NAp2IDAuNzk1NSAwLjM5NjUgMC4wOTU0CnYgMC44NDQ2IDAuNDI1MiAwLjA5NTQKdiAwLjc5NTUgMC40MjUyIDAuMDk1NAp2IDAuODQ0NiAwLjQxMDggMC4xMjAyCnYgMC43OTU1IDAuNDEwOCAwLjEyMDIKdiAwLjg0NDYgMC4zMzcyIDAuMTk0NQp2IDAuNzk1NSAwLjMzNzIgMC4xOTQ1CnYgMC44NDQ2IDAuMzIyOSAwLjIxOTMKdiAwLjc5NTUgMC4zMjI5IDAuMjE5Mwp2IDAuODQ0NiAwLjI5NDMgMC4yMTkzCnYgMC43OTU1IDAuMjk0MyAwLjIxOTMKdiAwLjg0NDYgMC4yODAwIDAuMTk0NQp2IDAuNzk1NSAwLjI4MDAgMC4xOTQ1CnYgMC44NDQ2IDAuMjk0MyAwLjE2OTcKdiAwLjc5NTUgMC4yOTQzIDAuMTY5Nwp2IDAuODQ0NiAwLjMyMjkgMC4xNjk3CnYgMC43OTU1IDAuMzIyOSAwLjE2OTcKdiAwLjg0NDYgMC4zMDg2IDAuMTk0NQp2IDAuNzk1NSAwLjMwODYgMC4xOTQ1CnYgMC44NDQ2IDAuMjEwOCAwLjE5NDUKdiAwLjc5NTUgMC4yMTA4IDAuMTk0NQp2IDAuODQ0NiAwLjE5NjUgMC4yMTkzCnYgMC43OTU1IDAuMTk2NSAwLjIxOTMKdiAwLjg0NDYgMC4xNjc5IDAuMjE5Mwp2IDAuNzk1NSAwLjE2NzkgMC4yMTkzCnYgMC44NDQ2IDAuMTUzNiAwLjE5NDUKdiAwLjc5NTUgMC4xNTM2IDAuMTk0NQp2IDAuODQ0NiAwLjE2NzkgMC4xNjk3CnYgMC43OTU1IDAuMTY3OSAwLjE2OTcKdiAwLjg0NDYgMC4xOTY1IDAuMTY5Nwp2IDAuNzk1NSAwLjE5NjUgMC4xNjk3CnYgMC44NDQ2IDAuMTgyMiAwLjE5NDUKdiAwLjc5NTUgMC4xODIyIDAuMTk0NQp2IDAuODQ0NiAwLjEwODYgMC4xMjAyCnYgMC43OTU1IDAuMTA4NiAwLjEyMDIKdiAwLjg0NDYgMC4wOTQzIDAuMTQ1MAp2IDAuNzk1NSAwLjA5NDMgMC4xNDUwCnYgMC44NDQ2IDAuMDY1NiAwLjE0NTAKdiAwLjc5NTUgMC4wNjU2IDAuMTQ1MAp2IDAuODQ0NiAwLjA1MTMgMC4xMjAyCnYgMC43OTU1IDAuMDUxMyAwLjEyMDIKdiAwLjg0NDYgMC4wNjU2IDAuMDk1NAp2IDAuNzk1NSAwLjA2NTYgMC4wOTU0CnYgMC44NDQ2IDAuMDk0MyAwLjA5NTQKdiAwLjc5NTUgMC4wOTQzIDAuMDk1NAp2IDAuODQ0NiAwLjA4MDAgMC4xMjAyCnYgMC43OTU1IDAuMDgwMCAwLjEyMDIKdiAwLjg0NDYgMC4wNjk1IDAuMDAwMAp2IDAuNzk1NSAwLjA2OTUgMC4wMDAwCnYgMC44NDQ2IDAuMDU1MiAwLjAyNDgKdiAwLjc5NTUgMC4wNTUyIDAuMDI0OAp2IDAuODQ0NiAwLjAyNjYgMC4wMjQ4CnYgMC43OTU1IDAuMDI2NiAwLjAyNDgKdiAwLjg0NDYgMC4wMTIzIDAuMDAwMAp2IDAuNzk1NSAwLjAxMjMgMC4wMDAwCnYgMC44NDQ2IDAuMDI2NiAtMC4wMjQ4CnYgMC43OTU1IDAuMDI2NiAtMC4wMjQ4CnYgMC44NDQ2IDAuMDU1MiAtMC4wMjQ4CnYgMC43OTU1IDAuMDU1MiAtMC4wMjQ4CnYgMC44NDQ2IDAuMDQwOSAwLjAwMDAKdiAwLjc5NTUgMC4wNDA5IDAuMDAwMAp2IDAuODQ0NiAwLjEwODYgLTAuMTIwMgp2IDAuNzk1NSAwLjEwODYgLTAuMTIwMgp2IDAuODQ0NiAwLjA5NDMgLTAuMDk1NAp2IDAuNzk1NSAwLjA5NDMgLTAuMDk1NAp2IDAuODQ0NiAwLjA2NTYgLTAuMDk1NAp2IDAuNzk1NSAwLjA2NTYgLTAuMDk1NAp2IDAuODQ0NiAwLjA1MTMgLTAuMTIwMgp2IDAuNzk1NSAwLjA1MTMgLTAuMTIwMgp2IDAuODQ0NiAwLjA2NTYgLTAuMTQ1MAp2IDAuNzk1NSAwLjA2NTYgLTAuMTQ1MAp2IDAuODQ0NiAwLjA5NDMgLTAuMTQ1MAp2IDAuNzk1NSAwLjA5NDMgLTAuMTQ1MAp2IDAuODQ0NiAwLjA4MDAgLTAuMTIwMgp2IDAuNzk1NSAwLjA4MDAgLTAuMTIwMgp2IDAuODQ0NiAwLjIxMDggLTAuMTk0NQp2IDAuNzk1NSAwLjIxMDggLTAuMTk0NQp2IDAuODQ0NiAwLjE5NjUgLTAuMTY5Nwp2IDAuNzk1NSAwLjE5NjUgLTAuMTY5Nwp2IDAuODQ0NiAwLjE2NzkgLTAuMTY5Nwp2IDAuNzk1NSAwLjE2NzkgLTAuMTY5Nwp2IDAuODQ0NiAwLjE1MzYgLTAuMTk0NQp2IDAuNzk1NSAwLjE1MzYgLTAuMTk0NQp2IDAuODQ0NiAwLjE2NzkgLTAuMjE5Mwp2IDAuNzk1NSAwLjE2NzkgLTAuMjE5Mwp2IDAuODQ0NiAwLjE5NjUgLTAuMjE5Mwp2IDAuNzk1NSAwLjE5NjUgLTAuMjE5Mwp2IDAuODQ0NiAwLjE4MjIgLTAuMTk0NQp2IDAuNzk1NSAwLjE4MjIgLTAuMTk0NQp2IDAuODQ0NiAwLjMzNzIgLTAuMTk0NQp2IDAuNzk1NSAwLjMzNzIgLTAuMTk0NQp2IDAuODQ0NiAwLjMyMjkgLTAuMTY5Nwp2IDAuNzk1NSAwLjMyMjkgLTAuMTY5Nwp2IDAuODQ0NiAwLjI5NDMgLTAuMTY5Nwp2IDAuNzk1NSAwLjI5NDMgLTAuMTY5Nwp2IDAuODQ0NiAwLjI4MDAgLTAuMTk0NQp2IDAuNzk1NSAwLjI4MDAgLTAuMTk0NQp2IDAuODQ0NiAwLjI5NDMgLTAuMjE5Mwp2IDAuNzk1NSAwLjI5NDMgLTAuMjE5Mwp2IDAuODQ0NiAwLjMyMjkgLTAuMjE5Mwp2IDAuNzk1NSAwLjMyMjkgLTAuMjE5Mwp2IDAuODQ0NiAwLjMwODYgLTAuMTk0NQp2IDAuNzk1NSAwLjMwODYgLTAuMTk0NQp2IDAuODQ0NiAwLjQzOTUgLTAuMTIwMgp2IDAuNzk1NSAwLjQzOTUgLTAuMTIwMgp2IDAuODQ0NiAwLjQyNTIgLTAuMDk1NAp2IDAuNzk1NSAwLjQyNTIgLTAuMDk1NAp2IDAuODQ0NiAwLjM5NjUgLTAuMDk1NAp2IDAuNzk1NSAwLjM5NjUgLTAuMDk1NAp2IDAuODQ0NiAwLjM4MjIgLTAuMTIwMgp2IDAuNzk1NSAwLjM4MjIgLTAuMTIwMgp2IDAuODQ0NiAwLjM5NjUgLTAuMTQ1MAp2IDAuNzk1NSAwLjM5NjUgLTAuMTQ1MAp2IDAuODQ0NiAwLjQyNTIgLTAuMTQ1MAp2IDAuNzk1NSAwLjQyNTIgLTAuMTQ1MAp2IDAuODQ0NiAwLjQxMDggLTAuMTIwMgp2IDAuNzk1NSAwLjQxMDggLTAuMTIwMgp2IC0wLjA4MzggLTAuMzA2NyAtMC4wNDUwCnYgMC4wMDYxIC0wLjMwNjcgLTAuMDQ1MAp2IDAuMDA2MSAwLjE0MzEgLTAuMDQ1MAp2IC0wLjA4MzggMC4xNDMxIC0wLjA0NTAKdiAtMC4wODM4IC0wLjMwNjcgMC4wNDUwCnYgMC4wMDYxIC0wLjMwNjcgMC4wNDUwCnYgMC4wMDYxIDAuMTQzMSAwLjA0NTAKdiAtMC4wODM4IDAuMTQzMSAwLjA0NTAKdiAtMC4yMjI5IC0wLjM1NTggLTAuMTg0MAp2IDAuMTQ1MiAtMC4zNTU4IC0wLjE4NDAKdiAwLjE0NTIgLTAuMjk4NiAtMC4xODQwCnYgLTAuMjIyOSAtMC4yOTg2IC0wLjE4NDAKdiAtMC4yMjI5IC0wLjM1NTggMC4xODQwCnYgMC4xNDUyIC0wLjM1NTggMC4xODQwCnYgMC4xNDUyIC0wLjI5ODYgMC4xODQwCnYgLTAuMjIyOSAtMC4yOTg2IDAuMTg0MAp2IDAuMDE4NCAtMC41NTIxIDAuMDAwMAp2IDAuMDE4NCAtMC4zNDc2IDAuMDAwMAp2IDAuMDAxNiAtMC41NTIxIDAuMDQwNQp2IDAuMDAxNiAtMC4zNDc2IDAuMDQwNQp2IC0wLjAzODkgLTAuNTUyMSAwLjA1NzMKdiAtMC4wMzg5IC0wLjM0NzYgMC4wNTczCnYgLTAuMDc5MyAtMC41NTIxIDAuMDQwNQp2IC0wLjA3OTMgLTAuMzQ3NiAwLjA0MDUKdiAtMC4wOTYxIC0wLjU1MjEgMC4wMDAwCnYgLTAuMDk2MSAtMC4zNDc2IDAuMDAwMAp2IC0wLjA3OTMgLTAuNTUyMSAtMC4wNDA1CnYgLTAuMDc5MyAtMC4zNDc2IC0wLjA0MDUKdiAtMC4wMzg5IC0wLjU1MjEgLTAuMDU3Mwp2IC0wLjAzODkgLTAuMzQ3NiAtMC4wNTczCnYgMC4wMDE2IC0wLjU1MjEgLTAuMDQwNQp2IDAuMDAxNiAtMC4zNDc2IC0wLjA0MDUKdiAtMC4wMzg5IC0wLjU1MjEgMC4wMDAwCnYgLTAuMDM4OSAtMC4zNDc2IDAuMDAwMAp2IC0wLjY5MzMgMC41NTIxIDAuMDAwMAp2IC0wLjY5MzMgMC41NTIxIDAuMDAwMAp2IC0wLjY5MzMgMC41NTIxIDAuMDAwMAp2IC0wLjY5MzMgMC41NTIxIDAuMDAwMAp2IC0wLjY5MzMgMC41NTIxIDAuMDAwMAp2IC0wLjY5MzMgMC41NTIxIDAuMDAwMAp2IC0wLjY5MzMgMC41NTIxIDAuMDAwMAp2IC0wLjY5MzMgMC41NTIxIDAuMDAwMAp2IC0wLjY5MzMgMC41NTIxIDAuMDAwMAp2IC0wLjY5MzMgMC41NTIxIDAuMDAwMAp2IC0wLjY5MzMgMC41NTIxIDAuMDAwMAp2IC0wLjY5MzMgMC41NTIxIDAuMDAwMAp2IC0wLjU2OTAgMC41Mjk5IDAuMDAwMAp2IC0wLjU4NTcgMC41Mjk5IDAuMDYyMQp2IC0wLjYzMTEgMC41Mjk5IDAuMTA3Ngp2IC0wLjY5MzMgMC41Mjk5IDAuMTI0Mgp2IC0wLjc1NTQgMC41Mjk5IDAuMTA3Ngp2IC0wLjgwMDggMC41Mjk5IDAuMDYyMQp2IC0wLjgxNzUgMC41Mjk5IDAuMDAwMAp2IC0wLjgwMDggMC41Mjk5IC0wLjA2MjEKdiAtMC43NTU0IDAuNTI5OSAtMC4xMDc2CnYgLTAuNjkzMyAwLjUyOTkgLTAuMTI0Mgp2IC0wLjYzMTEgMC41Mjk5IC0wLjEwNzYKdiAtMC41ODU3IDAuNTI5OSAtMC4wNjIxCnYgLTAuNDY5NCAwLjQ2NzUgMC4wMDAwCnYgLTAuNDk5NCAwLjQ2NzUgMC4xMTE5CnYgLTAuNTgxMyAwLjQ2NzUgMC4xOTM4CnYgLTAuNjkzMyAwLjQ2NzUgMC4yMjM4CnYgLTAuODA1MiAwLjQ2NzUgMC4xOTM4CnYgLTAuODg3MSAwLjQ2NzUgMC4xMTE5CnYgLTAuOTE3MSAwLjQ2NzUgMC4wMDAwCnYgLTAuODg3MSAwLjQ2NzUgLTAuMTExOQp2IC0wLjgwNTIgMC40Njc1IC0wLjE5MzgKdiAtMC42OTMzIDAuNDY3NSAtMC4yMjM4CnYgLTAuNTgxMyAwLjQ2NzUgLTAuMTkzOAp2IC0wLjQ5OTQgMC40Njc1IC0wLjExMTkKdiAtMC40MTQxIDAuMzc3MyAwLjAwMDAKdiAtMC40NTE1IDAuMzc3MyAwLjEzOTYKdiAtMC41NTM3IDAuMzc3MyAwLjI0MTcKdiAtMC42OTMzIDAuMzc3MyAwLjI3OTEKdiAtMC44MzI4IDAuMzc3MyAwLjI0MTcKdiAtMC45MzUwIDAuMzc3MyAwLjEzOTYKdiAtMC45NzI0IDAuMzc3MyAwLjAwMDAKdiAtMC45MzUwIDAuMzc3MyAtMC4xMzk2CnYgLTAuODMyOCAwLjM3NzMgLTAuMjQxNwp2IC0wLjY5MzMgMC4zNzczIC0wLjI3OTEKdiAtMC41NTM3IDAuMzc3MyAtMC4yNDE3CnYgLTAuNDUxNSAwLjM3NzMgLTAuMTM5Ngp2IC0wLjQxNDEgMC4yNzcxIDAuMDAwMAp2IC0wLjQ1MTUgMC4yNzcxIDAuMTM5Ngp2IC0wLjU1MzcgMC4yNzcxIDAuMjQxNwp2IC0wLjY5MzMgMC4yNzcxIDAuMjc5MQp2IC0wLjgzMjggMC4yNzcxIDAuMjQxNwp2IC0wLjkzNTAgMC4yNzcxIDAuMTM5Ngp2IC0wLjk3MjQgMC4yNzcxIDAuMDAwMAp2IC0wLjkzNTAgMC4yNzcxIC0wLjEzOTYKdiAtMC44MzI4IDAuMjc3MSAtMC4yNDE3CnYgLTAuNjkzMyAwLjI3NzEgLTAuMjc5MQp2IC0wLjU1MzcgMC4yNzcxIC0wLjI0MTcKdiAtMC40NTE1IDAuMjc3MSAtMC4xMzk2CnYgLTAuNDY5NCAwLjE4NjkgMC4wMDAwCnYgLTAuNDk5NCAwLjE4NjkgMC4xMTE5CnYgLTAuNTgxMyAwLjE4NjkgMC4xOTM4CnYgLTAuNjkzMyAwLjE4NjkgMC4yMjM4CnYgLTAuODA1MiAwLjE4NjkgMC4xOTM4CnYgLTAuODg3MSAwLjE4NjkgMC4xMTE5CnYgLTAuOTE3MSAwLjE4NjkgMC4wMDAwCnYgLTAuODg3MSAwLjE4NjkgLTAuMTExOQp2IC0wLjgwNTIgMC4xODY5IC0wLjE5MzgKdiAtMC42OTMzIDAuMTg2OSAtMC4yMjM4CnYgLTAuNTgxMyAwLjE4NjkgLTAuMTkzOAp2IC0wLjQ5OTQgMC4xODY5IC0wLjExMTkKdiAtMC41NjkwIDAuMTI0NSAwLjAwMDAKdiAtMC41ODU3IDAuMTI0NSAwLjA2MjEKdiAtMC42MzExIDAuMTI0NSAwLjEwNzYKdiAtMC42OTMzIDAuMTI0NSAwLjEyNDIKdiAtMC43NTU0IDAuMTI0NSAwLjEwNzYKdiAtMC44MDA4IDAuMTI0NSAwLjA2MjEKdiAtMC44MTc1IDAuMTI0NSAwLjAwMDAKdiAtMC44MDA4IDAuMTI0NSAtMC4wNjIxCnYgLTAuNzU1NCAwLjEyNDUgLTAuMTA3Ngp2IC0wLjY5MzMgMC4xMjQ1IC0wLjEyNDIKdiAtMC42MzExIDAuMTI0NSAtMC4xMDc2CnYgLTAuNTg1NyAwLjEyNDUgLTAuMDYyMQp2IC0wLjY5MzMgMC4xMDIyIDAuMDAwMAp2IC0wLjY5MzMgMC4xMDIyIDAuMDAwMAp2IC0wLjY5MzMgMC4xMDIyIDAuMDAwMAp2IC0wLjY5MzMgMC4xMDIyIDAuMDAwMAp2IC0wLjY5MzMgMC4xMDIyIDAuMDAwMAp2IC0wLjY5MzMgMC4xMDIyIDAuMDAwMAp2IC0wLjY5MzMgMC4xMDIyIDAuMDAwMAp2IC0wLjY5MzMgMC4xMDIyIDAuMDAwMAp2IC0wLjY5MzMgMC4xMDIyIC0wLjAwMDAKdiAtMC42OTMzIDAuMTAyMiAtMC4wMDAwCnYgLTAuNjkzMyAwLjEwMjIgLTAuMDAwMAp2IC0wLjY5MzMgMC4xMDIyIDAuMDAwMAp2IC0wLjM4NjUgMC4xMTQ1IDAuMDAwMAp2IC0wLjM4NjUgMC4xNzE4IDAuMDAwMAp2IC0wLjQxNjkgMC4xMTQ1IDAuMTMzMQp2IC0wLjQxNjkgMC4xNzE4IDAuMTMzMQp2IC0wLjUwMjAgMC4xMTQ1IDAuMjM5OAp2IC0wLjUwMjAgMC4xNzE4IDAuMjM5OAp2IC0wLjYyNTAgMC4xMTQ1IDAuMjk5MQp2IC0wLjYyNTAgMC4xNzE4IDAuMjk5MQp2IC0wLjc2MTUgMC4xMTQ1IDAuMjk5MQp2IC0wLjc2MTUgMC4xNzE4IDAuMjk5MQp2IC0wLjg4NDUgMC4xMTQ1IDAuMjM5OAp2IC0wLjg4NDUgMC4xNzE4IDAuMjM5OAp2IC0wLjk2OTYgMC4xMTQ1IDAuMTMzMQp2IC0wLjk2OTYgMC4xNzE4IDAuMTMzMQp2IC0xLjAwMDAgMC4xMTQ1IDAuMDAwMAp2IC0xLjAwMDAgMC4xNzE4IDAuMDAwMAp2IC0wLjk2OTYgMC4xMTQ1IC0wLjEzMzEKdiAtMC45Njk2IDAuMTcxOCAtMC4xMzMxCnYgLTAuODg0NSAwLjExNDUgLTAuMjM5OAp2IC0wLjg4NDUgMC4xNzE4IC0wLjIzOTgKdiAtMC43NjE1IDAuMTE0NSAtMC4yOTkxCnYgLTAuNzYxNSAwLjE3MTggLTAuMjk5MQp2IC0wLjYyNTAgMC4xMTQ1IC0wLjI5OTEKdiAtMC42MjUwIDAuMTcxOCAtMC4yOTkxCnYgLTAuNTAyMCAwLjExNDUgLTAuMjM5OAp2IC0wLjUwMjAgMC4xNzE4IC0wLjIzOTgKdiAtMC40MTY5IDAuMTE0NSAtMC4xMzMxCnYgLTAuNDE2OSAwLjE3MTggLTAuMTMzMQp2IC0wLjY5MzMgMC4xMTQ1IDAuMDAwMAp2IC0wLjY5MzMgMC4xNzE4IDAuMDAwMAp2IC0wLjY3MjggMC4yNjE4IC0wLjAyNDUKdiAtMC4xNDExIDAuMjYxOCAtMC4wMjQ1CnYgLTAuMTQxMSAwLjMxMDggLTAuMDI0NQp2IC0wLjY3MjggMC4zMTA4IC0wLjAyNDUKdiAtMC42NzI4IDAuMjYxOCAwLjAyNDUKdiAtMC4xNDExIDAuMjYxOCAwLjAyNDUKdiAtMC4xNDExIDAuMzEwOCAwLjAyNDUKdiAtMC42NzI4IDAuMzEwOCAwLjAyNDUKZiAxIDMgMgpmIDMgNCAyCmYgMyA1IDQKZiA1IDYgNApmIDUgNyA2CmYgNyA4IDYKZiA3IDkgOApmIDkgMTAgOApmIDkgMTEgMTAKZiAxMSAxMiAxMApmIDExIDEzIDEyCmYgMTMgMTQgMTIKZiAxMyAxNSAxNApmIDE1IDE2IDE0CmYgMTUgMTcgMTYKZiAxNyAxOCAxNgpmIDE3IDE5IDE4CmYgMTkgMjAgMTgKZiAxOSAyMSAyMApmIDIxIDIyIDIwCmYgMjEgMjMgMjIKZiAyMyAyNCAyMgpmIDIzIDI1IDI0CmYgMjUgMjYgMjQKZiAyNSAyNyAyNgpmIDI3IDI4IDI2CmYgMjcgMSAyOApmIDEgMiAyOApmIDI5IDMgMQpmIDMwIDIgNApmIDI5IDUgMwpmIDMwIDQgNgpmIDI5IDcgNQpmIDMwIDYgOApmIDI5IDkgNwpmIDMwIDggMTAKZiAyOSAxMSA5CmYgMzAgMTAgMTIKZiAyOSAxMyAxMQpmIDMwIDEyIDE0CmYgMjkgMTUgMTMKZiAzMCAxNCAxNgpmIDI5IDE3IDE1CmYgMzAgMTYgMTgKZiAyOSAxOSAxNwpmIDMwIDE4IDIwCmYgMjkgMjEgMTkKZiAzMCAyMCAyMgpmIDI5IDIzIDIxCmYgMzAgMjIgMjQKZiAyOSAyNSAyMwpmIDMwIDI0IDI2CmYgMjkgMjcgMjUKZiAzMCAyNiAyOApmIDI5IDEgMjcKZiAzMCAyOCAyCmYgMzEgMzIgMzMKZiAzMSAzMyAzNApmIDM1IDM3IDM2CmYgMzUgMzggMzcKZiAzMSAzNSAzNgpmIDMxIDM2IDMyCmYgMzQgMzMgMzcKZiAzNCAzNyAzOApmIDMxIDM0IDM4CmYgMzEgMzggMzUKZiAzMiAzNiAzNwpmIDMyIDM3IDMzCmYgMzkgNDEgNDAKZiA0MSA0MiA0MApmIDQxIDQzIDQyCmYgNDMgNDQgNDIKZiA0MyA0NSA0NApmIDQ1IDQ2IDQ0CmYgNDUgNDcgNDYKZiA0NyA0OCA0NgpmIDQ3IDQ5IDQ4CmYgNDkgNTAgNDgKZiA0OSA1MSA1MApmIDUxIDUyIDUwCmYgNTEgNTMgNTIKZiA1MyA1NCA1MgpmIDUzIDU1IDU0CmYgNTUgNTYgNTQKZiA1NSA1NyA1NgpmIDU3IDU4IDU2CmYgNTcgNTkgNTgKZiA1OSA2MCA1OApmIDU5IDYxIDYwCmYgNjEgNjIgNjAKZiA2MSA2MyA2MgpmIDYzIDY0IDYyCmYgNjMgNjUgNjQKZiA2NSA2NiA2NApmIDY1IDM5IDY2CmYgMzkgNDAgNjYKZiA2NyA0MSAzOQpmIDY4IDQwIDQyCmYgNjcgNDMgNDEKZiA2OCA0MiA0NApmIDY3IDQ1IDQzCmYgNjggNDQgNDYKZiA2NyA0NyA0NQpmIDY4IDQ2IDQ4CmYgNjcgNDkgNDcKZiA2OCA0OCA1MApmIDY3IDUxIDQ5CmYgNjggNTAgNTIKZiA2NyA1MyA1MQpmIDY4IDUyIDU0CmYgNjcgNTUgNTMKZiA2OCA1NCA1NgpmIDY3IDU3IDU1CmYgNjggNTYgNTgKZiA2NyA1OSA1NwpmIDY4IDU4IDYwCmYgNjcgNjEgNTkKZiA2OCA2MCA2MgpmIDY3IDYzIDYxCmYgNjggNjIgNjQKZiA2NyA2NSA2MwpmIDY4IDY0IDY2CmYgNjcgMzkgNjUKZiA2OCA2NiA0MApmIDY5IDcxIDcwCmYgNzEgNzIgNzAKZiA3MSA3MyA3MgpmIDczIDc0IDcyCmYgNzMgNzUgNzQKZiA3NSA3NiA3NApmIDc1IDc3IDc2CmYgNzcgNzggNzYKZiA3NyA3OSA3OApmIDc5IDgwIDc4CmYgNzkgODEgODAKZiA4MSA4MiA4MApmIDgxIDgzIDgyCmYgODMgODQgODIKZiA4MyA4NSA4NApmIDg1IDg2IDg0CmYgODUgODcgODYKZiA4NyA4OCA4NgpmIDg3IDg5IDg4CmYgODkgOTAgODgKZiA4OSA5MSA5MApmIDkxIDkyIDkwCmYgOTEgOTMgOTIKZiA5MyA5NCA5MgpmIDkzIDk1IDk0CmYgOTUgOTYgOTQKZiA5NSA2OSA5NgpmIDY5IDcwIDk2CmYgOTcgNzEgNjkKZiA5OCA3MCA3MgpmIDk3IDczIDcxCmYgOTggNzIgNzQKZiA5NyA3NSA3MwpmIDk4IDc0IDc2CmYgOTcgNzcgNzUKZiA5OCA3NiA3OApmIDk3IDc5IDc3CmYgOTggNzggODAKZiA5NyA4MSA3OQpmIDk4IDgwIDgyCmYgOTcgODMgODEKZiA5OCA4MiA4NApmIDk3IDg1IDgzCmYgOTggODQgODYKZiA5NyA4NyA4NQpmIDk4IDg2IDg4CmYgOTcgODkgODcKZiA5OCA4OCA5MApmIDk3IDkxIDg5CmYgOTggOTAgOTIKZiA5NyA5MyA5MQpmIDk4IDkyIDk0CmYgOTcgOTUgOTMKZiA5OCA5NCA5NgpmIDk3IDY5IDk1CmYgOTggOTYgNzAKZiA5OSAxMDAgMTA5CmYgMTAwIDExMCAxMDkKZiAxMDAgMTAxIDExMApmIDEwMSAxMTEgMTEwCmYgMTAxIDEwMiAxMTEKZiAxMDIgMTEyIDExMQpmIDEwMiAxMDMgMTEyCmYgMTAzIDExMyAxMTIKZiAxMDMgMTA0IDExMwpmIDEwNCAxMTQgMTEzCmYgMTA0IDEwNSAxMTQKZiAxMDUgMTE1IDExNApmIDEwNSAxMDYgMTE1CmYgMTA2IDExNiAxMTUKZiAxMDYgMTA3IDExNgpmIDEwNyAxMTcgMTE2CmYgMTA3IDEwOCAxMTcKZiAxMDggMTE4IDExNwpmIDEwOCA5OSAxMTgKZiA5OSAxMDkgMTE4CmYgMTA5IDExMCAxMTkKZiAxMTAgMTIwIDExOQpmIDExMCAxMTEgMTIwCmYgMTExIDEyMSAxMjAKZiAxMTEgMTEyIDEyMQpmIDExMiAxMjIgMTIxCmYgMTEyIDExMyAxMjIKZiAxMTMgMTIzIDEyMgpmIDExMyAxMTQgMTIzCmYgMTE0IDEyNCAxMjMKZiAxMTQgMTE1IDEyNApmIDExNSAxMjUgMTI0CmYgMTE1IDExNiAxMjUKZiAxMTYgMTI2IDEyNQpmIDExNiAxMTcgMTI2CmYgMTE3IDEyNyAxMjYKZiAxMTcgMTE4IDEyNwpmIDExOCAxMjggMTI3CmYgMTE4IDEwOSAxMjgKZiAxMDkgMTE5IDEyOApmIDExOSAxMjAgMTI5CmYgMTIwIDEzMCAxMjkKZiAxMjAgMTIxIDEzMApmIDEyMSAxMzEgMTMwCmYgMTIxIDEyMiAxMzEKZiAxMjIgMTMyIDEzMQpmIDEyMiAxMjMgMTMyCmYgMTIzIDEzMyAxMzIKZiAxMjMgMTI0IDEzMwpmIDEyNCAxMzQgMTMzCmYgMTI0IDEyNSAxMzQKZiAxMjUgMTM1IDEzNApmIDEyNSAxMjYgMTM1CmYgMTI2IDEzNiAxMzUKZiAxMjYgMTI3IDEzNgpmIDEyNyAxMzcgMTM2CmYgMTI3IDEyOCAxMzcKZiAxMjggMTM4IDEzNwpmIDEyOCAxMTkgMTM4CmYgMTE5IDEyOSAxMzgKZiAxMjkgMTMwIDEzOQpmIDEzMCAxNDAgMTM5CmYgMTMwIDEzMSAxNDAKZiAxMzEgMTQxIDE0MApmIDEzMSAxMzIgMTQxCmYgMTMyIDE0MiAxNDEKZiAxMzIgMTMzIDE0MgpmIDEzMyAxNDMgMTQyCmYgMTMzIDEzNCAxNDMKZiAxMzQgMTQ0IDE0MwpmIDEzNCAxMzUgMTQ0CmYgMTM1IDE0NSAxNDQKZiAxMzUgMTM2IDE0NQpmIDEzNiAxNDYgMTQ1CmYgMTM2IDEzNyAxNDYKZiAxMzcgMTQ3IDE0NgpmIDEzNyAxMzggMTQ3CmYgMTM4IDE0OCAxNDcKZiAxMzggMTI5IDE0OApmIDEyOSAxMzkgMTQ4CmYgMTM5IDE0MCAxNDkKZiAxNDAgMTUwIDE0OQpmIDE0MCAxNDEgMTUwCmYgMTQxIDE1MSAxNTAKZiAxNDEgMTQyIDE1MQpmIDE0MiAxNTIgMTUxCmYgMTQyIDE0MyAxNTIKZiAxNDMgMTUzIDE1MgpmIDE0MyAxNDQgMTUzCmYgMTQ0IDE1NCAxNTMKZiAxNDQgMTQ1IDE1NApmIDE0NSAxNTUgMTU0CmYgMTQ1IDE0NiAxNTUKZiAxNDYgMTU2IDE1NQpmIDE0NiAxNDcgMTU2CmYgMTQ3IDE1NyAxNTYKZiAxNDcgMTQ4IDE1NwpmIDE0OCAxNTggMTU3CmYgMTQ4IDEzOSAxNTgKZiAxMzkgMTQ5IDE1OApmIDE0OSAxNTAgMTU5CmYgMTUwIDE2MCAxNTkKZiAxNTAgMTUxIDE2MApmIDE1MSAxNjEgMTYwCmYgMTUxIDE1MiAxNjEKZiAxNTIgMTYyIDE2MQpmIDE1MiAxNTMgMTYyCmYgMTUzIDE2MyAxNjIKZiAxNTMgMTU0IDE2MwpmIDE1NCAxNjQgMTYzCmYgMTU0IDE1NSAxNjQKZiAxNTUgMTY1IDE2NApmIDE1NSAxNTYgMTY1CmYgMTU2IDE2NiAxNjUKZiAxNTYgMTU3IDE2NgpmIDE1NyAxNjcgMTY2CmYgMTU3IDE1OCAxNjcKZiAxNTggMTY4IDE2NwpmIDE1OCAxNDkgMTY4CmYgMTQ5IDE1OSAxNjgKZiAxNjkgMTcxIDE3MApmIDE3MSAxNzIgMTcwCmYgMTcxIDE3MyAxNzIKZiAxNzMgMTc0IDE3MgpmIDE3MyAxNzUgMTc0CmYgMTc1IDE3NiAxNzQKZiAxNzUgMTc3IDE3NgpmIDE3NyAxNzggMTc2CmYgMTc3IDE3OSAxNzgKZiAxNzkgMTgwIDE3OApmIDE3OSAxNjkgMTgwCmYgMTY5IDE3MCAxODAKZiAxODEgMTcxIDE2OQpmIDE4MiAxNzAgMTcyCmYgMTgxIDE3MyAxNzEKZiAxODIgMTcyIDE3NApmIDE4MSAxNzUgMTczCmYgMTgyIDE3NCAxNzYKZiAxODEgMTc3IDE3NQpmIDE4MiAxNzYgMTc4CmYgMTgxIDE3OSAxNzcKZiAxODIgMTc4IDE4MApmIDE4MSAxNjkgMTc5CmYgMTgyIDE4MCAxNzAKZiAxODMgMTg1IDE4NApmIDE4NSAxODYgMTg0CmYgMTg1IDE4NyAxODYKZiAxODcgMTg4IDE4NgpmIDE4NyAxODkgMTg4CmYgMTg5IDE5MCAxODgKZiAxODkgMTkxIDE5MApmIDE5MSAxOTIgMTkwCmYgMTkxIDE5MyAxOTIKZiAxOTMgMTk0IDE5MgpmIDE5MyAxODMgMTk0CmYgMTgzIDE4NCAxOTQKZiAxOTUgMTg1IDE4MwpmIDE5NiAxODQgMTg2CmYgMTk1IDE4NyAxODUKZiAxOTYgMTg2IDE4OApmIDE5NSAxODkgMTg3CmYgMTk2IDE4OCAxOTAKZiAxOTUgMTkxIDE4OQpmIDE5NiAxOTAgMTkyCmYgMTk1IDE5MyAxOTEKZiAxOTYgMTkyIDE5NApmIDE5NSAxODMgMTkzCmYgMTk2IDE5NCAxODQKZiAxOTcgMTk5IDE5OApmIDE5OSAyMDAgMTk4CmYgMTk5IDIwMSAyMDAKZiAyMDEgMjAyIDIwMApmIDIwMSAyMDMgMjAyCmYgMjAzIDIwNCAyMDIKZiAyMDMgMjA1IDIwNApmIDIwNSAyMDYgMjA0CmYgMjA1IDIwNyAyMDYKZiAyMDcgMjA4IDIwNgpmIDIwNyAxOTcgMjA4CmYgMTk3IDE5OCAyMDgKZiAyMDkgMTk5IDE5NwpmIDIxMCAxOTggMjAwCmYgMjA5IDIwMSAxOTkKZiAyMTAgMjAwIDIwMgpmIDIwOSAyMDMgMjAxCmYgMjEwIDIwMiAyMDQKZiAyMDkgMjA1IDIwMwpmIDIxMCAyMDQgMjA2CmYgMjA5IDIwNyAyMDUKZiAyMTAgMjA2IDIwOApmIDIwOSAxOTcgMjA3CmYgMjEwIDIwOCAxOTgKZiAyMTEgMjEzIDIxMgpmIDIxMyAyMTQgMjEyCmYgMjEzIDIxNSAyMTQKZiAyMTUgMjE2IDIxNApmIDIxNSAyMTcgMjE2CmYgMjE3IDIxOCAyMTYKZiAyMTcgMjE5IDIxOApmIDIxOSAyMjAgMjE4CmYgMjE5IDIyMSAyMjAKZiAyMjEgMjIyIDIyMApmIDIyMSAyMTEgMjIyCmYgMjExIDIxMiAyMjIKZiAyMjMgMjEzIDIxMQpmIDIyNCAyMTIgMjE0CmYgMjIzIDIxNSAyMTMKZiAyMjQgMjE0IDIxNgpmIDIyMyAyMTcgMjE1CmYgMjI0IDIxNiAyMTgKZiAyMjMgMjE5IDIxNwpmIDIyNCAyMTggMjIwCmYgMjIzIDIyMSAyMTkKZiAyMjQgMjIwIDIyMgpmIDIyMyAyMTEgMjIxCmYgMjI0IDIyMiAyMTIKZiAyMjUgMjI3IDIyNgpmIDIyNyAyMjggMjI2CmYgMjI3IDIyOSAyMjgKZiAyMjkgMjMwIDIyOApmIDIyOSAyMzEgMjMwCmYgMjMxIDIzMiAyMzAKZiAyMzEgMjMzIDIzMgpmIDIzMyAyMzQgMjMyCmYgMjMzIDIzNSAyMzQKZiAyMzUgMjM2IDIzNApmIDIzNSAyMjUgMjM2CmYgMjI1IDIyNiAyMzYKZiAyMzcgMjI3IDIyNQpmIDIzOCAyMjYgMjI4CmYgMjM3IDIyOSAyMjcKZiAyMzggMjI4IDIzMApmIDIzNyAyMzEgMjI5CmYgMjM4IDIzMCAyMzIKZiAyMzcgMjMzIDIzMQpmIDIzOCAyMzIgMjM0CmYgMjM3IDIzNSAyMzMKZiAyMzggMjM0IDIzNgpmIDIzNyAyMjUgMjM1CmYgMjM4IDIzNiAyMjYKZiAyMzkgMjQxIDI0MApmIDI0MSAyNDIgMjQwCmYgMjQxIDI0MyAyNDIKZiAyNDMgMjQ0IDI0MgpmIDI0MyAyNDUgMjQ0CmYgMjQ1IDI0NiAyNDQKZiAyNDUgMjQ3IDI0NgpmIDI0NyAyNDggMjQ2CmYgMjQ3IDI0OSAyNDgKZiAyNDkgMjUwIDI0OApmIDI0OSAyMzkgMjUwCmYgMjM5IDI0MCAyNTAKZiAyNTEgMjQxIDIzOQpmIDI1MiAyNDAgMjQyCmYgMjUxIDI0MyAyNDEKZiAyNTIgMjQyIDI0NApmIDI1MSAyNDUgMjQzCmYgMjUyIDI0NCAyNDYKZiAyNTEgMjQ3IDI0NQpmIDI1MiAyNDYgMjQ4CmYgMjUxIDI0OSAyNDcKZiAyNTIgMjQ4IDI1MApmIDI1MSAyMzkgMjQ5CmYgMjUyIDI1MCAyNDAKZiAyNTMgMjU1IDI1NApmIDI1NSAyNTYgMjU0CmYgMjU1IDI1NyAyNTYKZiAyNTcgMjU4IDI1NgpmIDI1NyAyNTkgMjU4CmYgMjU5IDI2MCAyNTgKZiAyNTkgMjYxIDI2MApmIDI2MSAyNjIgMjYwCmYgMjYxIDI2MyAyNjIKZiAyNjMgMjY0IDI2MgpmIDI2MyAyNTMgMjY0CmYgMjUzIDI1NCAyNjQKZiAyNjUgMjU1IDI1MwpmIDI2NiAyNTQgMjU2CmYgMjY1IDI1NyAyNTUKZiAyNjYgMjU2IDI1OApmIDI2NSAyNTkgMjU3CmYgMjY2IDI1OCAyNjAKZiAyNjUgMjYxIDI1OQpmIDI2NiAyNjAgMjYyCmYgMjY1IDI2MyAyNjEKZiAyNjYgMjYyIDI2NApmIDI2NSAyNTMgMjYzCmYgMjY2IDI2NCAyNTQKZiAyNjcgMjY5IDI2OApmIDI2OSAyNzAgMjY4CmYgMjY5IDI3MSAyNzAKZiAyNzEgMjcyIDI3MApmIDI3MSAyNzMgMjcyCmYgMjczIDI3NCAyNzIKZiAyNzMgMjc1IDI3NApmIDI3NSAyNzYgMjc0CmYgMjc1IDI3NyAyNzYKZiAyNzcgMjc4IDI3NgpmIDI3NyAyNjcgMjc4CmYgMjY3IDI2OCAyNzgKZiAyNzkgMjY5IDI2NwpmIDI4MCAyNjggMjcwCmYgMjc5IDI3MSAyNjkKZiAyODAgMjcwIDI3MgpmIDI3OSAyNzMgMjcxCmYgMjgwIDI3MiAyNzQKZiAyNzkgMjc1IDI3MwpmIDI4MCAyNzQgMjc2CmYgMjc5IDI3NyAyNzUKZiAyODAgMjc2IDI3OApmIDI3OSAyNjcgMjc3CmYgMjgwIDI3OCAyNjgKZiAyODEgMjgzIDI4MgpmIDI4MyAyODQgMjgyCmYgMjgzIDI4NSAyODQKZiAyODUgMjg2IDI4NApmIDI4NSAyODcgMjg2CmYgMjg3IDI4OCAyODYKZiAyODcgMjg5IDI4OApmIDI4OSAyOTAgMjg4CmYgMjg5IDI5MSAyOTAKZiAyOTEgMjkyIDI5MApmIDI5MSAyODEgMjkyCmYgMjgxIDI4MiAyOTIKZiAyOTMgMjgzIDI4MQpmIDI5NCAyODIgMjg0CmYgMjkzIDI4NSAyODMKZiAyOTQgMjg0IDI4NgpmIDI5MyAyODcgMjg1CmYgMjk0IDI4NiAyODgKZiAyOTMgMjg5IDI4NwpmIDI5NCAyODggMjkwCmYgMjkzIDI5MSAyODkKZiAyOTQgMjkwIDI5MgpmIDI5MyAyODEgMjkxCmYgMjk0IDI5MiAyODIKZiAyOTUgMjk3IDI5NgpmIDI5NyAyOTggMjk2CmYgMjk3IDI5OSAyOTgKZiAyOTkgMzAwIDI5OApmIDI5OSAzMDEgMzAwCmYgMzAxIDMwMiAzMDAKZiAzMDEgMzAzIDMwMgpmIDMwMyAzMDQgMzAyCmYgMzAzIDMwNSAzMDQKZiAzMDUgMzA2IDMwNApmIDMwNSAyOTUgMzA2CmYgMjk1IDI5NiAzMDYKZiAzMDcgMjk3IDI5NQpmIDMwOCAyOTYgMjk4CmYgMzA3IDI5OSAyOTcKZiAzMDggMjk4IDMwMApmIDMwNyAzMDEgMjk5CmYgMzA4IDMwMCAzMDIKZiAzMDcgMzAzIDMwMQpmIDMwOCAzMDIgMzA0CmYgMzA3IDMwNSAzMDMKZiAzMDggMzA0IDMwNgpmIDMwNyAyOTUgMzA1CmYgMzA4IDMwNiAyOTYKZiAzMDkgMzEwIDMxMQpmIDMwOSAzMTEgMzEyCmYgMzEzIDMxNSAzMTQKZiAzMTMgMzE2IDMxNQpmIDMwOSAzMTMgMzE0CmYgMzA5IDMxNCAzMTAKZiAzMTIgMzExIDMxNQpmIDMxMiAzMTUgMzE2CmYgMzA5IDMxMiAzMTYKZiAzMDkgMzE2IDMxMwpmIDMxMCAzMTQgMzE1CmYgMzEwIDMxNSAzMTEKZiAzMTcgMzE4IDMxOQpmIDMxNyAzMTkgMzIwCmYgMzIxIDMyMyAzMjIKZiAzMjEgMzI0IDMyMwpmIDMxNyAzMjEgMzIyCmYgMzE3IDMyMiAzMTgKZiAzMjAgMzE5IDMyMwpmIDMyMCAzMjMgMzI0CmYgMzE3IDMyMCAzMjQKZiAzMTcgMzI0IDMyMQpmIDMxOCAzMjIgMzIzCmYgMzE4IDMyMyAzMTkKZiAzMjUgMzI3IDMyNgpmIDMyNyAzMjggMzI2CmYgMzI3IDMyOSAzMjgKZiAzMjkgMzMwIDMyOApmIDMyOSAzMzEgMzMwCmYgMzMxIDMzMiAzMzAKZiAzMzEgMzMzIDMzMgpmIDMzMyAzMzQgMzMyCmYgMzMzIDMzNSAzMzQKZiAzMzUgMzM2IDMzNApmIDMzNSAzMzcgMzM2CmYgMzM3IDMzOCAzMzYKZiAzMzcgMzM5IDMzOApmIDMzOSAzNDAgMzM4CmYgMzM5IDMyNSAzNDAKZiAzMjUgMzI2IDM0MApmIDM0MSAzMjcgMzI1CmYgMzQyIDMyNiAzMjgKZiAzNDEgMzI5IDMyNwpmIDM0MiAzMjggMzMwCmYgMzQxIDMzMSAzMjkKZiAzNDIgMzMwIDMzMgpmIDM0MSAzMzMgMzMxCmYgMzQyIDMzMiAzMzQKZiAzNDEgMzM1IDMzMwpmIDM0MiAzMzQgMzM2CmYgMzQxIDMzNyAzMzUKZiAzNDIgMzM2IDMzOApmIDM0MSAzMzkgMzM3CmYgMzQyIDMzOCAzNDAKZiAzNDEgMzI1IDMzOQpmIDM0MiAzNDAgMzI2CmYgMzQzIDM0NCAzNTUKZiAzNDQgMzU2IDM1NQpmIDM0NCAzNDUgMzU2CmYgMzQ1IDM1NyAzNTYKZiAzNDUgMzQ2IDM1NwpmIDM0NiAzNTggMzU3CmYgMzQ2IDM0NyAzNTgKZiAzNDcgMzU5IDM1OApmIDM0NyAzNDggMzU5CmYgMzQ4IDM2MCAzNTkKZiAzNDggMzQ5IDM2MApmIDM0OSAzNjEgMzYwCmYgMzQ5IDM1MCAzNjEKZiAzNTAgMzYyIDM2MQpmIDM1MCAzNTEgMzYyCmYgMzUxIDM2MyAzNjIKZiAzNTEgMzUyIDM2MwpmIDM1MiAzNjQgMzYzCmYgMzUyIDM1MyAzNjQKZiAzNTMgMzY1IDM2NApmIDM1MyAzNTQgMzY1CmYgMzU0IDM2NiAzNjUKZiAzNTQgMzQzIDM2NgpmIDM0MyAzNTUgMzY2CmYgMzU1IDM1NiAzNjcKZiAzNTYgMzY4IDM2NwpmIDM1NiAzNTcgMzY4CmYgMzU3IDM2OSAzNjgKZiAzNTcgMzU4IDM2OQpmIDM1OCAzNzAgMzY5CmYgMzU4IDM1OSAzNzAKZiAzNTkgMzcxIDM3MApmIDM1OSAzNjAgMzcxCmYgMzYwIDM3MiAzNzEKZiAzNjAgMzYxIDM3MgpmIDM2MSAzNzMgMzcyCmYgMzYxIDM2MiAzNzMKZiAzNjIgMzc0IDM3MwpmIDM2MiAzNjMgMzc0CmYgMzYzIDM3NSAzNzQKZiAzNjMgMzY0IDM3NQpmIDM2NCAzNzYgMzc1CmYgMzY0IDM2NSAzNzYKZiAzNjUgMzc3IDM3NgpmIDM2NSAzNjYgMzc3CmYgMzY2IDM3OCAzNzcKZiAzNjYgMzU1IDM3OApmIDM1NSAzNjcgMzc4CmYgMzY3IDM2OCAzNzkKZiAzNjggMzgwIDM3OQpmIDM2OCAzNjkgMzgwCmYgMzY5IDM4MSAzODAKZiAzNjkgMzcwIDM4MQpmIDM3MCAzODIgMzgxCmYgMzcwIDM3MSAzODIKZiAzNzEgMzgzIDM4MgpmIDM3MSAzNzIgMzgzCmYgMzcyIDM4NCAzODMKZiAzNzIgMzczIDM4NApmIDM3MyAzODUgMzg0CmYgMzczIDM3NCAzODUKZiAzNzQgMzg2IDM4NQpmIDM3NCAzNzUgMzg2CmYgMzc1IDM4NyAzODYKZiAzNzUgMzc2IDM4NwpmIDM3NiAzODggMzg3CmYgMzc2IDM3NyAzODgKZiAzNzcgMzg5IDM4OApmIDM3NyAzNzggMzg5CmYgMzc4IDM5MCAzODkKZiAzNzggMzY3IDM5MApmIDM2NyAzNzkgMzkwCmYgMzc5IDM4MCAzOTEKZiAzODAgMzkyIDM5MQpmIDM4MCAzODEgMzkyCmYgMzgxIDM5MyAzOTIKZiAzODEgMzgyIDM5MwpmIDM4MiAzOTQgMzkzCmYgMzgyIDM4MyAzOTQKZiAzODMgMzk1IDM5NApmIDM4MyAzODQgMzk1CmYgMzg0IDM5NiAzOTUKZiAzODQgMzg1IDM5NgpmIDM4NSAzOTcgMzk2CmYgMzg1IDM4NiAzOTcKZiAzODYgMzk4IDM5NwpmIDM4NiAzODcgMzk4CmYgMzg3IDM5OSAzOTgKZiAzODcgMzg4IDM5OQpmIDM4OCA0MDAgMzk5CmYgMzg4IDM4OSA0MDAKZiAzODkgNDAxIDQwMApmIDM4OSAzOTAgNDAxCmYgMzkwIDQwMiA0MDEKZiAzOTAgMzc5IDQwMgpmIDM3OSAzOTEgNDAyCmYgMzkxIDM5MiA0MDMKZiAzOTIgNDA0IDQwMwpmIDM5MiAzOTMgNDA0CmYgMzkzIDQwNSA0MDQKZiAzOTMgMzk0IDQwNQpmIDM5NCA0MDYgNDA1CmYgMzk0IDM5NSA0MDYKZiAzOTUgNDA3IDQwNgpmIDM5NSAzOTYgNDA3CmYgMzk2IDQwOCA0MDcKZiAzOTYgMzk3IDQwOApmIDM5NyA0MDkgNDA4CmYgMzk3IDM5OCA0MDkKZiAzOTggNDEwIDQwOQpmIDM5OCAzOTkgNDEwCmYgMzk5IDQxMSA0MTAKZiAzOTkgNDAwIDQxMQpmIDQwMCA0MTIgNDExCmYgNDAwIDQwMSA0MTIKZiA0MDEgNDEzIDQxMgpmIDQwMSA0MDIgNDEzCmYgNDAyIDQxNCA0MTMKZiA0MDIgMzkxIDQxNApmIDM5MSA0MDMgNDE0CmYgNDAzIDQwNCA0MTUKZiA0MDQgNDE2IDQxNQpmIDQwNCA0MDUgNDE2CmYgNDA1IDQxNyA0MTYKZiA0MDUgNDA2IDQxNwpmIDQwNiA0MTggNDE3CmYgNDA2IDQwNyA0MTgKZiA0MDcgNDE5IDQxOApmIDQwNyA0MDggNDE5CmYgNDA4IDQyMCA0MTkKZiA0MDggNDA5IDQyMApmIDQwOSA0MjEgNDIwCmYgNDA5IDQxMCA0MjEKZiA0MTAgNDIyIDQyMQpmIDQxMCA0MTEgNDIyCmYgNDExIDQyMyA0MjIKZiA0MTEgNDEyIDQyMwpmIDQxMiA0MjQgNDIzCmYgNDEyIDQxMyA0MjQKZiA0MTMgNDI1IDQyNApmIDQxMyA0MTQgNDI1CmYgNDE0IDQyNiA0MjUKZiA0MTQgNDAzIDQyNgpmIDQwMyA0MTUgNDI2CmYgNDE1IDQxNiA0MjcKZiA0MTYgNDI4IDQyNwpmIDQxNiA0MTcgNDI4CmYgNDE3IDQyOSA0MjgKZiA0MTcgNDE4IDQyOQpmIDQxOCA0MzAgNDI5CmYgNDE4IDQxOSA0MzAKZiA0MTkgNDMxIDQzMApmIDQxOSA0MjAgNDMxCmYgNDIwIDQzMiA0MzEKZiA0MjAgNDIxIDQzMgpmIDQyMSA0MzMgNDMyCmYgNDIxIDQyMiA0MzMKZiA0MjIgNDM0IDQzMwpmIDQyMiA0MjMgNDM0CmYgNDIzIDQzNSA0MzQKZiA0MjMgNDI0IDQzNQpmIDQyNCA0MzYgNDM1CmYgNDI0IDQyNSA0MzYKZiA0MjUgNDM3IDQzNgpmIDQyNSA0MjYgNDM3CmYgNDI2IDQzOCA0MzcKZiA0MjYgNDE1IDQzOApmIDQxNSA0MjcgNDM4CmYgNDM5IDQ0MSA0NDAKZiA0NDEgNDQyIDQ0MApmIDQ0MSA0NDMgNDQyCmYgNDQzIDQ0NCA0NDIKZiA0NDMgNDQ1IDQ0NApmIDQ0NSA0NDYgNDQ0CmYgNDQ1IDQ0NyA0NDYKZiA0NDcgNDQ4IDQ0NgpmIDQ0NyA0NDkgNDQ4CmYgNDQ5IDQ1MCA0NDgKZiA0NDkgNDUxIDQ1MApmIDQ1MSA0NTIgNDUwCmYgNDUxIDQ1MyA0NTIKZiA0NTMgNDU0IDQ1MgpmIDQ1MyA0NTUgNDU0CmYgNDU1IDQ1NiA0NTQKZiA0NTUgNDU3IDQ1NgpmIDQ1NyA0NTggNDU2CmYgNDU3IDQ1OSA0NTgKZiA0NTkgNDYwIDQ1OApmIDQ1OSA0NjEgNDYwCmYgNDYxIDQ2MiA0NjAKZiA0NjEgNDYzIDQ2MgpmIDQ2MyA0NjQgNDYyCmYgNDYzIDQ2NSA0NjQKZiA0NjUgNDY2IDQ2NApmIDQ2NSA0MzkgNDY2CmYgNDM5IDQ0MCA0NjYKZiA0NjcgNDQxIDQzOQpmIDQ2OCA0NDAgNDQyCmYgNDY3IDQ0MyA0NDEKZiA0NjggNDQyIDQ0NApmIDQ2NyA0NDUgNDQzCmYgNDY4IDQ0NCA0NDYKZiA0NjcgNDQ3IDQ0NQpmIDQ2OCA0NDYgNDQ4CmYgNDY3IDQ0OSA0NDcKZiA0NjggNDQ4IDQ1MApmIDQ2NyA0NTEgNDQ5CmYgNDY4IDQ1MCA0NTIKZiA0NjcgNDUzIDQ1MQpmIDQ2OCA0NTIgNDU0CmYgNDY3IDQ1NSA0NTMKZiA0NjggNDU0IDQ1NgpmIDQ2NyA0NTcgNDU1CmYgNDY4IDQ1NiA0NTgKZiA0NjcgNDU5IDQ1NwpmIDQ2OCA0NTggNDYwCmYgNDY3IDQ2MSA0NTkKZiA0NjggNDYwIDQ2MgpmIDQ2NyA0NjMgNDYxCmYgNDY4IDQ2MiA0NjQKZiA0NjcgNDY1IDQ2MwpmIDQ2OCA0NjQgNDY2CmYgNDY3IDQzOSA0NjUKZiA0NjggNDY2IDQ0MApmIDQ2OSA0NzAgNDcxCmYgNDY5IDQ3MSA0NzIKZiA0NzMgNDc1IDQ3NApmIDQ3MyA0NzYgNDc1CmYgNDY5IDQ3MyA0NzQKZiA0NjkgNDc0IDQ3MApmIDQ3MiA0NzEgNDc1CmYgNDcyIDQ3NSA0NzYKZiA0NjkgNDcyIDQ3NgpmIDQ2OSA0NzYgNDczCmYgNDcwIDQ3NCA0NzUKZiA0NzAgNDc1IDQ3MQo="
+  },
+  "drone.obj": {
+   "kind": "model",
+   "name": "drone.obj",
+   "data": "data:text/plain;base64,IyBwcm9jZWR1cmFsLCBwdWJsaWMgZG9tYWluIChDQzApLCB3cml0dGVuIGZvciBBSSBWSiBHZW5lcmF0b3IKdiAtMC4yMTIzIDAuMDQwMSAtMC4yMTIzCnYgMC4yMTIzIDAuMDQwMSAtMC4yMTIzCnYgMC4yMTIzIDAuMTcyMiAtMC4yMTIzCnYgLTAuMjEyMyAwLjE3MjIgLTAuMjEyMwp2IC0wLjIxMjMgMC4wNDAxIDAuMjEyMwp2IDAuMjEyMyAwLjA0MDEgMC4yMTIzCnYgMC4yMTIzIDAuMTcyMiAwLjIxMjMKdiAtMC4yMTIzIDAuMTcyMiAwLjIxMjMKdiAwLjAwMDAgMC4wNjg0IDAuMDQ3Mgp2IDAuMDAwMCAwLjA2ODQgMC4wNDcyCnYgMC4wMDAwIDAuMDY4NCAwLjA0NzIKdiAwLjAwMDAgMC4wNjg0IDAuMDQ3Mgp2IDAuMDAwMCAwLjA2ODQgMC4wNDcyCnYgMC4wMDAwIDAuMDY4NCAwLjA0NzIKdiAwLjAwMDAgMC4wNjg0IDAuMDQ3Mgp2IDAuMDAwMCAwLjA2ODQgMC4wNDcyCnYgMC4wMDAwIDAuMDY4NCAwLjA0NzIKdiAwLjAwMDAgMC4wNjg0IDAuMDQ3Mgp2IDAuMDQ3MiAwLjA1NTggMC4wNDcyCnYgMC4wMzgyIDAuMDU1OCAwLjA3NDkKdiAwLjAxNDYgMC4wNTU4IDAuMDkyMAp2IC0wLjAxNDYgMC4wNTU4IDAuMDkyMAp2IC0wLjAzODIgMC4wNTU4IDAuMDc0OQp2IC0wLjA0NzIgMC4wNTU4IDAuMDQ3Mgp2IC0wLjAzODIgMC4wNTU4IDAuMDE5NAp2IC0wLjAxNDYgMC4wNTU4IDAuMDAyMwp2IDAuMDE0NiAwLjA1NTggMC4wMDIzCnYgMC4wMzgyIDAuMDU1OCAwLjAxOTQKdiAwLjA4MTcgMC4wMjEyIDAuMDQ3Mgp2IDAuMDY2MSAwLjAyMTIgMC4wOTUyCnYgMC4wMjUyIDAuMDIxMiAwLjEyNDkKdiAtMC4wMjUyIDAuMDIxMiAwLjEyNDkKdiAtMC4wNjYxIDAuMDIxMiAwLjA5NTIKdiAtMC4wODE3IDAuMDIxMiAwLjA0NzIKdiAtMC4wNjYxIDAuMDIxMiAtMC4wMDA5CnYgLTAuMDI1MiAwLjAyMTIgLTAuMDMwNQp2IDAuMDI1MiAwLjAyMTIgLTAuMDMwNQp2IDAuMDY2MSAwLjAyMTIgLTAuMDAwOQp2IDAuMDk0MyAtMC4wMjU5IDAuMDQ3Mgp2IDAuMDc2MyAtMC4wMjU5IDAuMTAyNgp2IDAuMDI5MiAtMC4wMjU5IDAuMTM2OQp2IC0wLjAyOTIgLTAuMDI1OSAwLjEzNjkKdiAtMC4wNzYzIC0wLjAyNTkgMC4xMDI2CnYgLTAuMDk0MyAtMC4wMjU5IDAuMDQ3Mgp2IC0wLjA3NjMgLTAuMDI1OSAtMC4wMDgzCnYgLTAuMDI5MiAtMC4wMjU5IC0wLjA0MjYKdiAwLjAyOTIgLTAuMDI1OSAtMC4wNDI2CnYgMC4wNzYzIC0wLjAyNTkgLTAuMDA4Mwp2IDAuMDgxNyAtMC4wNzMxIDAuMDQ3Mgp2IDAuMDY2MSAtMC4wNzMxIDAuMDk1Mgp2IDAuMDI1MiAtMC4wNzMxIDAuMTI0OQp2IC0wLjAyNTIgLTAuMDczMSAwLjEyNDkKdiAtMC4wNjYxIC0wLjA3MzEgMC4wOTUyCnYgLTAuMDgxNyAtMC4wNzMxIDAuMDQ3Mgp2IC0wLjA2NjEgLTAuMDczMSAtMC4wMDA5CnYgLTAuMDI1MiAtMC4wNzMxIC0wLjAzMDUKdiAwLjAyNTIgLTAuMDczMSAtMC4wMzA1CnYgMC4wNjYxIC0wLjA3MzEgLTAuMDAwOQp2IDAuMDQ3MiAtMC4xMDc2IDAuMDQ3Mgp2IDAuMDM4MiAtMC4xMDc2IDAuMDc0OQp2IDAuMDE0NiAtMC4xMDc2IDAuMDkyMAp2IC0wLjAxNDYgLTAuMTA3NiAwLjA5MjAKdiAtMC4wMzgyIC0wLjEwNzYgMC4wNzQ5CnYgLTAuMDQ3MiAtMC4xMDc2IDAuMDQ3Mgp2IC0wLjAzODIgLTAuMTA3NiAwLjAxOTQKdiAtMC4wMTQ2IC0wLjEwNzYgMC4wMDIzCnYgMC4wMTQ2IC0wLjEwNzYgMC4wMDIzCnYgMC4wMzgyIC0wLjEwNzYgMC4wMTk0CnYgMC4wMDAwIC0wLjEyMDMgMC4wNDcyCnYgMC4wMDAwIC0wLjEyMDMgMC4wNDcyCnYgMC4wMDAwIC0wLjEyMDMgMC4wNDcyCnYgLTAuMDAwMCAtMC4xMjAzIDAuMDQ3Mgp2IC0wLjAwMDAgLTAuMTIwMyAwLjA0NzIKdiAtMC4wMDAwIC0wLjEyMDMgMC4wNDcyCnYgLTAuMDAwMCAtMC4xMjAzIDAuMDQ3Mgp2IC0wLjAwMDAgLTAuMTIwMyAwLjA0NzIKdiAwLjAwMDAgLTAuMTIwMyAwLjA0NzIKdiAwLjAwMDAgLTAuMTIwMyAwLjA0NzIKdiAwLjAzMzAgLTAuMDI1OSAwLjEwODUKdiAwLjAzMzAgLTAuMDI1OSAwLjE5MzQKdiAwLjAyMzMgLTAuMDQ5MyAwLjEwODUKdiAwLjAyMzMgLTAuMDQ5MyAwLjE5MzQKdiAwLjAwMDAgLTAuMDU5MCAwLjEwODUKdiAwLjAwMDAgLTAuMDU5MCAwLjE5MzQKdiAtMC4wMjMzIC0wLjA0OTMgMC4xMDg1CnYgLTAuMDIzMyAtMC4wNDkzIDAuMTkzNAp2IC0wLjAzMzAgLTAuMDI1OSAwLjEwODUKdiAtMC4wMzMwIC0wLjAyNTkgMC4xOTM0CnYgLTAuMDIzMyAtMC4wMDI2IDAuMTA4NQp2IC0wLjAyMzMgLTAuMDAyNiAwLjE5MzQKdiAtMC4wMDAwIDAuMDA3MSAwLjEwODUKdiAtMC4wMDAwIDAuMDA3MSAwLjE5MzQKdiAwLjAyMzMgLTAuMDAyNiAwLjEwODUKdiAwLjAyMzMgLTAuMDAyNiAwLjE5MzQKdiAwLjAwMDAgLTAuMDI1OSAwLjEwODUKdiAwLjAwMDAgLTAuMDI1OSAwLjE5MzQKdiAtMC4wNzcyIDAuMDg5NiAtMC4wNDM4CnYgLTAuNzEwOSAwLjA4OTYgLTAuNjc3NQp2IC0wLjcxMDkgMC4xMjI2IC0wLjY3NzUKdiAtMC4wNzcyIDAuMTIyNiAtMC4wNDM4CnYgLTAuMDQzOCAwLjA4OTYgLTAuMDc3Mgp2IC0wLjY3NzUgMC4wODk2IC0wLjcxMDkKdiAtMC42Nzc1IDAuMTIyNiAtMC43MTA5CnYgLTAuMDQzOCAwLjEyMjYgLTAuMDc3Mgp2IC0wLjY4NDAgMC4xMjAzIC0wLjcwNzUKdiAtMC42ODQwIDAuMjA1MiAtMC43MDc1CnYgLTAuNjkwOSAwLjEyMDMgLTAuNjkwOQp2IC0wLjY5MDkgMC4yMDUyIC0wLjY5MDkKdiAtMC43MDc1IDAuMTIwMyAtMC42ODQwCnYgLTAuNzA3NSAwLjIwNTIgLTAuNjg0MAp2IC0wLjcyNDIgMC4xMjAzIC0wLjY5MDkKdiAtMC43MjQyIDAuMjA1MiAtMC42OTA5CnYgLTAuNzMxMSAwLjEyMDMgLTAuNzA3NQp2IC0wLjczMTEgMC4yMDUyIC0wLjcwNzUKdiAtMC43MjQyIDAuMTIwMyAtMC43MjQyCnYgLTAuNzI0MiAwLjIwNTIgLTAuNzI0Mgp2IC0wLjcwNzUgMC4xMjAzIC0wLjczMTEKdiAtMC43MDc1IDAuMjA1MiAtMC43MzExCnYgLTAuNjkwOSAwLjEyMDMgLTAuNzI0Mgp2IC0wLjY5MDkgMC4yMDUyIC0wLjcyNDIKdiAtMC43MDc1IDAuMTIwMyAtMC43MDc1CnYgLTAuNzA3NSAwLjIwNTIgLTAuNzA3NQp2IC0wLjQxNTEgMC4yMDQwIC0wLjcwNzUKdiAtMC40MTUxIDAuMjE1OCAtMC43MDc1CnYgLTAuNDM3NCAwLjIwNDAgLTAuNTk1Ngp2IC0wLjQzNzQgMC4yMTU4IC0wLjU5NTYKdiAtMC41MDA4IDAuMjA0MCAtMC41MDA4CnYgLTAuNTAwOCAwLjIxNTggLTAuNTAwOAp2IC0wLjU5NTYgMC4yMDQwIC0wLjQzNzQKdiAtMC41OTU2IDAuMjE1OCAtMC40Mzc0CnYgLTAuNzA3NSAwLjIwNDAgLTAuNDE1MQp2IC0wLjcwNzUgMC4yMTU4IC0wLjQxNTEKdiAtMC44MTk1IDAuMjA0MCAtMC40Mzc0CnYgLTAuODE5NSAwLjIxNTggLTAuNDM3NAp2IC0wLjkxNDMgMC4yMDQwIC0wLjUwMDgKdiAtMC45MTQzIDAuMjE1OCAtMC41MDA4CnYgLTAuOTc3NyAwLjIwNDAgLTAuNTk1Ngp2IC0wLjk3NzcgMC4yMTU4IC0wLjU5NTYKdiAtMS4wMDAwIDAuMjA0MCAtMC43MDc1CnYgLTEuMDAwMCAwLjIxNTggLTAuNzA3NQp2IC0wLjk3NzcgMC4yMDQwIC0wLjgxOTUKdiAtMC45Nzc3IDAuMjE1OCAtMC44MTk1CnYgLTAuOTE0MyAwLjIwNDAgLTAuOTE0Mwp2IC0wLjkxNDMgMC4yMTU4IC0wLjkxNDMKdiAtMC44MTk1IDAuMjA0MCAtMC45Nzc3CnYgLTAuODE5NSAwLjIxNTggLTAuOTc3Nwp2IC0wLjcwNzUgMC4yMDQwIC0xLjAwMDAKdiAtMC43MDc1IDAuMjE1OCAtMS4wMDAwCnYgLTAuNTk1NiAwLjIwNDAgLTAuOTc3Nwp2IC0wLjU5NTYgMC4yMTU4IC0wLjk3NzcKdiAtMC41MDA4IDAuMjA0MCAtMC45MTQzCnYgLTAuNTAwOCAwLjIxNTggLTAuOTE0Mwp2IC0wLjQzNzQgMC4yMDQwIC0wLjgxOTUKdiAtMC40Mzc0IDAuMjE1OCAtMC44MTk1CnYgLTAuNzA3NSAwLjIwNDAgLTAuNzA3NQp2IC0wLjcwNzUgMC4yMTU4IC0wLjcwNzUKdiAtMC4wNDM4IDAuMDg5NiAwLjA3NzIKdiAtMC42Nzc1IDAuMDg5NiAwLjcxMDkKdiAtMC42Nzc1IDAuMTIyNiAwLjcxMDkKdiAtMC4wNDM4IDAuMTIyNiAwLjA3NzIKdiAtMC4wNzcyIDAuMDg5NiAwLjA0MzgKdiAtMC43MTA5IDAuMDg5NiAwLjY3NzUKdiAtMC43MTA5IDAuMTIyNiAwLjY3NzUKdiAtMC4wNzcyIDAuMTIyNiAwLjA0MzgKdiAtMC42ODQwIDAuMTIwMyAwLjcwNzUKdiAtMC42ODQwIDAuMjA1MiAwLjcwNzUKdiAtMC42OTA5IDAuMTIwMyAwLjcyNDIKdiAtMC42OTA5IDAuMjA1MiAwLjcyNDIKdiAtMC43MDc1IDAuMTIwMyAwLjczMTEKdiAtMC43MDc1IDAuMjA1MiAwLjczMTEKdiAtMC43MjQyIDAuMTIwMyAwLjcyNDIKdiAtMC43MjQyIDAuMjA1MiAwLjcyNDIKdiAtMC43MzExIDAuMTIwMyAwLjcwNzUKdiAtMC43MzExIDAuMjA1MiAwLjcwNzUKdiAtMC43MjQyIDAuMTIwMyAwLjY5MDkKdiAtMC43MjQyIDAuMjA1MiAwLjY5MDkKdiAtMC43MDc1IDAuMTIwMyAwLjY4NDAKdiAtMC43MDc1IDAuMjA1MiAwLjY4NDAKdiAtMC42OTA5IDAuMTIwMyAwLjY5MDkKdiAtMC42OTA5IDAuMjA1MiAwLjY5MDkKdiAtMC43MDc1IDAuMTIwMyAwLjcwNzUKdiAtMC43MDc1IDAuMjA1MiAwLjcwNzUKdiAtMC40MTUxIDAuMjA0MCAwLjcwNzUKdiAtMC40MTUxIDAuMjE1OCAwLjcwNzUKdiAtMC40Mzc0IDAuMjA0MCAwLjgxOTUKdiAtMC40Mzc0IDAuMjE1OCAwLjgxOTUKdiAtMC41MDA4IDAuMjA0MCAwLjkxNDMKdiAtMC41MDA4IDAuMjE1OCAwLjkxNDMKdiAtMC41OTU2IDAuMjA0MCAwLjk3NzcKdiAtMC41OTU2IDAuMjE1OCAwLjk3NzcKdiAtMC43MDc1IDAuMjA0MCAxLjAwMDAKdiAtMC43MDc1IDAuMjE1OCAxLjAwMDAKdiAtMC44MTk1IDAuMjA0MCAwLjk3NzcKdiAtMC44MTk1IDAuMjE1OCAwLjk3NzcKdiAtMC45MTQzIDAuMjA0MCAwLjkxNDMKdiAtMC45MTQzIDAuMjE1OCAwLjkxNDMKdiAtMC45Nzc3IDAuMjA0MCAwLjgxOTUKdiAtMC45Nzc3IDAuMjE1OCAwLjgxOTUKdiAtMS4wMDAwIDAuMjA0MCAwLjcwNzUKdiAtMS4wMDAwIDAuMjE1OCAwLjcwNzUKdiAtMC45Nzc3IDAuMjA0MCAwLjU5NTYKdiAtMC45Nzc3IDAuMjE1OCAwLjU5NTYKdiAtMC45MTQzIDAuMjA0MCAwLjUwMDgKdiAtMC45MTQzIDAuMjE1OCAwLjUwMDgKdiAtMC44MTk1IDAuMjA0MCAwLjQzNzQKdiAtMC44MTk1IDAuMjE1OCAwLjQzNzQKdiAtMC43MDc1IDAuMjA0MCAwLjQxNTEKdiAtMC43MDc1IDAuMjE1OCAwLjQxNTEKdiAtMC41OTU2IDAuMjA0MCAwLjQzNzQKdiAtMC41OTU2IDAuMjE1OCAwLjQzNzQKdiAtMC41MDA4IDAuMjA0MCAwLjUwMDgKdiAtMC41MDA4IDAuMjE1OCAwLjUwMDgKdiAtMC40Mzc0IDAuMjA0MCAwLjU5NTYKdiAtMC40Mzc0IDAuMjE1OCAwLjU5NTYKdiAtMC43MDc1IDAuMjA0MCAwLjcwNzUKdiAtMC43MDc1IDAuMjE1OCAwLjcwNzUKdiAwLjA0MzggMC4wODk2IC0wLjA3NzIKdiAwLjY3NzUgMC4wODk2IC0wLjcxMDkKdiAwLjY3NzUgMC4xMjI2IC0wLjcxMDkKdiAwLjA0MzggMC4xMjI2IC0wLjA3NzIKdiAwLjA3NzIgMC4wODk2IC0wLjA0MzgKdiAwLjcxMDkgMC4wODk2IC0wLjY3NzUKdiAwLjcxMDkgMC4xMjI2IC0wLjY3NzUKdiAwLjA3NzIgMC4xMjI2IC0wLjA0MzgKdiAwLjczMTEgMC4xMjAzIC0wLjcwNzUKdiAwLjczMTEgMC4yMDUyIC0wLjcwNzUKdiAwLjcyNDIgMC4xMjAzIC0wLjY5MDkKdiAwLjcyNDIgMC4yMDUyIC0wLjY5MDkKdiAwLjcwNzUgMC4xMjAzIC0wLjY4NDAKdiAwLjcwNzUgMC4yMDUyIC0wLjY4NDAKdiAwLjY5MDkgMC4xMjAzIC0wLjY5MDkKdiAwLjY5MDkgMC4yMDUyIC0wLjY5MDkKdiAwLjY4NDAgMC4xMjAzIC0wLjcwNzUKdiAwLjY4NDAgMC4yMDUyIC0wLjcwNzUKdiAwLjY5MDkgMC4xMjAzIC0wLjcyNDIKdiAwLjY5MDkgMC4yMDUyIC0wLjcyNDIKdiAwLjcwNzUgMC4xMjAzIC0wLjczMTEKdiAwLjcwNzUgMC4yMDUyIC0wLjczMTEKdiAwLjcyNDIgMC4xMjAzIC0wLjcyNDIKdiAwLjcyNDIgMC4yMDUyIC0wLjcyNDIKdiAwLjcwNzUgMC4xMjAzIC0wLjcwNzUKdiAwLjcwNzUgMC4yMDUyIC0wLjcwNzUKdiAxLjAwMDAgMC4yMDQwIC0wLjcwNzUKdiAxLjAwMDAgMC4yMTU4IC0wLjcwNzUKdiAwLjk3NzcgMC4yMDQwIC0wLjU5NTYKdiAwLjk3NzcgMC4yMTU4IC0wLjU5NTYKdiAwLjkxNDMgMC4yMDQwIC0wLjUwMDgKdiAwLjkxNDMgMC4yMTU4IC0wLjUwMDgKdiAwLjgxOTUgMC4yMDQwIC0wLjQzNzQKdiAwLjgxOTUgMC4yMTU4IC0wLjQzNzQKdiAwLjcwNzUgMC4yMDQwIC0wLjQxNTEKdiAwLjcwNzUgMC4yMTU4IC0wLjQxNTEKdiAwLjU5NTYgMC4yMDQwIC0wLjQzNzQKdiAwLjU5NTYgMC4yMTU4IC0wLjQzNzQKdiAwLjUwMDggMC4yMDQwIC0wLjUwMDgKdiAwLjUwMDggMC4yMTU4IC0wLjUwMDgKdiAwLjQzNzQgMC4yMDQwIC0wLjU5NTYKdiAwLjQzNzQgMC4yMTU4IC0wLjU5NTYKdiAwLjQxNTEgMC4yMDQwIC0wLjcwNzUKdiAwLjQxNTEgMC4yMTU4IC0wLjcwNzUKdiAwLjQzNzQgMC4yMDQwIC0wLjgxOTUKdiAwLjQzNzQgMC4yMTU4IC0wLjgxOTUKdiAwLjUwMDggMC4yMDQwIC0wLjkxNDMKdiAwLjUwMDggMC4yMTU4IC0wLjkxNDMKdiAwLjU5NTYgMC4yMDQwIC0wLjk3NzcKdiAwLjU5NTYgMC4yMTU4IC0wLjk3NzcKdiAwLjcwNzUgMC4yMDQwIC0xLjAwMDAKdiAwLjcwNzUgMC4yMTU4IC0xLjAwMDAKdiAwLjgxOTUgMC4yMDQwIC0wLjk3NzcKdiAwLjgxOTUgMC4yMTU4IC0wLjk3NzcKdiAwLjkxNDMgMC4yMDQwIC0wLjkxNDMKdiAwLjkxNDMgMC4yMTU4IC0wLjkxNDMKdiAwLjk3NzcgMC4yMDQwIC0wLjgxOTUKdiAwLjk3NzcgMC4yMTU4IC0wLjgxOTUKdiAwLjcwNzUgMC4yMDQwIC0wLjcwNzUKdiAwLjcwNzUgMC4yMTU4IC0wLjcwNzUKdiAwLjA3NzIgMC4wODk2IDAuMDQzOAp2IDAuNzEwOSAwLjA4OTYgMC42Nzc1CnYgMC43MTA5IDAuMTIyNiAwLjY3NzUKdiAwLjA3NzIgMC4xMjI2IDAuMDQzOAp2IDAuMDQzOCAwLjA4OTYgMC4wNzcyCnYgMC42Nzc1IDAuMDg5NiAwLjcxMDkKdiAwLjY3NzUgMC4xMjI2IDAuNzEwOQp2IDAuMDQzOCAwLjEyMjYgMC4wNzcyCnYgMC43MzExIDAuMTIwMyAwLjcwNzUKdiAwLjczMTEgMC4yMDUyIDAuNzA3NQp2IDAuNzI0MiAwLjEyMDMgMC43MjQyCnYgMC43MjQyIDAuMjA1MiAwLjcyNDIKdiAwLjcwNzUgMC4xMjAzIDAuNzMxMQp2IDAuNzA3NSAwLjIwNTIgMC43MzExCnYgMC42OTA5IDAuMTIwMyAwLjcyNDIKdiAwLjY5MDkgMC4yMDUyIDAuNzI0Mgp2IDAuNjg0MCAwLjEyMDMgMC43MDc1CnYgMC42ODQwIDAuMjA1MiAwLjcwNzUKdiAwLjY5MDkgMC4xMjAzIDAuNjkwOQp2IDAuNjkwOSAwLjIwNTIgMC42OTA5CnYgMC43MDc1IDAuMTIwMyAwLjY4NDAKdiAwLjcwNzUgMC4yMDUyIDAuNjg0MAp2IDAuNzI0MiAwLjEyMDMgMC42OTA5CnYgMC43MjQyIDAuMjA1MiAwLjY5MDkKdiAwLjcwNzUgMC4xMjAzIDAuNzA3NQp2IDAuNzA3NSAwLjIwNTIgMC43MDc1CnYgMS4wMDAwIDAuMjA0MCAwLjcwNzUKdiAxLjAwMDAgMC4yMTU4IDAuNzA3NQp2IDAuOTc3NyAwLjIwNDAgMC44MTk1CnYgMC45Nzc3IDAuMjE1OCAwLjgxOTUKdiAwLjkxNDMgMC4yMDQwIDAuOTE0Mwp2IDAuOTE0MyAwLjIxNTggMC45MTQzCnYgMC44MTk1IDAuMjA0MCAwLjk3NzcKdiAwLjgxOTUgMC4yMTU4IDAuOTc3Nwp2IDAuNzA3NSAwLjIwNDAgMS4wMDAwCnYgMC43MDc1IDAuMjE1OCAxLjAwMDAKdiAwLjU5NTYgMC4yMDQwIDAuOTc3Nwp2IDAuNTk1NiAwLjIxNTggMC45Nzc3CnYgMC41MDA4IDAuMjA0MCAwLjkxNDMKdiAwLjUwMDggMC4yMTU4IDAuOTE0Mwp2IDAuNDM3NCAwLjIwNDAgMC44MTk1CnYgMC40Mzc0IDAuMjE1OCAwLjgxOTUKdiAwLjQxNTEgMC4yMDQwIDAuNzA3NQp2IDAuNDE1MSAwLjIxNTggMC43MDc1CnYgMC40Mzc0IDAuMjA0MCAwLjU5NTYKdiAwLjQzNzQgMC4yMTU4IDAuNTk1Ngp2IDAuNTAwOCAwLjIwNDAgMC41MDA4CnYgMC41MDA4IDAuMjE1OCAwLjUwMDgKdiAwLjU5NTYgMC4yMDQwIDAuNDM3NAp2IDAuNTk1NiAwLjIxNTggMC40Mzc0CnYgMC43MDc1IDAuMjA0MCAwLjQxNTEKdiAwLjcwNzUgMC4yMTU4IDAuNDE1MQp2IDAuODE5NSAwLjIwNDAgMC40Mzc0CnYgMC44MTk1IDAuMjE1OCAwLjQzNzQKdiAwLjkxNDMgMC4yMDQwIDAuNTAwOAp2IDAuOTE0MyAwLjIxNTggMC41MDA4CnYgMC45Nzc3IDAuMjA0MCAwLjU5NTYKdiAwLjk3NzcgMC4yMTU4IDAuNTk1Ngp2IDAuNzA3NSAwLjIwNDAgMC43MDc1CnYgMC43MDc1IDAuMjE1OCAwLjcwNzUKdiAtMC4wNDcyIDAuMTc2OSAtMC4yNzEyCnYgMC4wNDcyIDAuMTc2OSAtMC4yNzEyCnYgMC4wNDcyIDAuMjI0MSAtMC4yNzEyCnYgLTAuMDQ3MiAwLjIyNDEgLTAuMjcxMgp2IC0wLjA0NzIgMC4xNzY5IC0wLjIwMDUKdiAwLjA0NzIgMC4xNzY5IC0wLjIwMDUKdiAwLjA0NzIgMC4yMjQxIC0wLjIwMDUKdiAtMC4wNDcyIDAuMjI0MSAtMC4yMDA1CnYgMC4xNzQ1IC0wLjIyNDEgMC4wMDAwCnYgMC4xNzQ1IC0wLjAzNTQgMC4wMDAwCnYgMC4xNjk4IC0wLjIyNDEgMC4wMDgyCnYgMC4xNjk4IC0wLjAzNTQgMC4wMDgyCnYgMC4xNjA0IC0wLjIyNDEgMC4wMDgyCnYgMC4xNjA0IC0wLjAzNTQgMC4wMDgyCnYgMC4xNTU3IC0wLjIyNDEgMC4wMDAwCnYgMC4xNTU3IC0wLjAzNTQgMC4wMDAwCnYgMC4xNjA0IC0wLjIyNDEgLTAuMDA4Mgp2IDAuMTYwNCAtMC4wMzU0IC0wLjAwODIKdiAwLjE2OTggLTAuMjI0MSAtMC4wMDgyCnYgMC4xNjk4IC0wLjAzNTQgLTAuMDA4Mgp2IDAuMTY1MSAtMC4yMjQxIDAuMDAwMAp2IDAuMTY1MSAtMC4wMzU0IDAuMDAwMAp2IC0wLjE1NTcgLTAuMjI0MSAwLjAwMDAKdiAtMC4xNTU3IC0wLjAzNTQgMC4wMDAwCnYgLTAuMTYwNCAtMC4yMjQxIDAuMDA4Mgp2IC0wLjE2MDQgLTAuMDM1NCAwLjAwODIKdiAtMC4xNjk4IC0wLjIyNDEgMC4wMDgyCnYgLTAuMTY5OCAtMC4wMzU0IDAuMDA4Mgp2IC0wLjE3NDUgLTAuMjI0MSAwLjAwMDAKdiAtMC4xNzQ1IC0wLjAzNTQgMC4wMDAwCnYgLTAuMTY5OCAtMC4yMjQxIC0wLjAwODIKdiAtMC4xNjk4IC0wLjAzNTQgLTAuMDA4Mgp2IC0wLjE2MDQgLTAuMjI0MSAtMC4wMDgyCnYgLTAuMTYwNCAtMC4wMzU0IC0wLjAwODIKdiAtMC4xNjUxIC0wLjIyNDEgMC4wMDAwCnYgLTAuMTY1MSAtMC4wMzU0IDAuMDAwMApmIDEgMiAzCmYgMSAzIDQKZiA1IDcgNgpmIDUgOCA3CmYgMSA1IDYKZiAxIDYgMgpmIDQgMyA3CmYgNCA3IDgKZiAxIDQgOApmIDEgOCA1CmYgMiA2IDcKZiAyIDcgMwpmIDkgMTAgMTkKZiAxMCAyMCAxOQpmIDEwIDExIDIwCmYgMTEgMjEgMjAKZiAxMSAxMiAyMQpmIDEyIDIyIDIxCmYgMTIgMTMgMjIKZiAxMyAyMyAyMgpmIDEzIDE0IDIzCmYgMTQgMjQgMjMKZiAxNCAxNSAyNApmIDE1IDI1IDI0CmYgMTUgMTYgMjUKZiAxNiAyNiAyNQpmIDE2IDE3IDI2CmYgMTcgMjcgMjYKZiAxNyAxOCAyNwpmIDE4IDI4IDI3CmYgMTggOSAyOApmIDkgMTkgMjgKZiAxOSAyMCAyOQpmIDIwIDMwIDI5CmYgMjAgMjEgMzAKZiAyMSAzMSAzMApmIDIxIDIyIDMxCmYgMjIgMzIgMzEKZiAyMiAyMyAzMgpmIDIzIDMzIDMyCmYgMjMgMjQgMzMKZiAyNCAzNCAzMwpmIDI0IDI1IDM0CmYgMjUgMzUgMzQKZiAyNSAyNiAzNQpmIDI2IDM2IDM1CmYgMjYgMjcgMzYKZiAyNyAzNyAzNgpmIDI3IDI4IDM3CmYgMjggMzggMzcKZiAyOCAxOSAzOApmIDE5IDI5IDM4CmYgMjkgMzAgMzkKZiAzMCA0MCAzOQpmIDMwIDMxIDQwCmYgMzEgNDEgNDAKZiAzMSAzMiA0MQpmIDMyIDQyIDQxCmYgMzIgMzMgNDIKZiAzMyA0MyA0MgpmIDMzIDM0IDQzCmYgMzQgNDQgNDMKZiAzNCAzNSA0NApmIDM1IDQ1IDQ0CmYgMzUgMzYgNDUKZiAzNiA0NiA0NQpmIDM2IDM3IDQ2CmYgMzcgNDcgNDYKZiAzNyAzOCA0NwpmIDM4IDQ4IDQ3CmYgMzggMjkgNDgKZiAyOSAzOSA0OApmIDM5IDQwIDQ5CmYgNDAgNTAgNDkKZiA0MCA0MSA1MApmIDQxIDUxIDUwCmYgNDEgNDIgNTEKZiA0MiA1MiA1MQpmIDQyIDQzIDUyCmYgNDMgNTMgNTIKZiA0MyA0NCA1MwpmIDQ0IDU0IDUzCmYgNDQgNDUgNTQKZiA0NSA1NSA1NApmIDQ1IDQ2IDU1CmYgNDYgNTYgNTUKZiA0NiA0NyA1NgpmIDQ3IDU3IDU2CmYgNDcgNDggNTcKZiA0OCA1OCA1NwpmIDQ4IDM5IDU4CmYgMzkgNDkgNTgKZiA0OSA1MCA1OQpmIDUwIDYwIDU5CmYgNTAgNTEgNjAKZiA1MSA2MSA2MApmIDUxIDUyIDYxCmYgNTIgNjIgNjEKZiA1MiA1MyA2MgpmIDUzIDYzIDYyCmYgNTMgNTQgNjMKZiA1NCA2NCA2MwpmIDU0IDU1IDY0CmYgNTUgNjUgNjQKZiA1NSA1NiA2NQpmIDU2IDY2IDY1CmYgNTYgNTcgNjYKZiA1NyA2NyA2NgpmIDU3IDU4IDY3CmYgNTggNjggNjcKZiA1OCA0OSA2OApmIDQ5IDU5IDY4CmYgNTkgNjAgNjkKZiA2MCA3MCA2OQpmIDYwIDYxIDcwCmYgNjEgNzEgNzAKZiA2MSA2MiA3MQpmIDYyIDcyIDcxCmYgNjIgNjMgNzIKZiA2MyA3MyA3MgpmIDYzIDY0IDczCmYgNjQgNzQgNzMKZiA2NCA2NSA3NApmIDY1IDc1IDc0CmYgNjUgNjYgNzUKZiA2NiA3NiA3NQpmIDY2IDY3IDc2CmYgNjcgNzcgNzYKZiA2NyA2OCA3NwpmIDY4IDc4IDc3CmYgNjggNTkgNzgKZiA1OSA2OSA3OApmIDc5IDgxIDgwCmYgODEgODIgODAKZiA4MSA4MyA4MgpmIDgzIDg0IDgyCmYgODMgODUgODQKZiA4NSA4NiA4NApmIDg1IDg3IDg2CmYgODcgODggODYKZiA4NyA4OSA4OApmIDg5IDkwIDg4CmYgODkgOTEgOTAKZiA5MSA5MiA5MApmIDkxIDkzIDkyCmYgOTMgOTQgOTIKZiA5MyA3OSA5NApmIDc5IDgwIDk0CmYgOTUgODEgNzkKZiA5NiA4MCA4MgpmIDk1IDgzIDgxCmYgOTYgODIgODQKZiA5NSA4NSA4MwpmIDk2IDg0IDg2CmYgOTUgODcgODUKZiA5NiA4NiA4OApmIDk1IDg5IDg3CmYgOTYgODggOTAKZiA5NSA5MSA4OQpmIDk2IDkwIDkyCmYgOTUgOTMgOTEKZiA5NiA5MiA5NApmIDk1IDc5IDkzCmYgOTYgOTQgODAKZiA5NyA5OCA5OQpmIDk3IDk5IDEwMApmIDEwMSAxMDMgMTAyCmYgMTAxIDEwNCAxMDMKZiA5NyAxMDEgMTAyCmYgOTcgMTAyIDk4CmYgMTAwIDk5IDEwMwpmIDEwMCAxMDMgMTA0CmYgOTcgMTAwIDEwNApmIDk3IDEwNCAxMDEKZiA5OCAxMDIgMTAzCmYgOTggMTAzIDk5CmYgMTA1IDEwNyAxMDYKZiAxMDcgMTA4IDEwNgpmIDEwNyAxMDkgMTA4CmYgMTA5IDExMCAxMDgKZiAxMDkgMTExIDExMApmIDExMSAxMTIgMTEwCmYgMTExIDExMyAxMTIKZiAxMTMgMTE0IDExMgpmIDExMyAxMTUgMTE0CmYgMTE1IDExNiAxMTQKZiAxMTUgMTE3IDExNgpmIDExNyAxMTggMTE2CmYgMTE3IDExOSAxMTgKZiAxMTkgMTIwIDExOApmIDExOSAxMDUgMTIwCmYgMTA1IDEwNiAxMjAKZiAxMjEgMTA3IDEwNQpmIDEyMiAxMDYgMTA4CmYgMTIxIDEwOSAxMDcKZiAxMjIgMTA4IDExMApmIDEyMSAxMTEgMTA5CmYgMTIyIDExMCAxMTIKZiAxMjEgMTEzIDExMQpmIDEyMiAxMTIgMTE0CmYgMTIxIDExNSAxMTMKZiAxMjIgMTE0IDExNgpmIDEyMSAxMTcgMTE1CmYgMTIyIDExNiAxMTgKZiAxMjEgMTE5IDExNwpmIDEyMiAxMTggMTIwCmYgMTIxIDEwNSAxMTkKZiAxMjIgMTIwIDEwNgpmIDEyMyAxMjUgMTI0CmYgMTI1IDEyNiAxMjQKZiAxMjUgMTI3IDEyNgpmIDEyNyAxMjggMTI2CmYgMTI3IDEyOSAxMjgKZiAxMjkgMTMwIDEyOApmIDEyOSAxMzEgMTMwCmYgMTMxIDEzMiAxMzAKZiAxMzEgMTMzIDEzMgpmIDEzMyAxMzQgMTMyCmYgMTMzIDEzNSAxMzQKZiAxMzUgMTM2IDEzNApmIDEzNSAxMzcgMTM2CmYgMTM3IDEzOCAxMzYKZiAxMzcgMTM5IDEzOApmIDEzOSAxNDAgMTM4CmYgMTM5IDE0MSAxNDAKZiAxNDEgMTQyIDE0MApmIDE0MSAxNDMgMTQyCmYgMTQzIDE0NCAxNDIKZiAxNDMgMTQ1IDE0NApmIDE0NSAxNDYgMTQ0CmYgMTQ1IDE0NyAxNDYKZiAxNDcgMTQ4IDE0NgpmIDE0NyAxNDkgMTQ4CmYgMTQ5IDE1MCAxNDgKZiAxNDkgMTUxIDE1MApmIDE1MSAxNTIgMTUwCmYgMTUxIDE1MyAxNTIKZiAxNTMgMTU0IDE1MgpmIDE1MyAxMjMgMTU0CmYgMTIzIDEyNCAxNTQKZiAxNTUgMTI1IDEyMwpmIDE1NiAxMjQgMTI2CmYgMTU1IDEyNyAxMjUKZiAxNTYgMTI2IDEyOApmIDE1NSAxMjkgMTI3CmYgMTU2IDEyOCAxMzAKZiAxNTUgMTMxIDEyOQpmIDE1NiAxMzAgMTMyCmYgMTU1IDEzMyAxMzEKZiAxNTYgMTMyIDEzNApmIDE1NSAxMzUgMTMzCmYgMTU2IDEzNCAxMzYKZiAxNTUgMTM3IDEzNQpmIDE1NiAxMzYgMTM4CmYgMTU1IDEzOSAxMzcKZiAxNTYgMTM4IDE0MApmIDE1NSAxNDEgMTM5CmYgMTU2IDE0MCAxNDIKZiAxNTUgMTQzIDE0MQpmIDE1NiAxNDIgMTQ0CmYgMTU1IDE0NSAxNDMKZiAxNTYgMTQ0IDE0NgpmIDE1NSAxNDcgMTQ1CmYgMTU2IDE0NiAxNDgKZiAxNTUgMTQ5IDE0NwpmIDE1NiAxNDggMTUwCmYgMTU1IDE1MSAxNDkKZiAxNTYgMTUwIDE1MgpmIDE1NSAxNTMgMTUxCmYgMTU2IDE1MiAxNTQKZiAxNTUgMTIzIDE1MwpmIDE1NiAxNTQgMTI0CmYgMTU3IDE1OCAxNTkKZiAxNTcgMTU5IDE2MApmIDE2MSAxNjMgMTYyCmYgMTYxIDE2NCAxNjMKZiAxNTcgMTYxIDE2MgpmIDE1NyAxNjIgMTU4CmYgMTYwIDE1OSAxNjMKZiAxNjAgMTYzIDE2NApmIDE1NyAxNjAgMTY0CmYgMTU3IDE2NCAxNjEKZiAxNTggMTYyIDE2MwpmIDE1OCAxNjMgMTU5CmYgMTY1IDE2NyAxNjYKZiAxNjcgMTY4IDE2NgpmIDE2NyAxNjkgMTY4CmYgMTY5IDE3MCAxNjgKZiAxNjkgMTcxIDE3MApmIDE3MSAxNzIgMTcwCmYgMTcxIDE3MyAxNzIKZiAxNzMgMTc0IDE3MgpmIDE3MyAxNzUgMTc0CmYgMTc1IDE3NiAxNzQKZiAxNzUgMTc3IDE3NgpmIDE3NyAxNzggMTc2CmYgMTc3IDE3OSAxNzgKZiAxNzkgMTgwIDE3OApmIDE3OSAxNjUgMTgwCmYgMTY1IDE2NiAxODAKZiAxODEgMTY3IDE2NQpmIDE4MiAxNjYgMTY4CmYgMTgxIDE2OSAxNjcKZiAxODIgMTY4IDE3MApmIDE4MSAxNzEgMTY5CmYgMTgyIDE3MCAxNzIKZiAxODEgMTczIDE3MQpmIDE4MiAxNzIgMTc0CmYgMTgxIDE3NSAxNzMKZiAxODIgMTc0IDE3NgpmIDE4MSAxNzcgMTc1CmYgMTgyIDE3NiAxNzgKZiAxODEgMTc5IDE3NwpmIDE4MiAxNzggMTgwCmYgMTgxIDE2NSAxNzkKZiAxODIgMTgwIDE2NgpmIDE4MyAxODUgMTg0CmYgMTg1IDE4NiAxODQKZiAxODUgMTg3IDE4NgpmIDE4NyAxODggMTg2CmYgMTg3IDE4OSAxODgKZiAxODkgMTkwIDE4OApmIDE4OSAxOTEgMTkwCmYgMTkxIDE5MiAxOTAKZiAxOTEgMTkzIDE5MgpmIDE5MyAxOTQgMTkyCmYgMTkzIDE5NSAxOTQKZiAxOTUgMTk2IDE5NApmIDE5NSAxOTcgMTk2CmYgMTk3IDE5OCAxOTYKZiAxOTcgMTk5IDE5OApmIDE5OSAyMDAgMTk4CmYgMTk5IDIwMSAyMDAKZiAyMDEgMjAyIDIwMApmIDIwMSAyMDMgMjAyCmYgMjAzIDIwNCAyMDIKZiAyMDMgMjA1IDIwNApmIDIwNSAyMDYgMjA0CmYgMjA1IDIwNyAyMDYKZiAyMDcgMjA4IDIwNgpmIDIwNyAyMDkgMjA4CmYgMjA5IDIxMCAyMDgKZiAyMDkgMjExIDIxMApmIDIxMSAyMTIgMjEwCmYgMjExIDIxMyAyMTIKZiAyMTMgMjE0IDIxMgpmIDIxMyAxODMgMjE0CmYgMTgzIDE4NCAyMTQKZiAyMTUgMTg1IDE4MwpmIDIxNiAxODQgMTg2CmYgMjE1IDE4NyAxODUKZiAyMTYgMTg2IDE4OApmIDIxNSAxODkgMTg3CmYgMjE2IDE4OCAxOTAKZiAyMTUgMTkxIDE4OQpmIDIxNiAxOTAgMTkyCmYgMjE1IDE5MyAxOTEKZiAyMTYgMTkyIDE5NApmIDIxNSAxOTUgMTkzCmYgMjE2IDE5NCAxOTYKZiAyMTUgMTk3IDE5NQpmIDIxNiAxOTYgMTk4CmYgMjE1IDE5OSAxOTcKZiAyMTYgMTk4IDIwMApmIDIxNSAyMDEgMTk5CmYgMjE2IDIwMCAyMDIKZiAyMTUgMjAzIDIwMQpmIDIxNiAyMDIgMjA0CmYgMjE1IDIwNSAyMDMKZiAyMTYgMjA0IDIwNgpmIDIxNSAyMDcgMjA1CmYgMjE2IDIwNiAyMDgKZiAyMTUgMjA5IDIwNwpmIDIxNiAyMDggMjEwCmYgMjE1IDIxMSAyMDkKZiAyMTYgMjEwIDIxMgpmIDIxNSAyMTMgMjExCmYgMjE2IDIxMiAyMTQKZiAyMTUgMTgzIDIxMwpmIDIxNiAyMTQgMTg0CmYgMjE3IDIxOCAyMTkKZiAyMTcgMjE5IDIyMApmIDIyMSAyMjMgMjIyCmYgMjIxIDIyNCAyMjMKZiAyMTcgMjIxIDIyMgpmIDIxNyAyMjIgMjE4CmYgMjIwIDIxOSAyMjMKZiAyMjAgMjIzIDIyNApmIDIxNyAyMjAgMjI0CmYgMjE3IDIyNCAyMjEKZiAyMTggMjIyIDIyMwpmIDIxOCAyMjMgMjE5CmYgMjI1IDIyNyAyMjYKZiAyMjcgMjI4IDIyNgpmIDIyNyAyMjkgMjI4CmYgMjI5IDIzMCAyMjgKZiAyMjkgMjMxIDIzMApmIDIzMSAyMzIgMjMwCmYgMjMxIDIzMyAyMzIKZiAyMzMgMjM0IDIzMgpmIDIzMyAyMzUgMjM0CmYgMjM1IDIzNiAyMzQKZiAyMzUgMjM3IDIzNgpmIDIzNyAyMzggMjM2CmYgMjM3IDIzOSAyMzgKZiAyMzkgMjQwIDIzOApmIDIzOSAyMjUgMjQwCmYgMjI1IDIyNiAyNDAKZiAyNDEgMjI3IDIyNQpmIDI0MiAyMjYgMjI4CmYgMjQxIDIyOSAyMjcKZiAyNDIgMjI4IDIzMApmIDI0MSAyMzEgMjI5CmYgMjQyIDIzMCAyMzIKZiAyNDEgMjMzIDIzMQpmIDI0MiAyMzIgMjM0CmYgMjQxIDIzNSAyMzMKZiAyNDIgMjM0IDIzNgpmIDI0MSAyMzcgMjM1CmYgMjQyIDIzNiAyMzgKZiAyNDEgMjM5IDIzNwpmIDI0MiAyMzggMjQwCmYgMjQxIDIyNSAyMzkKZiAyNDIgMjQwIDIyNgpmIDI0MyAyNDUgMjQ0CmYgMjQ1IDI0NiAyNDQKZiAyNDUgMjQ3IDI0NgpmIDI0NyAyNDggMjQ2CmYgMjQ3IDI0OSAyNDgKZiAyNDkgMjUwIDI0OApmIDI0OSAyNTEgMjUwCmYgMjUxIDI1MiAyNTAKZiAyNTEgMjUzIDI1MgpmIDI1MyAyNTQgMjUyCmYgMjUzIDI1NSAyNTQKZiAyNTUgMjU2IDI1NApmIDI1NSAyNTcgMjU2CmYgMjU3IDI1OCAyNTYKZiAyNTcgMjU5IDI1OApmIDI1OSAyNjAgMjU4CmYgMjU5IDI2MSAyNjAKZiAyNjEgMjYyIDI2MApmIDI2MSAyNjMgMjYyCmYgMjYzIDI2NCAyNjIKZiAyNjMgMjY1IDI2NApmIDI2NSAyNjYgMjY0CmYgMjY1IDI2NyAyNjYKZiAyNjcgMjY4IDI2NgpmIDI2NyAyNjkgMjY4CmYgMjY5IDI3MCAyNjgKZiAyNjkgMjcxIDI3MApmIDI3MSAyNzIgMjcwCmYgMjcxIDI3MyAyNzIKZiAyNzMgMjc0IDI3MgpmIDI3MyAyNDMgMjc0CmYgMjQzIDI0NCAyNzQKZiAyNzUgMjQ1IDI0MwpmIDI3NiAyNDQgMjQ2CmYgMjc1IDI0NyAyNDUKZiAyNzYgMjQ2IDI0OApmIDI3NSAyNDkgMjQ3CmYgMjc2IDI0OCAyNTAKZiAyNzUgMjUxIDI0OQpmIDI3NiAyNTAgMjUyCmYgMjc1IDI1MyAyNTEKZiAyNzYgMjUyIDI1NApmIDI3NSAyNTUgMjUzCmYgMjc2IDI1NCAyNTYKZiAyNzUgMjU3IDI1NQpmIDI3NiAyNTYgMjU4CmYgMjc1IDI1OSAyNTcKZiAyNzYgMjU4IDI2MApmIDI3NSAyNjEgMjU5CmYgMjc2IDI2MCAyNjIKZiAyNzUgMjYzIDI2MQpmIDI3NiAyNjIgMjY0CmYgMjc1IDI2NSAyNjMKZiAyNzYgMjY0IDI2NgpmIDI3NSAyNjcgMjY1CmYgMjc2IDI2NiAyNjgKZiAyNzUgMjY5IDI2NwpmIDI3NiAyNjggMjcwCmYgMjc1IDI3MSAyNjkKZiAyNzYgMjcwIDI3MgpmIDI3NSAyNzMgMjcxCmYgMjc2IDI3MiAyNzQKZiAyNzUgMjQzIDI3MwpmIDI3NiAyNzQgMjQ0CmYgMjc3IDI3OCAyNzkKZiAyNzcgMjc5IDI4MApmIDI4MSAyODMgMjgyCmYgMjgxIDI4NCAyODMKZiAyNzcgMjgxIDI4MgpmIDI3NyAyODIgMjc4CmYgMjgwIDI3OSAyODMKZiAyODAgMjgzIDI4NApmIDI3NyAyODAgMjg0CmYgMjc3IDI4NCAyODEKZiAyNzggMjgyIDI4MwpmIDI3OCAyODMgMjc5CmYgMjg1IDI4NyAyODYKZiAyODcgMjg4IDI4NgpmIDI4NyAyODkgMjg4CmYgMjg5IDI5MCAyODgKZiAyODkgMjkxIDI5MApmIDI5MSAyOTIgMjkwCmYgMjkxIDI5MyAyOTIKZiAyOTMgMjk0IDI5MgpmIDI5MyAyOTUgMjk0CmYgMjk1IDI5NiAyOTQKZiAyOTUgMjk3IDI5NgpmIDI5NyAyOTggMjk2CmYgMjk3IDI5OSAyOTgKZiAyOTkgMzAwIDI5OApmIDI5OSAyODUgMzAwCmYgMjg1IDI4NiAzMDAKZiAzMDEgMjg3IDI4NQpmIDMwMiAyODYgMjg4CmYgMzAxIDI4OSAyODcKZiAzMDIgMjg4IDI5MApmIDMwMSAyOTEgMjg5CmYgMzAyIDI5MCAyOTIKZiAzMDEgMjkzIDI5MQpmIDMwMiAyOTIgMjk0CmYgMzAxIDI5NSAyOTMKZiAzMDIgMjk0IDI5NgpmIDMwMSAyOTcgMjk1CmYgMzAyIDI5NiAyOTgKZiAzMDEgMjk5IDI5NwpmIDMwMiAyOTggMzAwCmYgMzAxIDI4NSAyOTkKZiAzMDIgMzAwIDI4NgpmIDMwMyAzMDUgMzA0CmYgMzA1IDMwNiAzMDQKZiAzMDUgMzA3IDMwNgpmIDMwNyAzMDggMzA2CmYgMzA3IDMwOSAzMDgKZiAzMDkgMzEwIDMwOApmIDMwOSAzMTEgMzEwCmYgMzExIDMxMiAzMTAKZiAzMTEgMzEzIDMxMgpmIDMxMyAzMTQgMzEyCmYgMzEzIDMxNSAzMTQKZiAzMTUgMzE2IDMxNApmIDMxNSAzMTcgMzE2CmYgMzE3IDMxOCAzMTYKZiAzMTcgMzE5IDMxOApmIDMxOSAzMjAgMzE4CmYgMzE5IDMyMSAzMjAKZiAzMjEgMzIyIDMyMApmIDMyMSAzMjMgMzIyCmYgMzIzIDMyNCAzMjIKZiAzMjMgMzI1IDMyNApmIDMyNSAzMjYgMzI0CmYgMzI1IDMyNyAzMjYKZiAzMjcgMzI4IDMyNgpmIDMyNyAzMjkgMzI4CmYgMzI5IDMzMCAzMjgKZiAzMjkgMzMxIDMzMApmIDMzMSAzMzIgMzMwCmYgMzMxIDMzMyAzMzIKZiAzMzMgMzM0IDMzMgpmIDMzMyAzMDMgMzM0CmYgMzAzIDMwNCAzMzQKZiAzMzUgMzA1IDMwMwpmIDMzNiAzMDQgMzA2CmYgMzM1IDMwNyAzMDUKZiAzMzYgMzA2IDMwOApmIDMzNSAzMDkgMzA3CmYgMzM2IDMwOCAzMTAKZiAzMzUgMzExIDMwOQpmIDMzNiAzMTAgMzEyCmYgMzM1IDMxMyAzMTEKZiAzMzYgMzEyIDMxNApmIDMzNSAzMTUgMzEzCmYgMzM2IDMxNCAzMTYKZiAzMzUgMzE3IDMxNQpmIDMzNiAzMTYgMzE4CmYgMzM1IDMxOSAzMTcKZiAzMzYgMzE4IDMyMApmIDMzNSAzMjEgMzE5CmYgMzM2IDMyMCAzMjIKZiAzMzUgMzIzIDMyMQpmIDMzNiAzMjIgMzI0CmYgMzM1IDMyNSAzMjMKZiAzMzYgMzI0IDMyNgpmIDMzNSAzMjcgMzI1CmYgMzM2IDMyNiAzMjgKZiAzMzUgMzI5IDMyNwpmIDMzNiAzMjggMzMwCmYgMzM1IDMzMSAzMjkKZiAzMzYgMzMwIDMzMgpmIDMzNSAzMzMgMzMxCmYgMzM2IDMzMiAzMzQKZiAzMzUgMzAzIDMzMwpmIDMzNiAzMzQgMzA0CmYgMzM3IDMzOCAzMzkKZiAzMzcgMzM5IDM0MApmIDM0MSAzNDMgMzQyCmYgMzQxIDM0NCAzNDMKZiAzMzcgMzQxIDM0MgpmIDMzNyAzNDIgMzM4CmYgMzQwIDMzOSAzNDMKZiAzNDAgMzQzIDM0NApmIDMzNyAzNDAgMzQ0CmYgMzM3IDM0NCAzNDEKZiAzMzggMzQyIDM0MwpmIDMzOCAzNDMgMzM5CmYgMzQ1IDM0NyAzNDYKZiAzNDcgMzQ4IDM0NgpmIDM0NyAzNDkgMzQ4CmYgMzQ5IDM1MCAzNDgKZiAzNDkgMzUxIDM1MApmIDM1MSAzNTIgMzUwCmYgMzUxIDM1MyAzNTIKZiAzNTMgMzU0IDM1MgpmIDM1MyAzNTUgMzU0CmYgMzU1IDM1NiAzNTQKZiAzNTUgMzQ1IDM1NgpmIDM0NSAzNDYgMzU2CmYgMzU3IDM0NyAzNDUKZiAzNTggMzQ2IDM0OApmIDM1NyAzNDkgMzQ3CmYgMzU4IDM0OCAzNTAKZiAzNTcgMzUxIDM0OQpmIDM1OCAzNTAgMzUyCmYgMzU3IDM1MyAzNTEKZiAzNTggMzUyIDM1NApmIDM1NyAzNTUgMzUzCmYgMzU4IDM1NCAzNTYKZiAzNTcgMzQ1IDM1NQpmIDM1OCAzNTYgMzQ2CmYgMzU5IDM2MSAzNjAKZiAzNjEgMzYyIDM2MApmIDM2MSAzNjMgMzYyCmYgMzYzIDM2NCAzNjIKZiAzNjMgMzY1IDM2NApmIDM2NSAzNjYgMzY0CmYgMzY1IDM2NyAzNjYKZiAzNjcgMzY4IDM2NgpmIDM2NyAzNjkgMzY4CmYgMzY5IDM3MCAzNjgKZiAzNjkgMzU5IDM3MApmIDM1OSAzNjAgMzcwCmYgMzcxIDM2MSAzNTkKZiAzNzIgMzYwIDM2MgpmIDM3MSAzNjMgMzYxCmYgMzcyIDM2MiAzNjQKZiAzNzEgMzY1IDM2MwpmIDM3MiAzNjQgMzY2CmYgMzcxIDM2NyAzNjUKZiAzNzIgMzY2IDM2OApmIDM3MSAzNjkgMzY3CmYgMzcyIDM2OCAzNzAKZiAzNzEgMzU5IDM2OQpmIDM3MiAzNzAgMzYwCg=="
+  },
+  "helicoptero.obj": {
+   "kind": "model",
+   "name": "helicoptero.obj",
+   "data": "data:text/plain;base64,IyBwcm9jZWR1cmFsLCBwdWJsaWMgZG9tYWluIChDQzApLCB3cml0dGVuIGZvciBBSSBWSiBHZW5lcmF0b3IKdiAwLjE5MzAgMC4yNjA1IDAuMDAwMAp2IDAuMTkzMCAwLjI2MDUgMC4wMDAwCnYgMC4xOTMwIDAuMjYwNSAwLjAwMDAKdiAwLjE5MzAgMC4yNjA1IDAuMDAwMAp2IDAuMTkzMCAwLjI2MDUgMC4wMDAwCnYgMC4xOTMwIDAuMjYwNSAwLjAwMDAKdiAwLjE5MzAgMC4yNjA1IDAuMDAwMAp2IDAuMTkzMCAwLjI2MDUgMC4wMDAwCnYgMC4xOTMwIDAuMjYwNSAwLjAwMDAKdiAwLjE5MzAgMC4yNjA1IDAuMDAwMAp2IDAuMTkzMCAwLjI2MDUgMC4wMDAwCnYgMC4xOTMwIDAuMjYwNSAwLjAwMDAKdiAwLjE5MzAgMC4yNjA1IDAuMDAwMAp2IDAuMTkzMCAwLjI2MDUgMC4wMDAwCnYgMC4zMTMwIDAuMjQ0NyAwLjAwMDAKdiAwLjMwMTEgMC4yNDQ3IDAuMDM2NAp2IDAuMjY3OCAwLjI0NDcgMC4wNjU3CnYgMC4yMTk3IDAuMjQ0NyAwLjA4MTkKdiAwLjE2NjMgMC4yNDQ3IDAuMDgxOQp2IDAuMTE4MiAwLjI0NDcgMC4wNjU3CnYgMC4wODQ5IDAuMjQ0NyAwLjAzNjQKdiAwLjA3MzAgMC4yNDQ3IDAuMDAwMAp2IDAuMDg0OSAwLjI0NDcgLTAuMDM2NAp2IDAuMTE4MiAwLjI0NDcgLTAuMDY1Nwp2IDAuMTY2MyAwLjI0NDcgLTAuMDgxOQp2IDAuMjE5NyAwLjI0NDcgLTAuMDgxOQp2IDAuMjY3OCAwLjI0NDcgLTAuMDY1Nwp2IDAuMzAxMSAwLjI0NDcgLTAuMDM2NAp2IDAuNDE4NSAwLjE5OTAgMC4wMDAwCnYgMC4zOTYyIDAuMTk5MCAwLjA2ODUKdiAwLjMzMzYgMC4xOTkwIDAuMTIzNAp2IDAuMjQzMiAwLjE5OTAgMC4xNTM5CnYgMC4xNDI4IDAuMTk5MCAwLjE1MzkKdiAwLjA1MjQgMC4xOTkwIDAuMTIzNAp2IC0wLjAxMDIgMC4xOTkwIDAuMDY4NQp2IC0wLjAzMjYgMC4xOTkwIDAuMDAwMAp2IC0wLjAxMDIgMC4xOTkwIC0wLjA2ODUKdiAwLjA1MjQgMC4xOTkwIC0wLjEyMzQKdiAwLjE0MjggMC4xOTkwIC0wLjE1MzkKdiAwLjI0MzIgMC4xOTkwIC0wLjE1MzkKdiAwLjMzMzYgMC4xOTkwIC0wLjEyMzQKdiAwLjM5NjIgMC4xOTkwIC0wLjA2ODUKdiAwLjQ5NjkgMC4xMjg5IDAuMDAwMAp2IDAuNDY2OCAwLjEyODkgMC4wOTIzCnYgMC4zODI0IDAuMTI4OSAwLjE2NjMKdiAwLjI2MDYgMC4xMjg5IDAuMjA3NAp2IDAuMTI1NCAwLjEyODkgMC4yMDc0CnYgMC4wMDM1IDAuMTI4OSAwLjE2NjMKdiAtMC4wODA4IDAuMTI4OSAwLjA5MjMKdiAtMC4xMTA5IDAuMTI4OSAwLjAwMDAKdiAtMC4wODA4IDAuMTI4OSAtMC4wOTIzCnYgMC4wMDM1IDAuMTI4OSAtMC4xNjYzCnYgMC4xMjU0IDAuMTI4OSAtMC4yMDc0CnYgMC4yNjA2IDAuMTI4OSAtMC4yMDc0CnYgMC4zODI0IDAuMTI4OSAtMC4xNjYzCnYgMC40NjY4IDAuMTI4OSAtMC4wOTIzCnYgMC41Mzg1IDAuMDQzMSAwLjAwMDAKdiAwLjUwNDMgMC4wNDMxIDAuMTA0OQp2IDAuNDA4NCAwLjA0MzEgMC4xODkxCnYgMC4yNjk5IDAuMDQzMSAwLjIzNTgKdiAwLjExNjEgMC4wNDMxIDAuMjM1OAp2IC0wLjAyMjUgMC4wNDMxIDAuMTg5MQp2IC0wLjExODMgMC4wNDMxIDAuMTA0OQp2IC0wLjE1MjYgMC4wNDMxIDAuMDAwMAp2IC0wLjExODMgMC4wNDMxIC0wLjEwNDkKdiAtMC4wMjI1IDAuMDQzMSAtMC4xODkxCnYgMC4xMTYxIDAuMDQzMSAtMC4yMzU4CnYgMC4yNjk5IDAuMDQzMSAtMC4yMzU4CnYgMC40MDg0IDAuMDQzMSAtMC4xODkxCnYgMC41MDQzIDAuMDQzMSAtMC4xMDQ5CnYgMC41Mzg1IC0wLjA0ODMgMC4wMDAwCnYgMC41MDQzIC0wLjA0ODMgMC4xMDQ5CnYgMC40MDg0IC0wLjA0ODMgMC4xODkxCnYgMC4yNjk5IC0wLjA0ODMgMC4yMzU4CnYgMC4xMTYxIC0wLjA0ODMgMC4yMzU4CnYgLTAuMDIyNSAtMC4wNDgzIDAuMTg5MQp2IC0wLjExODMgLTAuMDQ4MyAwLjEwNDkKdiAtMC4xNTI2IC0wLjA0ODMgMC4wMDAwCnYgLTAuMTE4MyAtMC4wNDgzIC0wLjEwNDkKdiAtMC4wMjI1IC0wLjA0ODMgLTAuMTg5MQp2IDAuMTE2MSAtMC4wNDgzIC0wLjIzNTgKdiAwLjI2OTkgLTAuMDQ4MyAtMC4yMzU4CnYgMC40MDg0IC0wLjA0ODMgLTAuMTg5MQp2IDAuNTA0MyAtMC4wNDgzIC0wLjEwNDkKdiAwLjQ5NjkgLTAuMTM0MiAwLjAwMDAKdiAwLjQ2NjggLTAuMTM0MiAwLjA5MjMKdiAwLjM4MjQgLTAuMTM0MiAwLjE2NjMKdiAwLjI2MDYgLTAuMTM0MiAwLjIwNzQKdiAwLjEyNTQgLTAuMTM0MiAwLjIwNzQKdiAwLjAwMzUgLTAuMTM0MiAwLjE2NjMKdiAtMC4wODA4IC0wLjEzNDIgMC4wOTIzCnYgLTAuMTEwOSAtMC4xMzQyIDAuMDAwMAp2IC0wLjA4MDggLTAuMTM0MiAtMC4wOTIzCnYgMC4wMDM1IC0wLjEzNDIgLTAuMTY2Mwp2IDAuMTI1NCAtMC4xMzQyIC0wLjIwNzQKdiAwLjI2MDYgLTAuMTM0MiAtMC4yMDc0CnYgMC4zODI0IC0wLjEzNDIgLTAuMTY2Mwp2IDAuNDY2OCAtMC4xMzQyIC0wLjA5MjMKdiAwLjQxODUgLTAuMjA0MiAwLjAwMDAKdiAwLjM5NjIgLTAuMjA0MiAwLjA2ODUKdiAwLjMzMzYgLTAuMjA0MiAwLjEyMzQKdiAwLjI0MzIgLTAuMjA0MiAwLjE1MzkKdiAwLjE0MjggLTAuMjA0MiAwLjE1MzkKdiAwLjA1MjQgLTAuMjA0MiAwLjEyMzQKdiAtMC4wMTAyIC0wLjIwNDIgMC4wNjg1CnYgLTAuMDMyNiAtMC4yMDQyIDAuMDAwMAp2IC0wLjAxMDIgLTAuMjA0MiAtMC4wNjg1CnYgMC4wNTI0IC0wLjIwNDIgLTAuMTIzNAp2IDAuMTQyOCAtMC4yMDQyIC0wLjE1MzkKdiAwLjI0MzIgLTAuMjA0MiAtMC4xNTM5CnYgMC4zMzM2IC0wLjIwNDIgLTAuMTIzNAp2IDAuMzk2MiAtMC4yMDQyIC0wLjA2ODUKdiAwLjMxMzAgLTAuMjQ5OSAwLjAwMDAKdiAwLjMwMTEgLTAuMjQ5OSAwLjAzNjQKdiAwLjI2NzggLTAuMjQ5OSAwLjA2NTcKdiAwLjIxOTcgLTAuMjQ5OSAwLjA4MTkKdiAwLjE2NjMgLTAuMjQ5OSAwLjA4MTkKdiAwLjExODIgLTAuMjQ5OSAwLjA2NTcKdiAwLjA4NDkgLTAuMjQ5OSAwLjAzNjQKdiAwLjA3MzAgLTAuMjQ5OSAwLjAwMDAKdiAwLjA4NDkgLTAuMjQ5OSAtMC4wMzY0CnYgMC4xMTgyIC0wLjI0OTkgLTAuMDY1Nwp2IDAuMTY2MyAtMC4yNDk5IC0wLjA4MTkKdiAwLjIxOTcgLTAuMjQ5OSAtMC4wODE5CnYgMC4yNjc4IC0wLjI0OTkgLTAuMDY1Nwp2IDAuMzAxMSAtMC4yNDk5IC0wLjAzNjQKdiAwLjE5MzAgLTAuMjY1OCAwLjAwMDAKdiAwLjE5MzAgLTAuMjY1OCAwLjAwMDAKdiAwLjE5MzAgLTAuMjY1OCAwLjAwMDAKdiAwLjE5MzAgLTAuMjY1OCAwLjAwMDAKdiAwLjE5MzAgLTAuMjY1OCAwLjAwMDAKdiAwLjE5MzAgLTAuMjY1OCAwLjAwMDAKdiAwLjE5MzAgLTAuMjY1OCAwLjAwMDAKdiAwLjE5MzAgLTAuMjY1OCAwLjAwMDAKdiAwLjE5MzAgLTAuMjY1OCAtMC4wMDAwCnYgMC4xOTMwIC0wLjI2NTggLTAuMDAwMAp2IDAuMTkzMCAtMC4yNjU4IC0wLjAwMDAKdiAwLjE5MzAgLTAuMjY1OCAtMC4wMDAwCnYgMC4xOTMwIC0wLjI2NTggLTAuMDAwMAp2IDAuMTkzMCAtMC4yNjU4IC0wLjAwMDAKdiAtMC4wNzAyIDAuMTEzMiAwLjAwMDAKdiAtMC44NzcyIDAuMDc0NiAwLjAwMDAKdiAtMC4wNzAyIDAuMTAxMSAwLjAzNzEKdiAtMC44NzcyIDAuMDY5OSAwLjAxNDQKdiAtMC4wNzAyIDAuMDY5NSAwLjA2MDEKdiAtMC44NzcyIDAuMDU3NiAwLjAyMzQKdiAtMC4wNzAyIDAuMDMwNSAwLjA2MDEKdiAtMC44NzcyIDAuMDQyNCAwLjAyMzQKdiAtMC4wNzAyIC0wLjAwMTEgMC4wMzcxCnYgLTAuODc3MiAwLjAzMDEgMC4wMTQ0CnYgLTAuMDcwMiAtMC4wMTMyIDAuMDAwMAp2IC0wLjg3NzIgMC4wMjU0IDAuMDAwMAp2IC0wLjA3MDIgLTAuMDAxMSAtMC4wMzcxCnYgLTAuODc3MiAwLjAzMDEgLTAuMDE0NAp2IC0wLjA3MDIgMC4wMzA1IC0wLjA2MDEKdiAtMC44NzcyIDAuMDQyNCAtMC4wMjM0CnYgLTAuMDcwMiAwLjA2OTUgLTAuMDYwMQp2IC0wLjg3NzIgMC4wNTc2IC0wLjAyMzQKdiAtMC4wNzAyIDAuMTAxMSAtMC4wMzcxCnYgLTAuODc3MiAwLjA2OTkgLTAuMDE0NAp2IC0wLjA3MDIgMC4wNTAwIDAuMDAwMAp2IC0wLjg3NzIgMC4wNTAwIDAuMDAwMAp2IC0wLjg3NzIgMC4wMzI1IC0wLjAwODgKdiAtMC44NDIxIDAuMDMyNSAtMC4wMDg4CnYgLTAuODQyMSAwLjI3ODEgLTAuMDA4OAp2IC0wLjg3NzIgMC4yNzgxIC0wLjAwODgKdiAtMC44NzcyIDAuMDMyNSAwLjAwODgKdiAtMC44NDIxIDAuMDMyNSAwLjAwODgKdiAtMC44NDIxIDAuMjc4MSAwLjAwODgKdiAtMC44NzcyIDAuMjc4MSAwLjAwODgKdiAtMC45Mjk4IDAuMDM3NyAtMC4xNTc5CnYgLTAuNzE5MyAwLjAzNzcgLTAuMTU3OQp2IC0wLjcxOTMgMC4wNjIzIC0wLjE1NzkKdiAtMC45Mjk4IDAuMDYyMyAtMC4xNTc5CnYgLTAuOTI5OCAwLjAzNzcgMC4xNTc5CnYgLTAuNzE5MyAwLjAzNzcgMC4xNTc5CnYgLTAuNzE5MyAwLjA2MjMgMC4xNTc5CnYgLTAuOTI5OCAwLjA2MjMgMC4xNTc5CnYgMC4yMjQ2IDAuMjQxMiAwLjAwMDAKdiAwLjIyNDYgMC4zMjg5IDAuMDAwMAp2IDAuMjE1MyAwLjI0MTIgMC4wMjIzCnYgMC4yMTUzIDAuMzI4OSAwLjAyMjMKdiAwLjE5MzAgMC4yNDEyIDAuMDMxNgp2IDAuMTkzMCAwLjMyODkgMC4wMzE2CnYgMC4xNzA3IDAuMjQxMiAwLjAyMjMKdiAwLjE3MDcgMC4zMjg5IDAuMDIyMwp2IDAuMTYxNCAwLjI0MTIgMC4wMDAwCnYgMC4xNjE0IDAuMzI4OSAwLjAwMDAKdiAwLjE3MDcgMC4yNDEyIC0wLjAyMjMKdiAwLjE3MDcgMC4zMjg5IC0wLjAyMjMKdiAwLjE5MzAgMC4yNDEyIC0wLjAzMTYKdiAwLjE5MzAgMC4zMjg5IC0wLjAzMTYKdiAwLjIxNTMgMC4yNDEyIC0wLjAyMjMKdiAwLjIxNTMgMC4zMjg5IC0wLjAyMjMKdiAwLjE5MzAgMC4yNDEyIDAuMDAwMAp2IDAuMTkzMCAwLjMyODkgMC4wMDAwCnYgLTAuNjE0MCAwLjMzNjAgLTAuMDI5OAp2IDEuMDAwMCAwLjMzNjAgLTAuMDI5OAp2IDEuMDAwMCAwLjM0NjUgLTAuMDI5OAp2IC0wLjYxNDAgMC4zNDY1IC0wLjAyOTgKdiAtMC42MTQwIDAuMzM2MCAwLjAyOTgKdiAxLjAwMDAgMC4zMzYwIDAuMDI5OAp2IDEuMDAwMCAwLjM0NjUgMC4wMjk4CnYgLTAuNjE0MCAwLjM0NjUgMC4wMjk4CnYgMC4xNjMyIDAuMzM2MCAtMC44MDcwCnYgMC4yMjI4IDAuMzM2MCAtMC44MDcwCnYgMC4yMjI4IDAuMzQ2NSAtMC44MDcwCnYgMC4xNjMyIDAuMzQ2NSAtMC44MDcwCnYgMC4xNjMyIDAuMzM2MCAwLjgwNzAKdiAwLjIyMjggMC4zMzYwIDAuODA3MAp2IDAuMjIyOCAwLjM0NjUgMC44MDcwCnYgMC4xNjMyIDAuMzQ2NSAwLjgwNzAKdiAtMC4yMjUxIDAuMzM2MCAwLjM3NTkKdiAwLjU2ODkgMC4zMzYwIC0wLjQxODEKdiAwLjU2ODkgMC4zNDY1IC0wLjQxODEKdiAtMC4yMjUxIDAuMzQ2NSAwLjM3NTkKdiAtMC4xODI5IDAuMzM2MCAwLjQxODEKdiAwLjYxMTAgMC4zMzYwIC0wLjM3NTkKdiAwLjYxMTAgMC4zNDY1IC0wLjM3NTkKdiAtMC4xODI5IDAuMzQ2NSAwLjQxODEKdiAtMC4xODI5IDAuMzM2MCAtMC40MTgxCnYgMC42MTEwIDAuMzM2MCAwLjM3NTkKdiAwLjYxMTAgMC4zNDY1IDAuMzc1OQp2IC0wLjE4MjkgMC4zNDY1IC0wLjQxODEKdiAtMC4yMjUxIDAuMzM2MCAtMC4zNzU5CnYgMC41Njg5IDAuMzM2MCAwLjQxODEKdiAwLjU2ODkgMC4zNDY1IDAuNDE4MQp2IC0wLjIyNTEgMC4zNDY1IC0wLjM3NTkKdiAtMC4xMjI4IC0wLjM0NjUgLTAuMjAzNQp2IDAuNTc4OSAtMC4zNDY1IC0wLjIwMzUKdiAwLjU3ODkgLTAuMzI1NCAtMC4yMDM1CnYgLTAuMTIyOCAtMC4zMjU0IC0wLjIwMzUKdiAtMC4xMjI4IC0wLjM0NjUgLTAuMTgyNQp2IDAuNTc4OSAtMC4zNDY1IC0wLjE4MjUKdiAwLjU3ODkgLTAuMzI1NCAtMC4xODI1CnYgLTAuMTIyOCAtMC4zMjU0IC0wLjE4MjUKdiAwLjM1NzkgLTAuMzI4OSAtMC4yMDM1CnYgMC4zNzg5IC0wLjMyODkgLTAuMjAzNQp2IDAuMzc4OSAtMC4xNTM1IC0wLjIwMzUKdiAwLjM1NzkgLTAuMTUzNSAtMC4yMDM1CnYgMC4zNTc5IC0wLjMyODkgLTAuMTgyNQp2IDAuMzc4OSAtMC4zMjg5IC0wLjE4MjUKdiAwLjM3ODkgLTAuMTUzNSAtMC4xODI1CnYgMC4zNTc5IC0wLjE1MzUgLTAuMTgyNQp2IDAuMDU5NiAtMC4zMjg5IC0wLjIwMzUKdiAwLjA4MDcgLTAuMzI4OSAtMC4yMDM1CnYgMC4wODA3IC0wLjE1MzUgLTAuMjAzNQp2IDAuMDU5NiAtMC4xNTM1IC0wLjIwMzUKdiAwLjA1OTYgLTAuMzI4OSAtMC4xODI1CnYgMC4wODA3IC0wLjMyODkgLTAuMTgyNQp2IDAuMDgwNyAtMC4xNTM1IC0wLjE4MjUKdiAwLjA1OTYgLTAuMTUzNSAtMC4xODI1CnYgLTAuMTIyOCAtMC4zNDY1IDAuMTgyNQp2IDAuNTc4OSAtMC4zNDY1IDAuMTgyNQp2IDAuNTc4OSAtMC4zMjU0IDAuMTgyNQp2IC0wLjEyMjggLTAuMzI1NCAwLjE4MjUKdiAtMC4xMjI4IC0wLjM0NjUgMC4yMDM1CnYgMC41Nzg5IC0wLjM0NjUgMC4yMDM1CnYgMC41Nzg5IC0wLjMyNTQgMC4yMDM1CnYgLTAuMTIyOCAtMC4zMjU0IDAuMjAzNQp2IDAuMzU3OSAtMC4zMjg5IDAuMTgyNQp2IDAuMzc4OSAtMC4zMjg5IDAuMTgyNQp2IDAuMzc4OSAtMC4xNTM1IDAuMTgyNQp2IDAuMzU3OSAtMC4xNTM1IDAuMTgyNQp2IDAuMzU3OSAtMC4zMjg5IDAuMjAzNQp2IDAuMzc4OSAtMC4zMjg5IDAuMjAzNQp2IDAuMzc4OSAtMC4xNTM1IDAuMjAzNQp2IDAuMzU3OSAtMC4xNTM1IDAuMjAzNQp2IDAuMDU5NiAtMC4zMjg5IDAuMTgyNQp2IDAuMDgwNyAtMC4zMjg5IDAuMTgyNQp2IDAuMDgwNyAtMC4xNTM1IDAuMTgyNQp2IDAuMDU5NiAtMC4xNTM1IDAuMTgyNQp2IDAuMDU5NiAtMC4zMjg5IDAuMjAzNQp2IDAuMDgwNyAtMC4zMjg5IDAuMjAzNQp2IDAuMDgwNyAtMC4xNTM1IDAuMjAzNQp2IDAuMDU5NiAtMC4xNTM1IDAuMjAzNQp2IC0wLjcxOTMgMC4xNTUzIDAuMDMxNgp2IC0wLjcxOTMgMC4xNTUzIDAuMDM4Ngp2IC0wLjczODEgMC4wODUxIDAuMDMxNgp2IC0wLjczODEgMC4wODUxIDAuMDM4Ngp2IC0wLjc4OTUgMC4wMzM3IDAuMDMxNgp2IC0wLjc4OTUgMC4wMzM3IDAuMDM4Ngp2IC0wLjg1OTYgMC4wMTQ5IDAuMDMxNgp2IC0wLjg1OTYgMC4wMTQ5IDAuMDM4Ngp2IC0wLjkyOTggMC4wMzM3IDAuMDMxNgp2IC0wLjkyOTggMC4wMzM3IDAuMDM4Ngp2IC0wLjk4MTIgMC4wODUxIDAuMDMxNgp2IC0wLjk4MTIgMC4wODUxIDAuMDM4Ngp2IC0xLjAwMDAgMC4xNTUzIDAuMDMxNgp2IC0xLjAwMDAgMC4xNTUzIDAuMDM4Ngp2IC0wLjk4MTIgMC4yMjU0IDAuMDMxNgp2IC0wLjk4MTIgMC4yMjU0IDAuMDM4Ngp2IC0wLjkyOTggMC4yNzY4IDAuMDMxNgp2IC0wLjkyOTggMC4yNzY4IDAuMDM4Ngp2IC0wLjg1OTYgMC4yOTU2IDAuMDMxNgp2IC0wLjg1OTYgMC4yOTU2IDAuMDM4Ngp2IC0wLjc4OTUgMC4yNzY4IDAuMDMxNgp2IC0wLjc4OTUgMC4yNzY4IDAuMDM4Ngp2IC0wLjczODEgMC4yMjU0IDAuMDMxNgp2IC0wLjczODEgMC4yMjU0IDAuMDM4Ngp2IC0wLjg1OTYgMC4xNTUzIDAuMDMxNgp2IC0wLjg1OTYgMC4xNTUzIDAuMDM4Ngp2IDAuNDczNyAtMC4xODE2IC0wLjA1MjYKdiAwLjU3ODkgLTAuMTgxNiAtMC4wNTI2CnYgMC41Nzg5IC0wLjEwNDQgLTAuMDUyNgp2IDAuNDczNyAtMC4xMDQ0IC0wLjA1MjYKdiAwLjQ3MzcgLTAuMTgxNiAwLjA1MjYKdiAwLjU3ODkgLTAuMTgxNiAwLjA1MjYKdiAwLjU3ODkgLTAuMTA0NCAwLjA1MjYKdiAwLjQ3MzcgLTAuMTA0NCAwLjA1MjYKdiAwLjU4NjAgLTAuMTAwOSAwLjAwMDAKdiAwLjU4NjAgLTAuMTAwOSAwLjAwMDAKdiAwLjU4NjAgLTAuMTAwOSAwLjAwMDAKdiAwLjU4NjAgLTAuMTAwOSAwLjAwMDAKdiAwLjU4NjAgLTAuMTAwOSAwLjAwMDAKdiAwLjU4NjAgLTAuMTAwOSAwLjAwMDAKdiAwLjU4NjAgLTAuMTAwOSAwLjAwMDAKdiAwLjU4NjAgLTAuMTAwOSAwLjAwMDAKdiAwLjYxMDcgLTAuMTA4OSAwLjAwMDAKdiAwLjYwMzUgLTAuMTA4OSAwLjAxNzUKdiAwLjU4NjAgLTAuMTA4OSAwLjAyNDcKdiAwLjU2ODUgLTAuMTA4OSAwLjAxNzUKdiAwLjU2MTIgLTAuMTA4OSAwLjAwMDAKdiAwLjU2ODUgLTAuMTA4OSAtMC4wMTc1CnYgMC41ODYwIC0wLjEwODkgLTAuMDI0Nwp2IDAuNjAzNSAtMC4xMDg5IC0wLjAxNzUKdiAwLjYyNjAgLTAuMTMwMCAwLjAwMDAKdiAwLjYxNDMgLTAuMTMwMCAwLjAyODMKdiAwLjU4NjAgLTAuMTMwMCAwLjA0MDAKdiAwLjU1NzYgLTAuMTMwMCAwLjAyODMKdiAwLjU0NTkgLTAuMTMwMCAwLjAwMDAKdiAwLjU1NzYgLTAuMTMwMCAtMC4wMjgzCnYgMC41ODYwIC0wLjEzMDAgLTAuMDQwMAp2IDAuNjE0MyAtMC4xMzAwIC0wLjAyODMKdiAwLjYyNjAgLTAuMTU2MCAwLjAwMDAKdiAwLjYxNDMgLTAuMTU2MCAwLjAyODMKdiAwLjU4NjAgLTAuMTU2MCAwLjA0MDAKdiAwLjU1NzYgLTAuMTU2MCAwLjAyODMKdiAwLjU0NTkgLTAuMTU2MCAwLjAwMDAKdiAwLjU1NzYgLTAuMTU2MCAtMC4wMjgzCnYgMC41ODYwIC0wLjE1NjAgLTAuMDQwMAp2IDAuNjE0MyAtMC4xNTYwIC0wLjAyODMKdiAwLjYxMDcgLTAuMTc3MCAwLjAwMDAKdiAwLjYwMzUgLTAuMTc3MCAwLjAxNzUKdiAwLjU4NjAgLTAuMTc3MCAwLjAyNDcKdiAwLjU2ODUgLTAuMTc3MCAwLjAxNzUKdiAwLjU2MTIgLTAuMTc3MCAwLjAwMDAKdiAwLjU2ODUgLTAuMTc3MCAtMC4wMTc1CnYgMC41ODYwIC0wLjE3NzAgLTAuMDI0Nwp2IDAuNjAzNSAtMC4xNzcwIC0wLjAxNzUKdiAwLjU4NjAgLTAuMTg1MSAwLjAwMDAKdiAwLjU4NjAgLTAuMTg1MSAwLjAwMDAKdiAwLjU4NjAgLTAuMTg1MSAwLjAwMDAKdiAwLjU4NjAgLTAuMTg1MSAwLjAwMDAKdiAwLjU4NjAgLTAuMTg1MSAwLjAwMDAKdiAwLjU4NjAgLTAuMTg1MSAtMC4wMDAwCnYgMC41ODYwIC0wLjE4NTEgLTAuMDAwMAp2IDAuNTg2MCAtMC4xODUxIC0wLjAwMDAKZiAxIDIgMTUKZiAyIDE2IDE1CmYgMiAzIDE2CmYgMyAxNyAxNgpmIDMgNCAxNwpmIDQgMTggMTcKZiA0IDUgMTgKZiA1IDE5IDE4CmYgNSA2IDE5CmYgNiAyMCAxOQpmIDYgNyAyMApmIDcgMjEgMjAKZiA3IDggMjEKZiA4IDIyIDIxCmYgOCA5IDIyCmYgOSAyMyAyMgpmIDkgMTAgMjMKZiAxMCAyNCAyMwpmIDEwIDExIDI0CmYgMTEgMjUgMjQKZiAxMSAxMiAyNQpmIDEyIDI2IDI1CmYgMTIgMTMgMjYKZiAxMyAyNyAyNgpmIDEzIDE0IDI3CmYgMTQgMjggMjcKZiAxNCAxIDI4CmYgMSAxNSAyOApmIDE1IDE2IDI5CmYgMTYgMzAgMjkKZiAxNiAxNyAzMApmIDE3IDMxIDMwCmYgMTcgMTggMzEKZiAxOCAzMiAzMQpmIDE4IDE5IDMyCmYgMTkgMzMgMzIKZiAxOSAyMCAzMwpmIDIwIDM0IDMzCmYgMjAgMjEgMzQKZiAyMSAzNSAzNApmIDIxIDIyIDM1CmYgMjIgMzYgMzUKZiAyMiAyMyAzNgpmIDIzIDM3IDM2CmYgMjMgMjQgMzcKZiAyNCAzOCAzNwpmIDI0IDI1IDM4CmYgMjUgMzkgMzgKZiAyNSAyNiAzOQpmIDI2IDQwIDM5CmYgMjYgMjcgNDAKZiAyNyA0MSA0MApmIDI3IDI4IDQxCmYgMjggNDIgNDEKZiAyOCAxNSA0MgpmIDE1IDI5IDQyCmYgMjkgMzAgNDMKZiAzMCA0NCA0MwpmIDMwIDMxIDQ0CmYgMzEgNDUgNDQKZiAzMSAzMiA0NQpmIDMyIDQ2IDQ1CmYgMzIgMzMgNDYKZiAzMyA0NyA0NgpmIDMzIDM0IDQ3CmYgMzQgNDggNDcKZiAzNCAzNSA0OApmIDM1IDQ5IDQ4CmYgMzUgMzYgNDkKZiAzNiA1MCA0OQpmIDM2IDM3IDUwCmYgMzcgNTEgNTAKZiAzNyAzOCA1MQpmIDM4IDUyIDUxCmYgMzggMzkgNTIKZiAzOSA1MyA1MgpmIDM5IDQwIDUzCmYgNDAgNTQgNTMKZiA0MCA0MSA1NApmIDQxIDU1IDU0CmYgNDEgNDIgNTUKZiA0MiA1NiA1NQpmIDQyIDI5IDU2CmYgMjkgNDMgNTYKZiA0MyA0NCA1NwpmIDQ0IDU4IDU3CmYgNDQgNDUgNTgKZiA0NSA1OSA1OApmIDQ1IDQ2IDU5CmYgNDYgNjAgNTkKZiA0NiA0NyA2MApmIDQ3IDYxIDYwCmYgNDcgNDggNjEKZiA0OCA2MiA2MQpmIDQ4IDQ5IDYyCmYgNDkgNjMgNjIKZiA0OSA1MCA2MwpmIDUwIDY0IDYzCmYgNTAgNTEgNjQKZiA1MSA2NSA2NApmIDUxIDUyIDY1CmYgNTIgNjYgNjUKZiA1MiA1MyA2NgpmIDUzIDY3IDY2CmYgNTMgNTQgNjcKZiA1NCA2OCA2NwpmIDU0IDU1IDY4CmYgNTUgNjkgNjgKZiA1NSA1NiA2OQpmIDU2IDcwIDY5CmYgNTYgNDMgNzAKZiA0MyA1NyA3MApmIDU3IDU4IDcxCmYgNTggNzIgNzEKZiA1OCA1OSA3MgpmIDU5IDczIDcyCmYgNTkgNjAgNzMKZiA2MCA3NCA3MwpmIDYwIDYxIDc0CmYgNjEgNzUgNzQKZiA2MSA2MiA3NQpmIDYyIDc2IDc1CmYgNjIgNjMgNzYKZiA2MyA3NyA3NgpmIDYzIDY0IDc3CmYgNjQgNzggNzcKZiA2NCA2NSA3OApmIDY1IDc5IDc4CmYgNjUgNjYgNzkKZiA2NiA4MCA3OQpmIDY2IDY3IDgwCmYgNjcgODEgODAKZiA2NyA2OCA4MQpmIDY4IDgyIDgxCmYgNjggNjkgODIKZiA2OSA4MyA4MgpmIDY5IDcwIDgzCmYgNzAgODQgODMKZiA3MCA1NyA4NApmIDU3IDcxIDg0CmYgNzEgNzIgODUKZiA3MiA4NiA4NQpmIDcyIDczIDg2CmYgNzMgODcgODYKZiA3MyA3NCA4NwpmIDc0IDg4IDg3CmYgNzQgNzUgODgKZiA3NSA4OSA4OApmIDc1IDc2IDg5CmYgNzYgOTAgODkKZiA3NiA3NyA5MApmIDc3IDkxIDkwCmYgNzcgNzggOTEKZiA3OCA5MiA5MQpmIDc4IDc5IDkyCmYgNzkgOTMgOTIKZiA3OSA4MCA5MwpmIDgwIDk0IDkzCmYgODAgODEgOTQKZiA4MSA5NSA5NApmIDgxIDgyIDk1CmYgODIgOTYgOTUKZiA4MiA4MyA5NgpmIDgzIDk3IDk2CmYgODMgODQgOTcKZiA4NCA5OCA5NwpmIDg0IDcxIDk4CmYgNzEgODUgOTgKZiA4NSA4NiA5OQpmIDg2IDEwMCA5OQpmIDg2IDg3IDEwMApmIDg3IDEwMSAxMDAKZiA4NyA4OCAxMDEKZiA4OCAxMDIgMTAxCmYgODggODkgMTAyCmYgODkgMTAzIDEwMgpmIDg5IDkwIDEwMwpmIDkwIDEwNCAxMDMKZiA5MCA5MSAxMDQKZiA5MSAxMDUgMTA0CmYgOTEgOTIgMTA1CmYgOTIgMTA2IDEwNQpmIDkyIDkzIDEwNgpmIDkzIDEwNyAxMDYKZiA5MyA5NCAxMDcKZiA5NCAxMDggMTA3CmYgOTQgOTUgMTA4CmYgOTUgMTA5IDEwOApmIDk1IDk2IDEwOQpmIDk2IDExMCAxMDkKZiA5NiA5NyAxMTAKZiA5NyAxMTEgMTEwCmYgOTcgOTggMTExCmYgOTggMTEyIDExMQpmIDk4IDg1IDExMgpmIDg1IDk5IDExMgpmIDk5IDEwMCAxMTMKZiAxMDAgMTE0IDExMwpmIDEwMCAxMDEgMTE0CmYgMTAxIDExNSAxMTQKZiAxMDEgMTAyIDExNQpmIDEwMiAxMTYgMTE1CmYgMTAyIDEwMyAxMTYKZiAxMDMgMTE3IDExNgpmIDEwMyAxMDQgMTE3CmYgMTA0IDExOCAxMTcKZiAxMDQgMTA1IDExOApmIDEwNSAxMTkgMTE4CmYgMTA1IDEwNiAxMTkKZiAxMDYgMTIwIDExOQpmIDEwNiAxMDcgMTIwCmYgMTA3IDEyMSAxMjAKZiAxMDcgMTA4IDEyMQpmIDEwOCAxMjIgMTIxCmYgMTA4IDEwOSAxMjIKZiAxMDkgMTIzIDEyMgpmIDEwOSAxMTAgMTIzCmYgMTEwIDEyNCAxMjMKZiAxMTAgMTExIDEyNApmIDExMSAxMjUgMTI0CmYgMTExIDExMiAxMjUKZiAxMTIgMTI2IDEyNQpmIDExMiA5OSAxMjYKZiA5OSAxMTMgMTI2CmYgMTEzIDExNCAxMjcKZiAxMTQgMTI4IDEyNwpmIDExNCAxMTUgMTI4CmYgMTE1IDEyOSAxMjgKZiAxMTUgMTE2IDEyOQpmIDExNiAxMzAgMTI5CmYgMTE2IDExNyAxMzAKZiAxMTcgMTMxIDEzMApmIDExNyAxMTggMTMxCmYgMTE4IDEzMiAxMzEKZiAxMTggMTE5IDEzMgpmIDExOSAxMzMgMTMyCmYgMTE5IDEyMCAxMzMKZiAxMjAgMTM0IDEzMwpmIDEyMCAxMjEgMTM0CmYgMTIxIDEzNSAxMzQKZiAxMjEgMTIyIDEzNQpmIDEyMiAxMzYgMTM1CmYgMTIyIDEyMyAxMzYKZiAxMjMgMTM3IDEzNgpmIDEyMyAxMjQgMTM3CmYgMTI0IDEzOCAxMzcKZiAxMjQgMTI1IDEzOApmIDEyNSAxMzkgMTM4CmYgMTI1IDEyNiAxMzkKZiAxMjYgMTQwIDEzOQpmIDEyNiAxMTMgMTQwCmYgMTEzIDEyNyAxNDAKZiAxNDEgMTQzIDE0MgpmIDE0MyAxNDQgMTQyCmYgMTQzIDE0NSAxNDQKZiAxNDUgMTQ2IDE0NApmIDE0NSAxNDcgMTQ2CmYgMTQ3IDE0OCAxNDYKZiAxNDcgMTQ5IDE0OApmIDE0OSAxNTAgMTQ4CmYgMTQ5IDE1MSAxNTAKZiAxNTEgMTUyIDE1MApmIDE1MSAxNTMgMTUyCmYgMTUzIDE1NCAxNTIKZiAxNTMgMTU1IDE1NApmIDE1NSAxNTYgMTU0CmYgMTU1IDE1NyAxNTYKZiAxNTcgMTU4IDE1NgpmIDE1NyAxNTkgMTU4CmYgMTU5IDE2MCAxNTgKZiAxNTkgMTQxIDE2MApmIDE0MSAxNDIgMTYwCmYgMTYxIDE0MyAxNDEKZiAxNjIgMTQyIDE0NApmIDE2MSAxNDUgMTQzCmYgMTYyIDE0NCAxNDYKZiAxNjEgMTQ3IDE0NQpmIDE2MiAxNDYgMTQ4CmYgMTYxIDE0OSAxNDcKZiAxNjIgMTQ4IDE1MApmIDE2MSAxNTEgMTQ5CmYgMTYyIDE1MCAxNTIKZiAxNjEgMTUzIDE1MQpmIDE2MiAxNTIgMTU0CmYgMTYxIDE1NSAxNTMKZiAxNjIgMTU0IDE1NgpmIDE2MSAxNTcgMTU1CmYgMTYyIDE1NiAxNTgKZiAxNjEgMTU5IDE1NwpmIDE2MiAxNTggMTYwCmYgMTYxIDE0MSAxNTkKZiAxNjIgMTYwIDE0MgpmIDE2MyAxNjQgMTY1CmYgMTYzIDE2NSAxNjYKZiAxNjcgMTY5IDE2OApmIDE2NyAxNzAgMTY5CmYgMTYzIDE2NyAxNjgKZiAxNjMgMTY4IDE2NApmIDE2NiAxNjUgMTY5CmYgMTY2IDE2OSAxNzAKZiAxNjMgMTY2IDE3MApmIDE2MyAxNzAgMTY3CmYgMTY0IDE2OCAxNjkKZiAxNjQgMTY5IDE2NQpmIDE3MSAxNzIgMTczCmYgMTcxIDE3MyAxNzQKZiAxNzUgMTc3IDE3NgpmIDE3NSAxNzggMTc3CmYgMTcxIDE3NSAxNzYKZiAxNzEgMTc2IDE3MgpmIDE3NCAxNzMgMTc3CmYgMTc0IDE3NyAxNzgKZiAxNzEgMTc0IDE3OApmIDE3MSAxNzggMTc1CmYgMTcyIDE3NiAxNzcKZiAxNzIgMTc3IDE3MwpmIDE3OSAxODEgMTgwCmYgMTgxIDE4MiAxODAKZiAxODEgMTgzIDE4MgpmIDE4MyAxODQgMTgyCmYgMTgzIDE4NSAxODQKZiAxODUgMTg2IDE4NApmIDE4NSAxODcgMTg2CmYgMTg3IDE4OCAxODYKZiAxODcgMTg5IDE4OApmIDE4OSAxOTAgMTg4CmYgMTg5IDE5MSAxOTAKZiAxOTEgMTkyIDE5MApmIDE5MSAxOTMgMTkyCmYgMTkzIDE5NCAxOTIKZiAxOTMgMTc5IDE5NApmIDE3OSAxODAgMTk0CmYgMTk1IDE4MSAxNzkKZiAxOTYgMTgwIDE4MgpmIDE5NSAxODMgMTgxCmYgMTk2IDE4MiAxODQKZiAxOTUgMTg1IDE4MwpmIDE5NiAxODQgMTg2CmYgMTk1IDE4NyAxODUKZiAxOTYgMTg2IDE4OApmIDE5NSAxODkgMTg3CmYgMTk2IDE4OCAxOTAKZiAxOTUgMTkxIDE4OQpmIDE5NiAxOTAgMTkyCmYgMTk1IDE5MyAxOTEKZiAxOTYgMTkyIDE5NApmIDE5NSAxNzkgMTkzCmYgMTk2IDE5NCAxODAKZiAxOTcgMTk4IDE5OQpmIDE5NyAxOTkgMjAwCmYgMjAxIDIwMyAyMDIKZiAyMDEgMjA0IDIwMwpmIDE5NyAyMDEgMjAyCmYgMTk3IDIwMiAxOTgKZiAyMDAgMTk5IDIwMwpmIDIwMCAyMDMgMjA0CmYgMTk3IDIwMCAyMDQKZiAxOTcgMjA0IDIwMQpmIDE5OCAyMDIgMjAzCmYgMTk4IDIwMyAxOTkKZiAyMDUgMjA2IDIwNwpmIDIwNSAyMDcgMjA4CmYgMjA5IDIxMSAyMTAKZiAyMDkgMjEyIDIxMQpmIDIwNSAyMDkgMjEwCmYgMjA1IDIxMCAyMDYKZiAyMDggMjA3IDIxMQpmIDIwOCAyMTEgMjEyCmYgMjA1IDIwOCAyMTIKZiAyMDUgMjEyIDIwOQpmIDIwNiAyMTAgMjExCmYgMjA2IDIxMSAyMDcKZiAyMTMgMjE0IDIxNQpmIDIxMyAyMTUgMjE2CmYgMjE3IDIxOSAyMTgKZiAyMTcgMjIwIDIxOQpmIDIxMyAyMTcgMjE4CmYgMjEzIDIxOCAyMTQKZiAyMTYgMjE1IDIxOQpmIDIxNiAyMTkgMjIwCmYgMjEzIDIxNiAyMjAKZiAyMTMgMjIwIDIxNwpmIDIxNCAyMTggMjE5CmYgMjE0IDIxOSAyMTUKZiAyMjEgMjIyIDIyMwpmIDIyMSAyMjMgMjI0CmYgMjI1IDIyNyAyMjYKZiAyMjUgMjI4IDIyNwpmIDIyMSAyMjUgMjI2CmYgMjIxIDIyNiAyMjIKZiAyMjQgMjIzIDIyNwpmIDIyNCAyMjcgMjI4CmYgMjIxIDIyNCAyMjgKZiAyMjEgMjI4IDIyNQpmIDIyMiAyMjYgMjI3CmYgMjIyIDIyNyAyMjMKZiAyMjkgMjMwIDIzMQpmIDIyOSAyMzEgMjMyCmYgMjMzIDIzNSAyMzQKZiAyMzMgMjM2IDIzNQpmIDIyOSAyMzMgMjM0CmYgMjI5IDIzNCAyMzAKZiAyMzIgMjMxIDIzNQpmIDIzMiAyMzUgMjM2CmYgMjI5IDIzMiAyMzYKZiAyMjkgMjM2IDIzMwpmIDIzMCAyMzQgMjM1CmYgMjMwIDIzNSAyMzEKZiAyMzcgMjM4IDIzOQpmIDIzNyAyMzkgMjQwCmYgMjQxIDI0MyAyNDIKZiAyNDEgMjQ0IDI0MwpmIDIzNyAyNDEgMjQyCmYgMjM3IDI0MiAyMzgKZiAyNDAgMjM5IDI0MwpmIDI0MCAyNDMgMjQ0CmYgMjM3IDI0MCAyNDQKZiAyMzcgMjQ0IDI0MQpmIDIzOCAyNDIgMjQzCmYgMjM4IDI0MyAyMzkKZiAyNDUgMjQ2IDI0NwpmIDI0NSAyNDcgMjQ4CmYgMjQ5IDI1MSAyNTAKZiAyNDkgMjUyIDI1MQpmIDI0NSAyNDkgMjUwCmYgMjQ1IDI1MCAyNDYKZiAyNDggMjQ3IDI1MQpmIDI0OCAyNTEgMjUyCmYgMjQ1IDI0OCAyNTIKZiAyNDUgMjUyIDI0OQpmIDI0NiAyNTAgMjUxCmYgMjQ2IDI1MSAyNDcKZiAyNTMgMjU0IDI1NQpmIDI1MyAyNTUgMjU2CmYgMjU3IDI1OSAyNTgKZiAyNTcgMjYwIDI1OQpmIDI1MyAyNTcgMjU4CmYgMjUzIDI1OCAyNTQKZiAyNTYgMjU1IDI1OQpmIDI1NiAyNTkgMjYwCmYgMjUzIDI1NiAyNjAKZiAyNTMgMjYwIDI1NwpmIDI1NCAyNTggMjU5CmYgMjU0IDI1OSAyNTUKZiAyNjEgMjYyIDI2MwpmIDI2MSAyNjMgMjY0CmYgMjY1IDI2NyAyNjYKZiAyNjUgMjY4IDI2NwpmIDI2MSAyNjUgMjY2CmYgMjYxIDI2NiAyNjIKZiAyNjQgMjYzIDI2NwpmIDI2NCAyNjcgMjY4CmYgMjYxIDI2NCAyNjgKZiAyNjEgMjY4IDI2NQpmIDI2MiAyNjYgMjY3CmYgMjYyIDI2NyAyNjMKZiAyNjkgMjcwIDI3MQpmIDI2OSAyNzEgMjcyCmYgMjczIDI3NSAyNzQKZiAyNzMgMjc2IDI3NQpmIDI2OSAyNzMgMjc0CmYgMjY5IDI3NCAyNzAKZiAyNzIgMjcxIDI3NQpmIDI3MiAyNzUgMjc2CmYgMjY5IDI3MiAyNzYKZiAyNjkgMjc2IDI3MwpmIDI3MCAyNzQgMjc1CmYgMjcwIDI3NSAyNzEKZiAyNzcgMjc5IDI3OApmIDI3OSAyODAgMjc4CmYgMjc5IDI4MSAyODAKZiAyODEgMjgyIDI4MApmIDI4MSAyODMgMjgyCmYgMjgzIDI4NCAyODIKZiAyODMgMjg1IDI4NApmIDI4NSAyODYgMjg0CmYgMjg1IDI4NyAyODYKZiAyODcgMjg4IDI4NgpmIDI4NyAyODkgMjg4CmYgMjg5IDI5MCAyODgKZiAyODkgMjkxIDI5MApmIDI5MSAyOTIgMjkwCmYgMjkxIDI5MyAyOTIKZiAyOTMgMjk0IDI5MgpmIDI5MyAyOTUgMjk0CmYgMjk1IDI5NiAyOTQKZiAyOTUgMjk3IDI5NgpmIDI5NyAyOTggMjk2CmYgMjk3IDI5OSAyOTgKZiAyOTkgMzAwIDI5OApmIDI5OSAyNzcgMzAwCmYgMjc3IDI3OCAzMDAKZiAzMDEgMjc5IDI3NwpmIDMwMiAyNzggMjgwCmYgMzAxIDI4MSAyNzkKZiAzMDIgMjgwIDI4MgpmIDMwMSAyODMgMjgxCmYgMzAyIDI4MiAyODQKZiAzMDEgMjg1IDI4MwpmIDMwMiAyODQgMjg2CmYgMzAxIDI4NyAyODUKZiAzMDIgMjg2IDI4OApmIDMwMSAyODkgMjg3CmYgMzAyIDI4OCAyOTAKZiAzMDEgMjkxIDI4OQpmIDMwMiAyOTAgMjkyCmYgMzAxIDI5MyAyOTEKZiAzMDIgMjkyIDI5NApmIDMwMSAyOTUgMjkzCmYgMzAyIDI5NCAyOTYKZiAzMDEgMjk3IDI5NQpmIDMwMiAyOTYgMjk4CmYgMzAxIDI5OSAyOTcKZiAzMDIgMjk4IDMwMApmIDMwMSAyNzcgMjk5CmYgMzAyIDMwMCAyNzgKZiAzMDMgMzA0IDMwNQpmIDMwMyAzMDUgMzA2CmYgMzA3IDMwOSAzMDgKZiAzMDcgMzEwIDMwOQpmIDMwMyAzMDcgMzA4CmYgMzAzIDMwOCAzMDQKZiAzMDYgMzA1IDMwOQpmIDMwNiAzMDkgMzEwCmYgMzAzIDMwNiAzMTAKZiAzMDMgMzEwIDMwNwpmIDMwNCAzMDggMzA5CmYgMzA0IDMwOSAzMDUKZiAzMTEgMzEyIDMxOQpmIDMxMiAzMjAgMzE5CmYgMzEyIDMxMyAzMjAKZiAzMTMgMzIxIDMyMApmIDMxMyAzMTQgMzIxCmYgMzE0IDMyMiAzMjEKZiAzMTQgMzE1IDMyMgpmIDMxNSAzMjMgMzIyCmYgMzE1IDMxNiAzMjMKZiAzMTYgMzI0IDMyMwpmIDMxNiAzMTcgMzI0CmYgMzE3IDMyNSAzMjQKZiAzMTcgMzE4IDMyNQpmIDMxOCAzMjYgMzI1CmYgMzE4IDMxMSAzMjYKZiAzMTEgMzE5IDMyNgpmIDMxOSAzMjAgMzI3CmYgMzIwIDMyOCAzMjcKZiAzMjAgMzIxIDMyOApmIDMyMSAzMjkgMzI4CmYgMzIxIDMyMiAzMjkKZiAzMjIgMzMwIDMyOQpmIDMyMiAzMjMgMzMwCmYgMzIzIDMzMSAzMzAKZiAzMjMgMzI0IDMzMQpmIDMyNCAzMzIgMzMxCmYgMzI0IDMyNSAzMzIKZiAzMjUgMzMzIDMzMgpmIDMyNSAzMjYgMzMzCmYgMzI2IDMzNCAzMzMKZiAzMjYgMzE5IDMzNApmIDMxOSAzMjcgMzM0CmYgMzI3IDMyOCAzMzUKZiAzMjggMzM2IDMzNQpmIDMyOCAzMjkgMzM2CmYgMzI5IDMzNyAzMzYKZiAzMjkgMzMwIDMzNwpmIDMzMCAzMzggMzM3CmYgMzMwIDMzMSAzMzgKZiAzMzEgMzM5IDMzOApmIDMzMSAzMzIgMzM5CmYgMzMyIDM0MCAzMzkKZiAzMzIgMzMzIDM0MApmIDMzMyAzNDEgMzQwCmYgMzMzIDMzNCAzNDEKZiAzMzQgMzQyIDM0MQpmIDMzNCAzMjcgMzQyCmYgMzI3IDMzNSAzNDIKZiAzMzUgMzM2IDM0MwpmIDMzNiAzNDQgMzQzCmYgMzM2IDMzNyAzNDQKZiAzMzcgMzQ1IDM0NApmIDMzNyAzMzggMzQ1CmYgMzM4IDM0NiAzNDUKZiAzMzggMzM5IDM0NgpmIDMzOSAzNDcgMzQ2CmYgMzM5IDM0MCAzNDcKZiAzNDAgMzQ4IDM0NwpmIDM0MCAzNDEgMzQ4CmYgMzQxIDM0OSAzNDgKZiAzNDEgMzQyIDM0OQpmIDM0MiAzNTAgMzQ5CmYgMzQyIDMzNSAzNTAKZiAzMzUgMzQzIDM1MApmIDM0MyAzNDQgMzUxCmYgMzQ0IDM1MiAzNTEKZiAzNDQgMzQ1IDM1MgpmIDM0NSAzNTMgMzUyCmYgMzQ1IDM0NiAzNTMKZiAzNDYgMzU0IDM1MwpmIDM0NiAzNDcgMzU0CmYgMzQ3IDM1NSAzNTQKZiAzNDcgMzQ4IDM1NQpmIDM0OCAzNTYgMzU1CmYgMzQ4IDM0OSAzNTYKZiAzNDkgMzU3IDM1NgpmIDM0OSAzNTAgMzU3CmYgMzUwIDM1OCAzNTcKZiAzNTAgMzQzIDM1OApmIDM0MyAzNTEgMzU4Cg=="
+  }
+ }
+}
