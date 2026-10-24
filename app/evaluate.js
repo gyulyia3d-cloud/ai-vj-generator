@@ -10,6 +10,9 @@ const EVALUATOR = (() => {
     const hex = h => { const m = /^#?([0-9a-f]{6})$/i.exec(h || ''); if (!m) return [0, 0, 0]; const n = parseInt(m[1], 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
     const lum = (r, g, b) => (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
     const bg = hex(P.palette && P.palette.bg), lbg = lum(bg[0], bg[1], bg[2]), LF = AIVJ.loopFrames();
+    /* paleta declarada: um pixel de tinta "cabe" se fica perto do segmento fundo → cor (mistura com o fundo por opacidade); a crítica (critique.js) lê o resultado */
+    const pal = ['primary', 'secondary', 'accent'].map(k => hex(P.palette && P.palette[k]));
+    const palFit = (r, g, b) => { let best = -1, bd = 48; for (let q = 0; q < 3; q++) { const v0 = pal[q][0] - bg[0], v1 = pal[q][1] - bg[1], v2 = pal[q][2] - bg[2], dd = v0 * v0 + v1 * v1 + v2 * v2; if (dd < 900) continue; const c0 = r - bg[0], c1 = g - bg[1], c2 = b - bg[2], t = clamp((c0 * v0 + c1 * v1 + c2 * v2) / dd, 0, 1.15), e0 = c0 - t * v0, e1 = c1 - t * v1, e2 = c2 - t * v2, dist = Math.sqrt(e0 * e0 + e1 * e1 + e2 * e2); if (dist < bd) { bd = dist; best = q; } } return best; };
     const out = [], sigs = [], dn = (P.meta && P.meta.artBible && P.meta.artBible.density) || 'balanced';
     const DB = { sparse: [0.003, 0.03, 0.22, 0.6], balanced: [0.01, 0.1, 0.4, 0.8], dense: [0.04, 0.15, 0.6, 0.95] }[dn] || [0.01, 0.1, 0.4, 0.8];
     const BB = { sparse: [0.15, 0.4, 0.97, 1.2], balanced: [0, 0.2, 0.65, 0.97], dense: [0, 0.05, 0.5, 0.9] }[dn] || [0, 0.2, 0.65, 0.97];
@@ -17,13 +20,13 @@ const EVALUATOR = (() => {
       // o grão do fundo é ruído novo a cada quadro: não é movimento nem desenho, então sai da medição (e volta depois)
       const oldP = comp.layers.map(L => L.p); comp.layers.forEach(L => { if (L.type === 'bg') L.p = Object.assign({}, L.p, { grain: 0 }); });
       const ink = [], cells = new Array(GX * GY).fill(0), cnt = new Array(GX * GY).fill(0);
-      const ser = [], cov = [], quiet = []; let w = 0, h = 0;
+      const ser = [], cov = [], quiet = []; let w = 0, h = 0, inkN = 0, fitN = 0, accN = 0;
       try {
         for (let k = 0; k < S; k++) {
           const im = AIVJ.renderFrame(ci, Math.floor(LF * k / S), SC, false), d = im.data; w = im.width; h = im.height;
           const I = new Float32Array(w * h); let m = 0, c = 0;
           for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
-            const i = (y * w + x) * 4, v = Math.abs(lum(d[i], d[i + 1], d[i + 2]) - lbg), p = y * w + x; I[p] = v; m += v; if (v > 0.12) c++;
+            const i = (y * w + x) * 4, v = Math.abs(lum(d[i], d[i + 1], d[i + 2]) - lbg), p = y * w + x; I[p] = v; m += v; if (v > 0.12) { c++; inkN++; const f = palFit(d[i], d[i + 1], d[i + 2]); if (f >= 0) { fitN++; if (f === 2) accN++; } }
             const q = Math.min(GY - 1, Math.floor(y * GY / h)) * GX + Math.min(GX - 1, Math.floor(x * GX / w)); cells[q] += v; cnt[q]++;
           }
           ink.push(I); ser.push(m / (w * h)); cov.push(c / (w * h));
@@ -36,6 +39,7 @@ const EVALUATOR = (() => {
       const E = cells.map((v, q) => v / Math.max(1, cnt[q])), tot = E.reduce((a, b) => a + b, 0) || 1e-9;
       const top = E.slice().sort((a, b) => b - a).slice(0, Math.ceil(GX * GY * 0.1)).reduce((a, b) => a + b, 0) / tot;
       let p99max = 0; ink.forEach(I => { const s = Float32Array.from(I).sort(); p99max = Math.max(p99max, s[Math.floor(s.length * 0.99)]); });
+      const order = E.map((v, q) => q).sort((a, b) => E[b] - E[a]).slice(0, Math.ceil(GX * GY * 0.1)); let hw = 0, hx = 0, hy = 0; order.forEach(q => { hw += E[q]; hx += E[q] * ((q % GX) + 0.5) / GX; hy += E[q] * (Math.floor(q / GX) + 0.5) / GY; });
       const meanCov = cov.reduce((a, b) => a + b, 0) / S, meanQuiet = quiet.reduce((a, b) => a + b, 0) / S;
       // movimento: diferença média entre quadros consecutivos, incluindo a emenda (último → primeiro)
       const blk = I => { const bw = Math.max(1, Math.floor(w / 40)), bh = Math.max(1, Math.floor(h / 24)), nx = Math.floor(w / bw), ny = Math.floor(h / bh), o = new Float32Array(nx * ny);
@@ -50,7 +54,7 @@ const EVALUATOR = (() => {
       const tier = strong === 0 ? 0.3 : strong <= 3 ? 1 : strong === 4 ? 0.7 : 0.4;
       const dom = band(top, 0.1, 0.22, 0.5, 0.8);
       const sig = E.map(v => v / tot); sigs.push(sig);
-      out.push({ index: ci, name: comp.name, raw: { declaredDensity: dn, dominance: top, p99: p99max, coverage: meanCov, quiet: meanQuiet, motion: mean, dead, seamJump, arcRange: rng, arcPeak: pk, strongLayers: strong, layers: comp.layers.length },
+      out.push({ index: ci, name: comp.name, extra: { grid: sig, GX, GY, cov, hero: hw > 0 ? { x: hx / hw, y: hy / hw } : null, inkPx: inkN, palFit: inkN >= 200 ? fitN / inkN : null, accentShare: inkN >= 200 ? accN / inkN : null }, raw: { declaredDensity: dn, dominance: top, p99: p99max, coverage: meanCov, quiet: meanQuiet, motion: mean, dead, seamJump, arcRange: rng, arcPeak: pk, strongLayers: strong, layers: comp.layers.length },
         score: { hierarchy: 0.6 * dom + 0.4 * tier, contrast: ss(0.25, 0.7, p99max), density: band(meanCov, ...DB), breathing: band(meanQuiet, ...BB),
           motion: band(mean, 0.0005, 0.004, 0.1, 0.3) * (1 - clamp((dead - 0.25) * 2)) * (seamJump ? 0.5 : 1), arc: ss(0.03, 0.22, rng) * (pk < 0.1 || pk > 0.9 ? 0.85 : 1) } });
     });
@@ -100,10 +104,10 @@ const EVALUATOR = (() => {
   
   
   /* roda a medição (síncrona, alguns segundos em projetos grandes) e devolve o relatório; lang: 'pt' | 'en' (padrão: meta.lang do projeto) */
-  function run(lang) {
-    const res = measure(), lg = lang || res.lang || 'en', t = T[lg] || T.en;
+  function run(lang, pre) {
+    const res = pre || measure(), lg = lang || res.lang || 'en', t = T[lg] || T.en;
     const report = res.comps.map(o => ({ index: o.index, name: o.name, total: total(o.score), score: Object.fromEntries(Object.entries(o.score).map(([k, v]) => [k, Math.round(v * 100)])), raw: o.raw, notes: explain(o, lg) }));
     return { lang: lg, loopFrames: res.loopFrames, set: report.length ? Math.round(report.reduce((a, b) => a + b.total, 0) / report.length) : 0, weights: WEIGHTS, labels: t, compositions: report };
   }
-  return { run, WEIGHTS };
+  return { run, measure, explain, total, WEIGHTS };
 })();

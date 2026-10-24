@@ -1,5 +1,16 @@
 # Changelog
 
+## 3.22.0 (24/10/2026) · Fase 15: crítica em três eixos e falhas críticas
+
+Só medição e relatório (módulo novo `app/critique.js`, CLI `scripts/critique.mjs`, função `AIVJ.critique(lang, {flash})`); o render, o formato de projeto e as notas do avaliador não mudaram. O avaliador estrutural só ganhou dados extras de medição (paleta, grade de energia, cobertura por quadro) e as funções `measure` e `run(lang, medição)` exportadas.
+
+- **Três eixos que nunca viram um número só:** ESTRUTURAL (o avaliador de sempre), ARTÍSTICO (a peça cumpre o que declarou?) e TÉCNICO (renderiza e exporta sem defeito?). O artístico compara o medido com `project.palette`, `meta.compositionIR.focalPoint`, `negativeSpace` e a curva de densidade das fases; sem intenção declarada o item fica **não julgado** (nota `null`, nunca 100) e o relatório diz quantos itens julgou. Proibições da bíblia de arte vão para `needsEye`, sem nota.
+- **Medir a figura, não o chão:** espaço negativo e foco olham só as figuras (camadas de chão saem: plano `ground` do Depth IR, ou `role` que começa com ground, atmosphere ou finish) e o foco olha só as camadas `role: hero`. A primeira versão medindo o quadro inteiro reprovava peças certas (o campo de fundo cobre tudo por desenho) e foi descartada depois de olhar um quadro com as regiões desenhadas por cima.
+- **Técnico:** determinismo (quadro A, quadro B, quadro A de novo), erros de camada e shader, flash (critério geral do WCAG 2.3.1, não certifica), validação do export, emenda do loop, dimensões pares.
+- **Dez falhas críticas** que reprovam a composição qualquer que seja a nota: `EMPTY`, `FROZEN` (não vale se toda camada que desenha declara `still` ou `hold`), `SEAM_POP`, `NONDETERMINISTIC`, `LAYER_ERROR`, `FLASH_HAZARD`, `EXPORT_BLOCKER`, `PALETTE_IGNORED`, `NEGATIVE_SPACE_FILLED`, `FOCUS_LOST`. Veredito FAIL, REVIEW (eixo julgado abaixo de 60) ou PASS; saída 1 em FAIL (e em REVIEW com `--strict`).
+- **Teste novo `critique_check.mjs`** (21 verificações): cada defeito é fabricado (vazio, parado, strobe a 8 Hz, shader quebrado, cores fora da paleta, vazio declarado onde está o herói, foco no canto oposto, quadro que muda entre duas renderizações) com controle negativo (parado declarado `still` não é FROZEN; projeto gerado dentro da paleta e do limite de flash; sem Composition IR nada é julgado). Conferido por mutação: afrouxar quatro limites reprova 4 verificações.
+- **Achado real na galeria:** 11 das 21 composições das oito peças da galeria declaram um espaço negativo e as próprias figuras (em geral a camada de estrutura) o ocupam, confirmado desenhando as regiões sobre um quadro de INDUSTRIAL III. O gerador não obedece o `negativeSpace` do Composition IR nas camadas de estrutura. É dívida técnica registrada: consertar muda o render e exige regerar a galeria; a galeria não passa a depender da crítica. O `arc` também mostra que a cobertura medida nem sempre acompanha a densidade declarada das fases (02-jardim-tela). Com flash ligado, o 02-jardim-tela estoura 240 s (dívida antiga de tempo da galeria); `--no-flash` pula essa análise.
+
 ## 3.21.0 (24/10/2026) · Fase 14: popover Adicionar, timeline (leitura e edição) e fluxo óptico
 
 Sem mudança de formato de projeto nem de migração; o render não mudou. `check.mjs`: 145 verificações, todas verdes.

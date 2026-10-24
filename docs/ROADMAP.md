@@ -1,4 +1,4 @@
-# Roadmap oficial (v11, motor 3.21.0)
+# Roadmap oficial (v11, motor 3.22.0)
 
 Substitui o roadmap v10. Decidido pela autora em 08/10/2026.
 
@@ -32,7 +32,7 @@ Referências antigas a isso ficam apenas no `CHANGELOG.md`.
 | 19 | Versionamento e migração de projetos (esqueleto agora; cada fase seguinte que muda o esquema traz a sua migração) | **feita (3.17.0)**: `meta.formatVersion`, passos em `registry/versions.json`, `migrate.js` = `migrate_project.py` |
 | 13 | Partículas em GPU (primeiro sem estado: posição em forma fechada do quadro; simulação com estado só depois, pelo histórico da fase 4) | **feita (3.18.0)**: camada `particles`, 6 regras em forma fechada (sem estado, quadros fora de ordem iguais), gl.POINTS sem buffer; simulação com estado fica para depois, pelo histórico da fase 4 |
 | 14 | Interface de ferramenta de criação (sobre os módulos da fase 18) | **em andamento**: 14a (base: tokens, slider, casca nova) feita (3.19.0); 14a-3 (popover Adicionar) e 14b-T1 (timeline somente leitura) e 14b-T2 (timeline editável: atraso e batida do evento por arrasto e teclado) feitas, 3.21.0; T3 (entrada e saída por camada) só por decisão do usuário |
-| 15 | Crítica artística (ARTISTIC / STRUCTURAL / TECHNICAL separados) | pendente |
+| 15 | Crítica artística (ARTISTIC / STRUCTURAL / TECHNICAL separados) | **feita (3.22.0)**: `app/critique.js` + `critique.mjs`, três eixos separados e 10 falhas críticas; a galeria tem achados reais (espaço negativo) |
 | 16 | Export profissional: o que falta é verificação, manifesto verificável e honestidade sobre alfa (`mp4.js` e o manifesto já existem) | **feita (3.20.0)**: manifesto v2 com SHA-256 por quadro, `verify_export.mjs` (alfa medido), manifesto no `render.mjs`, JSZip embutido (export sem rede) |
 | 17 | Performance | pendente |
 | 20 | Galeria de regressão + testes visuais determinísticos (antigas 20 e 21 fundidas: um só mecanismo de quadros de referência; resolve o baseline obsoleto do `gl_parity` e o estouro de tempo do contato 02-jardim-tela) | **em andamento**: base versionada `examples/reference/parity.json` (184 quadros) e controle negativo no `check.mjs`; falta o contato `02-jardim-tela` |

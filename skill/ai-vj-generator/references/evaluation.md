@@ -34,3 +34,22 @@ Bands (full score inside the inner numbers, zero outside the outer ones, smooth 
 2. Fix the weakest measure first, re-run. Do not chase 100.
 3. Then open the contact sheet and the engine. The art bible (`art-bible.md`) is what you compare against by eye.
 4. `--min 75` returns exit code 1 if a composition is below it, for scripts and CI. `gallery.mjs --check` does this for the eight gallery briefs.
+
+
+# Critique (phase 15): three separate judgements and the critical failures
+
+`node scripts/critique.mjs project.aivj.json [--json] [--out report.md] [--lang pt|en] [--strict] [--no-flash]` (browser function: `AIVJ.critique(lang, {flash})`).
+
+It reuses the evaluator's frames (one measurement) and reports, per composition, three axes that are **never merged into one number**:
+
+| Axis | Question | Source |
+|---|---|---|
+| STRUCTURAL | is there a structural defect? | the seven measures above, unchanged |
+| ARTISTIC | does the piece do what it declared it would do? | measured frames against `project.palette`, `meta.compositionIR` (`focalPoint`, `negativeSpace`, `temporal.phases[].density`) |
+| TECHNICAL | does it render and export without defect? | determinism (same frame before and after another one), layer and shader errors, flash (WCAG 2.3.1 general criterion), export validation, loop seam, even dimensions |
+
+**Artistic items** (each 0-100, only when the intent exists): `palette` (share of the ink that sits on a segment ground-to-palette-colour), `focal` (distance from the centroid of the `role: hero` layers to `focalPoint`), `negative` (ink density of the figures, ground field excluded, inside the declared empty regions against the frame average; 100% means it ignored them), `arc` (correlation between measured coverage and the declared phase density curve). What is not declared is **not judged** (score `null`, not 100), and the report says how many items were judged. What only an eye can decide (`artBible.banned`, `contract.forbiddenShortcuts`) is listed under `needsEye` with no score.
+
+**Critical failures** reject a composition whatever its scores: `EMPTY`, `FROZEN` (unless every drawing layer declares `still` or `hold`), `SEAM_POP`, `NONDETERMINISTIC`, `LAYER_ERROR`, `FLASH_HAZARD` (over 3 per second), `EXPORT_BLOCKER`, `PALETTE_IGNORED` (under 25% of the ink in the palette), `NEGATIVE_SPACE_FILLED` (figure ink density in the declared empty regions above the frame average), `FOCUS_LOST` (hero more than 50% of the frame from the focal point). Verdict: `FAIL` with any of them; `REVIEW` when a judged axis is under 60; else `PASS`. The exit code is 1 on `FAIL` (and on `REVIEW` with `--strict`).
+
+**Honest limits.** The artistic axis checks adherence to the *declared* intent, not taste: a project that declares a bad intent can pass. Flash analysis is the general criterion on mean luminance; saturated-red flashes are not measured and this is not a certification. `arc` compares coverage, not colour or motion. The checks were set by hand against fabricated defects (`scripts/critique_check.mjs`) and the eight gallery briefs; the gallery itself has real findings (see the changelog), so it is not a clean reference.
