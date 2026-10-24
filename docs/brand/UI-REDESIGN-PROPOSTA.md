@@ -192,7 +192,7 @@ Riscos: custo de desenhar a timeline a cada quadro (desenhar em canvas separado,
 
 ## 14. Ordem revisada da fase 14
 
-14a-1 tokens v2 e slider (feito) · 14a-2 casca (barra superior, barra flutuante, trilho de ícones, painel esquerdo, slider empilhado) · 14a-3 popover Adicionar · 14b-T1 timeline somente leitura · 14b-T2 timeline editável · T3 só por decisão. A fase 13 (partículas em GPU) começa depois da 14a-2, já com os controles novos.
+14a-1 tokens v2 e slider (feito) · 14a-2 casca (barra superior, barra flutuante, trilho de ícones, painel esquerdo, slider empilhado) · 14a-3 popover Adicionar (feito) · 14b-T1 timeline somente leitura (feito) · 14b-T2 timeline editável (feito) · T3 só por decisão. A fase 13 (partículas em GPU) começa depois da 14a-2, já com os controles novos.
 
 ## 15. Decisões de forma e caixa (2026-10-14, substituem o que divergir na seção 4)
 

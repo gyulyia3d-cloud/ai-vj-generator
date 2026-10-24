@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Teste das categorias de camada: todo tipo do motor pertence a exatamente uma categoria, as categorias têm nome de até duas palavras,
-// o menu Adicionar usa categoria + tipo, e trocar o tipo nos parâmetros troca L.type, guarda a transformação e zera o resto.
+// o popover Adicionar usa categoria + tipo, e trocar o tipo nos parâmetros troca L.type, guarda a transformação e zera o resto.
 //   node layers_check.mjs [--chrome caminho]     Sai com 1 se falhar; 3 se não houver navegador.
 import { mkdtempSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -27,8 +27,8 @@ try {
   check(!f.missing.length && !f.dup.length && !f.ghost.length, `os ${f.types} tipos do motor ficam em ${f.cats} categorias, cada um em uma só`, JSON.stringify(f));
   check(!f.long.length && f.cats <= 10, 'nomes de categoria e de tipo têm até duas palavras', f.long.join(','));
   await E(`document.querySelector('#tabs [data-tab="lay"]').click()`);
-  const m = JSON.parse(await E(`(() => { const c = document.getElementById('addCat'); c.value = 'Dados'; c.dispatchEvent(new Event('change')); return JSON.stringify({ cats: c.options.length, types: [...document.getElementById('addType').options].map(o => o.value) }); })()`));
-  check(m.cats === 9 && m.types.join() === 'measure,data,hud,instrument,blobs', 'o menu Adicionar mostra categoria e, dentro dela, o tipo', JSON.stringify(m));
+  const m = JSON.parse(await E(`(() => { AIVJ.addPop.open(); document.querySelector('#apCats [data-cat="Dados"]').click(); const r = { cats: document.querySelectorAll('#apCats [data-cat]').length, types: [...document.querySelectorAll('#apGrid [data-type]')].map(b => b.dataset.type) }; AIVJ.addPop.close(); return JSON.stringify(r); })()`));
+  check(m.cats === 9 && m.types.join() === 'measure,data,hud,instrument,blobs', 'o popover Adicionar mostra categoria e, dentro dela, o tipo', JSON.stringify(m));
   await E(`AIVJ.state.sel = 1; document.querySelector('#tabs [data-tab="par"]').click()`);
   const s = JSON.parse(await E(`(() => { const t = document.getElementById('pTyp'); t.value = 'measure'; t.dispatchEvent(new Event('change', { bubbles: true })); const L = AIVJ.project.compositions[0].layers[1]; return JSON.stringify({ type: L.type, x: L.p.x, keys: Object.keys(L.p) }); })()`));
   check(s.type === 'measure' && s.x === 10 && s.keys.join() === 'x', 'trocar o tipo nos parâmetros muda L.type, guarda a posição e zera o resto', JSON.stringify(s));

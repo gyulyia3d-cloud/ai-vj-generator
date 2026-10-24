@@ -1,5 +1,51 @@
 # Changelog
 
+## 3.21.0 (24/10/2026) · Fase 14: popover Adicionar, timeline (leitura e edição) e fluxo óptico
+
+Sem mudança de formato de projeto nem de migração; o render não mudou. `check.mjs`: 145 verificações, todas verdes.
+
+### Fase 14b-T2: timeline editável
+
+Só interface (`app/timeline.js`) mais um estilo; formato de projeto, migração e render não mudaram (nenhum campo novo: a edição escreve em `L.p.phase` e em `meta.animationIR[].events[].beat`, que já existiam).
+
+- **Arrastar a barra de uma camada** (ou setas na faixa) muda o atraso `p.phase` em **semicolcheias inteiras**, de 0 a `compassos × 16 − 1`; 0 apaga o campo (camada volta a não ter atraso). O render muda de verdade (medido em três quadros). A faixa é um slider acessível (`aria-valuenow`, texto "atraso N de M semicolcheias"). Teclado: ← → ±1 semicolcheia, PageUp/PageDown ±4 (uma batida), Home 0, End último passo.
+- **Arrastar um evento** (ou setas) muda a batida inteira dele, sem passar do vizinho (o validador exige ordem), e `at` e `phase` acompanham a nova posição. O evento é anotação do plano: **nada no render lê `events`**, e o rótulo diz isso. Eventos na mesma batida ficam empilhados: o de cima é o que o mouse pega, os outros se movem pelo teclado.
+- **Um gesto = uma entrada no histórico e um Ctrl+Z**; uma rajada de teclas vira uma só entrada. **Esc** no meio do arrasto devolve o valor de antes sem gravar. Clique sem mover só seleciona a camada.
+- **Os dois mudam o projeto sem o Animation IR saber:** editar o atraso ou a batida deixa o IR guardado (lag, `choreography`) descrevendo o plano original; o projeto vale pelo que está nas camadas. Projeto sem IR edita o atraso e não ganha IR nem evento.
+- O aviso de **toast** deixa de interceptar o mouse (`pointer-events:none`): ele cobria a timeline por 1,4 s depois de desfazer e engolia o arrasto seguinte.
+- **Teste novo `timeline_edit_check.mjs`** (mouse e teclado reais pelo CDP): inclui controles negativos (clique sem mover não grava; evento não muda o render; evento não passa do vizinho; sem IR não há eventos) e foi conferido por mutação (sem o commit do arrasto, ou sem o limite do vizinho, 12 verificações reprovam). `check.mjs` entra com ele.
+- **Fora desta entrega (T3):** início e fim por camada, zoom da timeline, olho e trava nas faixas.
+
+### Fluxo óptico no `analyze_video.py`
+
+Só ferramenta de referência (script Python da skill); o motor, o render e o formato de projeto não mudaram.
+
+- **Bloco `OPTICAL FLOW` no relatório** (e `optical_flow` no `--json`): movimento dominante (pan com direção, zoom in/out, rotação horária/anti-horária, ou local; quando dois efeitos são comparáveis o rótulo cita os dois, como "pan down-right + zoom in" num zoom ancorado no canto), velocidade média e de pico em larguras por segundo, panorâmica, zoom e rotação por segundo, fatia do quadro que se move, coerência, parcela que sobra depois de tirar pan/zoom/rotação, histograma de 8 direções e velocidade ao longo do tempo. Pares de quadros que atravessam um corte são ignorados.
+- **Dois backends:** `--flow auto|opencv|numpy`. `opencv` usa Farneback (`pip install opencv-python-headless`, opcional); `numpy` é um Lucas-Kanade piramidal próprio, sem instalar nada. `auto` usa o OpenCV se importar, senão numpy, e o relatório diz qual rodou. Pedir `opencv` sem tê-lo é erro, não troca silenciosa.
+- **Precisão medida** (cenas de resposta conhecida em `test_analyze_video.py`, que entrou no `check.mjs` e roda os dois backends quando o `cv2` existe): direção e tipo de movimento acertam nos dois. Pan: numpy ~7% acima do real, OpenCV exato. Zoom: numpy ~30% acima, OpenCV ~15% abaixo. Não rastreia movimento acima de ~8 px por passo (≈0,7 larguras/s a 8 amostras/s). `local_share` não é comparável entre backends (o numpy é mais ruidoso); o rótulo e `moving_share` são.
+
+### Fase 14b-T1: timeline somente leitura
+
+Só interface (módulo novo `app/timeline.js`); formato de projeto, migração e render não mudaram. A timeline lê o projeto e nunca escreve nele.
+
+- **Painel acoplado embaixo da vista**, recolhível (botões Timeline ▾ e ▴), com altura arrastável (separador; setas do teclado mudam 16 px). Aberto por padrão só em tela de pelo menos 1100×700; o estado é lembrado. A barra de ações flutuante sobe junto para não cobrir as faixas.
+- **Régua** de compassos e batidas do loop (o fim da régua é o fim do loop; o cabeçalho diz se o loop fecha) e **cabeça de leitura** única, que segue o quadro. Clicar ou arrastar na régua leva o quadro até lá e pausa, como o scrub; na régua, setas andam 1 quadro, PageUp e PageDown 1 batida, Home e End vão às pontas. Botões Início, −1, Play e +1.
+- **Fases e eventos** vêm de `meta.compositionIR[i].temporal.phases` e `meta.animationIR[i].events`. Projeto escrito à mão sem eles não ganha fase nem evento inventados: a faixa diz "sem Animation IR neste projeto".
+- **Uma faixa por camada** (mesma ordem do painel Camadas): barra com o comportamento temporal declarado (`still`, `drift`, `beat`, `follow`, `accent`, `section`; sem declaração mostra SEM COMPORTAMENTO), início deslocado pelo atraso `p.phase` com o trecho que passa do fim reaparecendo no começo (rótulo em semicolcheias), um traço por ciclo de LFO, e rótulo acessível com o que a camada ouve. Camada desligada fica esmaecida. Clicar no nome só seleciona a camada.
+- **Faixa de áudio:** graves, médios e agudos sintéticos do BPM (`pseudoAudio`), nunca o áudio ao vivo, e o rótulo diz isso.
+- **Teste novo `timeline_check.mjs`** (mouse e teclado reais; controles negativos: camada sem atraso, projeto sem IR, cabeça que anda tocando; só leitura medida em projeto e histórico). Conferido por mutação: atraso ignorado e escrita no projeto ao clicar reprovam o teste.
+- **Fora desta entrega (T2 e T3):** arrastar barras ou eventos, entrada e saída por camada, zoom da timeline, olho e trava nas faixas, cursor de áudio ao vivo.
+
+### Fase 14a-3: popover Adicionar
+
+Só interface (módulo novo `app/add-pop.js`); o formato de projeto, a migração e o render não mudaram.
+
+- **Popover Adicionar** no lugar dos dois seletores (categoria e tipo) da aba Camadas: abre pelo botão **+ Adicionar camada** da biblioteca e pelo botão **Adicionar** da barra flutuante. Busca por tipo ou categoria, 9 categorias como abas, grade de tipos, prévia de **um quadro** em 256 px (sem laço contínuo; filtro, tempo e pós são vistos sobre a composição ativa; o tipo `code` não tem prévia porque só roda depois de autorizado) e até 4 parâmetros essenciais em linha (1 seletor e 3 numéricos). Os demais ficam no painel Parâmetros.
+- **Uma ação, um Ctrl+Z:** adicionar grava uma só entrada no histórico (`Adicionar camada <tipo>`); a camada entra logo acima da selecionada e já vem selecionada. Sem ajustar nada, `p` nasce vazio, como antes.
+- **Acessibilidade:** `role="dialog"` `aria-modal`, foco entra e volta ao botão que abriu, Tab preso dentro, Esc e clique fora fecham, atalhos do editor (por exemplo E) não vazam com o popover aberto; em até 760 px vira gaveta inferior.
+- **Teste novo `add_pop_check.mjs`** (29 verificações, mouse e teclado de verdade pelo CDP): inclui controles negativos (código sem prévia, camada sem ajuste com `p` vazio, tecla E com o popover fechado aciona o atalho) e foi conferido por mutação (sem `stopPropagation`, ou com um segundo commit, o teste reprova). `layers_check.mjs` passa a conferir o popover.
+- **Fora desta entrega:** miniaturas por tipo na grade (a prévia é do tipo escolhido) e prévia ao passar o mouse; o popover não traz de volta a aba +Efeitos.
+
 ## 3.20.0 (16/10/2026) · Fase 16: export verificável
 
 Fecha a fase 16. Sem mudança de render nem de formato de projeto (a base de quadros de referência continua em diferença 0.000); o manifesto de export sobe para o esquema 2 e o 1 continua legível. `check.mjs`: 141 verificações, todas verdes.

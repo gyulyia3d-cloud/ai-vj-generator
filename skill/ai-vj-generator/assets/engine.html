@@ -638,6 +638,85 @@ input[type=range]:active::-webkit-slider-thumb{background:var(--accent);box-shad
 #barShow{position:absolute;left:50%;bottom:var(--sp-4);transform:translateX(-50%);z-index:6;background:var(--bg);border:1px solid var(--rule)}
 #barShow[hidden]{display:none}
 #app.clean #barShow{display:none}
+
+/* 14a-3 · popover Adicionar: cartão central com busca, categorias, grade de tipos, prévia de um quadro e parâmetros essenciais */
+#addPop{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;background:rgb(0 0 0 / .6);padding:var(--sp-4)}
+#addPop[hidden]{display:none}
+#addPop .apbox{background:var(--bg);border:1px solid var(--fg);width:min(860px,100%);max-height:calc(100dvh - 2*var(--sp-4));overflow:auto;padding:var(--sp-3) var(--sp-4);display:flex;flex-direction:column;gap:var(--sp-3);box-shadow:var(--shadow-pop)}
+#addPop header{display:flex;justify-content:space-between;align-items:center;font-family:var(--font-title);font-size:var(--fs-xs);letter-spacing:.12em;text-transform:uppercase}
+#addPop #apSearch{width:100%}
+#addPop #apCats{display:flex;flex-wrap:wrap;gap:0}
+#addPop #apCats button{flex:1 1 auto;min-height:30px;border-radius:0;font-family:var(--font-title);font-size:var(--fs-xs);letter-spacing:.06em}
+#addPop #apCats button[aria-selected="true"]{background:var(--s3);color:var(--fg);border-color:var(--accent)}
+#addPop .apmain{display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,300px);gap:var(--sp-4);align-items:start}
+#addPop #apGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:var(--sp-2);align-content:start}
+#addPop #apGrid button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-height:44px;text-align:left;border-radius:0;background:var(--s1)}
+#addPop #apGrid button b{font-weight:400;font-family:var(--font-title);font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase}
+#addPop #apGrid button i{font-style:normal;font-size:var(--fs-xs);color:var(--dim)}
+#addPop #apGrid button{color:var(--fg);overflow-wrap:anywhere}
+#addPop #apGrid button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--fg)}
+#addPop .apside{display:flex;flex-direction:column;gap:var(--sp-2);min-width:0}
+#addPop #apCv{width:100%;height:auto;background:#000;border:1px solid var(--rule);display:block}
+#addPop #apInfo:empty{display:none}
+button.pri,#addPop #apAdd{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);min-height:36px}
+@media (max-width:760px){#addPop{align-items:flex-end;padding:0}#addPop .apbox{max-height:90dvh;width:100%}#addPop .apmain{grid-template-columns:1fr}}
+body.apopen{overflow:hidden}
+
+/* 14b-T1 · timeline somente leitura: régua, fases, eventos, uma faixa por camada, áudio sintético; cabeça de leitura única */
+#tl{--tl-name:150px;flex:none;height:var(--tl-h,190px);display:flex;flex-direction:column;position:relative;background:var(--bg);border-top:1px solid var(--rule);min-height:0}
+#tl[hidden]{display:none}
+#app.clean #tl,#app.clean #tlShow{display:none}
+#tlSplit{position:absolute;left:0;right:0;top:-3px;height:6px;cursor:ns-resize;z-index:3;touch-action:none}
+#tlSplit:hover,#tlSplit:focus-visible{background:var(--accent)}
+#tlHeader{display:flex;gap:var(--sp-2);align-items:center;padding:4px 8px;border-bottom:1px solid var(--rule);flex-wrap:wrap}
+#tlHeader .tlt{font-family:var(--font-title);font-size:var(--fs-xs);letter-spacing:.12em;text-transform:uppercase}
+#tlHeader .rd{font-family:var(--font-title);font-size:var(--fs-xs);color:var(--dim);font-variant-numeric:tabular-nums;letter-spacing:.06em}
+#tlHeader #tlToggle{margin-left:auto}
+#tlBtns{display:flex;gap:0}
+#tlHeader button{min-height:24px;padding:2px 8px;font-size:var(--fs-xs)}
+#tlBody{--tl-name:150px;position:relative;flex:1;min-height:0;overflow:auto}
+#tlBody .tlrow{display:grid;grid-template-columns:var(--tl-name) minmax(0,1fr);align-items:stretch;min-height:24px;border-bottom:1px solid var(--rule)}
+#tlBody .tlrow.sel{background:var(--s1)}
+#tlBody .tlrow.off .tllane{opacity:.4}
+#tlBody .tlname{padding:4px 8px;font-size:var(--fs-xs);color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:uppercase;border-right:1px solid var(--rule);cursor:default}
+#tlBody .tlrow.sel .tlname{color:var(--fg)}
+#tlBody .tlname .k{font-family:var(--font-title);color:var(--faint)}
+#tlBody .tllane{position:relative;min-height:24px;overflow:hidden}
+#tlBody .tllane small{position:absolute;left:6px;top:50%;transform:translateY(-50%);font-size:var(--fs-xs);letter-spacing:.06em;color:var(--fg);mix-blend-mode:difference;pointer-events:none;white-space:nowrap;font-family:var(--font-title)}
+#tlBody .tllane:focus-visible{outline:1px solid var(--accent);outline-offset:-1px}
+#tlBody .tlruler{position:relative;height:26px;cursor:ew-resize;touch-action:none;background:var(--s1)}
+#tlBody .tlruler:focus-visible{outline:1px solid var(--accent);outline-offset:-1px}
+#tlBody .tlruler i{position:absolute;top:14px;bottom:0;width:1px;background:var(--faint)}
+#tlBody .tlruler i.bar{top:0;background:var(--fg)}
+#tlBody .tlruler i b{position:absolute;left:3px;top:0;font-weight:400;font-family:var(--font-title);font-size:var(--fs-xs);color:var(--dim)}
+#tlBody .tlstrip{min-height:34px}
+#tlBody .ph{position:absolute;top:0;height:50%;padding:0 4px;font-family:var(--font-title);font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--fg);border-right:1px solid var(--bg);white-space:nowrap;overflow:hidden}
+#tlBody .ph.p0{background:#1a1a1a}#tlBody .ph.p1{background:#262626}#tlBody .ph.p2{background:#333}#tlBody .ph.p3{background:#444}#tlBody .ph.p4{background:#2a2a2a}
+#tlBody .ev{position:absolute;top:50%;bottom:0;width:0;border-left:1px solid var(--accent)}
+#tlBody .ev b{position:absolute;left:3px;top:2px;font-weight:400;font-size:var(--fs-xs);color:var(--accent);white-space:nowrap;font-family:var(--font-title)}
+#tlBody .tlnote{color:var(--dim)!important;mix-blend-mode:normal!important;top:75%!important}
+#tlBody .bar{position:absolute;top:4px;bottom:4px;background:var(--fill)}
+#tlBody .bar.wrap{opacity:.45;background-image:repeating-linear-gradient(135deg,transparent 0 4px,rgb(0 0 0 / .5) 4px 6px)}
+#tlBody .bar.still{background:var(--g600,#333)}#tlBody .bar.drift{background:var(--g500,#555)}#tlBody .bar.beat{background:var(--accent)}#tlBody .bar.follow{background:var(--g400,#999)}
+#tlBody .bar.accent{background:transparent;border:1px solid var(--accent)}#tlBody .bar.section{background:var(--g300,#ccc)}#tlBody .bar.none{background:transparent;border:1px dashed var(--faint)}
+#tlBody .tllane em{position:absolute;top:0;bottom:0;width:0;border-left:2px solid var(--fg)}
+#tlBody .tllane u{position:absolute;top:2px;height:5px;width:1px;background:var(--fg);opacity:.8}
+#tlBody .tlaudio .tllane{height:40px}
+#tlBody #tlAud{display:block;width:100%;height:100%}
+#tlBody #tlHead{position:absolute;top:0;width:2px;margin-left:-1px;background:var(--accent);pointer-events:none;z-index:2;left:var(--tl-name)}
+#tlShow{min-height:24px;padding:3px 7px}
+#tlShow[hidden]{display:none}
+@media (max-width:900px){#tl{--tl-name:104px}#tlBody{--tl-name:104px}}
+@media (min-width:901px){#app.tlopen #bar{margin-bottom:calc(var(--tl-h,190px) + var(--sp-4))}#app.tlopen #barShow{bottom:calc(var(--tl-h,190px) + var(--sp-4))}}
+#tlHeader .rd#tlInfo{flex:1 1 auto;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+#tlHeader{flex-wrap:nowrap}
+@media (max-width:900px){#tlHeader{flex-wrap:wrap}#tlHeader #tlInfo{display:none}}
+/* Timeline T2: faixas e eventos arrastáveis */
+#tlBody .tllane[role=slider]:not(.tlstrip){cursor:ew-resize;touch-action:none}
+#tlBody .ev{touch-action:none;outline-offset:0}
+#tlBody .ev::after{content:"";position:absolute;left:-6px;width:13px;top:0;bottom:0;cursor:ew-resize}
+#tlBody .ev:focus-visible,#tlBody .ev:hover{border-left-width:3px}
+#toast{pointer-events:none}
 /*__STYLE_END__*/
 </style>
 </head>
@@ -707,6 +786,7 @@ input[type=range]:active::-webkit-slider-thumb{background:var(--accent);box-shad
       <input type="range" id="scrub" min="0" max="100" value="0" step="1" aria-label="Posição no loop">
       <label class="rd" for="vFrame">Quadro</label><input id="vFrame" type="text" inputmode="numeric" autocomplete="off" aria-label="Ir para o quadro" title="Digite o número do quadro ou uma conta">
       <span class="rd" id="vPos">000/000</span>
+      <button id="tlShow" hidden aria-label="Mostrar a timeline" title="Mostrar a timeline">Timeline ▴</button>
     </div>
     <div id="vp" class="cross">
       <div id="fit">
@@ -719,6 +799,16 @@ input[type=range]:active::-webkit-slider-thumb{background:var(--accent);box-shad
       <div id="drop">Solte imagem, vídeo ou fonte</div>
       <div id="drawHint" role="status"></div>
     </div>
+    <section id="tl" hidden aria-label="Timeline">
+      <div id="tlSplit" role="separator" tabindex="0" aria-orientation="horizontal" aria-label="Altura da timeline" aria-valuemin="110" aria-valuenow="190"></div>
+      <header id="tlHeader">
+        <span class="tlt">Timeline</span>
+        <span id="tlBtns"><button data-tl="start" aria-label="Ir ao início" title="Ir ao início">Início</button><button data-tl="prev" aria-label="Quadro anterior" title="Quadro anterior">−1</button><button data-tl="play" aria-label="Tocar ou pausar" title="Tocar ou pausar">Play</button><button data-tl="next" aria-label="Próximo quadro" title="Próximo quadro">+1</button></span>
+        <span class="rd" id="tlPos">0000/0000</span><span class="rd" id="tlInfo"></span>
+        <button id="tlToggle" aria-expanded="true" aria-controls="tlBody" title="Recolher a timeline">Timeline ▾</button>
+      </header>
+      <div id="tlBody"></div>
+    </section>
     <button id="barShow" aria-label="Mostrar a barra" title="Mostrar a barra" hidden>Barra ▴</button>
     <button id="libOpen" aria-label="Abrir a biblioteca" title="Abrir a biblioteca" hidden>Biblioteca ›</button>
     <button id="panelOpen" aria-label="Minimizar o menu" aria-expanded="true" title="Minimizar ou abrir o menu (G)">Menu ›</button>
@@ -739,6 +829,7 @@ input[type=range]:active::-webkit-slider-thumb{background:var(--accent);box-shad
     <button id="rec" aria-pressed="false" title="R · gravação ao vivo da viewport (WebM): só rascunho. Para entregar use MP4 ou PNG na aba Exportar">Gravar</button>
     <button id="cleanBtn" title="H">Tela limpa</button>
     <button id="fsBtn" title="F">Cheia</button>
+    <button id="addBtn" aria-haspopup="dialog" aria-expanded="false" title="Adicionar camada">Adicionar</button>
     <button id="expBtn" title="Abrir a aba Exportar">Exportar</button>
     <button id="barHide" aria-label="Ocultar a barra" title="Ocultar a barra">Ocultar ▾</button>
   </nav>
@@ -778,6 +869,23 @@ input[type=range]:active::-webkit-slider-thumb{background:var(--accent);box-shad
     <span>AI VJ Generator <span class="dim">· motor de composição generativa · open source MIT License</span></span>
     <span class="cred"><a href="https://instagram.com/gyulyia" target="_blank" rel="noopener">instagram.com/gyulyia</a> &nbsp;·&nbsp; <a href="https://gyulyia.com" target="_blank" rel="noopener">gyulyia.com</a></span>
   </footer>
+</div>
+
+<div id="addPop" hidden role="dialog" aria-modal="true" aria-label="Adicionar camada">
+  <div class="apbox">
+    <header><span>Adicionar camada</span><button id="addPopX" aria-label="Fechar">×</button></header>
+    <input id="apSearch" type="search" placeholder="Buscar tipo" aria-label="Buscar tipo de camada" autocomplete="off" spellcheck="false">
+    <div id="apCats" class="seg" role="tablist" aria-label="Categoria"></div>
+    <div class="apmain">
+      <div id="apGrid" role="group" aria-label="Tipo de camada"></div>
+      <div class="apside">
+        <canvas id="apCv" width="256" height="144" aria-label="Prévia de um quadro"></canvas>
+        <p id="apInfo" class="note" aria-live="polite"></p>
+        <div id="apParams"></div>
+      </div>
+    </div>
+    <div class="row"><button id="apAdd" class="pri">Adicionar camada</button></div>
+  </div>
 </div>
 
 <section id="palPop" hidden role="dialog" aria-label="Paleta de cor">
@@ -855,7 +963,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
    função pura de (parâmetros, quadro) → o mesmo código desenha o preview,
    o export PNG alpha e a gravação.
    ===================================================================== */
-const VERSION = '3.20.0';
+const VERSION = '3.21.0';
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const TAU = Math.PI * 2, GA = Math.PI * (3 - Math.sqrt(5));
 const clamp = (v, a, b) => v < a ? a : v > b ? b : v, lerp = (a, b, t) => a + (b - a) * t;
@@ -3213,6 +3321,7 @@ function tick(now) {
   $('#vPos').textContent = `${pad(F.n, 4)}/${pad(F.LF, 4)} · C${pad(F.bar + 1, 2)}:${F.beat % 4 + 1}`;
   { const vf = $('#vFrame'); if (vf && document.activeElement !== vf) vf.value = F.n; }
   if (ST.tr) drawTransition(now);
+  TIMELINE.tick(F);
   const needComp = REC.r || OUTS.length;
   if (needComp) {
     if (COMP_CV.width !== DOM.layers[0]?.cv.width || COMP_CV.height !== DOM.layers[0]?.cv.height) { COMP_CV.width = DOM.layers[0].cv.width; COMP_CV.height = DOM.layers[0].cv.height; }
@@ -3418,11 +3527,9 @@ function renderLayers() {
       <select data-bl aria-label="Blend ${esc(L.name)}">${Object.keys(BLENDS).map(b => `<option ${b === L.blend ? 'selected' : ''}>${b}</option>`).join('')}</select></div>`).join('')}</div>
     <div class="row"><button data-la="solo" aria-pressed="${ST.solo === ST.sel}">Solo</button><button data-la="up">↑</button><button data-la="down">↓</button><button data-la="dup">Duplicar</button><button data-la="ren">Renomear</button><button data-la="reset">Reset</button><button data-la="del">Remover</button></div>
     <div class="row"><button data-la="copy">Copiar parâmetros</button><button data-la="paste" ${ST.clip ? '' : 'disabled'}>Colar parâmetros</button><button data-la="copyL">Copiar camada</button><button data-la="pasteL" ${ST.clipL ? '' : 'disabled'}>Colar camada</button></div>
-    <div class="row fill"><select id="addCat" aria-label="Categoria">${FAMILIES.map(f => `<option value="${f[0]}">${esc(f[0])}</option>`).join('')}</select><select id="addType" aria-label="Tipo de camada"></select><button data-la="add" style="flex:0 0 auto">Adicionar</button></div>
+    <div class="row"><button data-la="addpop" aria-haspopup="dialog" aria-expanded="false" class="pri">+ Adicionar camada</button></div>
     <p class="note">As camadas valem só para esta composição. Mostrar camadas (E) abre a pilha em 3D; arraste para girar. Na viewport, arrastar move a camada selecionada; Shift + arrastar escala; Alt + arrastar gira.</p>`;
-  fillAddTypes();
 }
-function fillAddTypes() { const c = $('#addCat'), t = $('#addType'); if (!c || !t) return; const f = FAMILIES.find(x => x[0] === c.value) || FAMILIES[0]; t.innerHTML = f[1].map(x => `<option value="${x[0]}">${esc(x[1])}</option>`).join(''); c.onchange = fillAddTypes; }
 function selLayer(i) { ST.sel = i; $$('#lrows .lrow').forEach((r, k) => r.classList.toggle('sel', k === i)); syncLayerDom(); renderParams(); }
 
 function paramGroups(L) {
@@ -5686,8 +5793,376 @@ document.addEventListener('pointerdown', e => { const pop = $('#palPop'); if (!p
 addEventListener('keydown', e => { if (e.key === 'Escape') { if (!$('#palPop').hidden) setPop(false); if (!$('#howto').hidden) setHow(false); } });
 /*__PALQUICK_END__*/
 
+/*__ADDPOP_START__*/
+/* Popover Adicionar (fase 14a-3): escolhe categoria e tipo, vê um quadro de prévia, ajusta 2 a 4 parâmetros essenciais e adiciona a camada.
+   Só apresentação e entrada: a camada nasce com mk() como antes (o projeto JSON não muda). Os demais parâmetros ficam no painel Parâmetros.
+   Prévia: um quadro em 256 px, sem laço contínuo; tipos que sobrepõem o que está abaixo (filtro, tempo, pós) são vistos sobre a composição ativa.
+   Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html entre os marcadores ADDPOP. */
+const ADDPOP = (() => {
+  const PRESET_KEY = { temporal: ['preset', () => TM.PRESETS], particles: ['kind', () => PRT], solid: ['kind', () => SOL], field: ['kind', () => FLD], fx: ['preset', () => FX], shader: ['preset', () => SHADERS] };
+  const NO_PREVIEW = new Set(['code']);
+  const st = { cat: FAMILIES[0][0], type: FAMILIES[0][1][0][0], q: '', draft: null, opener: null };
+  const root = () => $('#addPop');
+  const SCR = document.createElement('canvas'), SCR_CTX = SCR.getContext('2d');
+  let raf = 0;
+
+  const newDraft = type => ({ type, name: typeLabel(type).toUpperCase(), on: true, opacity: 1, blend: 'normal', p: {} });
+  const defsFor = L => { const g = paramGroups(L), nm = typeLabel(L.type).toUpperCase(); return (g.find(x => x[0] === nm) || g[0])[1]; };
+  const essential = defs => [...defs.filter(d => d.t === 's').slice(0, 1), ...defs.filter(d => d.t === 'n').slice(0, 3)];
+
+  function typesShown() {
+    const q = st.q.trim().toLowerCase();
+    if (!q) return (FAMILIES.find(f => f[0] === st.cat) || FAMILIES[0])[1].map(x => [x[0], x[1], st.cat]);
+    return FAMILIES.flatMap(f => f[1].map(x => [x[0], x[1], f[0]])).filter(x => (x[1] + ' ' + x[0] + ' ' + x[2]).toLowerCase().includes(q));
+  }
+
+  function renderCats() {
+    $('#apCats').innerHTML = FAMILIES.map(f => `<button role="tab" data-cat="${esc(f[0])}" aria-selected="${!st.q && f[0] === st.cat}">${esc(f[0])}</button>`).join('');
+  }
+  function renderGrid() {
+    const list = typesShown();
+    $('#apGrid').innerHTML = list.length
+      ? list.map(([t, label, fam]) => `<button data-type="${esc(t)}" aria-pressed="${t === st.type}"><b>${esc(label)}</b>${st.q ? `<i>${esc(fam)}</i>` : ''}</button>`).join('')
+      : '<p class="note">Nenhum tipo encontrado.</p>';
+  }
+  function renderParams() {
+    const L = st.draft, defs = essential(defsFor(L)), p = pm(L);
+    $('#apParams').innerHTML = defs.length
+      ? defs.map(d => ctlHtml(d, p[d.k])).join('') + '<p class="note">Os demais parâmetros ficam no painel Parâmetros depois de adicionada.</p>'
+      : '<p class="note">Este tipo se ajusta no painel Parâmetros depois de adicionado.</p>';
+    $('#apAdd').textContent = 'Adicionar ' + typeLabel(L.type);
+  }
+
+  function drawPreview() {
+    raf = 0; const cv = $('#apCv'); if (!cv) return;
+    const L = st.draft, comp = cur(), W = P.canvas.w, H = P.canvas.h, w = 256, h = Math.max(8, Math.round(256 * H / W));
+    if (cv.width !== w) cv.width = w; if (cv.height !== h) cv.height = h;
+    const c = cv.getContext('2d'); c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1; c.fillStyle = '#000'; c.fillRect(0, 0, w, h);
+    $('#apInfo').textContent = '';
+    if (NO_PREVIEW.has(L.type)) { $('#apInfo').textContent = 'Sem prévia: o código só roda depois de autorizado.'; return; }
+    SCR.width = w; SCR.height = h; const F = frameAt(ST.n, comp), k = w / W;
+    try {
+      if (BELOW_TYPES.has(L.type)) comp.layers.forEach((M, i) => { if (!M.on) return; renderLayer(SCR_CTX, comp, M, i, F, k, W, H, BELOW_TYPES.has(M.type) ? cv : undefined); c.globalAlpha = M.opacity; c.globalCompositeOperation = fxOp(M, (BLENDS[M.blend] || BLENDS.normal)[0]); c.drawImage(SCR, 0, 0); });
+      c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
+      renderLayer(SCR_CTX, comp, L, comp.layers.length, F, k, W, H, BELOW_TYPES.has(L.type) ? cv : undefined);
+      c.globalAlpha = L.opacity; c.globalCompositeOperation = fxOp(L, (BLENDS[L.blend] || BLENDS.normal)[0]); c.drawImage(SCR, 0, 0);
+    } catch (err) { $('#apInfo').textContent = 'Sem prévia: ' + (err && err.message || err); }
+    c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
+  }
+  const preview = () => { if (!raf) raf = requestAnimationFrame(drawPreview); };
+
+  function pick(type) { st.type = type; st.draft = newDraft(type); renderGrid(); renderParams(); preview(); }
+
+  function setParam(k, v) {
+    const L = st.draft; L.p[k] = v;
+    const pk = PRESET_KEY[L.type];
+    if (pk && pk[0] === k) { const s = pk[1]()[v]; if (s) ['p1', 'p2', 'p3', 'p4'].forEach((q, i) => L.p[q] = s.d[i]); renderParams(); }
+    preview();
+  }
+  function onParamInput(e) {
+    const row = e.target.closest('.pc'); if (!row) return; const k = row.dataset.k;
+    if (e.target.matches('[data-r]')) { const v = +e.target.value; const n = row.querySelector('[data-num]'); if (n) n.value = +v.toFixed(4); setParam(k, v); }
+  }
+  function onParamChange(e) {
+    const row = e.target.closest('.pc'); if (!row) return; const k = row.dataset.k, d = defsFor(st.draft).find(x => x.k === k); if (!d) return;
+    if (e.target.matches('[data-num]')) {
+      const v = evalExpr(e.target.value);
+      if (!isFinite(v)) { toast('Valor inválido. Digite um número ou uma conta, como 120/2.', 1800); e.target.value = pm(st.draft)[k]; return; }
+      const x = clamp(v, d.min, d.max); e.target.value = +x.toFixed(4); const r = row.querySelector('[data-r]'); if (r) { r.value = x; SLIDERUI.sync(r); } setParam(k, x);
+    } else if (e.target.matches('[data-s]')) setParam(k, e.target.value);
+  }
+  function onParamClick(e) {
+    const rs = e.target.closest('[data-reset]'); if (!rs) return; const row = rs.closest('.pc'), k = row.dataset.k;
+    delete st.draft.p[k]; renderParams(); preview();
+  }
+
+  function open(opener) {
+    const el = root(); if (!el) return;
+    st.opener = opener || document.activeElement;
+    const sel = cur().layers[ST.sel], f = sel && famOf(sel.type);
+    st.q = ''; $('#apSearch').value = '';
+    if (!(famOf(st.type) && famOf(st.type)[0] === st.cat)) { st.cat = FAMILIES[0][0]; st.type = FAMILIES[0][1][0][0]; }
+    else if (f && !st.draft) { st.cat = f[0]; st.type = f[1][0][0]; }
+    st.draft = newDraft(st.type);
+    renderCats(); renderGrid(); renderParams();
+    el.hidden = false; document.body.classList.add('apopen');
+    $$('#addBtn,[data-la="addpop"]').forEach(b => b.setAttribute('aria-expanded', 'true'));
+    preview();
+    const first = $('#apGrid [aria-pressed="true"]') || $('#apSearch'); first && first.focus();
+  }
+  function close() {
+    const el = root(); if (!el || el.hidden) return;
+    el.hidden = true; document.body.classList.remove('apopen');
+    $$('#addBtn,[data-la="addpop"]').forEach(b => b.setAttribute('aria-expanded', 'false'));
+    const o = st.opener; st.opener = null; if (o && o.isConnected && o.focus) o.focus();
+  }
+  function add() {
+    const L = st.draft, comp = cur(), i = ST.sel, t = L.type;
+    const N = mk(t, typeLabel(t).toUpperCase(), true, clone(L.p));
+    comp.layers.splice(i + 1, 0, N); ST.sel = i + 1;
+    close(); buildStage(); renderLayers(); renderParams(); renderText();
+    commit(true, 'Adicionar camada ' + typeLabel(t));
+    toast('Camada adicionada: ' + typeLabel(t) + ' · Ctrl+Z desfaz');
+  }
+
+  const el = root();
+  if (el) {
+    $('#addPopX').onclick = close;
+    $('#apAdd').onclick = add;
+    $('#apSearch').addEventListener('input', e => { st.q = e.target.value; renderCats(); renderGrid(); });
+    $('#apCats').addEventListener('click', e => {
+      const b = e.target.closest('[data-cat]'); if (!b) return;
+      st.q = ''; $('#apSearch').value = ''; st.cat = b.dataset.cat; renderCats(); renderGrid();
+      const f = FAMILIES.find(x => x[0] === st.cat); if (f && !f[1].some(x => x[0] === st.type)) pick(f[1][0][0]);
+    });
+    $('#apGrid').addEventListener('click', e => { const b = e.target.closest('[data-type]'); if (b) pick(b.dataset.type); });
+    const ps = $('#apParams'); ps.addEventListener('input', onParamInput); ps.addEventListener('change', onParamChange); ps.addEventListener('click', onParamClick);
+    ps.addEventListener('keydown', e => { if (e.target.matches('[data-num]') && e.key === 'Enter') e.target.dispatchEvent(new Event('change', { bubbles: true })); });
+    /* fora do cartão fecha; teclas de atalho do editor não vazam enquanto aberto; Tab fica preso dentro */
+    el.addEventListener('pointerdown', e => { if (e.target === el) close(); });
+    el.addEventListener('keydown', e => {
+      e.stopPropagation();
+      if (e.key === 'Escape') { e.preventDefault(); close(); return; }
+      if (e.key !== 'Tab') return;
+      const f = $$('button:not([disabled]),input,select,textarea,[tabindex="0"]', el).filter(n => n.offsetParent !== null);
+      if (!f.length) return; const a = f[0], z = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === a) { e.preventDefault(); z.focus(); } else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); }
+    });
+    const bb = $('#addBtn'); if (bb) bb.onclick = () => open(bb);
+  }
+  return { open, close, add, get isOpen() { const e = root(); return !!e && !e.hidden; }, get type() { return st.type; }, get draft() { return st.draft; }, pick, setParam };
+})();
+/*__ADDPOP_END__*/
+
+/*__TIMELINE_START__*/
+/* Timeline (fase 14b). T1 lê: o loop como janela, com régua de compassos e batidas, fases da composição, eventos na batida,
+   uma faixa por camada (comportamento temporal, atraso em semicolcheias, ciclos de LFO) e uma faixa de áudio.
+   T2 edita só o que já existe, sem campo novo no esquema (sem migração): arrastar a barra de uma camada (ou setas na faixa) muda L.p.phase em passos inteiros
+   de semicolcheia, e arrastar um evento (ou setas) muda meta.animationIR[].events[].beat em batidas inteiras, sem passar do vizinho. Um gesto = uma entrada no
+   histórico; Esc cancela o arrasto. O atraso muda o render; o evento é só anotação do plano (nada no render lê events). Fases e eventos vêm de meta.compositionIR e meta.animationIR
+   (projeto escrito à mão sem eles mostra só a régua e as camadas, e diz isso). O áudio da régua é o sintético do BPM (pseudoAudio), nunca o ao vivo.
+   A cabeça de leitura é um elemento só que se move por quadro; o resto é refeito quando a assinatura do que ele mostra muda.
+   Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html entre os marcadores TIMELINE. */
+const TIMELINE = (() => {
+  const root = () => $('#tl');
+  const S = { open: store.get('tlOpen', null), h: store.get('tlH', 190), sig: '', tickN: 0, lastN: -1 };
+  const pct = f => (Math.max(0, Math.min(1, f)) * 100).toFixed(3) + '%';
+  const irOf = (arr, ci) => Array.isArray(arr) ? arr[ci] : null;
+
+  function model() {
+    const comp = cur(), ci = ST.ci, M = P.meta || {}, cir = irOf(M.compositionIR, ci), ani = irOf(M.animationIR, ci);
+    const LF = loopFrames(), bars = P.time.bars, fps = P.canvas.fps;
+    const phases = cir && cir.temporal && Array.isArray(cir.temporal.phases) ? cir.temporal.phases.map((p, k, a) => ({ name: p.name, from: p.at, to: k + 1 < a.length ? a[k + 1].at : 1 })) : [];
+    const events = ani && Array.isArray(ani.events) ? ani.events.map((e, k) => ({ k, name: e.name, at: e.at, beat: e.beat })) : [];
+    const lanes = comp.layers.map((L, i) => {
+      const tp = L.temporal && typeof L.temporal === 'object' ? L.temporal : null;
+      const phase = L.p && isFinite(+L.p.phase) ? +L.p.phase : 0, steps = Math.round(phase * bars * 16 * 1000) / 1000;
+      const mods = Array.isArray(L.mod) ? L.mod.filter(m => m && m.src === 'lfo' && m.shape !== 'env' && isFinite(+m.cycles)) : [];
+      return { i, name: L.name || L.type, type: L.type, on: !!L.on, behavior: tp ? tp.behavior : null, listens: tp && Array.isArray(tp.listens) ? tp.listens : [], phase: ((phase % 1) + 1) % 1, steps, cycles: mods.length ? Math.max(...mods.map(m => Math.round(+m.cycles))) : 0 };
+    });
+    return { LF, bars, fps, bpm: P.time.bpm, ci, lanes, phases, events, hasIR: !!(cir || ani), loop: !!P.time.loop, seamless: !!P.time.seamless, mode: P.time.mode };
+  }
+  const signature = m => JSON.stringify([m.LF, m.bars, m.bpm, m.ci, m.hasIR, m.phases, m.events, m.lanes, ST.sel, ST.lang, m.mode]);
+
+  function rulerHtml(m) {
+    const beats = m.bars * 4, out = [];
+    for (let b = 0; b < beats; b++) out.push(`<i class="${b % 4 === 0 ? 'bar' : 'beat'}" style="left:${pct(b / beats)}">${b % 4 === 0 ? `<b>C${pad(b / 4 + 1, 2)}</b>` : ''}</i>`);
+    return out.join('');
+  }
+  const r1 = x => Math.round(x * 10) / 10;
+  function laneInner(ln) {
+    const beh = ln.behavior, label = beh ? beh.toUpperCase() : T3('SEM COMPORTAMENTO', 'NO BEHAVIOUR');
+    const ticks = ln.cycles ? Array.from({ length: ln.cycles }, (_, k) => `<u style="left:${pct(((k / ln.cycles) + ln.phase) % 1)}"></u>`).join('') : '';
+    const bar = ln.phase > 0
+      ? `<span class="bar ${beh || 'none'}" data-part="main" style="left:${pct(ln.phase)};width:${pct(1 - ln.phase)}"></span><span class="bar wrap ${beh || 'none'}" data-part="wrap" style="left:0;width:${pct(ln.phase)}"></span><em style="left:${pct(ln.phase)}"></em>`
+      : `<span class="bar ${beh || 'none'}" data-part="main" style="left:0;width:100%"></span>`;
+    return `${bar}${ticks}<small>${esc(label)}${ln.steps > 0 ? ' · +' + r1(ln.steps) + '/16' : ''}</small>`;
+  }
+  function laneAria(ln) {
+    const beh = ln.behavior, label = beh ? beh.toUpperCase() : T3('SEM COMPORTAMENTO', 'NO BEHAVIOUR');
+    const delay = ln.steps > 0 ? T3(`atraso ${r1(ln.steps)} semicolcheias`, `delay ${r1(ln.steps)} sixteenths`) : T3('sem atraso', 'no delay');
+    const cyc = ln.cycles ? T3(`, LFO ${ln.cycles} ciclos por loop`, `, LFO ${ln.cycles} cycles per loop`) : '';
+    const listens = ln.listens.length ? T3(`, ouve ${ln.listens.join('/')}`, `, listens ${ln.listens.join('/')}`) : T3(', não ouve a música', ', does not listen');
+    return `${ln.name}: ${label}, ${delay}${cyc}${listens}${ln.on ? '' : T3(', desligada', ', off')}`;
+  }
+  function laneHtml(m, ln) {
+    const sel = ln.i === ST.sel, S16 = m.bars * 16;
+    return `<div class="tlrow ${sel ? 'sel' : ''} ${ln.on ? '' : 'off'}" data-i="${ln.i}"><span class="tlname" title="${esc(ln.name)}"><span class="k">L${ln.i}</span> ${esc(ln.name)}</span>
+      <div class="tllane" role="slider" tabindex="0" aria-label="${esc(laneAria(ln))}" aria-valuemin="0" aria-valuemax="${S16 - 1}" aria-valuenow="${Math.round(ln.steps)}" aria-valuetext="${esc(T3(`atraso ${r1(ln.steps)} de ${S16} semicolcheias`, `delay ${r1(ln.steps)} of ${S16} sixteenths`))}" data-behavior="${esc(ln.behavior || '')}" data-steps="${ln.steps}" data-phase="${ln.phase}">${laneInner(ln)}</div></div>`;
+  }
+
+  function build() {
+    const el = root(); if (!el || !$('#tlBody')) return;
+    const m = model(); S.m = m;
+    const strip = m.phases.length ? m.phases.map((p, k) => `<span class="ph p${k}" style="left:${pct(p.from)};width:${pct(p.to - p.from)}" data-phase="${esc(p.name)}">${esc(p.name)}</span>`).join('') : '';
+    const evs = m.events.map(e => `<span class="ev" role="slider" tabindex="0" style="left:${pct(e.at)}" data-event="${esc(e.name)}" data-k="${e.k}" data-beat="${e.beat}" aria-label="${esc(T3('Evento ' + e.name + ' (anotação do plano, não muda o render)', 'Event ' + e.name + ' (plan note, does not change the render)'))}" aria-valuemin="0" aria-valuemax="${m.bars * 4 - 1}" aria-valuenow="${e.beat}" title="${esc(e.name)} · ${T3('batida', 'beat')} ${e.beat}"><b>${esc(e.name)}</b></span>`).join('');
+    $('#tlBody').innerHTML = `
+      <div class="tlrow tlhead"><span class="tlname"></span><div class="tlruler" id="tlRuler" role="slider" tabindex="0" aria-label="${T3('Posição no loop', 'Position in the loop')}" aria-valuemin="0" aria-valuemax="${m.LF - 1}" aria-valuenow="${Math.max(0, S.lastN)}">${rulerHtml(m)}</div></div>
+      <div class="tlrow tlphases"><span class="tlname">${T3('FASES', 'PHASES')}</span><div class="tllane tlstrip">${strip}${evs}${m.hasIR ? '' : `<small class="tlnote">${T3('sem Animation IR neste projeto: só régua e camadas', 'no Animation IR in this project: ruler and layers only')}</small>`}</div></div>
+      ${m.lanes.map(l => laneHtml(m, l)).join('')}
+      <div class="tlrow tlaudio"><span class="tlname">${T3('ÁUDIO', 'AUDIO')}</span><div class="tllane"><canvas id="tlAud" width="800" height="36" role="img" aria-label="${T3('Bandas sintéticas do BPM ao longo do loop', 'Synthetic BPM bands across the loop')}"></canvas><small>${T3('SINTÉTICO DO BPM · graves, médios, agudos', 'SYNTHETIC FROM THE BPM · bass, mid, high')}</small></div></div>
+      <div id="tlHead" aria-hidden="true"></div>`;
+    $('#tlInfo').textContent = `${m.bars} ${T3('compassos', 'bars')} · ${m.bpm} BPM · ${m.LF} ${T3('quadros', 'frames')} · ${m.loop && m.seamless ? T3('LOOP FECHA', 'LOOP CLOSES') : m.loop ? 'LOOP' : T3('SEM LOOP', 'NO LOOP')}`;
+    drawAudio(m); S.lastN = -1; place(ST.n); fitHead();
+  }
+  const fitHead = () => { const hd = $('#tlHead'), b = $('#tlBody'); if (hd && b) hd.style.height = b.scrollHeight + 'px'; };
+  function drawAudio(m) {
+    const cv = $('#tlAud'); if (!cv) return;
+    const w = cv.clientWidth > 40 ? Math.round(cv.clientWidth) : 800, h = 36; cv.width = w; cv.height = h;
+    const c = cv.getContext('2d'); c.clearRect(0, 0, w, h);
+    const css = getComputedStyle(root()), cols = [css.getPropertyValue('--fg') || '#fff', css.getPropertyValue('--accent') || '#0f0', css.getPropertyValue('--dim') || '#999'];
+    ['bass', 'mid', 'high'].forEach((band, bi) => {
+      c.beginPath(); c.strokeStyle = cols[bi].trim() || '#fff'; c.lineWidth = bi === 0 ? 1.5 : 1; c.globalAlpha = bi === 0 ? 1 : 0.7;
+      for (let x = 0; x < w; x++) { const F = { beatF: (x / w) * m.bars * 4, fps: m.fps, fpb: m.fps * 60 / m.bpm, LF: m.LF, ph: x / w, n: Math.round(x / w * m.LF) }; const v = clamp(pseudoAudio(F)[band], 0, 1); x ? c.lineTo(x, h - 2 - v * (h - 6)) : c.moveTo(x, h - 2 - v * (h - 6)); }
+      c.stroke();
+    });
+    c.globalAlpha = 1;
+  }
+  function place(n) {
+    const hd = $('#tlHead'), m = S.m; if (!hd || !m) return;
+    hd.style.left = `calc(var(--tl-name) + (100% - var(--tl-name)) * ${(m.LF > 1 ? n / (m.LF - 1) : 0).toFixed(5)})`;
+    const r = $('#tlRuler'); if (r) r.setAttribute('aria-valuenow', n);
+    $('#tlPos').textContent = `${pad(n, 4)}/${pad(m.LF, 4)}`; S.lastN = n;
+  }
+
+  /* chamado por tick(): a cabeça acompanha o quadro; o resto só refaz quando a assinatura muda (conferida a cada 12 quadros) */
+  function tick(F) {
+    const el = root(); if (!el || !S.open) return;
+    if (S.tickN++ % 12 === 0 && !drag) { const m = model(), s = signature(m); if (s !== S.sig) { S.sig = s; build(); } }
+    if (F.n !== S.lastN) place(F.n);
+  }
+
+  function setOpen(v, persist = true) {
+    S.open = !!v; const el = root(); if (!el) return;
+    el.hidden = !S.open; $('#tlToggle').setAttribute('aria-expanded', S.open);
+    $('#tlShow').hidden = S.open; $('#app').classList.toggle('tlopen', S.open);
+    if (persist) store.set('tlOpen', S.open);
+    if (S.open) { S.sig = ''; S.tickN = 0; }
+    setTimeout(fit, 30);
+  }
+  function setHeight(h, persist) {
+    const vh = $('#view').getBoundingClientRect().height || 600, max = Math.max(120, Math.round(vh * 0.55));
+    S.h = clamp(Math.round(h), 110, max); root().style.setProperty('--tl-h', S.h + 'px'); $('#app').style.setProperty('--tl-h', S.h + 'px'); if (persist) store.set('tlH', S.h); setTimeout(() => { fit(); fitHead(); }, 30);
+  }
+
+  /* leitura de posição: arrastar ou apertar na régua move a cabeça de leitura (o mesmo que o scrub); nada do projeto muda */
+  function seekAt(clientX) {
+    const r = $('#tlRuler').getBoundingClientRect(), m = S.m; if (!m || r.width <= 0) return;
+    const n = Math.round(clamp((clientX - r.left) / r.width, 0, 1) * (m.LF - 1)); scrubbing = true; ST.n = n; if (!ST.paused) setPause(true); place(n);
+  }
+  function seekBy(d) { const m = S.m; if (!m) return; const n = clamp(ST.n + d, 0, m.LF - 1); scrubbing = true; ST.n = n; if (!ST.paused) setPause(true); place(n); setTimeout(() => { scrubbing = false; }, 0); }
+
+  /* T2: edição do que já existe. Atraso da camada (L.p.phase, fração do loop em passos de semicolcheia) e batida do evento (meta.animationIR[ci].events[k].beat). */
+  const rnd = (x, d) => { const f = Math.pow(10, d); return Math.round(x * f) / f; };
+  const stepsOf = L => { const v = L.p && isFinite(+L.p.phase) ? +L.p.phase : 0; return (((v % 1) + 1) % 1) * (P.time.bars * 16); };
+  function setSteps(i, steps) {
+    const L = cur().layers[i]; if (!L) return null; const S16 = P.time.bars * 16, n = clamp(Math.round(steps), 0, S16 - 1);
+    if (n === 0) { if (L.p) delete L.p.phase; } else { L.p = L.p || {}; L.p.phase = rnd(n / S16, 6); }
+    return n;
+  }
+  function paintLane(i) {
+    const m = model(), ln = m.lanes[i], row = $(`#tlBody .tlrow[data-i="${i}"] .tllane`); if (!ln || !row) return;
+    S.m = m; S.sig = signature(m); row.innerHTML = laneInner(ln); row.dataset.steps = ln.steps; row.dataset.phase = ln.phase;
+    row.setAttribute('aria-label', laneAria(ln)); row.setAttribute('aria-valuenow', Math.round(ln.steps));
+    row.setAttribute('aria-valuetext', T3(`atraso ${r1(ln.steps)} de ${m.bars * 16} semicolcheias`, `delay ${r1(ln.steps)} of ${m.bars * 16} sixteenths`));
+  }
+  function evList() { const a = (P.meta || {}).animationIR, ani = Array.isArray(a) ? a[ST.ci] : null; return ani && Array.isArray(ani.events) ? ani.events : null; }
+  function phaseAt(at) { const M = P.meta || {}, c = Array.isArray(M.compositionIR) ? M.compositionIR[ST.ci] : null, ph = c && c.temporal && c.temporal.phases; if (!Array.isArray(ph)) return null; let hit = null; ph.forEach(p => { if (at >= p.at) hit = p.name; }); return hit; }
+  /* batida inteira dentro do loop e sem passar do vizinho (a validação exige ordem); devolve a batida aplicada */
+  function setBeat(k, beat) {
+    const evs = evList(); if (!evs || !evs[k]) return null; const beats = P.time.bars * 4;
+    const lo = k > 0 ? evs[k - 1].beat : 0, hi = k + 1 < evs.length ? evs[k + 1].beat : beats - 1, b = clamp(Math.round(beat), lo, Math.max(lo, hi));
+    evs[k].beat = b; evs[k].at = rnd(b / beats, 4); const ph = phaseAt(evs[k].at); if (ph) evs[k].phase = ph; return b;
+  }
+  function repaintAll() { build(); S.sig = signature(S.m); }
+  const laneLabel = i => T3('Atraso ', 'Delay ') + 'L' + i + ' ' + ((cur().layers[i] || {}).name || '');
+  const evLabel = k => T3('Evento ', 'Event ') + evList()[k].name + ' ' + T3('batida ', 'beat ') + evList()[k].beat;
+  function afterEdit() { try { renderParams(); } catch (e) { /* painel ainda não montado */ } }
+
+  /* arrasto: estado vivo no projeto, uma só entrada de histórico no fim; Esc devolve o valor de antes */
+  let drag = null;
+  function dragStart(e, kind, id, host) {
+    if (e.button !== 0) return; const m = S.m; if (!m) return; e.preventDefault(); host.setPointerCapture(e.pointerId);
+    const box = (kind === 'lane' ? host : host.parentElement).getBoundingClientRect();
+    const L = kind === 'lane' ? cur().layers[id] : null, evs = kind === 'event' ? evList() : null;
+    drag = { kind, id, host, x0: e.clientX, w: box.width, left: box.left, S16: m.bars * 16, beats: m.bars * 4, s0: kind === 'lane' ? stepsOf(L) : 0, b0: kind === 'event' ? evs[id].beat : 0,
+      orig: kind === 'lane' ? JSON.stringify(L.p && 'phase' in L.p ? L.p.phase : null) : JSON.stringify(evs.map(v => [v.beat, v.at, v.phase])), moved: false };
+    if (kind === 'lane' && ST.sel !== id) selLayer(id);
+    host.focus({ preventScroll: true });
+    const mv = ev => dragMove(ev), end = c => { host.removeEventListener('pointermove', mv); host.removeEventListener('pointerup', up); host.removeEventListener('pointercancel', cn); dragEnd(c); }, up = () => end(false), cn = () => end(true);
+    host.addEventListener('pointermove', mv); host.addEventListener('pointerup', up); host.addEventListener('pointercancel', cn);
+    drag.cancel = () => end(true);
+  }
+  function dragMove(e) {
+    const d = drag; if (!d || d.w <= 0) return;
+    if (d.kind === 'lane') { const n = setSteps(d.id, d.s0 + (e.clientX - d.x0) / (d.w / d.S16)); if (n !== null) { d.moved = d.moved || n !== Math.round(d.s0); paintLane(d.id); } }
+    else { const b = setBeat(d.id, (e.clientX - d.left) / d.w * d.beats); if (b !== null) { d.moved = d.moved || b !== d.b0; d.host.style.left = pct(evList()[d.id].at); d.host.dataset.beat = b; d.host.setAttribute('aria-valuenow', b); d.host.title = d.host.dataset.event + ' · ' + T3('batida', 'beat') + ' ' + b; } }
+  }
+  function dragEnd(cancelled) {
+    const d = drag; drag = null; if (!d) return;
+    if (cancelled) {
+      if (d.kind === 'lane') { const L = cur().layers[d.id], v = JSON.parse(d.orig); if (v === null) { if (L.p) delete L.p.phase; } else { L.p = L.p || {}; L.p.phase = v; } paintLane(d.id); }
+      else { const evs = evList(); JSON.parse(d.orig).forEach((o, k) => { evs[k].beat = o[0]; evs[k].at = o[1]; evs[k].phase = o[2]; }); repaintAll(); }
+      return;
+    }
+    if (!d.moved) return;
+    if (d.kind === 'lane') { commit(true, laneLabel(d.id) + ' ' + r1(stepsOf(cur().layers[d.id])) + '/16'); afterEdit(); }
+    else { commit(true, evLabel(d.id)); repaintAll(); const ev = $(`#tlBody .ev[data-k="${d.id}"]`); if (ev) ev.focus({ preventScroll: true }); }
+  }
+  /* teclado: ± uma semicolcheia (evento: uma batida); PageUp/PageDown ± 4 (uma batida na camada, 4 batidas no evento); Home/End nas pontas; uma rajada vira uma só entrada de histórico */
+  function keyEdit(e) {
+    const lane = e.target.closest('.tllane[role=slider]'), ev = e.target.closest('.ev[role=slider]'); if (!lane && !ev) return;
+    if (e.key === 'Escape') { if (drag) { e.preventDefault(); e.stopPropagation(); drag.cancel(); } return; }
+    const d = { ArrowLeft: -1, ArrowRight: 1, PageUp: -4, PageDown: 4 }[e.key];
+    if (d === undefined && e.key !== 'Home' && e.key !== 'End') return;
+    e.preventDefault(); e.stopPropagation();
+    if (lane) {
+      const i = +lane.closest('.tlrow').dataset.i, S16 = P.time.bars * 16, now = Math.round(stepsOf(cur().layers[i]));
+      if (setSteps(i, e.key === 'Home' ? 0 : e.key === 'End' ? S16 - 1 : now + d) === null) return;
+      paintLane(i); commit(false, laneLabel(i) + ' ' + r1(stepsOf(cur().layers[i])) + '/16'); setTimeout(afterEdit, 0);
+    } else {
+      const k = +ev.dataset.k, evs = evList(); if (!evs || !evs[k]) return; const beats = P.time.bars * 4;
+      if (setBeat(k, e.key === 'Home' ? 0 : e.key === 'End' ? beats : evs[k].beat + d) === null) return;
+      commit(false, evLabel(k)); repaintAll(); const nev = $(`#tlBody .ev[data-k="${k}"]`); if (nev) nev.focus({ preventScroll: true });
+    }
+  }
+
+  const el = root();
+  if (el) {
+    const narrow = innerWidth < 1100 || innerHeight < 700;
+    if (S.open === null) S.open = !narrow;
+    setHeight(S.h, false); setOpen(S.open, false);
+    $('#tlToggle').onclick = () => setOpen(false);
+    $('#tlShow').onclick = () => setOpen(true);
+    $('#tlBtns').addEventListener('click', e => {
+      const b = e.target.closest('[data-tl]'); if (!b) return; const a = b.dataset.tl;
+      if (a === 'start') seekBy(-ST.n); else if (a === 'prev') seekBy(-1); else if (a === 'next') seekBy(1); else if (a === 'play') setPause(!ST.paused);
+    });
+    $('#tlBody').addEventListener('pointerdown', e => {
+      const evh = e.target.closest('.ev[role=slider]'); if (evh) { dragStart(e, 'event', +evh.dataset.k, evh); return; }
+      const lh = e.target.closest('.tllane[role=slider]'); if (lh) { dragStart(e, 'lane', +lh.closest('.tlrow').dataset.i, lh); return; }
+      const r = e.target.closest('#tlRuler'); if (!r) return; r.setPointerCapture(e.pointerId); seekAt(e.clientX);
+      const mv = ev => seekAt(ev.clientX), up = () => { r.removeEventListener('pointermove', mv); r.removeEventListener('pointerup', up); scrubbing = false; };
+      r.addEventListener('pointermove', mv); r.addEventListener('pointerup', up);
+    });
+    $('#tlBody').addEventListener('keydown', e => {
+      if (!e.target.closest('#tlRuler')) { keyEdit(e); return; } const m = S.m; if (!m) return; const fpb = Math.round(m.fps * 60 / m.bpm);
+      const d = { ArrowLeft: -1, ArrowRight: 1, PageUp: -fpb, PageDown: fpb }[e.key];
+      if (d !== undefined) { e.preventDefault(); e.stopPropagation(); seekBy(d); }
+      else if (e.key === 'Home') { e.preventDefault(); e.stopPropagation(); seekBy(-ST.n); } else if (e.key === 'End') { e.preventDefault(); e.stopPropagation(); seekBy(m.LF); }
+    });
+    $('#tlBody').addEventListener('click', e => { const r = e.target.closest('.tlrow[data-i]'); if (r && ST.sel !== +r.dataset.i && !e.target.closest('#tlRuler')) { /* só leitura de seleção: espelha o painel Camadas */ selLayer(+r.dataset.i); } });
+    const sp = $('#tlSplit'), drag = e => { setHeight(innerHeight - e.clientY - ($('#foot') ? $('#foot').getBoundingClientRect().height : 0), false); };
+    sp.addEventListener('pointerdown', e => { sp.setPointerCapture(e.pointerId); document.body.classList.add('resizing'); const up = () => { sp.removeEventListener('pointermove', drag); sp.removeEventListener('pointerup', up); document.body.classList.remove('resizing'); store.set('tlH', S.h); }; sp.addEventListener('pointermove', drag); sp.addEventListener('pointerup', up); });
+    sp.addEventListener('keydown', e => { const d = { ArrowUp: 16, ArrowDown: -16 }[e.key]; if (d) { e.preventDefault(); e.stopPropagation(); setHeight(S.h + d, true); sp.setAttribute('aria-valuenow', S.h); } });
+    addEventListener('resize', () => { if (S.open) { S.sig = ''; } });
+  }
+  return { tick, build, setOpen, setHeight, seekBy, setSteps, setBeat, get open() { return S.open; }, get model() { return S.m; }, get height() { return S.h; } };
+})();
+/*__TIMELINE_END__*/
+
 /* idioma: o texto da interface está em PT-BR; o EN é aplicado por um dicionário sobre o DOM */
-const EN = /*__I18N_START__*/{"Carregar briefing":"Load briefing","Desfazer":"Undo","Refazer":"Redo","Histórico":"History","Grade":"Grid","Quadro":"Frame","Solte imagem, vídeo ou fonte":"Drop image, video, font or 3D object","Pausa":"Pause","Degrau":"Step","Mostrar camadas":"Show layers","Áudio":"Audio","Cor":"Colour","Gravar":"Record","Tela limpa":"Clean screen","Cheia":"Full","Compor":"Compose","Camadas":"Layers","Parâm.":"Params","Texto":"Text","Mídia":"Media","Projeto":"Project","Ficha":"Sheet","Exportar":"Export","Guia":"Guide","Receitas":"Recipes","Composições":"Compositions","Ativar":"Activate","Duplicar":"Duplicate","Reset":"Reset","Remover":"Remove","+ Nova composição (duplica a ativa)":"+ New composition (duplicates the active one)","Resumo do projeto":"Project summary","Direção de arte":"Art direction","Reativo":"Reactive","Contrato criativo":"Creative contract","Conceito":"Concept","Efeito no público":"Effect on the audience","Intenção semiótica":"Semiotic intent","Linguagem visual":"Visual language","Forma":"Form","Material":"Material","Lógica de cor":"Colour logic","Lógica espacial":"Spatial logic","Movimento":"Motion","Arco temporal":"Time arc","Gramática do loop":"Loop grammar","Estratégia técnica":"Technical strategy","Atalhos proibidos":"Forbidden shortcuts","Fundo":"Background","Código · camada livre":"Code · free layer","Dados · logs e telemetria":"Data · logs and telemetry","Pós · scanline e glitch":"Post · scanline and glitch","Imagem":"Image","Vídeo":"Video","Objeto 3D":"3D object","OBJETO 3D":"3D OBJECT","Renomear":"Rename","Copiar parâmetros":"Copy parameters","Colar parâmetros":"Paste parameters","Copiar camada":"Copy layer","Colar camada":"Paste layer","Matéria · organismo":"Matter · organism","Estrutura · grade e réguas":"Structure · grid and rulers","Medição · rastreio":"Measure · tracking","Evento · wipe e palavra":"Event · wipe and word","Fluxo · partículas em campo":"Flow · particles in a field","Túnel · formas concêntricas":"Tunnel · concentric shapes","Parede tipográfica":"Type wall","Texto em pixel-bloco":"Block-pixel text","Matriz de símbolos":"Symbol matrix","Faixa de risco":"Hazard stripe","Glitch e strobe em bloco":"Block glitch and strobe","Logo em máscara":"Logo mask","Adicionar camada":"Add layer","Ligada":"On","Copiar":"Copy","Colar":"Paste","CÉLULAS":"CELLS","ANÉIS SDF":"SDF RINGS","INTERFERÊNCIA":"INTERFERENCE","Saída":"Output","Resolução interna":"Internal resolution","Primária":"Primary","Secundária":"Secondary","Acento":"Accent","Campo":"Field","Posição X":"Position X","Posição Y":"Position Y","Rotação °":"Rotation °","Âncora X":"Anchor X","Âncora Y":"Anchor Y","APARÊNCIA":"APPEARANCE","Brilho":"Brightness","Contraste":"Contrast","Saturação":"Saturation","Velocidade":"Speed","Fase":"Phase","Divisão BPM":"BPM division","Eco · cópias":"Echo · copies","ÁUDIO":"AUDIO","Resposta":"Response","Banda":"Band","camadas de texto desta composição":"text layers of this composition","Parâmetros do texto":"Text parameters","Desligada":"Off","Conteúdo":"Content","Fonte":"Font","Tamanho":"Size","Peso":"Weight","Entrelinha":"Line height","Alinhamento":"Alignment","Caixa alta":"All caps","Preencher":"Fill","Contorno":"Outline","Cor do contorno":"Outline colour","Sombra":"Shadow","Cor do glow":"Glow colour","Animação":"Animation","Importar mídia":"Import media","Biblioteca":"Library","Audioreatividade":"Audio reactivity","Microfone / entrada de linha":"Microphone / line in","Arquivo de áudio":"Audio file","Fonte de teste":"Test source","Parar fonte":"Stop source","Sensibilidade":"Sensitivity","Suavização":"Smoothing","Nome":"Name","Artista":"Artist","Predefinições…":"Presets…","1080×1920 · vertical 9:16":"1080×1920 · vertical 9:16","5120×500 · paredes em L":"5120×500 · L walls","Tela":"Screen","Projeção":"Projection","Mapping":"Mapping","Só exportação":"Export only","Paredes e dobras":"Walls and folds","Dobras (x em px)":"Folds (x in px)","Tempo e loop":"Time and loop","Compassos":"Bars","Modo":"Mode","Transição":"Transition","Travar":"Lock","Aleatória":"Random","Paleta":"Palette","Branco α (colorir depois)":"White α (colour it later)","Acento desta composição":"Accent of this composition","Herdar":"Inherit","Cor perceptual":"Perceptual colour","Superfície":"Surface","Gerar esquema":"Generate scheme","Análogo":"Analogous","Complementar":"Complementary","Complementar dividido":"Split complementary","Tríade":"Triad","Tétrade":"Tetrad","Gerar":"Generate","Paleta confere":"Palette checks out","Contraste e regras da superfície em ordem.":"Contrast and surface rules are fine.","Densidade":"Density","Arquivo do projeto":"Project file","Importar no modo Briefing":"Import in Briefing mode","Ficha de produção":"Production sheet","Ficha e canvas conferem":"Sheet and canvas match","Arquétipo":"Archetype","LED de palco":"Stage LED","Fachada":"Facade","Objeto":"Object","Instalação":"Installation","Corporativo":"Corporate","Confirmado":"Confirmed","Derivado":"Derived","proporção":"ratio","Assumido":"Assumed","Confirmar":"Confirm","Zonas":"Zones","fração do canvas":"fraction of the canvas","Mostrar na viewport":"Show in the view","Desenhar na vista":"Draw in the view","Duração min":"Duration min","Riscos":"Risks","um por linha":"one per line","Calculadoras":"Calculators","LED: gabinetes e pitch → pixel map":"LED: cabinets and pitch → pixel map","Gab. A mm":"Cab. W mm","Gabinetes":"Cabinets","Metros":"Metres","Colunas":"Columns","Linhas":"Rows","gabinetes (col × lin)":"cabinets (col × row)","total de gabinetes":"total cabinets","área (m²)":"area (m²)","proporção (decimal)":"ratio (decimal)","família de formato":"format family","cabe numa saída UHD":"fits one UHD output","distância de visão (m)":"viewing distance (m)","Premissa":"Assumption","Aplicar ao canvas e à ficha":"Apply to canvas and sheet","Projeção: lúmens, distância, contraste":"Projection: lumens, distance, contrast","Lúmens":"Lumens","Refletância":"Reflectance","iluminância (lux)":"illuminance (lux)","luminância aparente (nits)":"apparent luminance (nits)","Blend de projetores: recortes e sobreposição":"Projector blend: crops and overlap","Projetores":"Projectors","sobreposição (px)":"overlap (px)","sobreposição (%)":"overlap (%)","conteúdo, raster cheio (px)":"content, full raster (px)","conteúdo visível (px)":"visible content (px)","descartar em cada borda externa (px)":"discard at each outer edge (px)","Atenção":"Warning","Loop: BPM, compassos, fps, taxa do display":"Loop: BPM, bars, fps, display rate","BPM, compassos e fps vêm da aba Projeto.":"BPM, bars and fps come from the Project tab.","duração (s)":"duration (s)","Legibilidade: pitch e distância":"Legibility: pitch and distance","distância (m)":"distance (m)","período do padrão":"pattern period","altura de letra mínima":"minimum letter height","altura de letra confortável":"comfortable letter height","traço mínimo (px)":"minimum stroke (px)","módulos da faixa":"strip modules","Composição α":"Composition α","Composição RGB":"Composition RGB","Uma camada":"One layer","Resolução":"Resolution","Quadros":"Frames","Prefixo":"Prefix","Validação técnica":"Technical validation","Renderizar e baixar ZIP":"Render and download ZIP","Cancelar":"Cancel","Folha de contato PNG":"PNG contact sheet","Gravar tela":"Record screen","Parar após 1 loop":"Stop after 1 loop","Gravar composição":"Record composition","Saída ao vivo":"Live output","Abrir janela de saída":"Open output window","Tela cheia da viewport":"Fullscreen view","recortes do canvas":"canvas crops","Dividir em 2":"Split in 2","Dividir em 3":"Split in 3","Transporte de sinal":"Signal transport","Destino":"Target","Como":"How","EXPORTÁVEL":"EXPORTABLE","Como funciona":"How it works","O que é":"What it is","Com o Claude":"With Claude","Atalhos":"Shortcuts","Espaço":"Space","tap tempo (o 1º toque alinha o downbeat)":"tap tempo (the 1st tap aligns the downbeat)","alinha o downbeat sem mudar o BPM":"aligns the downbeat without changing BPM","trocar composição":"switch composition","mostrar camadas (arraste para girar)":"show layers (drag to rotate)","áudio reativo":"reactive audio","desfazer qualquer alteração":"undo any change","Duplo clique no rótulo":"Double-click the label","volta o número ao padrão":"resets the number","← → no divisor":"← → on the divider","largura do menu (Home minimiza)":"menu width (Home minimises)","quadro anterior / próximo (pausado)":"previous / next frame (paused)","Regras de direção":"Direction rules","Um herói por compasso":"One hero per bar","Cor é evento":"Colour is an event","Interface em degrau, matéria em curva":"Interface in steps, matter in curves","Pense no espaço":"Think about the space","Áudio com parcimônia":"Use audio sparingly","Créditos: criado por Giulia Ribeiro · GYULYIA":"Credits: created by Giulia Ribeiro · GYULYIA","Paleta de cor":"Colour palette","Personalizada":"Custom","Não mostrar ao abrir":"Do not show on open","Entendi":"Got it","Aguardando briefing":"Waiting for a briefing","No chat do Claude, digite":"In Claude chat, type","e descreva o set.":"and describe the set.","Abrir o STANDARD (biblioteca original)":"Open STANDARD (original library)","Este projeto tem camadas de código.":"This project has code layers.","Autorizar e executar":"Authorise and run","Manter bloqueado":"Keep blocked","Animações STANDARD (motor de camadas original)":"STANDARD animations (original layer engine)","Alternar tema: escuro, claro ou do sistema":"Switch theme: dark, light or system","Alternar tema":"Switch theme","Como usar":"How to use","Diminuir zoom":"Zoom out","Aumentar zoom":"Zoom in","Posição no loop":"Position in the loop","Digite o número do quadro ou uma conta":"Type the frame number or a sum","Ir para o quadro":"Go to frame","Minimizar ou abrir o menu (G)":"Minimise or open the menu (G)","Minimizar o menu":"Minimise the menu","Abrir o menu":"Open the menu","Transporte":"Transport","Duplicar composição ativa":"Duplicate the active composition","Altura da vista, arraste ou use as setas":"View height, drag or use the arrows","Largura do menu, arraste ou use as setas":"Menu width, drag or use the arrows","Controles":"Controls","Tipo de camada":"Layer type","Restaurar":"Reset","Restaurar padrão":"Reset to default","Predefinição de canvas":"Canvas preset","Largura":"Width","Altura":"Height","Trocar W e H":"Swap W and H","Posição das dobras em pixels":"Fold positions in pixels","ex.: 2560 ou 1920, 3840":"e.g. 2560 or 1920, 3840","Largura da calha da dobra":"Fold gutter width","Compassos do loop":"Loop bars","Modo de loop":"Loop mode","Transição entre composições":"Transition between compositions","Duração da transição em beats":"Transition length in beats","Verde ácido":"Acid green","Azul elétrico":"Electric blue","Vermelho alarme":"Alarm red","Amarelo sinal":"Signal yellow","Osso":"Bone","Luminosidade 0 a 1":"Lightness 0 to 1","Croma 0 a 0,37":"Chroma 0 to 0.37","Matiz 0 a 360":"Hue 0 to 360","Matiz do conceito, 0 a 360":"Concept hue, 0 to 360","Relação de matizes":"Hue relation","Remover premissa":"Remove assumption","por quê":"why","Tipo de zona":"Zone type","Remover zona":"Remove zone","Eixo do blend":"Blend axis","Quadro inicial":"Start frame","Quadro final":"End frame","Prefixo dos arquivos":"File prefix","Fechar":"Close","Histórico de alterações":"Change history","Fechar histórico":"Close history","Todos":"All","Código":"Code","Ferramentas":"Tools","Adicionar composição de cartões de teste":"Add a test-card composition","CÓDIGO":"CODE","FERRAMENTA":"TOOL","Significa":"Means","Camada":"Layer","Custo":"Cost","Prévia":"Preview","Visualizar":"Preview","Passe o mouse para ver um quadro; clique para animar em baixa resolução":"Hover to see a frame; click to animate at low resolution","Adicionar à composição":"Add to composition","Buscar efeito":"Search effects","Buscar: onda, órbita, caos, som…":"Search: wave, orbit, chaos, sound…","Nenhum efeito com esse termo. Tente \"onda\", \"órbita\" ou \"caos\".":"No effect matches. Try \"wave\", \"orbit\" or \"chaos\".","Grão":"Grain","Troca do grão (quadros)":"Grain change (frames)","Pontos":"Points","Ponto":"Point","Giro":"Spin","Respiração":"Breathing","Inclinação X °":"Tilt X °","Inclinação Y °":"Tilt Y °","Pétalas":"Petals","Cor da varredura":"Sweep colour","Opacidade grade":"Grid opacity","Réguas":"Rulers","Anéis":"Rings","Espiral áurea":"Golden spiral","Ângulo áureo":"Golden angle","Desenho após evento":"Draw after event","Escala do texto":"Text scale","Cor do ângulo":"Angle colour","Alvos":"Targets","Rótulo do alvo":"Target label","Mostrar confiança":"Show confidence","Rede":"Network","Raios":"Rays","Cor do alvo":"Target colour","Linhas de log":"Log lines","Etiquetas":"Labels","Telemetria":"Telemetry","Cor do destaque":"Highlight colour","Título (vazio = nome do projeto)":"Title (empty = project name)","Subtítulo":"Subtitle","Linha de data":"Date line","Rodapé":"Footer","Rótulo da retícula":"Reticle label","Retícula":"Reticle","Contador de beat":"Beat counter","Cor do beat 1":"Beat 1 colour","A cada N compassos (0 = manual)":"Every N bars (0 = manual)","Duração (beats)":"Length (beats)","Linha de apoio ({ID} {CONF})":"Support line ({ID} {CONF})","Tamanho da palavra":"Word size","Cor do bloco":"Block colour","Cor do texto (auto = contraste)":"Text colour (auto = contrast)","Passo da scanline":"Scanline step","Vinheta":"Vignette","Prob. de glitch por beat":"Glitch probability per beat","Fatias":"Slices","Tremor de quadro":"Frame jitter","Cor da fatia":"Slice colour","Cor da fatia acento":"Accent slice colour","Direção":"Direction","Quantidade":"Amount","Espessura":"Thickness","Em degrau (por beat)":"Stepped (per beat)","Pulso na espessura":"Thickness pulse","Acento a cada N linhas":"Accent every N lines","Cor do acento":"Accent colour","Partículas":"Particles","Rastro":"Trail","Amplitude":"Amplitude","Escala do ruído":"Noise scale","Raio da órbita":"Orbit radius","Opacidade":"Opacity","Fração em acento":"Accent fraction","Perspectiva":"Perspective","Proporção":"Proportion","Torção":"Twist","Pulso":"Pulse","Anel acento no beat":"Accent ring on beat","Altura da letra":"Letter height","Troca no beat":"Change on beat","Traço do contorno":"Outline stroke","Separador":"Separator","Linha acento no beat":"Accent line on beat","Arquivo":"File","Encaixe":"Fit","Espelhar":"Mirror","Inverter vertical":"Flip vertical","Corte esq.":"Crop left","Corte dir.":"Crop right","Corte topo":"Crop top","Corte base":"Crop bottom","Colorir (none = original)":"Tint (none = original)","Início (s)":"Start (s)","Fim (s, 0 = final)":"End (s, 0 = end)","Reprodução":"Playback","Tamanho (%)":"Size (%)","Giro Y (voltas/loop)":"Spin Y (turns/loop)","Inclinação X (°)":"Tilt X (°)","Giro Z (°)":"Roll Z (°)","Espessura da linha":"Line width","Tamanho do ponto":"Point size","Densidade dos pontos":"Point density","Direção da luz (°)":"Light direction (°)","Luz ambiente":"Ambient light","Pulso no beat":"Pulse on beat","Cor da borda de luz":"Rim light colour","Tipo":"Type","Repetição":"Repetition","Distribuição":"Distribution","Espaçamento":"Spacing","Preenchimento":"Fill","Traço":"Stroke","Espessura do traço":"Stroke width","Raio do canto":"Corner radius","Alternar acento no beat":"Alternate accent on beat","Código (corpo de draw(c, K))":"Code (body of draw(c, K))","Parede":"Wall","Troca":"Change","Entrada":"Entry","Duração da entrada (beats)":"Entry length (beats)","Largura (fração da parede)":"Width (fraction of the wall)","Altura máxima (fração)":"Maximum height (fraction)","Posição vertical":"Vertical position","Salto de linhas (células)":"Line skip (cells)","Placa vazada":"Cut-out plate","Padrão":"Pattern","Símbolos (o O x s + k S .)":"Symbols (o O x s + k S .)","Célula":"Cell","Tamanho do símbolo":"Symbol size","Passo":"Step","Listra":"Stripe","Inclinação":"Tilt","Alcance (fração da parede)":"Reach (fraction of the wall)","Intensidade":"Intensity","Strobe de parede":"Wall strobe","Tom":"Tone","Variação":"Variation","Entre paredes":"Between walls","Mostrar":"Show","Esconder":"Hide","Importar JSON":"Import JSON","Abrir arquivo .json":"Open .json file","Salvar JSON":"Save JSON","Abrir JSON":"Open JSON","Copiar JSON":"Copy JSON","Biblioteca ":"Library ","Imagem ":"Image ","Usar":"Use","Logo → branco α":"Logo → white α","Menu ›":"Menu ›","‹ Menu":"‹ Menu","Vocabulário, não preset. Adicione uma camada, depois mude os números, a paleta e o áudio para o briefing. Todos fecham o loop.":"A vocabulary, not a preset. Add a layer, then change the numbers, palette and audio for the briefing. All of them close the loop.","Escolha no seletor ou digite RGB (0 a 255) e HEX.":"Pick with the selector or type RGB (0 to 255) and HEX.","Tudo branco com opacidade (100 / 72 / 43 %). Você colore depois. Ideal para render com alfa.":"All white with opacity (100 / 72 / 43 %). You colour it later. Ideal for alpha renders.","Aplicar branco α":"Apply white α","Branco α ativo":"White α active","Restaurar paleta do briefing":"Restore the briefing palette","A paleta que o Claude gerou para este briefing.":"The palette Claude generated for this briefing.","Este projeto não tem paleta de briefing. Carregue um projeto gerado pelo /vj.":"This project has no briefing palette. Load a project generated by /vj.","Vermelho":"Red","Âmbar":"Amber","Amarelo":"Yellow","Verde":"Green","Ciano":"Cyan","Azul":"Blue","Magenta":"Magenta","Menu minimizado. G reabre.":"Menu minimised. G reopens it.","Escuro":"Dark","Claro":"Light","Sistema":"System","Compl. dividido":"Split compl.","Tipografia · hierarquia, revelação e caminho":"Typography · hierarchy, reveal and path","Título":"Title","Legenda":"Caption","Dados":"Data","Tamanho do título (px lógicos)":"Title size (logical px)","Razão entre níveis":"Ratio between levels","Distância entre níveis (em)":"Distance between levels (em)","Revelação":"Reveal","Entrada (fração do loop)":"Entrance (fraction of the loop)","Duração da entrada":"Entrance length","Duração da saída":"Exit length","Atraso entre níveis":"Delay between levels","Escalonamento entre glifos":"Stagger between glyphs","Caminho":"Path","Raio do círculo":"Circle radius","Amplitude da onda":"Wave amplitude","Ondas no comprimento (inteiro)":"Waves along the length","Ângulo da linha (°)":"Line angle (°)","Deriva ao longo do caminho (ciclos/loop)":"Drift along the path (cycles/loop)","Cor da legenda e dados":"Caption and data colour","Bíblia de arte":"Art bible","Tese":"Thesis","Dramaturgia":"Dramaturgy","Tipografia":"Typography","Banidos":"Banned","Perfil de movimento":"Motion profile","Cada projeto nasce de um briefing: conversado com o Claude, que analisa texto, imagens e vídeos, ou preenchido aqui mesmo, sem IA. Não há presets nem modelos pré-prontos: o sistema visual é escrito do zero para o seu briefing.":"Every project starts from a brief: talked through with Claude, which analyses text, images and videos, or filled in right here, with no AI. There are no presets or ready-made templates: the visual system is written from scratch for your brief.","Com o Claude: no chat, digite /vj e descreva o set. O projeto chega aqui montado.":"With Claude: in the chat, type /vj and describe the set. The project arrives here assembled.","Sem IA: clique em Gerar sem IA, preencha o briefing e escolha o preset da sua superfície.":"Without AI: click Generate without AI, fill in the brief and pick the preset for your surface.","Depois ajuste nas abas, exporte as imagens na aba Exportar.":"Then adjust in the tabs, evaluate in the Generate tab and export the images in the Export tab.","Gerar sem IA":"Generate without AI","Buscar":"Search","Biblioteca ›":"Library ›","Recolher a biblioteca":"Collapse the library","Abrir a biblioteca":"Open the library","Buscar composição ou camada":"Search composition or layer","Abrir a aba Exportar":"Open the Export tab"}/*__I18N_END__*/;
+const EN = /*__I18N_START__*/{"Carregar briefing":"Load briefing","Timeline":"Timeline","Timeline ▾":"Timeline ▾","Timeline ▴":"Timeline ▴","Mostrar a timeline":"Show the timeline","Altura da timeline":"Timeline height","Ir ao início":"Go to start","Quadro anterior":"Previous frame","Próximo quadro":"Next frame","Tocar ou pausar":"Play or pause","Início":"Start","Recolher a timeline":"Collapse the timeline","Adicionar":"Add","Adicionar camada":"Add layer","+ Adicionar camada":"+ Add layer","Buscar tipo":"Search type","Buscar tipo de camada":"Search layer type","Prévia de um quadro":"One-frame preview","Nenhum tipo encontrado.":"No type found.","Os demais parâmetros ficam no painel Parâmetros depois de adicionada.":"The other parameters are in the Parameters panel once the layer is added.","Este tipo se ajusta no painel Parâmetros depois de adicionado.":"This type is tuned in the Parameters panel after it is added.","Sem prévia: o código só roda depois de autorizado.":"No preview: code only runs once authorised.","Desfazer":"Undo","Refazer":"Redo","Histórico":"History","Grade":"Grid","Quadro":"Frame","Solte imagem, vídeo ou fonte":"Drop image, video, font or 3D object","Pausa":"Pause","Degrau":"Step","Mostrar camadas":"Show layers","Áudio":"Audio","Cor":"Colour","Gravar":"Record","Tela limpa":"Clean screen","Cheia":"Full","Compor":"Compose","Camadas":"Layers","Parâm.":"Params","Texto":"Text","Mídia":"Media","Projeto":"Project","Ficha":"Sheet","Exportar":"Export","Guia":"Guide","Receitas":"Recipes","Composições":"Compositions","Ativar":"Activate","Duplicar":"Duplicate","Reset":"Reset","Remover":"Remove","+ Nova composição (duplica a ativa)":"+ New composition (duplicates the active one)","Resumo do projeto":"Project summary","Direção de arte":"Art direction","Reativo":"Reactive","Contrato criativo":"Creative contract","Conceito":"Concept","Efeito no público":"Effect on the audience","Intenção semiótica":"Semiotic intent","Linguagem visual":"Visual language","Forma":"Form","Material":"Material","Lógica de cor":"Colour logic","Lógica espacial":"Spatial logic","Movimento":"Motion","Arco temporal":"Time arc","Gramática do loop":"Loop grammar","Estratégia técnica":"Technical strategy","Atalhos proibidos":"Forbidden shortcuts","Fundo":"Background","Código · camada livre":"Code · free layer","Dados · logs e telemetria":"Data · logs and telemetry","Pós · scanline e glitch":"Post · scanline and glitch","Imagem":"Image","Vídeo":"Video","Objeto 3D":"3D object","OBJETO 3D":"3D OBJECT","Renomear":"Rename","Copiar parâmetros":"Copy parameters","Colar parâmetros":"Paste parameters","Copiar camada":"Copy layer","Colar camada":"Paste layer","Matéria · organismo":"Matter · organism","Estrutura · grade e réguas":"Structure · grid and rulers","Medição · rastreio":"Measure · tracking","Evento · wipe e palavra":"Event · wipe and word","Fluxo · partículas em campo":"Flow · particles in a field","Túnel · formas concêntricas":"Tunnel · concentric shapes","Parede tipográfica":"Type wall","Texto em pixel-bloco":"Block-pixel text","Matriz de símbolos":"Symbol matrix","Faixa de risco":"Hazard stripe","Glitch e strobe em bloco":"Block glitch and strobe","Logo em máscara":"Logo mask","Adicionar camada":"Add layer","Ligada":"On","Copiar":"Copy","Colar":"Paste","CÉLULAS":"CELLS","ANÉIS SDF":"SDF RINGS","INTERFERÊNCIA":"INTERFERENCE","Saída":"Output","Resolução interna":"Internal resolution","Primária":"Primary","Secundária":"Secondary","Acento":"Accent","Campo":"Field","Posição X":"Position X","Posição Y":"Position Y","Rotação °":"Rotation °","Âncora X":"Anchor X","Âncora Y":"Anchor Y","APARÊNCIA":"APPEARANCE","Brilho":"Brightness","Contraste":"Contrast","Saturação":"Saturation","Velocidade":"Speed","Fase":"Phase","Divisão BPM":"BPM division","Eco · cópias":"Echo · copies","ÁUDIO":"AUDIO","Resposta":"Response","Banda":"Band","camadas de texto desta composição":"text layers of this composition","Parâmetros do texto":"Text parameters","Desligada":"Off","Conteúdo":"Content","Fonte":"Font","Tamanho":"Size","Peso":"Weight","Entrelinha":"Line height","Alinhamento":"Alignment","Caixa alta":"All caps","Preencher":"Fill","Contorno":"Outline","Cor do contorno":"Outline colour","Sombra":"Shadow","Cor do glow":"Glow colour","Animação":"Animation","Importar mídia":"Import media","Biblioteca":"Library","Audioreatividade":"Audio reactivity","Microfone / entrada de linha":"Microphone / line in","Arquivo de áudio":"Audio file","Fonte de teste":"Test source","Parar fonte":"Stop source","Sensibilidade":"Sensitivity","Suavização":"Smoothing","Nome":"Name","Artista":"Artist","Predefinições…":"Presets…","1080×1920 · vertical 9:16":"1080×1920 · vertical 9:16","5120×500 · paredes em L":"5120×500 · L walls","Tela":"Screen","Projeção":"Projection","Mapping":"Mapping","Só exportação":"Export only","Paredes e dobras":"Walls and folds","Dobras (x em px)":"Folds (x in px)","Tempo e loop":"Time and loop","Compassos":"Bars","Modo":"Mode","Transição":"Transition","Travar":"Lock","Aleatória":"Random","Paleta":"Palette","Branco α (colorir depois)":"White α (colour it later)","Acento desta composição":"Accent of this composition","Herdar":"Inherit","Cor perceptual":"Perceptual colour","Superfície":"Surface","Gerar esquema":"Generate scheme","Análogo":"Analogous","Complementar":"Complementary","Complementar dividido":"Split complementary","Tríade":"Triad","Tétrade":"Tetrad","Gerar":"Generate","Paleta confere":"Palette checks out","Contraste e regras da superfície em ordem.":"Contrast and surface rules are fine.","Densidade":"Density","Arquivo do projeto":"Project file","Importar no modo Briefing":"Import in Briefing mode","Ficha de produção":"Production sheet","Ficha e canvas conferem":"Sheet and canvas match","Arquétipo":"Archetype","LED de palco":"Stage LED","Fachada":"Facade","Objeto":"Object","Instalação":"Installation","Corporativo":"Corporate","Confirmado":"Confirmed","Derivado":"Derived","proporção":"ratio","Assumido":"Assumed","Confirmar":"Confirm","Zonas":"Zones","fração do canvas":"fraction of the canvas","Mostrar na viewport":"Show in the view","Desenhar na vista":"Draw in the view","Duração min":"Duration min","Riscos":"Risks","um por linha":"one per line","Calculadoras":"Calculators","LED: gabinetes e pitch → pixel map":"LED: cabinets and pitch → pixel map","Gab. A mm":"Cab. W mm","Gabinetes":"Cabinets","Metros":"Metres","Colunas":"Columns","Linhas":"Rows","gabinetes (col × lin)":"cabinets (col × row)","total de gabinetes":"total cabinets","área (m²)":"area (m²)","proporção (decimal)":"ratio (decimal)","família de formato":"format family","cabe numa saída UHD":"fits one UHD output","distância de visão (m)":"viewing distance (m)","Premissa":"Assumption","Aplicar ao canvas e à ficha":"Apply to canvas and sheet","Projeção: lúmens, distância, contraste":"Projection: lumens, distance, contrast","Lúmens":"Lumens","Refletância":"Reflectance","iluminância (lux)":"illuminance (lux)","luminância aparente (nits)":"apparent luminance (nits)","Blend de projetores: recortes e sobreposição":"Projector blend: crops and overlap","Projetores":"Projectors","sobreposição (px)":"overlap (px)","sobreposição (%)":"overlap (%)","conteúdo, raster cheio (px)":"content, full raster (px)","conteúdo visível (px)":"visible content (px)","descartar em cada borda externa (px)":"discard at each outer edge (px)","Atenção":"Warning","Loop: BPM, compassos, fps, taxa do display":"Loop: BPM, bars, fps, display rate","BPM, compassos e fps vêm da aba Projeto.":"BPM, bars and fps come from the Project tab.","duração (s)":"duration (s)","Legibilidade: pitch e distância":"Legibility: pitch and distance","distância (m)":"distance (m)","período do padrão":"pattern period","altura de letra mínima":"minimum letter height","altura de letra confortável":"comfortable letter height","traço mínimo (px)":"minimum stroke (px)","módulos da faixa":"strip modules","Composição α":"Composition α","Composição RGB":"Composition RGB","Uma camada":"One layer","Resolução":"Resolution","Quadros":"Frames","Prefixo":"Prefix","Validação técnica":"Technical validation","Renderizar e baixar ZIP":"Render and download ZIP","Cancelar":"Cancel","Folha de contato PNG":"PNG contact sheet","Gravar tela":"Record screen","Parar após 1 loop":"Stop after 1 loop","Gravar composição":"Record composition","Saída ao vivo":"Live output","Abrir janela de saída":"Open output window","Tela cheia da viewport":"Fullscreen view","recortes do canvas":"canvas crops","Dividir em 2":"Split in 2","Dividir em 3":"Split in 3","Transporte de sinal":"Signal transport","Destino":"Target","Como":"How","EXPORTÁVEL":"EXPORTABLE","Como funciona":"How it works","O que é":"What it is","Com o Claude":"With Claude","Atalhos":"Shortcuts","Espaço":"Space","tap tempo (o 1º toque alinha o downbeat)":"tap tempo (the 1st tap aligns the downbeat)","alinha o downbeat sem mudar o BPM":"aligns the downbeat without changing BPM","trocar composição":"switch composition","mostrar camadas (arraste para girar)":"show layers (drag to rotate)","áudio reativo":"reactive audio","desfazer qualquer alteração":"undo any change","Duplo clique no rótulo":"Double-click the label","volta o número ao padrão":"resets the number","← → no divisor":"← → on the divider","largura do menu (Home minimiza)":"menu width (Home minimises)","quadro anterior / próximo (pausado)":"previous / next frame (paused)","Regras de direção":"Direction rules","Um herói por compasso":"One hero per bar","Cor é evento":"Colour is an event","Interface em degrau, matéria em curva":"Interface in steps, matter in curves","Pense no espaço":"Think about the space","Áudio com parcimônia":"Use audio sparingly","Créditos: criado por Giulia Ribeiro · GYULYIA":"Credits: created by Giulia Ribeiro · GYULYIA","Paleta de cor":"Colour palette","Personalizada":"Custom","Não mostrar ao abrir":"Do not show on open","Entendi":"Got it","Aguardando briefing":"Waiting for a briefing","No chat do Claude, digite":"In Claude chat, type","e descreva o set.":"and describe the set.","Abrir o STANDARD (biblioteca original)":"Open STANDARD (original library)","Este projeto tem camadas de código.":"This project has code layers.","Autorizar e executar":"Authorise and run","Manter bloqueado":"Keep blocked","Animações STANDARD (motor de camadas original)":"STANDARD animations (original layer engine)","Alternar tema: escuro, claro ou do sistema":"Switch theme: dark, light or system","Alternar tema":"Switch theme","Como usar":"How to use","Diminuir zoom":"Zoom out","Aumentar zoom":"Zoom in","Posição no loop":"Position in the loop","Digite o número do quadro ou uma conta":"Type the frame number or a sum","Ir para o quadro":"Go to frame","Minimizar ou abrir o menu (G)":"Minimise or open the menu (G)","Minimizar o menu":"Minimise the menu","Abrir o menu":"Open the menu","Transporte":"Transport","Duplicar composição ativa":"Duplicate the active composition","Altura da vista, arraste ou use as setas":"View height, drag or use the arrows","Largura do menu, arraste ou use as setas":"Menu width, drag or use the arrows","Controles":"Controls","Tipo de camada":"Layer type","Restaurar":"Reset","Restaurar padrão":"Reset to default","Predefinição de canvas":"Canvas preset","Largura":"Width","Altura":"Height","Trocar W e H":"Swap W and H","Posição das dobras em pixels":"Fold positions in pixels","ex.: 2560 ou 1920, 3840":"e.g. 2560 or 1920, 3840","Largura da calha da dobra":"Fold gutter width","Compassos do loop":"Loop bars","Modo de loop":"Loop mode","Transição entre composições":"Transition between compositions","Duração da transição em beats":"Transition length in beats","Verde ácido":"Acid green","Azul elétrico":"Electric blue","Vermelho alarme":"Alarm red","Amarelo sinal":"Signal yellow","Osso":"Bone","Luminosidade 0 a 1":"Lightness 0 to 1","Croma 0 a 0,37":"Chroma 0 to 0.37","Matiz 0 a 360":"Hue 0 to 360","Matiz do conceito, 0 a 360":"Concept hue, 0 to 360","Relação de matizes":"Hue relation","Remover premissa":"Remove assumption","por quê":"why","Tipo de zona":"Zone type","Remover zona":"Remove zone","Eixo do blend":"Blend axis","Quadro inicial":"Start frame","Quadro final":"End frame","Prefixo dos arquivos":"File prefix","Fechar":"Close","Histórico de alterações":"Change history","Fechar histórico":"Close history","Todos":"All","Código":"Code","Ferramentas":"Tools","Adicionar composição de cartões de teste":"Add a test-card composition","CÓDIGO":"CODE","FERRAMENTA":"TOOL","Significa":"Means","Camada":"Layer","Custo":"Cost","Prévia":"Preview","Visualizar":"Preview","Passe o mouse para ver um quadro; clique para animar em baixa resolução":"Hover to see a frame; click to animate at low resolution","Adicionar à composição":"Add to composition","Buscar efeito":"Search effects","Buscar: onda, órbita, caos, som…":"Search: wave, orbit, chaos, sound…","Nenhum efeito com esse termo. Tente \"onda\", \"órbita\" ou \"caos\".":"No effect matches. Try \"wave\", \"orbit\" or \"chaos\".","Grão":"Grain","Troca do grão (quadros)":"Grain change (frames)","Pontos":"Points","Ponto":"Point","Giro":"Spin","Respiração":"Breathing","Inclinação X °":"Tilt X °","Inclinação Y °":"Tilt Y °","Pétalas":"Petals","Cor da varredura":"Sweep colour","Opacidade grade":"Grid opacity","Réguas":"Rulers","Anéis":"Rings","Espiral áurea":"Golden spiral","Ângulo áureo":"Golden angle","Desenho após evento":"Draw after event","Escala do texto":"Text scale","Cor do ângulo":"Angle colour","Alvos":"Targets","Rótulo do alvo":"Target label","Mostrar confiança":"Show confidence","Rede":"Network","Raios":"Rays","Cor do alvo":"Target colour","Linhas de log":"Log lines","Etiquetas":"Labels","Telemetria":"Telemetry","Cor do destaque":"Highlight colour","Título (vazio = nome do projeto)":"Title (empty = project name)","Subtítulo":"Subtitle","Linha de data":"Date line","Rodapé":"Footer","Rótulo da retícula":"Reticle label","Retícula":"Reticle","Contador de beat":"Beat counter","Cor do beat 1":"Beat 1 colour","A cada N compassos (0 = manual)":"Every N bars (0 = manual)","Duração (beats)":"Length (beats)","Linha de apoio ({ID} {CONF})":"Support line ({ID} {CONF})","Tamanho da palavra":"Word size","Cor do bloco":"Block colour","Cor do texto (auto = contraste)":"Text colour (auto = contrast)","Passo da scanline":"Scanline step","Vinheta":"Vignette","Prob. de glitch por beat":"Glitch probability per beat","Fatias":"Slices","Tremor de quadro":"Frame jitter","Cor da fatia":"Slice colour","Cor da fatia acento":"Accent slice colour","Direção":"Direction","Quantidade":"Amount","Espessura":"Thickness","Em degrau (por beat)":"Stepped (per beat)","Pulso na espessura":"Thickness pulse","Acento a cada N linhas":"Accent every N lines","Cor do acento":"Accent colour","Partículas":"Particles","Rastro":"Trail","Amplitude":"Amplitude","Escala do ruído":"Noise scale","Raio da órbita":"Orbit radius","Opacidade":"Opacity","Fração em acento":"Accent fraction","Perspectiva":"Perspective","Proporção":"Proportion","Torção":"Twist","Pulso":"Pulse","Anel acento no beat":"Accent ring on beat","Altura da letra":"Letter height","Troca no beat":"Change on beat","Traço do contorno":"Outline stroke","Separador":"Separator","Linha acento no beat":"Accent line on beat","Arquivo":"File","Encaixe":"Fit","Espelhar":"Mirror","Inverter vertical":"Flip vertical","Corte esq.":"Crop left","Corte dir.":"Crop right","Corte topo":"Crop top","Corte base":"Crop bottom","Colorir (none = original)":"Tint (none = original)","Início (s)":"Start (s)","Fim (s, 0 = final)":"End (s, 0 = end)","Reprodução":"Playback","Tamanho (%)":"Size (%)","Giro Y (voltas/loop)":"Spin Y (turns/loop)","Inclinação X (°)":"Tilt X (°)","Giro Z (°)":"Roll Z (°)","Espessura da linha":"Line width","Tamanho do ponto":"Point size","Densidade dos pontos":"Point density","Direção da luz (°)":"Light direction (°)","Luz ambiente":"Ambient light","Pulso no beat":"Pulse on beat","Cor da borda de luz":"Rim light colour","Tipo":"Type","Repetição":"Repetition","Distribuição":"Distribution","Espaçamento":"Spacing","Preenchimento":"Fill","Traço":"Stroke","Espessura do traço":"Stroke width","Raio do canto":"Corner radius","Alternar acento no beat":"Alternate accent on beat","Código (corpo de draw(c, K))":"Code (body of draw(c, K))","Parede":"Wall","Troca":"Change","Entrada":"Entry","Duração da entrada (beats)":"Entry length (beats)","Largura (fração da parede)":"Width (fraction of the wall)","Altura máxima (fração)":"Maximum height (fraction)","Posição vertical":"Vertical position","Salto de linhas (células)":"Line skip (cells)","Placa vazada":"Cut-out plate","Padrão":"Pattern","Símbolos (o O x s + k S .)":"Symbols (o O x s + k S .)","Célula":"Cell","Tamanho do símbolo":"Symbol size","Passo":"Step","Listra":"Stripe","Inclinação":"Tilt","Alcance (fração da parede)":"Reach (fraction of the wall)","Intensidade":"Intensity","Strobe de parede":"Wall strobe","Tom":"Tone","Variação":"Variation","Entre paredes":"Between walls","Mostrar":"Show","Esconder":"Hide","Importar JSON":"Import JSON","Abrir arquivo .json":"Open .json file","Salvar JSON":"Save JSON","Abrir JSON":"Open JSON","Copiar JSON":"Copy JSON","Biblioteca ":"Library ","Imagem ":"Image ","Usar":"Use","Logo → branco α":"Logo → white α","Menu ›":"Menu ›","‹ Menu":"‹ Menu","Vocabulário, não preset. Adicione uma camada, depois mude os números, a paleta e o áudio para o briefing. Todos fecham o loop.":"A vocabulary, not a preset. Add a layer, then change the numbers, palette and audio for the briefing. All of them close the loop.","Escolha no seletor ou digite RGB (0 a 255) e HEX.":"Pick with the selector or type RGB (0 to 255) and HEX.","Tudo branco com opacidade (100 / 72 / 43 %). Você colore depois. Ideal para render com alfa.":"All white with opacity (100 / 72 / 43 %). You colour it later. Ideal for alpha renders.","Aplicar branco α":"Apply white α","Branco α ativo":"White α active","Restaurar paleta do briefing":"Restore the briefing palette","A paleta que o Claude gerou para este briefing.":"The palette Claude generated for this briefing.","Este projeto não tem paleta de briefing. Carregue um projeto gerado pelo /vj.":"This project has no briefing palette. Load a project generated by /vj.","Vermelho":"Red","Âmbar":"Amber","Amarelo":"Yellow","Verde":"Green","Ciano":"Cyan","Azul":"Blue","Magenta":"Magenta","Menu minimizado. G reabre.":"Menu minimised. G reopens it.","Escuro":"Dark","Claro":"Light","Sistema":"System","Compl. dividido":"Split compl.","Tipografia · hierarquia, revelação e caminho":"Typography · hierarchy, reveal and path","Título":"Title","Legenda":"Caption","Dados":"Data","Tamanho do título (px lógicos)":"Title size (logical px)","Razão entre níveis":"Ratio between levels","Distância entre níveis (em)":"Distance between levels (em)","Revelação":"Reveal","Entrada (fração do loop)":"Entrance (fraction of the loop)","Duração da entrada":"Entrance length","Duração da saída":"Exit length","Atraso entre níveis":"Delay between levels","Escalonamento entre glifos":"Stagger between glyphs","Caminho":"Path","Raio do círculo":"Circle radius","Amplitude da onda":"Wave amplitude","Ondas no comprimento (inteiro)":"Waves along the length","Ângulo da linha (°)":"Line angle (°)","Deriva ao longo do caminho (ciclos/loop)":"Drift along the path (cycles/loop)","Cor da legenda e dados":"Caption and data colour","Bíblia de arte":"Art bible","Tese":"Thesis","Dramaturgia":"Dramaturgy","Tipografia":"Typography","Banidos":"Banned","Perfil de movimento":"Motion profile","Cada projeto nasce de um briefing: conversado com o Claude, que analisa texto, imagens e vídeos, ou preenchido aqui mesmo, sem IA. Não há presets nem modelos pré-prontos: o sistema visual é escrito do zero para o seu briefing.":"Every project starts from a brief: talked through with Claude, which analyses text, images and videos, or filled in right here, with no AI. There are no presets or ready-made templates: the visual system is written from scratch for your brief.","Com o Claude: no chat, digite /vj e descreva o set. O projeto chega aqui montado.":"With Claude: in the chat, type /vj and describe the set. The project arrives here assembled.","Sem IA: clique em Gerar sem IA, preencha o briefing e escolha o preset da sua superfície.":"Without AI: click Generate without AI, fill in the brief and pick the preset for your surface.","Depois ajuste nas abas, exporte as imagens na aba Exportar.":"Then adjust in the tabs, evaluate in the Generate tab and export the images in the Export tab.","Gerar sem IA":"Generate without AI","Buscar":"Search","Biblioteca ›":"Library ›","Recolher a biblioteca":"Collapse the library","Abrir a biblioteca":"Open the library","Buscar composição ou camada":"Search composition or layer","Abrir a aba Exportar":"Open the Export tab"}/*__I18N_END__*/;
 /*__I18NRULES_START__*/
 /* Regras de tradução EN e ajuda (fase 18).
    Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html entre os marcadores I18NRULES. Mesmo escopo do motor (IIFE do index.html): sem import/export. */
@@ -7366,8 +7841,8 @@ pane('lay').addEventListener('click', e => {
   if (r && e.target.matches('[data-vis]')) { toggleLayer(+r.dataset.i); return; }
   if (r && !e.target.matches('input,select')) { selLayer(+r.dataset.i); return; }
   const a = e.target.dataset.la; if (!a) return; const i = ST.sel, L = comp.layers[i];
-  if (a === 'add') { const t = $('#addType').value; comp.layers.splice(i + 1, 0, mk(t, typeLabel(t).toUpperCase(), true)); ST.sel = i + 1; }
-  if (!L && a !== 'add') return;
+  if (a === 'addpop') { ADDPOP.open(e.target); return; }
+  if (!L) return;
   if (a === 'solo') ST.solo = ST.solo === i ? -1 : i;
   if (a === 'up' && i < comp.layers.length - 1) { [comp.layers[i], comp.layers[i + 1]] = [comp.layers[i + 1], comp.layers[i]]; ST.sel = i + 1; }
   if (a === 'down' && i > 0) { [comp.layers[i], comp.layers[i - 1]] = [comp.layers[i - 1], comp.layers[i]]; ST.sel = i - 1; }
@@ -7527,7 +8002,7 @@ function boot() {
   document.fonts && document.fonts.load('800 40px "Martian Mono"').catch(() => {});
   if (!embedded && !saved && !store.get('seenWiz', false)) openWiz();
   raf = requestAnimationFrame(tick);
-  window.AIVJ = { version: VERSION, get PAL() { return PAL; }, get RECIPES() { return RECIPES; }, addRecipe, addTestCards, recipeLayer, importFile, parseModel, setLang, setHow, undo, redo, evalExpr, applyTheme, layoutApply, setPanelOpen, setZoneDraw, get hist() { return ST.hist.length; }, get histLabels() { return ST.hl.slice(); }, surface: SC, specOf, applyCalc, renderSpec, specMarkdown, get project() { return P; }, get audio() { return AUD; }, AUDIOSEM, DEPTH, pseudoAudio, synthTimes, applyMods, motionCurve, GENAI, EVALUATOR, flash: FLASH, ONSET, UX, fx: { FX, body: fxBody, op: fxOp }, synth: { SYN, src: synthSrc }, blobs: { X: BLOBX }, layerErrors: () => [...LAYER_ERR.values()], mp4: { X: MP4X, render: mp4Render, run: exportMp4Run }, isf: { X: ISFX, LIB: ISFLIB, lib: isfLib }, modUI: { render: modPanel, params: modNumericParams, sources: MOD_SOURCES }, expRun: exportRun, EXP, surfx: SURFX, region: regionRect, surUI: { state: SUR, applyPreset: surApplyPreset, render: renderSurface }, COMPOSITION, SURFACEIR, ANIMATION, CREATIVE, FIELD: { FLD, GLY, body: fldBody }, SOLID: { SOL, body: solBody }, PARTICLES: { PRT, prog: prtProg }, MIGRATE, applyMods, RG, TM, composeFrame, buildComposeGraph: buildComposeGraph, frameAt, canvasPool: CANVAS_POOL, webgl: WEBGL, glProgram: body => glProg(body), glError: body => GL.err.get(body), glInfo: () => { glInit(); return GL.r ? { version: GL.r.version, context: GL.gl.constructor.name, glsl: GL.gl.getParameter(GL.gl.SHADING_LANGUAGE_VERSION), caps: GL.r.caps, stats: GL.r.stats } : { failure: GL.failure }; }, glMetrics: () => GL.r ? GL.r.metrics() : null, glr: () => GL.r, presets: SURFACE_PRESETS, GEN, FAMILIES, COMMON, modSources: () => MOD_SOURCES.map(x => x[0]), evaluate: lang => EVALUATOR.run(lang), shaderResolve, GLIB, specBins, simBake, parsePly, get LAYERERR() { return LAYER_ERR; }, setSeed, bpmWaves, get GLERR() { return GL.err; }, layerFrame, pm, importJson, frameAt, validate: o => validate(o), GEN, loopFrames, contactSheet, layerAudit, allowCode, loadAssets, toLogo, projectOut, get state() { return ST; }, geom, lintCode, compileCode, setCi(i) { ST.ci = i; refreshAll(); },
+  window.AIVJ = { version: VERSION, addPop: ADDPOP, timeline: TIMELINE, get PAL() { return PAL; }, get RECIPES() { return RECIPES; }, addRecipe, addTestCards, recipeLayer, importFile, parseModel, setLang, setHow, undo, redo, evalExpr, applyTheme, layoutApply, setPanelOpen, setZoneDraw, get hist() { return ST.hist.length; }, get histLabels() { return ST.hl.slice(); }, surface: SC, specOf, applyCalc, renderSpec, specMarkdown, get project() { return P; }, get audio() { return AUD; }, AUDIOSEM, DEPTH, pseudoAudio, synthTimes, applyMods, motionCurve, GENAI, EVALUATOR, flash: FLASH, ONSET, UX, fx: { FX, body: fxBody, op: fxOp }, synth: { SYN, src: synthSrc }, blobs: { X: BLOBX }, layerErrors: () => [...LAYER_ERR.values()], mp4: { X: MP4X, render: mp4Render, run: exportMp4Run }, isf: { X: ISFX, LIB: ISFLIB, lib: isfLib }, modUI: { render: modPanel, params: modNumericParams, sources: MOD_SOURCES }, expRun: exportRun, EXP, surfx: SURFX, region: regionRect, surUI: { state: SUR, applyPreset: surApplyPreset, render: renderSurface }, COMPOSITION, SURFACEIR, ANIMATION, CREATIVE, FIELD: { FLD, GLY, body: fldBody }, SOLID: { SOL, body: solBody }, PARTICLES: { PRT, prog: prtProg }, MIGRATE, applyMods, RG, TM, composeFrame, buildComposeGraph: buildComposeGraph, frameAt, canvasPool: CANVAS_POOL, webgl: WEBGL, glProgram: body => glProg(body), glError: body => GL.err.get(body), glInfo: () => { glInit(); return GL.r ? { version: GL.r.version, context: GL.gl.constructor.name, glsl: GL.gl.getParameter(GL.gl.SHADING_LANGUAGE_VERSION), caps: GL.r.caps, stats: GL.r.stats } : { failure: GL.failure }; }, glMetrics: () => GL.r ? GL.r.metrics() : null, glr: () => GL.r, presets: SURFACE_PRESETS, GEN, FAMILIES, COMMON, modSources: () => MOD_SOURCES.map(x => x[0]), evaluate: lang => EVALUATOR.run(lang), shaderResolve, GLIB, specBins, simBake, parsePly, get LAYERERR() { return LAYER_ERR; }, setSeed, bpmWaves, get GLERR() { return GL.err; }, layerFrame, pm, importJson, frameAt, validate: o => validate(o), GEN, loopFrames, contactSheet, layerAudit, allowCode, loadAssets, toLogo, projectOut, get state() { return ST; }, geom, lintCode, compileCode, setCi(i) { ST.ci = i; refreshAll(); },
     /* gancho de teste: renderiza a composição ci no quadro n, determinístico, sem tocar no preview */
     renderFrame(ci, n, scale = 0.25, alpha = false) {
       const comp = P.compositions[ci], W = P.canvas.w, H = P.canvas.h, w = Math.round(W * scale), h = Math.round(H * scale);

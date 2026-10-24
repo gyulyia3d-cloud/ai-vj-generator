@@ -80,11 +80,9 @@ function renderLayers() {
       <select data-bl aria-label="Blend ${esc(L.name)}">${Object.keys(BLENDS).map(b => `<option ${b === L.blend ? 'selected' : ''}>${b}</option>`).join('')}</select></div>`).join('')}</div>
     <div class="row"><button data-la="solo" aria-pressed="${ST.solo === ST.sel}">Solo</button><button data-la="up">↑</button><button data-la="down">↓</button><button data-la="dup">Duplicar</button><button data-la="ren">Renomear</button><button data-la="reset">Reset</button><button data-la="del">Remover</button></div>
     <div class="row"><button data-la="copy">Copiar parâmetros</button><button data-la="paste" ${ST.clip ? '' : 'disabled'}>Colar parâmetros</button><button data-la="copyL">Copiar camada</button><button data-la="pasteL" ${ST.clipL ? '' : 'disabled'}>Colar camada</button></div>
-    <div class="row fill"><select id="addCat" aria-label="Categoria">${FAMILIES.map(f => `<option value="${f[0]}">${esc(f[0])}</option>`).join('')}</select><select id="addType" aria-label="Tipo de camada"></select><button data-la="add" style="flex:0 0 auto">Adicionar</button></div>
+    <div class="row"><button data-la="addpop" aria-haspopup="dialog" aria-expanded="false" class="pri">+ Adicionar camada</button></div>
     <p class="note">As camadas valem só para esta composição. Mostrar camadas (E) abre a pilha em 3D; arraste para girar. Na viewport, arrastar move a camada selecionada; Shift + arrastar escala; Alt + arrastar gira.</p>`;
-  fillAddTypes();
 }
-function fillAddTypes() { const c = $('#addCat'), t = $('#addType'); if (!c || !t) return; const f = FAMILIES.find(x => x[0] === c.value) || FAMILIES[0]; t.innerHTML = f[1].map(x => `<option value="${x[0]}">${esc(x[1])}</option>`).join(''); c.onchange = fillAddTypes; }
 function selLayer(i) { ST.sel = i; $$('#lrows .lrow').forEach((r, k) => r.classList.toggle('sel', k === i)); syncLayerDom(); renderParams(); }
 
 function paramGroups(L) {

@@ -7,7 +7,7 @@ Images and videos in the conversation are references. Analyze them with your own
 | Attachment | Do |
 |---|---|
 | Image | 1. Look at it (read/view the file). 2. Run `python scripts/analyze_image.py <file>`. 3. Write the reference grammar below. |
-| Video | 1. Run `python scripts/analyze_video.py <file> --out <dir>`. 2. **View `contact_sheet.jpg` and 3–4 frames** from the output; the numbers do not replace seeing. 3. Write the reference grammar, including time. |
+| Video | 1. Run `python scripts/analyze_video.py <file> --out <dir>`. 2. **View `contact_sheet.jpg` and 3–4 frames** from the output; the numbers do not replace seeing. 3. Write the reference grammar, including time. The report has an `OPTICAL FLOW` block: dominant motion (pan, zoom in/out, rotation or local), speed in widths per second, direction histogram, how much stays still. Use it for the Animation IR; it is accurate for direction and kind, rough for magnitude (zoom can read 15–30% off), and does not track motion faster than ~0.7 widths/s. `--flow opencv` (pip install opencv-python-headless) swaps the built-in numpy tracker for Farneback; the report names the backend that ran. |
 | Several | Analyze each, then compare: what do they share (the briefing's real taste) and where do they disagree (a question for the user). |
 | A link, a name, a studio | You cannot see a link's content. Say so and ask for a file or screenshot; for names use `repertoire/artists-studios.md`. |
 | Audio file | You cannot measure BPM or structure here. Ask for BPM and the song's sections (intro, build, drop, break). |
