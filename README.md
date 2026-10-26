@@ -6,28 +6,25 @@
 
 <p align="center"><sub>DO <code>/VJ</code> AO MOTOR GRÁFICO · A MESMA ANIMAÇÃO DA CAPA EM <a href="https://gyulyia.com/tools/vj-generator.html">GYULYIA.COM/TOOLS</a></sub></p>
 
+<p align="center">
+  <a href="#instalação-no-claude-com-vj"><b>1 · INSTALAR NO CLAUDE</b></a> &nbsp;·&nbsp;
+  <a href="#funcionalidades-e-elementos-disponíveis-online"><b>2 · FUNCIONALIDADES</b></a> &nbsp;·&nbsp;
+  <a href="https://gyulyia3d-cloud.github.io/ai-vj-generator/"><b>ABRIR O MOTOR ONLINE</b></a>
+</p>
+
 **Sistema generativo de animação orientado por direção de arte, com instruções que qualquer IA entende (ou nenhuma).** Você descreve a peça (superfície, música, conceito) para uma IA, preenche um briefing no navegador, ou usa o gerador sem IA. O resultado é **um arquivo JSON** que o motor abre, mostra em preview e exporta em **PNG sequence (RGB ou RGBA, projeto completo, por região ou por camada) e MP4 (H.264, sem alpha)**. Mesmo projeto + mesma semente = mesmos quadros, e todo loop fecha.
 
 *Generative animation system driven by art direction, with instructions any AI can follow (or none at all). Describe the surface, the music and the concept to an AI, fill a brief in the browser, or use the AI-free generator; get one JSON file the engine opens, previews and exports as PNG sequences (RGB or RGBA, full project, region or layer) and MP4. English summary at the end.*
 
 **Demonstração online:** <https://gyulyia3d-cloud.github.io/ai-vj-generator/> · **Documentação:** [docs/README.md](docs/README.md) · **Começo rápido:** [docs/QUICKSTART.md](docs/QUICKSTART.md) · **O que falta:** [docs/PROXIMOS-PASSOS.md](docs/PROXIMOS-PASSOS.md)
 
-## Do briefing ao quadro
+## Como funciona: do briefing ao quadro
 
 ![Fluxo em cinco passos: briefing, IA ou gerador, projeto JSON, motor, saída em PNG sequence ou MP4](docs/assets/pipeline.svg)
 
 Você descreve a peça, a IA (ou o gerador por regras) escreve **um** arquivo JSON, e é o motor que desenha, mede e exporta. Trocar de IA não muda o resultado do motor: o contrato é o arquivo.
 
-## Comece em 1 minuto (sem instalar nada)
-
-1. Baixe o repositório (**Code → Download ZIP**) e descompacte.
-2. Dê dois cliques em `app/index.html` (Chrome ou Edge).
-3. Sem IA e sem Python: clique em **Gerar briefing**, responda a auditoria, junte as mídias e descreva o projeto; o motor monta as composições no seu computador. Ou, com Python: gere o projeto a partir de um briefing JSON com `python skill/ai-vj-generator/scripts/brief_to_project.py brief.json --out projeto.aivj.json` (exemplo de briefing em `examples/briefs/`), depois **Carregar** o JSON no motor. Depois escolha o preset da sua superfície na aba Superfície.
-4. Ajuste, avalie, exporte na aba **Exportar** (PNG sequence ou MP4).
-
-Passo a passo ilustrado em texto: [docs/GUIA-SEM-IA.md](docs/GUIA-SEM-IA.md). Para microfone e janela de saída o navegador exige `http://`: `node scripts/serve.mjs` e abra `http://localhost:5173`.
-
-## Instalação no Claude
+## Instalação no Claude com `/vj`
 
 ![Terminal animado: git clone, sh adapters/claude/install.sh, reiniciar o Claude Code e digitar /vj com um briefing](docs/assets/install-claude.svg)
 
@@ -80,66 +77,36 @@ O instalador copia as pastas para `~/.claude/skills/` (ou para `$CLAUDE_SKILLS_D
 - "Skill não encontrada": o instalador precisa rodar de dentro do repositório.
 - Sem Claude Code: ignore esta seção; nada do motor depende dela. Detalhes: [adapters/claude/INSTALL.md](adapters/claude/INSTALL.md).
 
-## Use com a IA que você já tem
+### Leve seus materiais: logos, imagens, vídeos, fontes e objetos 3D
 
-O núcleo é **um texto**: [`skill/ai-vj-generator/portable/PROMPT.md`](skill/ai-vj-generator/portable/PROMPT.md). Cole como primeira mensagem (ChatGPT, Gemini, Claude, um modelo local) ou aponte a ferramenta para o `AGENTS.md` (Codex, Cursor e outros), `GEMINI.md` ou `CLAUDE.md` da raiz, que apontam para ele. A IA conduz o briefing, escreve o projeto JSON, e você o abre no motor. Detalhes por ferramenta: [adapters/README.md](adapters/README.md) e [docs/AI-AGNOSTIC.md](docs/AI-AGNOSTIC.md). Quem usa o Claude Code pode instalar a skill com comandos `/vj`: [adapters/claude/INSTALL.md](adapters/claude/INSTALL.md).
+**É importante subir os seus materiais.** Quanto mais do seu universo entra no projeto (logo, imagens, vídeos, fontes, objetos 3D), melhor as composições ficam e mais a animação é sua, em vez de genérica. Diga isso já no briefing do `/vj` e importe os arquivos no motor:
 
-## Usar sem IA (guia completo)
+| Material | Onde entra | O que aceita |
+|---|---|---|
+| **Logos** | aba **Mídia**, camada **Logo** (ou Imagem) | arquivo de imagem; o botão **Logo → branco α** tira o fundo e deixa a arte branca com alpha, pronta para os modos mosaico, meio-tom e fatiado |
+| **Imagens** | aba **Mídia**, camada **Imagem** | qualquer arquivo de imagem |
+| **Vídeos** | aba **Mídia**, camada **Vídeo** | qualquer arquivo de vídeo |
+| **Fontes** | aba **Texto** ou **Mídia**, **Importar fonte** | `.ttf`, `.otf`, `.woff` e `.woff2` |
+| **Objetos 3D** | aba **Mídia**, camada **Objeto 3D** | `.obj`, `.glb` (binário, sem compressão) e `.stl`; renderiza como shader, wireframe ou nuvem de pontos. Nuvem `.ply` entra como Splat |
 
-![Três caminhos sem IA, navegador, linha de comando ou exemplos prontos, chegam ao mesmo arquivo de projeto que o motor avalia, ajusta e exporta](docs/assets/no-ai.svg)
+Você também pode **arrastar o arquivo para a viewport**: ele entra na camada Imagem, Vídeo ou Objeto 3D da composição ativa.
 
-Você só precisa de um navegador moderno (Chrome, Edge ou Firefox). No navegador não há conta, chave de API nem instalação; só o passo por linha de comando pede Python 3. O exemplo do guia é uma parede de LED de 4500×800 com uma dobra no meio; troque pelos números da sua superfície. Versão passo a passo: [docs/GUIA-SEM-IA.md](docs/GUIA-SEM-IA.md).
+Três avisos para não ter surpresa:
+- **No chat, anexo é referência por padrão.** Imagens e vídeos anexados ao Claude são analisados para extrair princípios (cor, ritmo, composição) e **não** entram no projeto, a menos que você peça de forma explícita, por exemplo: "use o meu logo e a minha fonte na composição 1". O projeto nunca copia nem refaz a referência: leva o princípio, não a obra.
+- **Vídeos não viajam no JSON.** Imagens e fontes importadas são salvas dentro do arquivo do projeto; os vídeos ficam só no navegador onde você os importou, e o JSON avisa quando faltam.
+- **Planta, foto do palco e pixel map** servem para descrever a superfície (o motor lê, nunca gera), e para música informe o **BPM** e as seções (intro, build, drop, break), porque a IA não mede isso do arquivo.
 
-**1. Abrir.** Dê dois cliques em `app/index.html` (ou use a [demonstração online](https://gyulyia3d-cloud.github.io/ai-vj-generator/)). Importe um JSON escrito por alguma IA, abra o STANDARD ou clique em **Gerar briefing** (auditoria, mídias e descrição do projeto; o motor monta as composições no seu computador). Para microfone e janela de saída o navegador exige `http://`: rode `node scripts/serve.mjs` e abra `http://localhost:5173`.
+### Funciona melhor com design vetorial e abstrato
 
-**2. Preencher o briefing.** Pelo botão **Gerar briefing** você preenche tudo na tela; pela linha de comando, o briefing é um JSON (modelos em `examples/briefs/`). Gere o projeto e abra-o com **Carregar**:
+**Recomendação do autor:** o sistema rende mais com **designs vetoriais e abstratos**: formas limpas, contornos claros, poucas cores, geometria, tipografia, glifos, campos generativos e padrões. Fotos e vídeos continuam disponíveis como camadas de Mídia.
 
-```bash
-python skill/ai-vj-generator/scripts/brief_check.py meu.brief.json                     # confere e diz o que falta
-python skill/ai-vj-generator/scripts/brief_to_project.py meu.brief.json --out meu.aivj.json
-```
+Uma razão técnica documentada: detalhe fino demais perde legibilidade em parede de LED e pode gerar moiré. A aba **Superfície** lista o texto e os traços do projeto que ficam abaixo do mínimo legível, e o avaliador mede hierarquia, contraste e densidade. Em dúvida, simplifique a forma e aumente o contraste.
 
-| Campo | O que colocar |
-|---|---|
-| Nome | o nome da peça |
-| Conceito | uma ou duas frases: sobre o que é e o que o público deve sentir. É o campo que mais pesa |
-| Clima (até 3) | industrial, orgânico, cósmico, urbano, ritual, glitch, minimalista, líquido, cristalino, retrô, agressivo, calmo. Define matiz, esquema de cor, geradores e perfil de movimento |
-| Energia e densidade | energia de 0 a 1; densidade esparsa, equilibrada ou densa |
-| Preset de superfície | um dos 12 presets (lista abaixo) já preenche tipo, pixels, dobras, passo e distância de visão; dá para digitar outros números |
-| BPM, compassos, composições | o loop tem sempre compassos inteiros |
-| Estratégia de áudio | nenhuma, sutil, estrutural, rítmica ou completa: o que a música move na imagem |
-| Texto | só palavras exatas; título + legenda + dados viram uma hierarquia, "palavras grandes" viram uma parede de texto |
-| Cor | automática pelo clima, por matiz e esquema, ou 4 cores exatas |
-| Evento focal e banidos | a única coisa que domina a peça, e o que ela não pode ter |
+## Funcionalidades e elementos disponíveis online
 
-O mesmo briefing sempre dá o mesmo projeto, e é idêntico ao que o `brief_to_project.py` gera (há teste de paridade). **Salvar briefing** guarda o formulário; **Carregar briefing** devolve.
+[**Abrir o motor online**](https://gyulyia3d-cloud.github.io/ai-vj-generator/) (Chrome, Edge ou Firefox, sem instalar nada). O motor é **um único arquivo HTML** e tudo o que está listado abaixo (camadas, shaders ISF, efeitos `fx`, presets de superfície, modulação, receitas) já vem dentro dele: você abre, escolhe um preset da sua superfície e exporta PNG sequence ou MP4. O que **não** roda online são os comandos `/vj` e os scripts de linha de comando (`brief_to_project.py`, `render.mjs`), que precisam do repositório baixado.
 
-**3. Avaliar.** **Avaliar o projeto** renderiza 24 quadros de cada composição e dá uma nota por hierarquia, contraste, densidade, respiro, movimento, arco e repetição, com uma frase do que mudar. A nota mede **defeito de estrutura**, não beleza: olhe a vista.
-
-**4. Ajustar.**
-- **Compor** e **Camadas**: ative, duplique, renomeie e reordene. Teclas **0 a 9** ligam camadas, **E** abre a pilha em 3D, **?** lista os atalhos, **Ctrl+Z** desfaz.
-- **Parâm.**: números e contas (`1920/2`). Em **Modulação**, ligue qualquer parâmetro ao kick, ao grave, a uma onda do BPM ou a um LFO, sem escrever JSON.
-- **Áudio**: arquivo, microfone ou fonte de teste. Sem fonte, tudo reage ao BPM de forma determinística.
-- **Adicionar** traz as camadas novas: efeito `fx` sobre o que está abaixo, cadeia `synth` (uma linha vira shader), manchas `blobs` e a biblioteca ISF.
-- O botão **Criativo/Avançado** no topo esconde ou mostra as abas técnicas; **Guia → tour** percorre as abas.
-
-**5. Superfície.** Troque o preset, **corte** o canvas em mais dobras, importe **regiões** (CSV `nome,x,y,largura,altura` ou PNG em que o que não é preto é região ativa; só entrada) e confira a **legibilidade** com o passo do LED e a distância do espectador mais longe.
-
-**6. Exportar.**
-1. Escolha modo (composição com alpha, RGB ou camadas), região (projeto completo ou um dos displays), escala, FPS, compassos e intervalo de quadros. Para testar, use escala 25% e poucos quadros.
-2. **Testar flashes** mede o loop de cada composição pelo critério geral do WCAG 2.3.1; **Suavizar se o teste falhar** limita o contraste local só nas composições que reprovam. Não mede flash vermelho e não substitui uma ferramenta homologada para público sensível.
-3. **Dividir em partes** grava o ZIP a cada 250 MB, 500 MB, 1 GB ou 2 GB; só a última parte leva o manifesto.
-4. **Renderizar e baixar ZIP**: `ALPHA/NN_COMPOSICAO/NN_COMPOSICAO_000000.png`, imagem de prévia, `PROJECT_DATA/project.json`, LEIAME e `MANIFEST.json` (versão do motor, SHA-256 do projeto, canvas, fps, compassos, quadros, arquivos, partes e resultado do teste de flash).
-5. **MP4 (H.264)**, na seção **Vídeo MP4**: gerado quadro a quadro, sem gravar a tela, sem alpha. O botão **Gravar** (WebM ao vivo) é só rascunho. Pela linha de comando:
-
-```bash
-node scripts/render.mjs meu.aivj.json --out saida --format mp4 --comp all
-node scripts/render.mjs meu.aivj.json --out saida --format png --alpha
-```
-
-**Ainda não existe:** arrastar regiões na vista, limitador de flash por camada, efeitos com memória entre quadros e identidade de manchas entre quadros. MIDI, OSC, NDI e integrações com outros softwares estão fora de escopo. Lista em [docs/PROXIMOS-PASSOS.md](docs/PROXIMOS-PASSOS.md).
-
-## O que o motor sabe fazer
+### O que o motor sabe fazer
 
 ![Pilha de 10 categorias de camada se abrindo em vista explodida e gráfico de barras com os tipos por categoria](docs/assets/layers.svg)
 
@@ -161,13 +128,13 @@ node scripts/render.mjs meu.aivj.json --out saida --format png --alpha
 
 ![Microfone, arquivo ou fonte de teste alimentam bandas, golpes e onsets; layer.mod liga qualquer número a qualquer fonte](docs/assets/audio.svg)
 
-## Galeria: o que o motor gera
+### Galeria: o que o motor gera
 
 ![Mosaico de 8 projetos da galeria: Pressure Test, Jardim de Luz, Poço Cósmico, Sirene, Brasa, Falha Geral, Correnteza e Vão, cada um com o primeiro quadro e a superfície](docs/assets/galeria-mosaico.jpg)
 
 Oito briefs curados (clima × superfície), cada um gerado **sem IA**, medido pelo avaliador e acompanhado de folha de contato com 6 quadros do loop por composição. A nota mede defeito estrutural, não beleza. Projetos, briefs, notas e folhas completas: [examples/gallery/](examples/gallery/README.md).
 
-## Tudo que já vem no projeto
+### Tudo que já vem no projeto
 
 Nada abaixo precisa de download extra: está no repositório. Os números foram lidos do código (`scripts/readme-assets.mjs` os recalcula).
 
@@ -256,6 +223,74 @@ Parede LED em L 4500×800 (duas paredes, dobra no meio), LED ultrawide 3840×720
 - `docs/`: [QUICKSTART](docs/QUICKSTART.md), [GUIA-SEM-IA](docs/GUIA-SEM-IA.md), [AI-AGNOSTIC](docs/AI-AGNOSTIC.md), [ARQUITETURA-RENDER](docs/ARQUITETURA-RENDER.md), [ROADMAP](docs/ROADMAP.md) e [PROXIMOS-PASSOS](docs/PROXIMOS-PASSOS.md).
 
 </details>
+
+## Use com a IA que você já tem
+
+O núcleo é **um texto**: [`skill/ai-vj-generator/portable/PROMPT.md`](skill/ai-vj-generator/portable/PROMPT.md). Cole como primeira mensagem (ChatGPT, Gemini, Claude, um modelo local) ou aponte a ferramenta para o `AGENTS.md` (Codex, Cursor e outros), `GEMINI.md` ou `CLAUDE.md` da raiz, que apontam para ele. A IA conduz o briefing, escreve o projeto JSON, e você o abre no motor. Detalhes por ferramenta: [adapters/README.md](adapters/README.md) e [docs/AI-AGNOSTIC.md](docs/AI-AGNOSTIC.md). Quem usa o Claude Code pode instalar a skill com comandos `/vj`: [adapters/claude/INSTALL.md](adapters/claude/INSTALL.md).
+
+## Usar sem IA (guia completo)
+
+**Comece em 1 minuto (sem instalar nada)**
+
+1. Baixe o repositório (**Code → Download ZIP**) e descompacte.
+2. Dê dois cliques em `app/index.html` (Chrome ou Edge).
+3. Sem IA e sem Python: clique em **Gerar briefing**, responda a auditoria, junte as mídias e descreva o projeto; o motor monta as composições no seu computador. Ou, com Python: gere o projeto a partir de um briefing JSON com `python skill/ai-vj-generator/scripts/brief_to_project.py brief.json --out projeto.aivj.json` (exemplo de briefing em `examples/briefs/`), depois **Carregar** o JSON no motor. Depois escolha o preset da sua superfície na aba Superfície.
+4. Ajuste, avalie, exporte na aba **Exportar** (PNG sequence ou MP4).
+
+Passo a passo ilustrado em texto: [docs/GUIA-SEM-IA.md](docs/GUIA-SEM-IA.md). Para microfone e janela de saída o navegador exige `http://`: `node scripts/serve.mjs` e abra `http://localhost:5173`.
+
+![Três caminhos sem IA, navegador, linha de comando ou exemplos prontos, chegam ao mesmo arquivo de projeto que o motor avalia, ajusta e exporta](docs/assets/no-ai.svg)
+
+Você só precisa de um navegador moderno (Chrome, Edge ou Firefox). No navegador não há conta, chave de API nem instalação; só o passo por linha de comando pede Python 3. O exemplo do guia é uma parede de LED de 4500×800 com uma dobra no meio; troque pelos números da sua superfície. Versão passo a passo: [docs/GUIA-SEM-IA.md](docs/GUIA-SEM-IA.md).
+
+**1. Abrir.** Dê dois cliques em `app/index.html` (ou use a [demonstração online](https://gyulyia3d-cloud.github.io/ai-vj-generator/)). Importe um JSON escrito por alguma IA, abra o STANDARD ou clique em **Gerar briefing** (auditoria, mídias e descrição do projeto; o motor monta as composições no seu computador). Para microfone e janela de saída o navegador exige `http://`: rode `node scripts/serve.mjs` e abra `http://localhost:5173`.
+
+**2. Preencher o briefing.** Pelo botão **Gerar briefing** você preenche tudo na tela; pela linha de comando, o briefing é um JSON (modelos em `examples/briefs/`). Gere o projeto e abra-o com **Carregar**:
+
+```bash
+python skill/ai-vj-generator/scripts/brief_check.py meu.brief.json                     # confere e diz o que falta
+python skill/ai-vj-generator/scripts/brief_to_project.py meu.brief.json --out meu.aivj.json
+```
+
+| Campo | O que colocar |
+|---|---|
+| Nome | o nome da peça |
+| Conceito | uma ou duas frases: sobre o que é e o que o público deve sentir. É o campo que mais pesa |
+| Clima (até 3) | industrial, orgânico, cósmico, urbano, ritual, glitch, minimalista, líquido, cristalino, retrô, agressivo, calmo. Define matiz, esquema de cor, geradores e perfil de movimento |
+| Energia e densidade | energia de 0 a 1; densidade esparsa, equilibrada ou densa |
+| Preset de superfície | um dos 12 presets (lista abaixo) já preenche tipo, pixels, dobras, passo e distância de visão; dá para digitar outros números |
+| BPM, compassos, composições | o loop tem sempre compassos inteiros |
+| Estratégia de áudio | nenhuma, sutil, estrutural, rítmica ou completa: o que a música move na imagem |
+| Texto | só palavras exatas; título + legenda + dados viram uma hierarquia, "palavras grandes" viram uma parede de texto |
+| Cor | automática pelo clima, por matiz e esquema, ou 4 cores exatas |
+| Evento focal e banidos | a única coisa que domina a peça, e o que ela não pode ter |
+
+O mesmo briefing sempre dá o mesmo projeto, e é idêntico ao que o `brief_to_project.py` gera (há teste de paridade). **Salvar briefing** guarda o formulário; **Carregar briefing** devolve.
+
+**3. Avaliar.** **Avaliar o projeto** renderiza 24 quadros de cada composição e dá uma nota por hierarquia, contraste, densidade, respiro, movimento, arco e repetição, com uma frase do que mudar. A nota mede **defeito de estrutura**, não beleza: olhe a vista.
+
+**4. Ajustar.**
+- **Compor** e **Camadas**: ative, duplique, renomeie e reordene. Teclas **0 a 9** ligam camadas, **E** abre a pilha em 3D, **?** lista os atalhos, **Ctrl+Z** desfaz.
+- **Parâm.**: números e contas (`1920/2`). Em **Modulação**, ligue qualquer parâmetro ao kick, ao grave, a uma onda do BPM ou a um LFO, sem escrever JSON.
+- **Áudio**: arquivo, microfone ou fonte de teste. Sem fonte, tudo reage ao BPM de forma determinística.
+- **Adicionar** traz as camadas novas: efeito `fx` sobre o que está abaixo, cadeia `synth` (uma linha vira shader), manchas `blobs` e a biblioteca ISF.
+- O botão **Criativo/Avançado** no topo esconde ou mostra as abas técnicas; **Guia → tour** percorre as abas.
+
+**5. Superfície.** Troque o preset, **corte** o canvas em mais dobras, importe **regiões** (CSV `nome,x,y,largura,altura` ou PNG em que o que não é preto é região ativa; só entrada) e confira a **legibilidade** com o passo do LED e a distância do espectador mais longe.
+
+**6. Exportar.**
+1. Escolha modo (composição com alpha, RGB ou camadas), região (projeto completo ou um dos displays), escala, FPS, compassos e intervalo de quadros. Para testar, use escala 25% e poucos quadros.
+2. **Testar flashes** mede o loop de cada composição pelo critério geral do WCAG 2.3.1; **Suavizar se o teste falhar** limita o contraste local só nas composições que reprovam. Não mede flash vermelho e não substitui uma ferramenta homologada para público sensível.
+3. **Dividir em partes** grava o ZIP a cada 250 MB, 500 MB, 1 GB ou 2 GB; só a última parte leva o manifesto.
+4. **Renderizar e baixar ZIP**: `ALPHA/NN_COMPOSICAO/NN_COMPOSICAO_000000.png`, imagem de prévia, `PROJECT_DATA/project.json`, LEIAME e `MANIFEST.json` (versão do motor, SHA-256 do projeto, canvas, fps, compassos, quadros, arquivos, partes e resultado do teste de flash).
+5. **MP4 (H.264)**, na seção **Vídeo MP4**: gerado quadro a quadro, sem gravar a tela, sem alpha. O botão **Gravar** (WebM ao vivo) é só rascunho. Pela linha de comando:
+
+```bash
+node scripts/render.mjs meu.aivj.json --out saida --format mp4 --comp all
+node scripts/render.mjs meu.aivj.json --out saida --format png --alpha
+```
+
+**Ainda não existe:** arrastar regiões na vista, limitador de flash por camada, efeitos com memória entre quadros e identidade de manchas entre quadros. MIDI, OSC, NDI e integrações com outros softwares estão fora de escopo. Lista em [docs/PROXIMOS-PASSOS.md](docs/PROXIMOS-PASSOS.md).
 
 ## Princípio de engenharia
 
