@@ -282,4 +282,42 @@ function install() {
   svg('install-claude.svg', W, H, 'Instalação no Claude Code', 'Terminal animado: clonar o repositório, rodar adapters/claude/install.sh, reiniciar o Claude Code e digitar /vj com um briefing.', css, s);
 }
 
-pipeline(); layers(); library(); loop(); audio(); install();
+/* ---------- 7. sem IA: três caminhos, um arquivo ---------- */
+function noai() {
+  const W = 1200, H = 446, bw = 230, bh = 56, gap = 36, x0 = 32, C = 14.4, N = 6, pc = 100 / N;
+  const css = `.nb{fill:#000;stroke:#fff;stroke-width:1.25;animation:ab ${C}s infinite}.nt{animation:at ${C}s infinite}.nc{fill:#999;animation:ac ${C}s infinite}
+@keyframes ab{0%,${pc - 1}%{fill:#fff}${pc + .5}%,100%{fill:#000}}
+@keyframes at{0%,${pc - 1}%{fill:#000}${pc + .5}%,100%{fill:#fff}}
+@keyframes ac{0%,${pc - 1}%{fill:#333}${pc + .5}%,100%{fill:#999}}`;
+  const lanes = [
+    ['NAVEGADOR · SEM TERMINAL', [['ABRIR', 'app/index.html'], ['GERAR BRIEFING', 'preencher o briefing']]],
+    ['LINHA DE COMANDO', [['brief.json', 'de examples/briefs'], ['brief_to_project.py', 'gera o projeto']]],
+    ['EXEMPLOS PRONTOS', [['GALERIA', '8 projetos prontos'], ['CARREGAR', 'o JSON no motor']]],
+  ];
+  const act = k => { const dl = k ? -(C - k * C / N) : 0; return dl; };
+  let s = head(W, 'SEM IA: TRÊS CAMINHOS, UM ARQUIVO', 'AI VJ GENERATOR');
+  const node = (x, y, w, h, title, lines, k, tsz = 14) => {
+    const dl = act(k), st = `style="animation-delay:${dl}s"`;
+    let o = `<rect x="${x}" y="${y}" width="${w}" height="${h}" class="nb" ${st}/><text x="${x + 14}" y="${y + 24}" class="b nt" style="font-size:${tsz}px;animation-delay:${dl}s">${esc(title)}</text>`;
+    lines.forEach((l, i) => { o += `<text x="${x + 14}" y="${y + 44 + i * 18}" class="nc" ${st}>${esc(l)}</text>`; });
+    return o;
+  };
+  const px = 584, py = 190, pw = 200, ph = 76, cy = py + ph / 2;
+  lanes.forEach(([lab, steps], i) => {
+    const y = 112 + i * 88;
+    s += T(x0, y - 12, lab, 'd');
+    steps.forEach(([t, sub], j) => { s += node(x0 + j * (bw + gap), y, bw, bh, t, [sub], i, t.length > 17 ? 13 : 14); });
+    const xa = x0 + bw, xb = xa + gap, ym = y + bh / 2;
+    s += `<path d="M ${xa + 2} ${ym} H ${xb - 7}" class="flow"/><path d="M ${xb - 8} ${ym - 4} L ${xb - 1} ${ym} L ${xb - 8} ${ym + 4}" class="ln"/>`;
+    const ex = x0 + 2 * bw + gap, d = `M ${ex + 2} ${ym} C ${ex + 40} ${ym}, ${px - 44} ${cy}, ${px - 2} ${cy}`;
+    s += `<path d="${d}" class="flow"/><circle r="3" class="fl"><animateMotion dur="2.4s" begin="${i * .8}s" repeatCount="indefinite" path="${d}"/></circle>`;
+  });
+  s += node(px, py, pw, ph, 'PROJETO', ['.aivj.json', 'ai-vj-generator/2'], 3);
+  s += node(830, py, 150, ph, 'MOTOR', ['avaliar', 'ajustar'], 4);
+  s += node(1018, py, 150, ph, 'EXPORTAR', ['PNG sequence', 'MP4 H.264'], 5);
+  [[px + pw, 830], [980, 1018]].forEach(([a, b]) => { s += `<path d="M ${a + 2} ${cy} H ${b - 7}" class="flow"/><path d="M ${b - 8} ${cy - 4} L ${b - 1} ${cy} L ${b - 8} ${cy + 4}" class="ln"/>`; });
+  s += L(32, H - 46, W - 32, H - 46) + T(32, H - 20, 'o mesmo briefing dá o mesmo projeto no navegador e no script (há teste de paridade)', 'd');
+  svg('no-ai.svg', W, H, 'Usar sem IA', 'Três caminhos sem IA, pelo navegador, pela linha de comando ou pelos exemplos prontos, chegam ao mesmo arquivo de projeto, que o motor avalia, ajusta e exporta em PNG sequence ou MP4.', css, s);
+}
+
+pipeline(); layers(); library(); loop(); audio(); install(); noai();
