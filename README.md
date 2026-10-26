@@ -134,6 +134,8 @@ Uma razão técnica documentada: detalhe fino demais perde legibilidade em pared
 
 Oito briefs curados (clima × superfície), cada um gerado **sem IA**, medido pelo avaliador e acompanhado de folha de contato com 6 quadros do loop por composição. A nota mede defeito estrutural, não beleza. Projetos, briefs, notas e folhas completas: [examples/gallery/](examples/gallery/README.md).
 
+**Tentativas reais com o `/vj` e seus materiais:** [docs/REFERENCIAS.md](docs/REFERENCIAS.md) indexa 3 projetos completos (`examples/tentativas/`), 4 objetos 3D CC0 (`examples/assets/3d/`), o padrão de vídeo de câmera e 784 quadros renderizados em 22 conjuntos.
+
 ### Tudo que já vem no projeto
 
 Nada abaixo precisa de download extra: está no repositório. Os números foram lidos do código (`scripts/readme-assets.mjs` os recalcula).
