@@ -9,7 +9,7 @@ import { existsSync, mkdtempSync, rmSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { tmpdir } from 'node:os';
-import { chromeFlags, extraCandidates } from './chrome_env.mjs';
+import { chromeFlags, chromeEnv, extraCandidates } from './chrome_env.mjs';
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -27,7 +27,7 @@ export async function openPage(file, { chrome, width = 1400, height = 900, waitF
   if (typeof WebSocket === 'undefined') { console.error('Este script precisa de Node 22+ (WebSocket global).'); process.exit(3); }
   const port = 9300 + Math.floor(Math.random() * 600), profile = mkdtempSync(join(tmpdir(), 'aivj-cdp-'));
   const proc = spawn(exe, [...chromeFlags, '--headless=new', ...(process.env.AIVJ_GPU === '1' ? ['--enable-gpu-rasterization', '--ignore-gpu-blocklist'] : ['--disable-gpu']), '--hide-scrollbars', '--allow-file-access-from-files', '--no-first-run', '--no-default-browser-check',
-    `--user-data-dir=${profile}`, `--remote-debugging-port=${port}`, `--window-size=${width},${height}`, url || pathToFileURL(resolve(file)).href], { stdio: 'ignore' });
+    `--user-data-dir=${profile}`, `--remote-debugging-port=${port}`, `--window-size=${width},${height}`, url || pathToFileURL(resolve(file)).href], { stdio: 'ignore', env: chromeEnv });
   let closed = false;
   const close = async () => { if (closed) return; closed = true; try { proc.kill(); } catch {} await sleep(400); try { rmSync(profile, { recursive: true, force: true }); } catch {} };
   process.on('exit', () => { try { proc.kill(); } catch {} });

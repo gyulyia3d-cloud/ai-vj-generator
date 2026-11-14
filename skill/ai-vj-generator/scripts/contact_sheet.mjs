@@ -10,7 +10,7 @@
 //
 // Saída: NN_nome.png (6 quadros empilhados, de cima para baixo) · report.json · exit 1 se houver ERROR.
 import { spawnSync } from 'node:child_process';
-import { chromeFlags, extraCandidates } from './chrome_env.mjs';
+import { chromeFlags, chromeEnv, extraCandidates } from './chrome_env.mjs';
 import { existsSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
@@ -39,7 +39,7 @@ if (!chrome) { console.error('Nenhum Chrome/Edge encontrado. Passe --chrome <cam
 const url = pathToFileURL(html).href + '?qa=1';
 const profile = mkdtempSync(join(tmpdir(), 'aivj-qa-'));
 const r = spawnSync(chrome, [...chromeFlags, '--headless=new', '--disable-gpu', '--hide-scrollbars', '--allow-file-access-from-files', '--no-first-run', '--no-default-browser-check',
-  `--user-data-dir=${profile}`, '--window-size=1600,1000', '--virtual-time-budget=90000', '--dump-dom', url], { encoding: 'utf8', maxBuffer: 1024 * 1024 * 1024, timeout: 240000 });
+  `--user-data-dir=${profile}`, '--window-size=1600,1000', '--virtual-time-budget=90000', '--dump-dom', url], { encoding: 'utf8', maxBuffer: 1024 * 1024 * 1024, timeout: 240000, env: chromeEnv });
 if (r.error) { console.error('Falha ao iniciar o navegador: ' + r.error.message); process.exit(3); }
 const dom = r.stdout || '';
 const host = dom.match(/<div id="aivj-qa"([^>]*)>/);

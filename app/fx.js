@@ -21,7 +21,7 @@ void main(){ float s=max(1.,uP.y); vec2 q=floor(gl_FragCoord.xy/s); vec4 t=tx((q
   float sl=1.-uP.y*(.5+.5*sin(q.y*uRes.y*3.14159)); float m=mod(floor(gl_FragCoord.x),3.); vec3 mk=vec3(m<1.?1.:1.-uP.z,(m>=1.&&m<2.)?1.:1.-uP.z,m>=2.?1.:1.-uP.z);
   vec3 col=(t.rgb+g*uP.w)*sl*mk*(1.15-.5*dot(c,c)*.5); gl_FragColor=vec4(col*inside,max(t.a,1.-inside)*step(.001,inside+t.a)); }` },
   VHS: { labels: ['Tremor', 'Vazamento de cor', 'Ruído', 'Faixa de rastreio'], d: [0.6, 0.6, 0.35, 0.5], tag: 'tela', src:
-`float vh(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+`float vh(vec2 p){return hash(p);}
 void main(){ vec2 uv=gl_FragCoord.xy/uRes; float st=mod(floor(uPh*24.),24.), row=floor(gl_FragCoord.y/2.); float j=(vh(vec2(row,st))-.5)*uP.x*.01*step(.7,vh(vec2(row*.1,st+3.)));
   float band=fract(uPh), bd=smoothstep(.06,0.,abs(uv.y-(1.-band)))*uP.w; j+=bd*.03*sin(uv.y*80.);
   vec2 q=vec2(uv.x+j,uv.y); float bl=uP.y*.006; vec4 t=tx(q); vec3 c=vec3(tx(q+vec2(bl,0.)).r,t.g,tx(q-vec2(bl,0.)).b);
@@ -66,11 +66,12 @@ void main(){ vec2 uv=gl_FragCoord.xy/uRes; vec4 t=tx(uv); vec3 acc=vec3(0.); flo
 `void main(){ vec2 uv=gl_FragCoord.xy/uRes; float a=uP.z*.0174533; vec2 dir=vec2(cos(a),sin(a))*uP.x/24./uRes; vec4 t=tx(uv); vec4 best=t; float on=1.;
   for(int i=1;i<=24;i++){ vec4 s=tx(uv-dir*float(i)); on*=step(uP.y,fxLuma(s.rgb)+.0*float(i)); best=mix(best,s,on*step(fxLuma(best.rgb),fxLuma(s.rgb))); } gl_FragColor=mix(t,best,clamp(uP.w,0.,1.)); }` },
   'GRADE E VINHETA': { labels: ['Contraste', 'Saturação', 'Vinheta', 'Grão'], d: [1.1, 1.05, 0.35, 0.12], tag: 'cor', src:
-`float gh(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+`float gh(vec2 p){return hash(p);}
 void main(){ vec2 uv=gl_FragCoord.xy/uRes; vec4 t=tx(uv); vec3 c=(t.rgb-.5)*uP.x+.5; float l=fxLuma(c); c=mix(vec3(l),c,uP.y); c*=1.-uP.z*smoothstep(.35,.95,length(uv-.5)*1.3); c+=(gh(gl_FragCoord.xy+mod(floor(uPh*24.),24.))-.5)*uP.w; gl_FragColor=vec4(c,t.a); }` },
   'GLITCH EM BLOCOS': { labels: ['Altura do bloco (px)', 'Deslocamento (px)', 'Probabilidade', 'Passos por loop'], d: [26, 90, 0.35, 12], tag: 'glitch', src:
-`float gh(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+`float gh(vec2 p){return hash(p);}
 void main(){ vec2 uv=gl_FragCoord.xy/uRes; float st=mod(floor(uPh*max(1.,floor(uP.w+.5))),max(1.,floor(uP.w+.5))), row=floor(gl_FragCoord.y/max(2.,uP.x)); float on=step(1.-clamp(uP.z,0.,1.)*(.6+uHit*.4),gh(vec2(row,st)));
+  on=max(on,step(.001,uP.z)*step(abs(row-floor(gh(vec2(st,77.))*ceil(uRes.y/max(2.,uP.x)))),.5));
   float sh=(gh(vec2(row+9.,st))-.5)*2.*uP.y/uRes.x*on; vec4 t=tx(vec2(uv.x+sh,uv.y)); float sp=.004*on; gl_FragColor=vec4(tx(vec2(uv.x+sh+sp,uv.y)).r,t.g,tx(vec2(uv.x+sh-sp,uv.y)).b,t.a); }` },
   REPETIR: { labels: ['Colunas', 'Linhas', 'Deslocar (voltas)', 'Espelhar'], d: [3, 3, 1, 0.5], tag: 'geometria', src:
 `void main(){ vec2 uv=gl_FragCoord.xy/uRes; vec2 n=max(vec2(1.),floor(vec2(uP.x,uP.y)+.5)); vec2 q=uv*n; float row=floor(q.y); q.x+=row*.5*floor(uP.z+.5)*sin(TAU*uPh)*0.; vec2 f=fract(q);

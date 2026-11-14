@@ -251,7 +251,7 @@ async function qaRun() {
   ST.qa = true; const host = document.createElement('div'); host.id = 'aivj-qa'; host.hidden = true; document.body.appendChild(host);
   try {
     ST.codeAllow = true; const b = $('#codeBan'); if (b) b.hidden = true; const w = $('#wiz'); if (w) w.hidden = true;
-    await Promise.all(ASSET_JOBS); await (document.fonts && document.fonts.ready); await new Promise(r => setTimeout(r, 300));
+    await Promise.all(ASSET_JOBS); await VJ_FONTS_READY;   /* não document.fonts.ready: no --virtual-time-budget do QA ele às vezes não resolve a tempo (fontes da interface sob demanda) */ await new Promise(r => setTimeout(r, 300));
     const rep = { name: P.meta.name, canvas: P.canvas, bpm: P.time.bpm, bars: P.time.bars, loopFrames: loopFrames(), comps: [] };
     for (let i = 0; i < P.compositions.length; i++) {
       const comp = P.compositions[i], v = validate({ scale: 1, fps: P.canvas.fps, comps: [i], alpha: true, start: 0, end: loopFrames() - 1, layers: false, layerCount: comp.layers.filter(l => l.on).length });
@@ -262,9 +262,8 @@ async function qaRun() {
   } catch (e) { host.setAttribute('data-error', String((e && e.message) || e)); }
   host.setAttribute('data-done', '1');
 }
-boot(); UX.init();
 /* parâmetros de URL: ?stage=1 (só a imagem) &alpha=1 (fundo transparente) &comp=N (composição, de 1) &play=0 (pausado) &q=1 (qualidade) */
-(function urlParams() {
+function urlParams() {
   const q = new URLSearchParams(location.search), has = k => q.has(k);
   if (has('comp')) { const i = Math.max(0, Math.min(P.compositions.length - 1, (parseInt(q.get('comp'), 10) || 1) - 1)); ST.ci = i; refreshAll(); }
   if (q.get('stage') === '1') {
@@ -274,5 +273,6 @@ boot(); UX.init();
     setTimeout(fit, 30); addEventListener('resize', () => setTimeout(fit, 30));
   }
   if (q.get('play') === '0') ST.paused = true;
-})();
-if (/[?&]qa=1/.test(location.search)) qaRun();
+}
+/* o motor só sobe com as fontes embutidas carregadas (app/vendor/fonts.js): o primeiro quadro não cai na fonte do sistema */
+VJ_FONTS_READY.then(() => { boot(); UX.init(); urlParams(); if (/[?&]qa=1/.test(location.search)) qaRun(); });
