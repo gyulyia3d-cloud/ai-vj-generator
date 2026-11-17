@@ -104,7 +104,7 @@ Load only what the project needs.
 | Choreography: stagger, timelines, special eases, path draw or morph, text reveals | `references/motion-systems.md` |
 | Edge blending, output raster, tearing, LED gamma, Art-Net / sACN, performance, test cards | `references/output-engineering.md`, `python scripts/surface_calc.py` |
 | Clip packs, live sets, gigs, riders, delivery notes | `references/vj-practice.md` |
-| Interface work, or what was learned from the studied repositories | `references/ui-research.md`, `references/repo-analysis.md` |
+| Interface work | `references/ui-research.md` |
 | Text, lettering, kinetic type | `references/repertoire/kinetic-type.md`, `references/repertoire/swiss-design.md` |
 | Writing the project JSON | `references/project-schema.md` |
 | Building, exporting, handing over | `references/delivery.md`, `references/engine-operation.md`, `references/capabilities.md` |

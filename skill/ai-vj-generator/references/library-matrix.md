@@ -177,10 +177,6 @@ Study:
 - modular GLSL
 - parameterized scene control
 
-## Studied for concepts (V5)
-
-TouchDesigner's output chapters, PixelController, OSCAR, P5LIVE, anime.js, GSAP, Motion Canvas, d3, Taichi, three.js post-processing: what each contributed and under what licence is in `repo-analysis.md`. None is a runtime dependency.
-
 ## Build rule
 
 Install only libraries needed by the chosen architecture. Bundle or vendor dependencies needed by the artifact when possible.

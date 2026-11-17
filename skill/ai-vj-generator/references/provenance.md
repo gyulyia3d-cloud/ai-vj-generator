@@ -46,11 +46,7 @@ are required.
 
 Do not invent replacements silently.
 
-## Third-party material studied (V5)
+## Third-party material
 
-The full ledger of repositories studied, their licences and what each contributed is `repo-analysis.md`.
-
-- AGPL and GPL code (Hydra, P5LIVE, PixelController) and proprietary code (GSAP) were read for **concepts only**; no code from them is in the skill.
 - Formulas (parametric curves, attractors, Kepler's equation, the superformula, the OKLab matrices, edge-blend ramps, the Chladni equation) are public mathematics. Every implementation in `recipes/` and `scripts/` was written independently and tested.
-- Permissively licensed projects (MIT, BSD, ISC, Apache) informed the design; no source was copied, so no third-party notice is required.
-- Documentation and book material (the TouchDesigner introduction, the VJ manifesto) is summarised in original words and cited by name, never reproduced.
+- Third-party shaders in `isf-library/third-party/` and the vendored JSZip keep their authors' credit and licence notice, as their licences require.

@@ -147,7 +147,7 @@ Pré-requisito: capturas boas dependem da UI nova. Por isso as imagens entram **
 
 ## 11. Referências de layout (adendo de 2026-10-14)
 
-O usuário enviou três referências: um editor de dither (barra superior, painel esquerdo de biblioteca, canvas com barra de ações flutuante, trilho de ícones e painel de propriedades à direita), um popup de efeito (miniatura de pré-visualização, selects, linhas de campo + slider, botão de adicionar) e o Photoshop com painel de Timeline. **Vale só o layout, a posição e os menus**; fonte, cor e linguagem seguem o GYULYIA DS v2 (seção 4).
+O usuário enviou três referências: um editor de dither (barra superior, painel esquerdo de biblioteca, canvas com barra de ações flutuante, trilho de ícones e painel de propriedades à direita), um popup de efeito (miniatura de pré-visualização, selects, linhas de campo + slider, botão de adicionar) e um editor de imagem com painel de Timeline. **Vale só o layout, a posição e os menus**; fonte, cor e linguagem seguem o GYULYIA DS v2 (seção 4).
 
 Mapa para o app (substitui o diagrama da seção 6 no que divergir):
 
@@ -159,24 +159,24 @@ Mapa para o app (substitui o diagrama da seção 6 no que divergir):
 | Painel esquerdo de biblioteca (busca, abas, miniaturas) | Composições e Camadas, com busca e miniaturas; recolhível |
 | Barra de ações flutuante sobre o canvas | Cor, Mostrar camadas, Gravar, Tela limpa, Cheia, **Exportar** em destaque |
 | Trilho de ícones + painel de propriedades | Parâmetros, Texto, Mídia, Áudio, Superfície, Ficha, Exportar; seções com cabeçalho `/ NOME` |
-| Photoshop: painel Timeline embaixo | Timeline (seção 13) |
+| Editor de imagem: painel Timeline embaixo | Timeline (seção 13) |
 
 Slider em duas variantes do mesmo componente: **empilhada** no painel de propriedades (rótulo à esquerda, valor à direita, trilha embaixo na largura toda) e **em linha** no popover (rótulo, chip de valor, trilha).
 
 ## 12. Popover "Adicionar" (efeitos e camadas)
 
 Avaliação: **vale fazer**, com limites.
-- Ganho: tira do painel de propriedades o fluxo de escolher o que entra no projeto; deixa o painel só para editar. É o padrão de software criativo (Adobe: Adicionar camada, Adicionar ajuste).
+- Ganho: tira do painel de propriedades o fluxo de escolher o que entra no projeto; deixa o painel só para editar. É o padrão de software criativo (Adicionar camada, Adicionar ajuste).
 - Conteúdo: abas pelas 9 categorias de camada, grade de miniaturas, busca; ao escolher, pré-visualização leve (a mesma da antiga aba +Efeitos, por passar o mouse ou tocar), selects e 2 a 4 parâmetros essenciais em linha, e o botão **Adicionar camada**. Os demais parâmetros ficam no painel depois de adicionada.
 - Limites: sem editor de parâmetros completo no popover (duplicaria o painel e dobraria o teste); pré-visualização com custo limitado (um quadro a 256 px, sem loop contínuo); fecha com Esc e ao clicar fora; foco preso dentro enquanto aberto; adicionar é uma ação só no histórico (desfaz com um Ctrl+Z).
 - Onde abre: botão `+` no cabeçalho do painel de Camadas e botão Adicionar na barra flutuante. Em tela estreita vira gaveta.
 - O que ele **não** é: não traz de volta a aba +Efeitos removida na 3.4. As receitas continuam sendo o seletor das camadas shader e código; o popover só chama esse mesmo seletor.
 
-## 13. Timeline (estilo Photoshop, 14b)
+## 13. Timeline (14b)
 
 Avaliação: **vale fazer, e o modelo de dados já pede por ela.** O Animation IR já tem fases da composição, eventos na batida, comportamento temporal por camada (lead, follow, counter, ambient, accent, reveal, hold), atraso em semicolcheias (`p.phase`) e `loopFrames`. Hoje isso só aparece como números; numa timeline fica visível e arrastável.
 
-Layout (como no Photoshop): painel acoplado embaixo do canvas, recolhível e com altura arrastável.
+Layout: painel acoplado embaixo do canvas, recolhível e com altura arrastável.
 - Cabeçalho à esquerda: transporte (início, quadro anterior, play/pause, próximo quadro, áudio) e o zoom da timeline.
 - Régua: compassos, tempos e quadros (`0377/0450`), com a cabeça de leitura ligada ao scrub atual. Faixas de fase da composição coloridas em cinza e marcadores de evento na batida.
 - Uma faixa por camada, de baixo para cima como no painel de Camadas: nome à esquerda; à direita uma barra que mostra o comportamento temporal e o atraso (início deslocado em semicolcheias). Olho e trava iguais aos do painel de Camadas.

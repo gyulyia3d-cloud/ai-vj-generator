@@ -3,7 +3,7 @@
 Estado em 12/10/2026, motor **3.15.0**: Fases 0 a 12 feitas (ver `docs/ROADMAP.md`). Esta lista é o backlog de blocos pequenos de antes da Fase 4: parte dos itens A (estado entre quadros) e dos itens B já foi coberta pelas fases 4 e 8, então confira o código antes de começar um deles. `node scripts/check.mjs` verde. Cada item é um bloco pequeno com um teste de aceite. Tamanho em dias-focados (df). Análise completa: `docs/historico/RELATORIO-V9-githubs3.md`.
 
 ## Feito desde a última lista
-Camada **ISF** (84 geradores no parâmetro da camada) · render **MP4 (H.264)** e **PNG por CLI** sem gravar a tela · camada **`fx`** com 22 efeitos · camada **`synth`** (cadeia de uma linha, inspirada no Hydra, código próprio) · 9 módulos GLSL novos com teste numérico · 8 transições novas (16) · 9 formas de LFO de atenção · Kalman do andamento · receitas `hilbert-curve` e `greeble-plate` · XML do Arena conferido contra um arquivo real · medição do motor e **decisão sobre WebGL2** (não trocar agora; `historico/RELATORIO-V9-githubs3.md` §5) · camada `blobs` (detecção por brilho, contraste, cor e zona) · menu corrigido · reorganização 3.0: `adapters/`, `docs/historico/`, documentação neutra de ferramenta.
+Camada **ISF** (84 geradores no parâmetro da camada) · render **MP4 (H.264)** e **PNG por CLI** sem gravar a tela · camada **`fx`** com 22 efeitos · camada **`synth`** (cadeia de uma linha, código próprio) · 9 módulos GLSL novos com teste numérico · 8 transições novas (16) · 9 formas de LFO de atenção · Kalman do andamento · receitas `hilbert-curve` e `greeble-plate` · XML do Arena conferido contra um arquivo real · medição do motor e **decisão sobre WebGL2** (não trocar agora; `historico/RELATORIO-V9-githubs3.md` §5) · camada `blobs` (detecção por brilho, contraste, cor e zona) · menu corrigido · reorganização 3.0: `adapters/`, `docs/historico/`, documentação neutra de ferramenta.
 
 ## A. Estado entre quadros, sem assar o loop (Fase 4, o item que mais abre possibilidades)
 | # | Item | df | Aceite |
@@ -16,7 +16,7 @@ Camada **ISF** (84 geradores no parâmetro da camada) · render **MP4 (H.264)** 
 ## B. Mais vocabulário
 | # | Item | df | Nota |
 |---|---|---|---|
-| B1 | camada `doodle` (grade com regras por célula e semente, ideia do css-doodle) | 1 | combina com LED |
+| B1 | camada `doodle` (grade com regras por célula e semente) | 1 | combina com LED |
 | B2 | biblioteca de cadeias `synth` salvas no projeto + 10 cadeias novas | 1 | |
 | B3 | mais ISF: ampliar a biblioteca com os 7 geradores MIT que não compilam em WebGL1 depois de corrigidos, e aceitar `audioFFT` mapeando para as bandas do motor | 2 | cada correção registrada |
 | B4 | mais 6 efeitos `fx` sem histórico (granulação de filme, anamórfico, tilt-shift, lente de gotas, duotom por mapa, estêncil) | 2 | |

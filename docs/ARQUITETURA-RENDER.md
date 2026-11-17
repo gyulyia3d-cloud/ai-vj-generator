@@ -14,7 +14,7 @@ Todo o render é função do projeto e do número do quadro. Relógio, `Date.now
 
 ## Decisões (ADR)
 1. **Contexto `webgl2` obrigatório.** Sem ele: mensagem técnica (`#glFail`) e as camadas de GPU não desenham. Não existe volta ao WebGL1. A decisão anterior de não migrar (relatório V9, medida) foi revogada pelo roadmap v11, porque 3D, partículas em GPU e render graph dependem de WebGL2.
-2. **Dialeto de autoria continua GLSL ES 1.00.** Projetos, receitas, a biblioteca ISF e o que as IAs escrevem usam `gl_FragColor`, `texture2D` e `void main(){}`. O renderizador compila como `#version 300 es` com um cabeçalho de `#define` (a mesma técnica do three.js), sem reescrever o código do usuário. Assim o esquema não muda e os 123 quadros de referência saem idênticos. O validador (`validate_project.py`) continua recusando `#version`, `in` e `out` no código do usuário.
+2. **Dialeto de autoria continua GLSL ES 1.00.** Projetos, receitas, a biblioteca ISF e o que as IAs escrevem usam `gl_FragColor`, `texture2D` e `void main(){}`. O renderizador compila como `#version 300 es` com um cabeçalho de `#define`, sem reescrever o código do usuário. Assim o esquema não muda e os 123 quadros de referência saem idênticos. O validador (`validate_project.py`) continua recusando `#version`, `in` e `out` no código do usuário.
 3. **Um módulo, só GPU.** `app/webgl.js` não conhece projeto, interface nem IR. O motor fala com ele por `glInit`, `glProg` e `glFrameUniforms`.
 4. **FrameContext** reúne o que um quadro pode ler: `frameIndex fps frameTime normalizedTime loopPhase seed bpm beatPhase audio surface resolution`. Os uniforms `u*` mantêm os nomes de sempre, agora enviados por grupo.
 

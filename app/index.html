@@ -2468,7 +2468,7 @@ function renderBelow(comp, idx, F, k, W, H, target) {
 /* WebGLRenderer (fase 2): contexto WebGL2, compilação e cache de programas, primitiva de tela cheia (VAO), texturas, framebuffers e estado.
    Só conhece GPU: nada de interface, projeto, Creative IR ou regra de negócio. O motor chama este módulo por glInit/glProg/glFrameUniforms (index.html).
    Autoria dos shaders: o corpo continua sendo GLSL no dialeto ES 1.00 (gl_FragColor, texture2D, varying), porque é esse o formato guardado nos projetos,
-   nas receitas e na biblioteca ISF. O renderizador compila tudo como GLSL ES 3.00 (#version 300 es) com um cabeçalho de #define (a mesma técnica do three.js),
+   nas receitas e na biblioteca ISF. O renderizador compila tudo como GLSL ES 3.00 (#version 300 es) com um cabeçalho de #define,
    sem reescrever o código do shader: mesmo comportamento, novo backend. Não há volta silenciosa ao WebGL1: sem WebGL2, glInit devolve null e GL.failure diz o motivo.
    Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html. */
 const WEBGL = (() => {
@@ -3603,6 +3603,13 @@ function normalize(o) {
   pr.palette = Object.assign(clone(PALS.MONO), o.palette || {});
   if (pr.palette.mode === 'white-alpha') { const q = o.palette || {}; Object.assign(pr.palette, { bg: '#000000', primary: '#FFFFFF', secondary: q.secondary || '#B8B8B8', accent: q.accent || '#FFFFFF', field: q.field || '#6E6E6E' }); }
   else { delete pr.palette.mode; if (!(o.palette && o.palette.field)) pr.palette.field = mixHex(pr.palette.bg, pr.palette.primary, 0.43); }
+  /* segurança: cor e coordenada viram HTML/SVG em vários painéis; projeto aberto de terceiros não pode injetar marcação */
+  const isHex = v => typeof v === 'string' && /^#(?:[0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(v.trim());
+  const cleanPal = (q, base) => { for (const k of ['bg', 'primary', 'secondary', 'accent', 'field']) if (k in q) q[k] = isHex(q[k]) ? q[k].trim() : base[k]; return q; };
+  cleanPal(pr.palette, PALS.MONO);
+  if (pr.meta.briefPalette && typeof pr.meta.briefPalette === 'object') cleanPal(pr.meta.briefPalette, pr.palette); else delete pr.meta.briefPalette;
+  pr.canvas.displays = (Array.isArray(pr.canvas.displays) ? pr.canvas.displays : []).filter(d => d && typeof d === 'object')
+    .map(d => ({ ...d, x: +d.x || 0, y: +d.y || 0, w: Math.max(0, +d.w || 0), h: Math.max(0, +d.h || 0) }));
   /* paredes: dobras em px do canvas (x), calha em unidades de 1080 */
   pr.canvas.folds = (Array.isArray(pr.canvas.folds) ? pr.canvas.folds : []).map(Number).filter(x => x > 0 && x < pr.canvas.w).sort((a, b) => a - b);
   pr.canvas.gutter = clamp(+pr.canvas.gutter || 90, 0, 600);
@@ -7252,7 +7259,7 @@ async function exportMp4Run(info, bar) {
 /*__MP4_END__*/
 /*__FX_START__*/
 /* Camada "fx": efeito de uma passada que lê tudo o que está ABAIXO dela na pilha (textura de entrada) e devolve a imagem processada.
-   É o que faltava ao shader de passe único (L1): CRT, VHS, halftone, dither, bordas, pintura, vidro líquido, bloom, glitch, repetição e auto-modulação (ideia de cadeia do Hydra).
+   É o que faltava ao shader de passe único (L1): CRT, VHS, halftone, dither, bordas, pintura, vidro líquido, bloom, glitch, repetição e auto-modulação.
    Todo o código GLSL é do projeto. O tempo só entra por uPh (fase do loop) e por passos inteiros por loop, então o loop fecha como nos outros shaders.
    Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html. Docs: skill/ai-vj-generator/references/fx-layer.md */
 const FX_PRE = 'uniform sampler2D uTex; uniform float uMixK; vec4 tx(vec2 q){return texture2D(uTex,q);} float fxLuma(vec3 c){return dot(c,vec3(.299,.587,.114));} ';
@@ -7373,7 +7380,7 @@ reg('fx', 'Efeito sobre as camadas abaixo', 'gen', [
 });
 /*__FX_END__*/
 /*__SYNTH_START__*/
-/* Camada "synth": uma cadeia de uma linha vira um shader. Inspirada na ideia de encadear fontes e transformações do Hydra (livecoding de vídeo),
+/* Camada "synth": uma cadeia de uma linha vira um shader. Encadeia fontes e transformações,
    com gramática, operadores e código GLSL próprios do projeto. Uso: osc(30,1).kaleid(6).modulate(noise(3),0.2).tint().pixelate(80,45)
    Regras do projeto: o tempo só entra por ciclos INTEIROS por loop (o loop fecha), os números aceitam expressões com o áudio (bass, mid, high, hit, rms, pulse) e P1..P4,
    e o resultado passa por outc() como todo shader (alpha ou opaco). Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html. Docs: references/synth-chain.md */
@@ -7460,7 +7467,7 @@ float syL(vec3 c){return dot(c,vec3(.299,.587,.114));}
           case 'rings': body = `vec4 ${f}(vec2 s){float d=length(syAc(s));float w=.5+.5*sin(d*${v[0]}-${T(v[1])});return vec4(vec3(w),1.);}`; break;
           case 'grid': body = `vec4 ${f}(vec2 s){vec2 q=fract(s*${v[0]})-.5;float e=min(.5-abs(q.x),.5-abs(q.y));return vec4(vec3(1.-smoothstep(0.,${v[1]},e)),1.);}`; break;
           case 'stripes': body = `vec4 ${f}(vec2 s){float w=${v[0]}*(s.x+s.y*.5)+${T(v[1])};return vec4(vec3(smoothstep(-.1,.1,sin(w))),1.);}`; break;
-          // coordenadas: aplicam-se ao que vem ANTES na cadeia (como no Hydra)
+          // coordenadas: aplicam-se ao que vem ANTES na cadeia
           case 'rotate': body = `vec4 ${f}(vec2 s){return ${P}(syRot(s,TAU*(${v[0]}+uPh*${cyc(v[1])})));}`; break;
           case 'scale': body = `vec4 ${f}(vec2 s){vec2 q=syAc(s)/(max(.01,${v[0]})*vec2(max(.01,${v[1]}),max(.01,${v[2]})));return ${P}(syBk(q));}`; break;
           case 'pixelate': body = `vec4 ${f}(vec2 s){vec2 n=max(vec2(1.),vec2(${v[0]},${v[1]}));return ${P}((floor(s*n)+.5)/n);}`; break;
@@ -7536,8 +7543,8 @@ reg('synth', 'Cadeia (osc, noise, kaleid, modulate…)', 'gen', [
 });
 /*__SYNTH_END__*/
 /*__BLOBS_START__*/
-/* Camada "blobs": detecção e marcação de manchas na imagem das camadas ABAIXO dela (como o fx, lê a pilha). Inspirada na ideia do BlobTracking.jl
-   (achar regiões, dar um número a cada uma, ligar), com código próprio e sem câmera: a fonte é a própria composição. Quatro modos de achar as manchas:
+/* Camada "blobs": detecção e marcação de manchas na imagem das camadas ABAIXO dela (como o fx, lê a pilha). Acha regiões,
+   dá um número a cada uma e liga as marcações, com código próprio e sem câmera: a fonte é a própria composição. Quatro modos de achar as manchas:
    brilho (luminância acima do limiar), contraste (borda: gradiente local), cor (matiz perto de um alvo) e zonas (a luminância dividida em N faixas, uma faixa escolhida).
    Função pura do quadro: o mesmo quadro dá as mesmas manchas, os mesmos números e o mesmo desenho; o loop fecha quando a imagem de baixo fecha.
    Os números das manchas são por ordem de área (B01 é a maior): sem estado entre quadros, então não há "identidade" que sobreviva a um salto; o rastro de movimento fica para o fx com histórico.

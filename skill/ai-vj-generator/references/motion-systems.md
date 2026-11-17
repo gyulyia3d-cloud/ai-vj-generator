@@ -2,8 +2,6 @@
 
 `animation-principles.md` covers the twelve principles, the basic eases and closed-form springs. This file adds the *choreography layer* that professional animation libraries and timeline tools are built around, translated into deterministic code-layer helpers: how to spread motion across many elements, how to sequence it on the bar grid, special eases, path drawing and morphing, text reveals. Everything below is a pure function of the frame (no timers, no kept state) and the helpers marked *tested* were run against assertions.
 
-Sources studied (concepts only, no code copied; see `repo-analysis.md`): anime.js (stagger, spring, timeline, SVG draw/morph, text split), GSAP (custom wiggle and bounce, rough and slow-mo eases, motion path, FLIP), Motion Canvas (generator-based flow, signals).
-
 ## 1. Stagger: one idea, many elements
 
 A stagger gives element `i` of `n` its own delay. The choice of *origin* and *shape* is the choreography.

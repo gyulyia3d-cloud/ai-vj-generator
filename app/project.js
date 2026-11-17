@@ -174,6 +174,13 @@ function normalize(o) {
   pr.palette = Object.assign(clone(PALS.MONO), o.palette || {});
   if (pr.palette.mode === 'white-alpha') { const q = o.palette || {}; Object.assign(pr.palette, { bg: '#000000', primary: '#FFFFFF', secondary: q.secondary || '#B8B8B8', accent: q.accent || '#FFFFFF', field: q.field || '#6E6E6E' }); }
   else { delete pr.palette.mode; if (!(o.palette && o.palette.field)) pr.palette.field = mixHex(pr.palette.bg, pr.palette.primary, 0.43); }
+  /* segurança: cor e coordenada viram HTML/SVG em vários painéis; projeto aberto de terceiros não pode injetar marcação */
+  const isHex = v => typeof v === 'string' && /^#(?:[0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(v.trim());
+  const cleanPal = (q, base) => { for (const k of ['bg', 'primary', 'secondary', 'accent', 'field']) if (k in q) q[k] = isHex(q[k]) ? q[k].trim() : base[k]; return q; };
+  cleanPal(pr.palette, PALS.MONO);
+  if (pr.meta.briefPalette && typeof pr.meta.briefPalette === 'object') cleanPal(pr.meta.briefPalette, pr.palette); else delete pr.meta.briefPalette;
+  pr.canvas.displays = (Array.isArray(pr.canvas.displays) ? pr.canvas.displays : []).filter(d => d && typeof d === 'object')
+    .map(d => ({ ...d, x: +d.x || 0, y: +d.y || 0, w: Math.max(0, +d.w || 0), h: Math.max(0, +d.h || 0) }));
   /* paredes: dobras em px do canvas (x), calha em unidades de 1080 */
   pr.canvas.folds = (Array.isArray(pr.canvas.folds) ? pr.canvas.folds : []).map(Number).filter(x => x > 0 && x < pr.canvas.w).sort((a, b) => a - b);
   pr.canvas.gutter = clamp(+pr.canvas.gutter || 90, 0, 600);

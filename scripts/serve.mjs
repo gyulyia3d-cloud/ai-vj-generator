@@ -23,4 +23,4 @@ createServer(async (req, res) => {
   } catch {
     res.writeHead(404, { 'Content-Type': 'text/plain' }).end('404');
   }
-}).listen(PORT, () => console.log(`AI VJ Generator → http://localhost:${PORT}`));
+}).listen(PORT, '127.0.0.1', () => console.log(`AI VJ Generator → http://localhost:${PORT}`));

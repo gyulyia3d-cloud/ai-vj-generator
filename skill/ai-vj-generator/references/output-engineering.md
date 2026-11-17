@@ -2,8 +2,6 @@
 
 How a finished composition becomes photons on a real surface, and what that changes in the design. `surface-model.md` describes the surface; `output-targets.md` lists what is delivered; `capabilities.md` labels what the engine does. This file is the physics and signal chain in between. Numbers come from `scripts/surface_calc.py`.
 
-Sources studied: the TouchDesigner output, blending and optimisation chapters and the PixelController matrix pipeline (principles only; no code was taken, see `repo-analysis.md`).
-
 ## 1. One raster, one window
 
 The engine draws **one** raster that spans every region. Build the raster, then let each projector, LED port or display take its rectangle in whatever system receives the files.

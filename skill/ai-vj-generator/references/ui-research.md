@@ -1,8 +1,8 @@
-# Interface research: what the studied repositories suggest for the generator's UI
+# Interface research: backlog for the generator's UI
 
-Input for the interface phase (after the documentation phase). Nothing here is built yet; this is the backlog distilled from the repositories (`repo-analysis.md`), ordered by value for the skill's actual job: opening a finished project, looking at it honestly, playing it, and delivering it. The interface stays the **last** step of a project; it invents nothing (`SKILL.md` §4).
+Input for the interface phase (after the documentation phase). Nothing here is built yet; this is the backlog, ordered by value for the skill's actual job: opening a finished project, looking at it honestly, playing it, and delivering it. The interface stays the **last** step of a project; it invents nothing (`SKILL.md` §4).
 
-## Principles taken from the studies
+## Principles
 
 1. **Schema-driven controls.** One description of every parameter (name, type, range, default, group, editor) generates the panel, the validation and the control map (the form-designer pattern). The engine registry and `recipes/manifest.json` already hold most of it.
 2. **Everything addressable.** Each parameter has a stable address, so a controller, a saved state and a control-map export all refer to the same thing (the clip, layer, effect, parameter hierarchy of a clip launcher, with an address per parameter).
@@ -33,7 +33,7 @@ Feito: **painel de ficha de produção**, **calculadora de superfície**, **zona
 | **Audience view** | perception docs | toggles: far-read (blur to 5% scale), greyscale, squint; **LED simulation** that pixelates to the declared pitch and distance with gaps; **projector simulation** that lifts black to the ambient level |
 | **Safety monitor** | perception §5 | flash-rate meter (flashes per second over the field), red-flash and global-motion warnings, aliasing warnings per repeating pattern |
 | **Performance monitor** | clip-launcher UIs | fps, frame time, layers and shaders cost, per-layer toggle to find the bottleneck, `res` suggestions |
-| **Mutate with history** | Hydra's mutator and undo stack | seeded perturbation of parameters inside their ranges (with lock toggles per layer or parameter), unlimited undo and redo, "keep this one" snapshots |
+| **Mutate with history** | parameter mutation with an undo stack | seeded perturbation of parameters inside their ranges (with lock toggles per layer or parameter), unlimited undo and redo, "keep this one" snapshots |
 
 ### P3: playing it
 
@@ -42,7 +42,7 @@ Feito: **painel de ficha de produção**, **calculadora de superfície**, **zona
 | **Output windows** | live-coding environments | visuals-only popup, view-only mode (editor hidden), exhibit mode (no links), kiosk URL for installations |
 | **Live code panel** | live-coding editors | for `code` layers: soft recompile on demand, flash of the evaluated lines, snippet library from the recipes, error line numbers, autosave and a periodic backup export |
 
-### P4: production batch tools (from motion-design script collections)
+### P4: production batch tools
 
 | Feature | What it does |
 |---|---|

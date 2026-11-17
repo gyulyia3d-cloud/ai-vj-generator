@@ -1,4 +1,4 @@
-/* Camada "synth": uma cadeia de uma linha vira um shader. Inspirada na ideia de encadear fontes e transformações do Hydra (livecoding de vídeo),
+/* Camada "synth": uma cadeia de uma linha vira um shader. Encadeia fontes e transformações,
    com gramática, operadores e código GLSL próprios do projeto. Uso: osc(30,1).kaleid(6).modulate(noise(3),0.2).tint().pixelate(80,45)
    Regras do projeto: o tempo só entra por ciclos INTEIROS por loop (o loop fecha), os números aceitam expressões com o áudio (bass, mid, high, hit, rms, pulse) e P1..P4,
    e o resultado passa por outc() como todo shader (alpha ou opaco). Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html. Docs: references/synth-chain.md */
@@ -85,7 +85,7 @@ float syL(vec3 c){return dot(c,vec3(.299,.587,.114));}
           case 'rings': body = `vec4 ${f}(vec2 s){float d=length(syAc(s));float w=.5+.5*sin(d*${v[0]}-${T(v[1])});return vec4(vec3(w),1.);}`; break;
           case 'grid': body = `vec4 ${f}(vec2 s){vec2 q=fract(s*${v[0]})-.5;float e=min(.5-abs(q.x),.5-abs(q.y));return vec4(vec3(1.-smoothstep(0.,${v[1]},e)),1.);}`; break;
           case 'stripes': body = `vec4 ${f}(vec2 s){float w=${v[0]}*(s.x+s.y*.5)+${T(v[1])};return vec4(vec3(smoothstep(-.1,.1,sin(w))),1.);}`; break;
-          // coordenadas: aplicam-se ao que vem ANTES na cadeia (como no Hydra)
+          // coordenadas: aplicam-se ao que vem ANTES na cadeia
           case 'rotate': body = `vec4 ${f}(vec2 s){return ${P}(syRot(s,TAU*(${v[0]}+uPh*${cyc(v[1])})));}`; break;
           case 'scale': body = `vec4 ${f}(vec2 s){vec2 q=syAc(s)/(max(.01,${v[0]})*vec2(max(.01,${v[1]}),max(.01,${v[2]})));return ${P}(syBk(q));}`; break;
           case 'pixelate': body = `vec4 ${f}(vec2 s){vec2 n=max(vec2(1.),vec2(${v[0]},${v[1]}));return ${P}((floor(s*n)+.5)/n);}`; break;

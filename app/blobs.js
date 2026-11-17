@@ -1,5 +1,5 @@
-/* Camada "blobs": detecção e marcação de manchas na imagem das camadas ABAIXO dela (como o fx, lê a pilha). Inspirada na ideia do BlobTracking.jl
-   (achar regiões, dar um número a cada uma, ligar), com código próprio e sem câmera: a fonte é a própria composição. Quatro modos de achar as manchas:
+/* Camada "blobs": detecção e marcação de manchas na imagem das camadas ABAIXO dela (como o fx, lê a pilha). Acha regiões,
+   dá um número a cada uma e liga as marcações, com código próprio e sem câmera: a fonte é a própria composição. Quatro modos de achar as manchas:
    brilho (luminância acima do limiar), contraste (borda: gradiente local), cor (matiz perto de um alvo) e zonas (a luminância dividida em N faixas, uma faixa escolhida).
    Função pura do quadro: o mesmo quadro dá as mesmas manchas, os mesmos números e o mesmo desenho; o loop fecha quando a imagem de baixo fecha.
    Os números das manchas são por ordem de área (B01 é a maior): sem estado entre quadros, então não há "identidade" que sobreviva a um salto; o rastro de movimento fica para o fx com histórico.

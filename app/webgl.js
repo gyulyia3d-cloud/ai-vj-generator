@@ -1,7 +1,7 @@
 /* WebGLRenderer (fase 2): contexto WebGL2, compilação e cache de programas, primitiva de tela cheia (VAO), texturas, framebuffers e estado.
    Só conhece GPU: nada de interface, projeto, Creative IR ou regra de negócio. O motor chama este módulo por glInit/glProg/glFrameUniforms (index.html).
    Autoria dos shaders: o corpo continua sendo GLSL no dialeto ES 1.00 (gl_FragColor, texture2D, varying), porque é esse o formato guardado nos projetos,
-   nas receitas e na biblioteca ISF. O renderizador compila tudo como GLSL ES 3.00 (#version 300 es) com um cabeçalho de #define (a mesma técnica do three.js),
+   nas receitas e na biblioteca ISF. O renderizador compila tudo como GLSL ES 3.00 (#version 300 es) com um cabeçalho de #define,
    sem reescrever o código do shader: mesmo comportamento, novo backend. Não há volta silenciosa ao WebGL1: sem WebGL2, glInit devolve null e GL.failure diz o motivo.
    Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html. */
 const WEBGL = (() => {

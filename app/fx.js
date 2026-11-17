@@ -1,5 +1,5 @@
 /* Camada "fx": efeito de uma passada que lê tudo o que está ABAIXO dela na pilha (textura de entrada) e devolve a imagem processada.
-   É o que faltava ao shader de passe único (L1): CRT, VHS, halftone, dither, bordas, pintura, vidro líquido, bloom, glitch, repetição e auto-modulação (ideia de cadeia do Hydra).
+   É o que faltava ao shader de passe único (L1): CRT, VHS, halftone, dither, bordas, pintura, vidro líquido, bloom, glitch, repetição e auto-modulação.
    Todo o código GLSL é do projeto. O tempo só entra por uPh (fase do loop) e por passos inteiros por loop, então o loop fecha como nos outros shaders.
    Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html. Docs: skill/ai-vj-generator/references/fx-layer.md */
 const FX_PRE = 'uniform sampler2D uTex; uniform float uMixK; vec4 tx(vec2 q){return texture2D(uTex,q);} float fxLuma(vec3 c){return dot(c,vec3(.299,.587,.114));} ';

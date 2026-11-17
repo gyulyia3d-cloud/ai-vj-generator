@@ -79,6 +79,23 @@ One family (or one family plus one mono), two or three sizes from the scale, con
 8. **Frame-by-frame look.** Read the contact sheets at beats 0, 1, 2, 3, the last beat and the loop seam. Fix, rebuild, look again. Do not describe a composition you did not see.
 9. **Remove one thing.** Cut the least necessary layer or element. Most pieces improve.
 
+### Finish-pass vocabulary
+
+Named, engine-friendly finishing operations (write each as a shader or `post` parameter, in the palette):
+
+| Pass | What it does | Engine route |
+|---|---|---|
+| bloom / unreal bloom | bright areas glow | `blend: add` of a blurred copy; use sparingly on LED |
+| after-image | trails of the previous frames | `p.echo` |
+| RGB shift | channel offset, chromatic aberration | a shader that samples three offsets (or three tinted layers with `add`) |
+| halftone / dot-screen | dots sized by luminance | a shader or code-layer dot grid (not on moiré-prone walls) |
+| film grain, vignette | texture and focus | `bg.grain` (not on LED), `post` vignette |
+| glitch | random block displacement | `post.slices` or `K.glitch` |
+| kaleidoscope, mirror | symmetry fold | `vjKaleid`, mirror around a fold |
+| Sobel / Frei-Chen | edge extraction | a shader on a layer's own alpha; outlines |
+| LUT / colour correction | grade | palette roles instead; LUT only if the user supplies it |
+| pixelate | quantised view | `floor(uv*n)/n` |
+
 ## 8. Anti-patterns (stop and correct)
 
 Two or three layers per composition; layer names left as `SHADER`/`FORMA`/`TEXTO`; one effect doing all the work (a shader with nothing around it); layers that ignore each other's geometry; five compositions that are the same stack with different parameters; accent colour everywhere; every layer reacting to the music; everything centred; hairlines on a wall; glow as the main idea; motion as constant rotation; random jitter instead of quantised ticks; events on no musical boundary; an empty ground; decorations that carry no meaning.

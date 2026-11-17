@@ -1,6 +1,6 @@
 # Families
 
-Generated from `families.json` by `python scripts/families.py markdown --write`. Families group the engine's generators, recipes and GLSL modules by what they do in a composition. `python scripts/families.py check` proves the manifest matches the engine. Cost classes come from `node scripts/layer_cost.mjs --write` (ms per frame above an empty frame, 1920x1080 at half resolution, software rendering on the author's machine; low < 8, medium < 20, high >= 20). Items that need media, run your own code or are not a layer say `unmeasured`. Absolute numbers depend on the machine, the order does not. Everything here is the project's own code; ideas from other projects are concepts only (repo-analysis.md).
+Generated from `families.json` by `python scripts/families.py markdown --write`. Families group the engine's generators, recipes and GLSL modules by what they do in a composition. `python scripts/families.py check` proves the manifest matches the engine. Cost classes come from `node scripts/layer_cost.mjs --write` (ms per frame above an empty frame, 1920x1080 at half resolution, software rendering on the author's machine; low < 8, medium < 20, high >= 20). Items that need media, run your own code or are not a layer say `unmeasured`. Absolute numbers depend on the machine, the order does not. Everything here is the project's own code.
 
 ## ground
 
