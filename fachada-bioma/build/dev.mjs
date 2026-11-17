@@ -1,0 +1,20 @@
+// dev.mjs <html> <comp> <out.png> [frames comma list] [scale]
+import { openPage } from 'file:///C:/Users/gyuly/.claude/skills/ai-vj-generator/scripts/cdp.mjs';
+import { writeFileSync } from 'node:fs';
+const [,, html, ci, out, fr='0', sc='0.3'] = process.argv;
+import { pathToFileURL } from 'node:url'; import { resolve } from 'node:path';
+const page = await openPage(html,{url: pathToFileURL(resolve(html)).href+'?qa=1'});
+await page.send('Page.addScriptToEvaluateOnNewDocument',{source:"window.__ge=[];for(const C of [WebGL2RenderingContext,WebGLRenderingContext]){const o=C.prototype.getShaderInfoLog;C.prototype.getShaderInfoLog=function(s){const l=o.call(this,s);if(l)window.__ge.push(l.slice(0,500));return l;};}"});
+await page.send('Page.reload',{});
+await page.evaluate("new Promise(r=>setTimeout(r,4000))");
+await page.evaluate("new Promise(async r=>{for(let i=0;i<120&&!document.querySelector('#aivj-qa[data-done]');i++)await new Promise(x=>setTimeout(x,500));r(1)})");
+await page.evaluate("new Promise(async r=>{for(let i=0;i<40&&!(window.AIVJ&&AIVJ.renderFrame);i++)await new Promise(x=>setTimeout(x,250));r(1)})");
+const frames = fr.split(',').map(Number);
+const js = `(()=>{ const fr=${JSON.stringify(frames)}, sc=${sc}, ci=${ci}; const imgs=fr.map(n=>AIVJ.renderFrame(ci,n,sc,false));
+ const w=imgs[0].width,h=imgs[0].height,cols=Math.min(3,imgs.length),rows=Math.ceil(imgs.length/cols); const cv=document.createElement('canvas'); cv.width=w*cols; cv.height=h*rows; const c=cv.getContext('2d');
+ imgs.forEach((im,i)=>{ const t=document.createElement('canvas'); t.width=w;t.height=h; t.getContext('2d').putImageData(im,0,0); c.drawImage(t,(i%cols)*w,Math.floor(i/cols)*h); });
+ return {png:cv.toDataURL('image/png'), errs:window.__ge}; })()`;
+const r = await page.evaluate(js);
+writeFileSync(out, Buffer.from(r.png.split(',')[1],'base64'));
+console.log('errors:', JSON.stringify(r.errs,null,1));
+await page.close();

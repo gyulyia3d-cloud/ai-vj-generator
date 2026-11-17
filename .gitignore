@@ -10,3 +10,6 @@ __pycache__/
 *.pyc
 
 .claude/
+
+# fachada-bioma: arquivos de trabalho intermediarios ficam so local
+fachada-bioma/work/

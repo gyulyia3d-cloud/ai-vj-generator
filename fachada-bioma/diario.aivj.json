@@ -1,0 +1,2963 @@
+{
+ "schema": "ai-vj-generator/2",
+ "id": "diario-de-campo",
+ "seed": 20261010,
+ "meta": {
+  "lang": "pt",
+  "name": "DIÁRIO DE CAMPO",
+  "artist": "",
+  "context": "Video mapping de fachada, tema Natureza Brasileira",
+  "brief": "Sonda científica que explora os biomas brasileiros sobre uma fachada arquitetônica.",
+  "contract": {
+   "concept": "Uma sonda científica de campo explora os biomas brasileiros e usa a própria fachada como espécime: lê a arquitetura, abre cada janela como portal para um bioma, deixa a pedra crescer, afogar, derreter e florescer, e transmite tudo antes de apagar.",
+   "audienceEffect": "O público de frente à fachada deve sentir que a pedra deixou de ser sólida: tem profundidade atrás das janelas, volume nas colunas, peso na água e no calor, e ainda reconhece cada segmento arquitetônico.",
+   "semioticIntent": "pesquisa (sonda, varredura, anéis de sonar) → descoberta (portal que abre) → bioma (cor, matéria, luz) → transformação (crescer, subir, derreter, florescer) → transmissão (convergência e escuro).",
+   "visualLanguage": "Luz sobre preto. Cada região arquitetônica é uma superfície diferente (torres, colunas, balcões, coroa, janelas) e cada janela é um diorama com parallax. O ciano da sonda é a constante tecnológica; a cor de cada ato é a do bioma.",
+   "formLanguage": "Anéis topográficos em torno das aberturas, veias e folhas, cáusticas, rachaduras de voronoi, gotas e flores de cinco pétalas, grades de perspectiva. Tudo nasce da geometria real da fachada, em px do canvas.",
+   "materialLanguage": "Luz aditiva modulada por um relevo de argila multiplicado sobre o resultado, que dá sombra de cornija, coluna e reentrância. Sem texturas fotográficas, sem texto.",
+   "colorLogic": "Ciano #36F1FF é a sonda (varredura, olhos, contornos). Amazônia verde-limão com orquídea; Pantanal azul-piscina com amanhecer dourado; Brasa âmbar com ipê magenta e amarelo; Convergência coral, violeta e todas as anteriores. O acento fica em olhos, flores e flashes.",
+   "spatialLogic": "Canvas único 1920x1520 (5:4) alinhado às fotos de referência. Zonas: torres e coroa, colunas, balcões e escada, paredes alta e baixa, 31 aberturas (janelas, arcos, leques, medalhões). Ponto de vista frontal único; o fora da silhueta fica sempre preto.",
+   "motionLanguage": "Matéria é suave (crescimento, maré, calor); a interface é em passos (varredura, ticks, radar). Cada ato nasce no escuro, tem um evento dominante e volta ao escuro, então o loop de 16 compassos fecha e a sequência de atos encaixa.",
+   "typographyLanguage": "Sem texto, por decisão do briefing.",
+   "temporalArc": "CALIBRAÇÃO (leitura) → DOSSEL (crescer) → ÁGUAS (subir) → BRASA (derreter e florescer) → CONVERGÊNCIA (fundir e transmitir). 5 atos de 16 compassos a 100 BPM = 192 s.",
+   "loopGrammar": "evolutionary",
+   "technicalStrategy": "Geometria analítica em GLSL (SDF das aberturas, zonas, colunas) extraída da segmentação da foto 2, porque os shaders do motor não amostram texturas. Relevo e silhueta entram como camadas de imagem; contornos como camada de código. Efeitos de derretimento e deslocamento com fx e modulação em envelope.",
+   "forbiddenShortcuts": "Nada de glow como ideia principal; nada de textura de bioma em foto; nada de rotação constante; nada de texto ou logo; nada de flash acima de 3 por segundo; nada de projeção no céu.",
+   "focalEvent": "Cada ato tem um: varredura que desce (1), frente de cipós que alcança cada janela (2), nível da água no pico (3), cascata de gotas e depois floração (4), clarão dos dois olhos (5).",
+   "releaseZone": "O terço superior de céu, preto por máscara, e o escuro de início e fim de cada ato.",
+   "banned": "texto, logo, strobe, glow constante, rotação contínua, céu iluminado",
+   "tension": "balanced",
+   "imperfection": "A frente de cipós e a maré têm borda irregular por ruído; os olhos piscam fora do compasso."
+  },
+  "spec": {
+   "archetype": [
+    "facade-mapping"
+   ],
+   "confirmed": {
+    "pixelMap": [
+     1920,
+     1520
+    ],
+    "viewingDistanceM": [
+     40,
+     40
+    ],
+    "refreshHz": 30
+   },
+   "derived": {
+    "aspect": "5:4",
+    "framesPerBar": 72,
+    "loopFrames": 1152,
+    "loopSeconds": 38.4,
+    "showSeconds": 192
+   },
+   "zones": {
+    "ignore": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1,
+      "h": 0.04,
+      "why": "céu acima das agulhas"
+     }
+    ]
+   },
+   "assumed": [
+    {
+     "field": "viewingDistanceM",
+     "value": 40,
+     "why": "não informado; ponto frontal principal",
+     "risk": "linhas finas de contorno somem acima de ~60 m"
+    },
+    {
+     "field": "projectors",
+     "value": "canvas mestre único 1920x1520, sem blend",
+     "why": "o usuário confirmou 1920x1520 como canvas do mapping",
+     "risk": "se houver mais de um projetor, o overlap é feito no software de mapping"
+    },
+    {
+     "field": "bpm",
+     "value": 100,
+     "why": "sem trilha ainda",
+     "risk": "hits sintéticos não casam com a música final; trocar o BPM e re-renderizar"
+    },
+    {
+     "field": "glassWindows",
+     "value": "janelas projetadas como portais",
+     "why": "decisão do usuário",
+     "risk": "vidro reflete menos; contraste menor nos portais"
+    },
+    {
+     "field": "ambientLight",
+     "value": "noite escura, poucos postes",
+     "why": "não informado",
+     "risk": "com luz forte, os pretos viram cinza e os detalhes escuros se perdem"
+    }
+   ],
+   "show": {
+    "genre": "narrativo",
+    "bpm": [
+     100,
+     100
+    ],
+    "durationMin": 3.2,
+    "audio": "none yet"
+   },
+   "risks": [
+    "flash máximo 3 por segundo (clarão do ato 5 dura 8 quadros)",
+    "sem texto",
+    "ilusão de profundidade depende de um ponto de vista frontal"
+   ]
+  },
+  "artBible": {
+   "thesis": "A pedra é um espécime: a sonda a lê, abre, afoga, derrete e faz florescer.",
+   "material": "luz aditiva sobre preto, sombreada por um relevo de argila multiplicado",
+   "space": "uma fachada frontal; profundidade só dentro das aberturas (parallax) e no relevo",
+   "motion": "matéria suave, interface em passos; cada ato nasce e volta ao escuro",
+   "dramaturgy": "ler, crescer, subir, derreter e florescer, fundir e transmitir",
+   "color": "ciano da sonda constante; uma cor-guia por bioma; acento só em olhos, flores e flashes",
+   "typography": "nenhuma: o briefing pede imagem pura, sem texto nem logo, para a leitura vir só da arquitetura",
+   "audio": "sem trilha: bandas sintéticas a 100 BPM; baixo pulsa anéis e olhos, médios movem a matéria, agudos faíscam",
+   "banned": "texto, logo, strobe, glow constante, rotação contínua",
+   "motionProfile": {
+    "energy": 0.55,
+    "elasticity": 0.3,
+    "anticipation": 0.5,
+    "continuity": 0.8,
+    "rhythm": 0.4
+   },
+   "density": "balanced"
+  },
+  "moods": [
+   "technological",
+   "organic",
+   "luminous"
+  ],
+  "grammar": {
+   "form": "anéis, veias, cáusticas, rachaduras, flores",
+   "motion": "crescer, subir, derreter, florescer",
+   "rhythm": "16 compassos por ato",
+   "color": "ciano da sonda + cor por bioma",
+   "density": "balanced",
+   "depth": "portais com parallax e relevo de argila",
+   "texture": "luz sobre preto",
+   "transition": "fade pelo escuro",
+   "audio": "bandas sintéticas a 100 BPM"
+  },
+  "creativeIR": {
+   "version": 1,
+   "drives": true,
+   "concept": null,
+   "concepts": [],
+   "visualVerbs": [
+    "grow",
+    "bloom",
+    "converge",
+    "breathe"
+   ],
+   "verbScores": {
+    "grow": 22,
+    "bloom": 20,
+    "converge": 20,
+    "breathe": 2
+   },
+   "hierarchy": {
+    "hero": [
+     "organism",
+     "lines",
+     "flow"
+    ],
+    "structure": [
+     "shape",
+     "lines"
+    ],
+    "ground": [
+     "CAMPO FBM",
+     "FLUXO WARP",
+     "ANÉIS SDF"
+    ]
+   },
+   "visualMotifs": [
+    "seed point",
+    "opening petals",
+    "vanishing point",
+    "inhale and exhale"
+   ],
+   "motion": {
+    "axes": {
+     "energy": 0.489,
+     "elasticity": 0.353,
+     "anticipation": 0.487,
+     "continuity": 0.792,
+     "rhythm": 0.33
+    }
+   },
+   "density": 1.16,
+   "rhythm": 0.33,
+   "scale": "large",
+   "arc": {
+    "id": "emerge",
+    "sequence": [
+     "VOID",
+     "SEED",
+     "GROWTH",
+     "BLOOM",
+     "SETTLE",
+     "CODA"
+    ],
+    "energy": [
+     0.15,
+     0.35,
+     0.65,
+     1.0,
+     0.7,
+     0.4
+    ],
+    "description": "from empty, a slow reveal, a bloom, a settling"
+   },
+   "spatialBehavior": "radial from one centre; radial from a centre",
+   "temporalBehavior": "from empty, a slow reveal, a bloom, a settling; slow build, long hold",
+   "materialBehavior": "soft living matter; light on a dark ground, wet",
+   "audioRole": "bass swells the scale",
+   "compositionStrategy": "the hero starts small and takes the room; everything opens at the peak",
+   "animationStrategy": "outward, slow in, no overshoot (seed to mass); fast open, slow settle (bud to flower)",
+   "audienceEffect": "uma sonda científica explora os biomas brasileiros e usa a fachada como espécime: lê, abre portais, deixa a pedra derreter e florescer",
+   "semioticIntent": "mood: grow + bloom + converge + breathe",
+   "forbiddenMotifs": [],
+   "novelty": null,
+   "colorLogic": "one accent used for events only"
+  },
+  "compositionIR": [
+   {
+    "version": 1,
+    "grammar": "radial",
+    "grammarSet": [
+     "radial",
+     "centered",
+     "offset"
+    ],
+    "aspectClass": "standard",
+    "canvas": {
+     "w": 1920,
+     "h": 1520,
+     "aspect": 1.263,
+     "orientation": "wide"
+    },
+    "hierarchy": {
+     "primary": "hero",
+     "secondary": "structure",
+     "tertiary": "ground"
+    },
+    "zones": {
+     "hero": {
+      "x": 0.282,
+      "y": 0.225,
+      "w": 0.435,
+      "h": 0.55
+     },
+     "secondary": {
+      "x": 0.183,
+      "y": 0.1,
+      "w": 0.633,
+      "h": 0.8
+     },
+     "support": {
+      "x": 0.381,
+      "y": 0.7,
+      "w": 0.237,
+      "h": 0.3
+     },
+     "background": {
+      "x": 0,
+      "y": 0,
+      "w": 1,
+      "h": 1
+     }
+    },
+    "negativeSpace": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 0.1,
+      "h": 1,
+      "why": "left empty on purpose: nothing is placed here"
+     }
+    ],
+    "focalPoint": {
+     "x": 0.499,
+     "y": 0.5
+    },
+    "visualMass": {
+     "hero": 0.45,
+     "secondary": 0.33,
+     "support": 0.22
+    },
+    "balance": {
+     "type": "symmetric",
+     "centre": {
+      "x": 0.499,
+      "y": 0.577
+     }
+    },
+    "alignment": "center",
+    "movementAxis": "radial",
+    "densityMap": [
+     [
+      0.25,
+      0.55,
+      0.25
+     ],
+     [
+      0.25,
+      0.9,
+      0.25
+     ],
+     [
+      0.25,
+      0.55,
+      0.25
+     ]
+    ],
+    "scaleHierarchy": {
+     "hero": 0.79,
+     "secondary": 1.14,
+     "support": 0.4
+    },
+    "depthHierarchy": {
+     "hero": "foreground",
+     "secondary": "midground",
+     "support": "midground",
+     "background": "background"
+    },
+    "safeAreas": {
+     "x": 0.05,
+     "y": 0.05,
+     "w": 0.9,
+     "h": 0.9
+    },
+    "edgeBehavior": "contain",
+    "textAnchor": {
+     "cx": 0.5,
+     "cy": 0.5,
+     "align": "center"
+    },
+    "temporal": {
+     "arc": "emerge",
+     "phases": [
+      {
+       "name": "establish",
+       "at": 0.0,
+       "heroScale": 0.7,
+       "density": 0.5,
+       "contrast": 0.9,
+       "rotation": 0,
+       "motion": 0.6
+      },
+      {
+       "name": "develop",
+       "at": 0.2,
+       "heroScale": 0.8,
+       "density": 0.7,
+       "contrast": 0.95,
+       "rotation": 0,
+       "motion": 0.8
+      },
+      {
+       "name": "transform",
+       "at": 0.4,
+       "heroScale": 0.95,
+       "density": 1.0,
+       "contrast": 1.0,
+       "rotation": 0,
+       "motion": 1.0
+      },
+      {
+       "name": "peak",
+       "at": 0.6,
+       "heroScale": 1.2,
+       "density": 1.3,
+       "contrast": 1.15,
+       "rotation": 0,
+       "motion": 1.2
+      },
+      {
+       "name": "release",
+       "at": 0.8,
+       "heroScale": 1.05,
+       "density": 1.1,
+       "contrast": 1.0,
+       "rotation": 0,
+       "motion": 0.9
+      }
+     ]
+    },
+    "description": "everything is arranged around the centre"
+   },
+   {
+    "version": 1,
+    "grammar": "centered",
+    "grammarSet": [
+     "radial",
+     "centered",
+     "offset"
+    ],
+    "aspectClass": "standard",
+    "canvas": {
+     "w": 1920,
+     "h": 1520,
+     "aspect": 1.263,
+     "orientation": "wide"
+    },
+    "hierarchy": {
+     "primary": "hero",
+     "secondary": "structure",
+     "tertiary": "ground"
+    },
+    "zones": {
+     "hero": {
+      "x": 0.183,
+      "y": 0.1,
+      "w": 0.633,
+      "h": 0.8
+     },
+     "secondary": {
+      "x": 0.203,
+      "y": 0.125,
+      "w": 0.594,
+      "h": 0.75
+     },
+     "support": {
+      "x": 0.381,
+      "y": 0.7,
+      "w": 0.237,
+      "h": 0.3
+     },
+     "background": {
+      "x": 0,
+      "y": 0,
+      "w": 1,
+      "h": 1
+     }
+    },
+    "negativeSpace": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 0.12,
+      "h": 1,
+      "why": "left empty on purpose: nothing is placed here"
+     }
+    ],
+    "focalPoint": {
+     "x": 0.499,
+     "y": 0.5
+    },
+    "visualMass": {
+     "hero": 0.55,
+     "secondary": 0.27,
+     "support": 0.18
+    },
+    "balance": {
+     "type": "symmetric",
+     "centre": {
+      "x": 0.5,
+      "y": 0.563
+     }
+    },
+    "alignment": "center",
+    "movementAxis": "radial",
+    "densityMap": [
+     [
+      0.25,
+      0.9,
+      0.25
+     ],
+     [
+      0.25,
+      0.9,
+      0.25
+     ],
+     [
+      0.25,
+      0.9,
+      0.25
+     ]
+    ],
+    "scaleHierarchy": {
+     "hero": 1.14,
+     "secondary": 1.07,
+     "support": 0.4
+    },
+    "depthHierarchy": {
+     "hero": "foreground",
+     "secondary": "midground",
+     "support": "midground",
+     "background": "background"
+    },
+    "safeAreas": {
+     "x": 0.05,
+     "y": 0.05,
+     "w": 0.9,
+     "h": 0.9
+    },
+    "edgeBehavior": "contain",
+    "textAnchor": {
+     "cx": 0.5,
+     "cy": 0.5,
+     "align": "center"
+    },
+    "temporal": {
+     "arc": "emerge",
+     "phases": [
+      {
+       "name": "establish",
+       "at": 0.0,
+       "heroScale": 0.7,
+       "density": 0.5,
+       "contrast": 0.9,
+       "rotation": 0,
+       "motion": 0.6
+      },
+      {
+       "name": "develop",
+       "at": 0.2,
+       "heroScale": 0.8,
+       "density": 0.7,
+       "contrast": 0.95,
+       "rotation": 0,
+       "motion": 0.8
+      },
+      {
+       "name": "transform",
+       "at": 0.4,
+       "heroScale": 0.95,
+       "density": 1.0,
+       "contrast": 1.0,
+       "rotation": 0,
+       "motion": 1.0
+      },
+      {
+       "name": "peak",
+       "at": 0.6,
+       "heroScale": 1.2,
+       "density": 1.3,
+       "contrast": 1.15,
+       "rotation": 0,
+       "motion": 1.2
+      },
+      {
+       "name": "release",
+       "at": 0.8,
+       "heroScale": 1.05,
+       "density": 1.1,
+       "contrast": 1.0,
+       "rotation": 0,
+       "motion": 0.9
+      }
+     ]
+    },
+    "description": "one figure on the centre, quiet outer bands"
+   },
+   {
+    "version": 1,
+    "grammar": "offset",
+    "grammarSet": [
+     "radial",
+     "centered",
+     "offset"
+    ],
+    "aspectClass": "standard",
+    "canvas": {
+     "w": 1920,
+     "h": 1520,
+     "aspect": 1.263,
+     "orientation": "wide"
+    },
+    "hierarchy": {
+     "primary": "hero",
+     "secondary": "structure",
+     "tertiary": "ground"
+    },
+    "zones": {
+     "hero": {
+      "x": 0.023,
+      "y": 0.12,
+      "w": 0.633,
+      "h": 0.8
+     },
+     "secondary": {
+      "x": 0.502,
+      "y": 0.17,
+      "w": 0.396,
+      "h": 0.5
+     },
+     "support": {
+      "x": 0.581,
+      "y": 0.7,
+      "w": 0.237,
+      "h": 0.3
+     },
+     "background": {
+      "x": 0,
+      "y": 0,
+      "w": 1,
+      "h": 1
+     }
+    },
+    "negativeSpace": [
+     {
+      "x": 0.6,
+      "y": 0.55,
+      "w": 0.4,
+      "h": 0.45,
+      "why": "left empty on purpose: nothing is placed here"
+     }
+    ],
+    "focalPoint": {
+     "x": 0.34,
+     "y": 0.52
+    },
+    "visualMass": {
+     "hero": 0.6,
+     "secondary": 0.24,
+     "support": 0.16
+    },
+    "balance": {
+     "type": "asymmetric",
+     "centre": {
+      "x": 0.484,
+      "y": 0.549
+     }
+    },
+    "alignment": "left",
+    "movementAxis": "x",
+    "densityMap": [
+     [
+      0.9,
+      0.9,
+      0.25
+     ],
+     [
+      0.9,
+      0.9,
+      0.55
+     ],
+     [
+      0.9,
+      0.9,
+      0.05
+     ]
+    ],
+    "scaleHierarchy": {
+     "hero": 1.14,
+     "secondary": 0.71,
+     "support": 0.4
+    },
+    "depthHierarchy": {
+     "hero": "foreground",
+     "secondary": "midground",
+     "support": "midground",
+     "background": "background"
+    },
+    "safeAreas": {
+     "x": 0.05,
+     "y": 0.05,
+     "w": 0.9,
+     "h": 0.9
+    },
+    "edgeBehavior": "contain",
+    "textAnchor": {
+     "cx": 0.68,
+     "cy": 0.5,
+     "align": "left"
+    },
+    "temporal": {
+     "arc": "emerge",
+     "phases": [
+      {
+       "name": "establish",
+       "at": 0.0,
+       "heroScale": 0.7,
+       "density": 0.5,
+       "contrast": 0.9,
+       "rotation": 0,
+       "motion": 0.6
+      },
+      {
+       "name": "develop",
+       "at": 0.2,
+       "heroScale": 0.8,
+       "density": 0.7,
+       "contrast": 0.95,
+       "rotation": 0,
+       "motion": 0.8
+      },
+      {
+       "name": "transform",
+       "at": 0.4,
+       "heroScale": 0.95,
+       "density": 1.0,
+       "contrast": 1.0,
+       "rotation": 0,
+       "motion": 1.0
+      },
+      {
+       "name": "peak",
+       "at": 0.6,
+       "heroScale": 1.2,
+       "density": 1.3,
+       "contrast": 1.15,
+       "rotation": 0,
+       "motion": 1.2
+      },
+      {
+       "name": "release",
+       "at": 0.8,
+       "heroScale": 1.05,
+       "density": 1.1,
+       "contrast": 1.0,
+       "rotation": 0,
+       "motion": 0.9
+      }
+     ]
+    },
+    "description": "the figure sits off centre and the open third answers it"
+   },
+   {
+    "version": 1,
+    "grammar": "radial",
+    "grammarSet": [
+     "radial",
+     "centered",
+     "offset"
+    ],
+    "aspectClass": "standard",
+    "canvas": {
+     "w": 1920,
+     "h": 1520,
+     "aspect": 1.263,
+     "orientation": "wide"
+    },
+    "hierarchy": {
+     "primary": "hero",
+     "secondary": "structure",
+     "tertiary": "ground"
+    },
+    "zones": {
+     "hero": {
+      "x": 0.282,
+      "y": 0.225,
+      "w": 0.435,
+      "h": 0.55
+     },
+     "secondary": {
+      "x": 0.183,
+      "y": 0.1,
+      "w": 0.633,
+      "h": 0.8
+     },
+     "support": {
+      "x": 0.381,
+      "y": 0.7,
+      "w": 0.237,
+      "h": 0.3
+     },
+     "background": {
+      "x": 0,
+      "y": 0,
+      "w": 1,
+      "h": 1
+     }
+    },
+    "negativeSpace": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 0.1,
+      "h": 1,
+      "why": "left empty on purpose: nothing is placed here"
+     }
+    ],
+    "focalPoint": {
+     "x": 0.499,
+     "y": 0.5
+    },
+    "visualMass": {
+     "hero": 0.45,
+     "secondary": 0.33,
+     "support": 0.22
+    },
+    "balance": {
+     "type": "symmetric",
+     "centre": {
+      "x": 0.499,
+      "y": 0.577
+     }
+    },
+    "alignment": "center",
+    "movementAxis": "radial",
+    "densityMap": [
+     [
+      0.25,
+      0.55,
+      0.25
+     ],
+     [
+      0.25,
+      0.9,
+      0.25
+     ],
+     [
+      0.25,
+      0.55,
+      0.25
+     ]
+    ],
+    "scaleHierarchy": {
+     "hero": 0.79,
+     "secondary": 1.14,
+     "support": 0.4
+    },
+    "depthHierarchy": {
+     "hero": "foreground",
+     "secondary": "midground",
+     "support": "midground",
+     "background": "background"
+    },
+    "safeAreas": {
+     "x": 0.05,
+     "y": 0.05,
+     "w": 0.9,
+     "h": 0.9
+    },
+    "edgeBehavior": "contain",
+    "textAnchor": {
+     "cx": 0.5,
+     "cy": 0.5,
+     "align": "center"
+    },
+    "temporal": {
+     "arc": "emerge",
+     "phases": [
+      {
+       "name": "establish",
+       "at": 0.0,
+       "heroScale": 0.7,
+       "density": 0.5,
+       "contrast": 0.9,
+       "rotation": 0,
+       "motion": 0.6
+      },
+      {
+       "name": "develop",
+       "at": 0.2,
+       "heroScale": 0.8,
+       "density": 0.7,
+       "contrast": 0.95,
+       "rotation": 0,
+       "motion": 0.8
+      },
+      {
+       "name": "transform",
+       "at": 0.4,
+       "heroScale": 0.95,
+       "density": 1.0,
+       "contrast": 1.0,
+       "rotation": 0,
+       "motion": 1.0
+      },
+      {
+       "name": "peak",
+       "at": 0.6,
+       "heroScale": 1.2,
+       "density": 1.3,
+       "contrast": 1.15,
+       "rotation": 0,
+       "motion": 1.2
+      },
+      {
+       "name": "release",
+       "at": 0.8,
+       "heroScale": 1.05,
+       "density": 1.1,
+       "contrast": 1.0,
+       "rotation": 0,
+       "motion": 0.9
+      }
+     ]
+    },
+    "description": "everything is arranged around the centre"
+   },
+   {
+    "version": 1,
+    "grammar": "centered",
+    "grammarSet": [
+     "radial",
+     "centered",
+     "offset"
+    ],
+    "aspectClass": "standard",
+    "canvas": {
+     "w": 1920,
+     "h": 1520,
+     "aspect": 1.263,
+     "orientation": "wide"
+    },
+    "hierarchy": {
+     "primary": "hero",
+     "secondary": "structure",
+     "tertiary": "ground"
+    },
+    "zones": {
+     "hero": {
+      "x": 0.183,
+      "y": 0.1,
+      "w": 0.633,
+      "h": 0.8
+     },
+     "secondary": {
+      "x": 0.203,
+      "y": 0.125,
+      "w": 0.594,
+      "h": 0.75
+     },
+     "support": {
+      "x": 0.381,
+      "y": 0.7,
+      "w": 0.237,
+      "h": 0.3
+     },
+     "background": {
+      "x": 0,
+      "y": 0,
+      "w": 1,
+      "h": 1
+     }
+    },
+    "negativeSpace": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 0.12,
+      "h": 1,
+      "why": "left empty on purpose: nothing is placed here"
+     }
+    ],
+    "focalPoint": {
+     "x": 0.499,
+     "y": 0.5
+    },
+    "visualMass": {
+     "hero": 0.55,
+     "secondary": 0.27,
+     "support": 0.18
+    },
+    "balance": {
+     "type": "symmetric",
+     "centre": {
+      "x": 0.5,
+      "y": 0.563
+     }
+    },
+    "alignment": "center",
+    "movementAxis": "radial",
+    "densityMap": [
+     [
+      0.25,
+      0.9,
+      0.25
+     ],
+     [
+      0.25,
+      0.9,
+      0.25
+     ],
+     [
+      0.25,
+      0.9,
+      0.25
+     ]
+    ],
+    "scaleHierarchy": {
+     "hero": 1.14,
+     "secondary": 1.07,
+     "support": 0.4
+    },
+    "depthHierarchy": {
+     "hero": "foreground",
+     "secondary": "midground",
+     "support": "midground",
+     "background": "background"
+    },
+    "safeAreas": {
+     "x": 0.05,
+     "y": 0.05,
+     "w": 0.9,
+     "h": 0.9
+    },
+    "edgeBehavior": "contain",
+    "textAnchor": {
+     "cx": 0.5,
+     "cy": 0.5,
+     "align": "center"
+    },
+    "temporal": {
+     "arc": "emerge",
+     "phases": [
+      {
+       "name": "establish",
+       "at": 0.0,
+       "heroScale": 0.7,
+       "density": 0.5,
+       "contrast": 0.9,
+       "rotation": 0,
+       "motion": 0.6
+      },
+      {
+       "name": "develop",
+       "at": 0.2,
+       "heroScale": 0.8,
+       "density": 0.7,
+       "contrast": 0.95,
+       "rotation": 0,
+       "motion": 0.8
+      },
+      {
+       "name": "transform",
+       "at": 0.4,
+       "heroScale": 0.95,
+       "density": 1.0,
+       "contrast": 1.0,
+       "rotation": 0,
+       "motion": 1.0
+      },
+      {
+       "name": "peak",
+       "at": 0.6,
+       "heroScale": 1.2,
+       "density": 1.3,
+       "contrast": 1.15,
+       "rotation": 0,
+       "motion": 1.2
+      },
+      {
+       "name": "release",
+       "at": 0.8,
+       "heroScale": 1.05,
+       "density": 1.1,
+       "contrast": 1.0,
+       "rotation": 0,
+       "motion": 0.9
+      }
+     ]
+    },
+    "description": "one figure on the centre, quiet outer bands"
+   }
+  ],
+  "animationIR": [
+   {
+    "version": 1,
+    "archetype": "settle",
+    "archetypeSet": [
+     "settle",
+     "surge",
+     "ripple"
+    ],
+    "axes": {
+     "energy": 0.489,
+     "elasticity": 0.353,
+     "anticipation": 0.487,
+     "continuity": 0.792,
+     "rhythm": 0.33
+    },
+    "timing": {
+     "bpm": 120,
+     "bars": 4,
+     "fps": 30,
+     "loopFrames": 240,
+     "cyclesPerLoop": 1,
+     "framesPerCycle": 240.0,
+     "beatsPerCycle": 16.0,
+     "sixteenthFrames": 3.75
+    },
+    "easing": {
+     "id": "damped",
+     "description": "one entrance that settles without ringing"
+    },
+    "spring": {
+     "zeta": 0.9,
+     "wn": 12.379,
+     "ta": 0.0,
+     "depth": 0.0,
+     "steps": 26,
+     "cycles": 1,
+     "amp": 0.3445,
+     "overshoot": 0.0015
+    },
+    "anticipation": {
+     "fraction": 0.0,
+     "frames": 0.0
+    },
+    "settle": {
+     "fraction": 0.359,
+     "frames": 86.16
+    },
+    "hold": 0.4,
+    "hierarchy": {
+     "hero": {
+      "behavior": "lead",
+      "shape": "spring",
+      "cycles": 1,
+      "drive": "target",
+      "amp": 0.3445,
+      "spring": {
+       "zeta": 0.9,
+       "wn": 12.379,
+       "ta": 0.0,
+       "depth": 0.0,
+       "steps": 26
+      },
+      "lag": {
+       "steps": 0,
+       "lag": 0.0,
+       "frames": 0.0
+      }
+     },
+     "structure": {
+      "behavior": "hold",
+      "shape": "spring",
+      "cycles": 1,
+      "drive": "target",
+      "amp": 0.1722,
+      "spring": {
+       "zeta": 0.9,
+       "wn": 10.765,
+       "ta": 0,
+       "depth": 0,
+       "steps": 26
+      },
+      "lag": {
+       "steps": 0,
+       "lag": 0.0,
+       "frames": 0.0
+      }
+     },
+     "ground": {
+      "behavior": "hold",
+      "lag": {
+       "steps": 0,
+       "lag": 0.0,
+       "frames": 0.0
+      }
+     },
+     "instrument": {
+      "behavior": "accent"
+     },
+     "text": {
+      "behavior": "reveal"
+     }
+    },
+    "choreography": [
+     {
+      "name": "establish",
+      "at": 0.0,
+      "lead": "hero",
+      "energy": 0.6,
+      "transition": "hold"
+     },
+     {
+      "name": "develop",
+      "at": 0.2,
+      "lead": "hero",
+      "energy": 0.8,
+      "transition": "hold"
+     },
+     {
+      "name": "transform",
+      "at": 0.4,
+      "lead": "hero",
+      "energy": 1.0,
+      "transition": "hold"
+     },
+     {
+      "name": "peak",
+      "at": 0.6,
+      "lead": "hero",
+      "energy": 1.2,
+      "transition": "hold"
+     },
+     {
+      "name": "release",
+      "at": 0.8,
+      "lead": "hero",
+      "energy": 0.9,
+      "transition": "hold"
+     }
+    ],
+    "events": [
+     {
+      "name": "establish",
+      "phase": "establish",
+      "beat": 0,
+      "at": 0.0
+     },
+     {
+      "name": "build",
+      "phase": "develop",
+      "beat": 3,
+      "at": 0.1875
+     },
+     {
+      "name": "turn",
+      "phase": "transform",
+      "beat": 6,
+      "at": 0.375
+     },
+     {
+      "name": "focal",
+      "phase": "peak",
+      "beat": 10,
+      "at": 0.625
+     },
+     {
+      "name": "release",
+      "phase": "release",
+      "beat": 13,
+      "at": 0.8125
+     }
+    ],
+    "transitions": {
+     "phases": "hold",
+     "description": "one phase holds while the others change"
+    },
+    "loop": {
+     "closes": true,
+     "wholeCycles": true,
+     "seamless": true
+    },
+    "description": "one entrance per loop that lands and holds; the rest stays still"
+   },
+   {
+    "version": 1,
+    "archetype": "surge",
+    "archetypeSet": [
+     "settle",
+     "surge",
+     "ripple"
+    ],
+    "axes": {
+     "energy": 0.489,
+     "elasticity": 0.353,
+     "anticipation": 0.487,
+     "continuity": 0.792,
+     "rhythm": 0.33
+    },
+    "timing": {
+     "bpm": 120,
+     "bars": 4,
+     "fps": 30,
+     "loopFrames": 240,
+     "cyclesPerLoop": 4,
+     "framesPerCycle": 60.0,
+     "beatsPerCycle": 4.0,
+     "sixteenthFrames": 3.75
+    },
+    "easing": {
+     "id": "ramp-drop",
+     "description": "a slow linear build that drops at the end of the cycle"
+    },
+    "spring": {
+     "zeta": 0.6894,
+     "wn": 12.379,
+     "ta": 0.0,
+     "depth": 0.0,
+     "steps": 26,
+     "cycles": 4,
+     "amp": 0.4134,
+     "overshoot": 0.0503
+    },
+    "anticipation": {
+     "fraction": 0.0,
+     "frames": 0.0
+    },
+    "settle": {
+     "fraction": 0.469,
+     "frames": 28.14
+    },
+    "hold": 0.0,
+    "hierarchy": {
+     "hero": {
+      "behavior": "lead",
+      "shape": "saw",
+      "cycles": 4,
+      "drive": "target",
+      "amp": 0.4134,
+      "spring": {
+       "zeta": 0.6894,
+       "wn": 12.379,
+       "ta": 0.0,
+       "depth": 0.0,
+       "steps": 26
+      },
+      "lag": {
+       "steps": 0,
+       "lag": 0.0,
+       "frames": 0.0
+      }
+     },
+     "structure": {
+      "behavior": "follow",
+      "shape": "saw",
+      "cycles": 4,
+      "drive": "target",
+      "amp": 0.2067,
+      "spring": {
+       "zeta": 0.8447,
+       "wn": 10.765,
+       "ta": 0,
+       "depth": 0,
+       "steps": 26
+      },
+      "lag": {
+       "steps": 1,
+       "lag": 0.0156,
+       "frames": 3.75
+      }
+     },
+     "ground": {
+      "behavior": "ambient",
+      "lag": {
+       "steps": 2,
+       "lag": 0.0312,
+       "frames": 7.5
+      }
+     },
+     "instrument": {
+      "behavior": "accent"
+     },
+     "text": {
+      "behavior": "reveal"
+     }
+    },
+    "choreography": [
+     {
+      "name": "establish",
+      "at": 0.0,
+      "lead": "ground",
+      "energy": 0.6,
+      "transition": "cut"
+     },
+     {
+      "name": "develop",
+      "at": 0.2,
+      "lead": "structure",
+      "energy": 0.8,
+      "transition": "cut"
+     },
+     {
+      "name": "transform",
+      "at": 0.4,
+      "lead": "hero",
+      "energy": 1.0,
+      "transition": "cut"
+     },
+     {
+      "name": "peak",
+      "at": 0.6,
+      "lead": "hero",
+      "energy": 1.2,
+      "transition": "cut"
+     },
+     {
+      "name": "release",
+      "at": 0.8,
+      "lead": "ground",
+      "energy": 0.9,
+      "transition": "cut"
+     }
+    ],
+    "events": [
+     {
+      "name": "establish",
+      "phase": "establish",
+      "beat": 0,
+      "at": 0.0
+     },
+     {
+      "name": "build",
+      "phase": "develop",
+      "beat": 3,
+      "at": 0.1875
+     },
+     {
+      "name": "turn",
+      "phase": "transform",
+      "beat": 6,
+      "at": 0.375
+     },
+     {
+      "name": "focal",
+      "phase": "peak",
+      "beat": 10,
+      "at": 0.625
+     },
+     {
+      "name": "release",
+      "phase": "release",
+      "beat": 13,
+      "at": 0.8125
+     }
+    ],
+    "transitions": {
+     "phases": "cut",
+     "description": "phases change on the beat, no blend"
+    },
+    "loop": {
+     "closes": true,
+     "wholeCycles": true,
+     "seamless": true
+    },
+    "description": "a slow build once per bar that drops at the end of the bar"
+   },
+   {
+    "version": 1,
+    "archetype": "ripple",
+    "archetypeSet": [
+     "settle",
+     "surge",
+     "ripple"
+    ],
+    "axes": {
+     "energy": 0.489,
+     "elasticity": 0.353,
+     "anticipation": 0.487,
+     "continuity": 0.792,
+     "rhythm": 0.33
+    },
+    "timing": {
+     "bpm": 120,
+     "bars": 4,
+     "fps": 30,
+     "loopFrames": 240,
+     "cyclesPerLoop": 8,
+     "framesPerCycle": 30.0,
+     "beatsPerCycle": 2.0,
+     "sixteenthFrames": 3.75
+    },
+    "easing": {
+     "id": "spring",
+     "description": "kick and ring: fast out, rings down (motion_profiles.py)"
+    },
+    "spring": {
+     "zeta": 0.6894,
+     "wn": 12.379,
+     "ta": 0.0,
+     "depth": 0.0,
+     "steps": 26,
+     "cycles": 8,
+     "amp": 0.3445,
+     "overshoot": 0.0503
+    },
+    "anticipation": {
+     "fraction": 0.0,
+     "frames": 0.0
+    },
+    "settle": {
+     "fraction": 0.469,
+     "frames": 14.07
+    },
+    "hold": 0.0,
+    "hierarchy": {
+     "hero": {
+      "behavior": "lead",
+      "shape": "rubber",
+      "cycles": 8,
+      "drive": "target",
+      "amp": 0.3445,
+      "spring": {
+       "zeta": 0.6894,
+       "wn": 12.379,
+       "ta": 0.0,
+       "depth": 0.0,
+       "steps": 26
+      },
+      "lag": {
+       "steps": 0,
+       "lag": 0.0,
+       "frames": 0.0
+      }
+     },
+     "structure": {
+      "behavior": "follow",
+      "shape": "rubber",
+      "cycles": 8,
+      "drive": "target",
+      "amp": 0.1722,
+      "spring": {
+       "zeta": 0.8447,
+       "wn": 10.765,
+       "ta": 0,
+       "depth": 0,
+       "steps": 26
+      },
+      "lag": {
+       "steps": 2,
+       "lag": 0.0312,
+       "frames": 7.5
+      }
+     },
+     "ground": {
+      "behavior": "ambient",
+      "lag": {
+       "steps": 4,
+       "lag": 0.0625,
+       "frames": 15.0
+      }
+     },
+     "instrument": {
+      "behavior": "accent"
+     },
+     "text": {
+      "behavior": "reveal"
+     }
+    },
+    "choreography": [
+     {
+      "name": "establish",
+      "at": 0.0,
+      "lead": "hero",
+      "energy": 0.6,
+      "transition": "ease"
+     },
+     {
+      "name": "develop",
+      "at": 0.2,
+      "lead": "structure",
+      "energy": 0.8,
+      "transition": "ease"
+     },
+     {
+      "name": "transform",
+      "at": 0.4,
+      "lead": "ground",
+      "energy": 1.0,
+      "transition": "ease"
+     },
+     {
+      "name": "peak",
+      "at": 0.6,
+      "lead": "hero",
+      "energy": 1.2,
+      "transition": "ease"
+     },
+     {
+      "name": "release",
+      "at": 0.8,
+      "lead": "ground",
+      "energy": 0.9,
+      "transition": "ease"
+     }
+    ],
+    "events": [
+     {
+      "name": "establish",
+      "phase": "establish",
+      "beat": 0,
+      "at": 0.0
+     },
+     {
+      "name": "build",
+      "phase": "develop",
+      "beat": 3,
+      "at": 0.1875
+     },
+     {
+      "name": "turn",
+      "phase": "transform",
+      "beat": 6,
+      "at": 0.375
+     },
+     {
+      "name": "focal",
+      "phase": "peak",
+      "beat": 10,
+      "at": 0.625
+     },
+     {
+      "name": "release",
+      "phase": "release",
+      "beat": 13,
+      "at": 0.8125
+     }
+    ],
+    "transitions": {
+     "phases": "ease",
+     "description": "phases blend with a smooth ease"
+    },
+    "loop": {
+     "closes": true,
+     "wholeCycles": true,
+     "seamless": true
+    },
+    "description": "a damped wobble that travels outward: hero first, then structure, then ground"
+   },
+   {
+    "version": 1,
+    "archetype": "settle",
+    "archetypeSet": [
+     "settle",
+     "surge",
+     "ripple"
+    ],
+    "axes": {
+     "energy": 0.489,
+     "elasticity": 0.353,
+     "anticipation": 0.487,
+     "continuity": 0.792,
+     "rhythm": 0.33
+    },
+    "timing": {
+     "bpm": 120,
+     "bars": 4,
+     "fps": 30,
+     "loopFrames": 240,
+     "cyclesPerLoop": 1,
+     "framesPerCycle": 240.0,
+     "beatsPerCycle": 16.0,
+     "sixteenthFrames": 3.75
+    },
+    "easing": {
+     "id": "damped",
+     "description": "one entrance that settles without ringing"
+    },
+    "spring": {
+     "zeta": 0.9,
+     "wn": 12.379,
+     "ta": 0.0,
+     "depth": 0.0,
+     "steps": 26,
+     "cycles": 1,
+     "amp": 0.3445,
+     "overshoot": 0.0015
+    },
+    "anticipation": {
+     "fraction": 0.0,
+     "frames": 0.0
+    },
+    "settle": {
+     "fraction": 0.359,
+     "frames": 86.16
+    },
+    "hold": 0.4,
+    "hierarchy": {
+     "hero": {
+      "behavior": "lead",
+      "shape": "spring",
+      "cycles": 1,
+      "drive": "target",
+      "amp": 0.3445,
+      "spring": {
+       "zeta": 0.9,
+       "wn": 12.379,
+       "ta": 0.0,
+       "depth": 0.0,
+       "steps": 26
+      },
+      "lag": {
+       "steps": 0,
+       "lag": 0.0,
+       "frames": 0.0
+      }
+     },
+     "structure": {
+      "behavior": "hold",
+      "shape": "spring",
+      "cycles": 1,
+      "drive": "target",
+      "amp": 0.1722,
+      "spring": {
+       "zeta": 0.9,
+       "wn": 10.765,
+       "ta": 0,
+       "depth": 0,
+       "steps": 26
+      },
+      "lag": {
+       "steps": 0,
+       "lag": 0.0,
+       "frames": 0.0
+      }
+     },
+     "ground": {
+      "behavior": "hold",
+      "lag": {
+       "steps": 0,
+       "lag": 0.0,
+       "frames": 0.0
+      }
+     },
+     "instrument": {
+      "behavior": "accent"
+     },
+     "text": {
+      "behavior": "reveal"
+     }
+    },
+    "choreography": [
+     {
+      "name": "establish",
+      "at": 0.0,
+      "lead": "hero",
+      "energy": 0.6,
+      "transition": "hold"
+     },
+     {
+      "name": "develop",
+      "at": 0.2,
+      "lead": "hero",
+      "energy": 0.8,
+      "transition": "hold"
+     },
+     {
+      "name": "transform",
+      "at": 0.4,
+      "lead": "hero",
+      "energy": 1.0,
+      "transition": "hold"
+     },
+     {
+      "name": "peak",
+      "at": 0.6,
+      "lead": "hero",
+      "energy": 1.2,
+      "transition": "hold"
+     },
+     {
+      "name": "release",
+      "at": 0.8,
+      "lead": "hero",
+      "energy": 0.9,
+      "transition": "hold"
+     }
+    ],
+    "events": [
+     {
+      "name": "establish",
+      "phase": "establish",
+      "beat": 0,
+      "at": 0.0
+     },
+     {
+      "name": "build",
+      "phase": "develop",
+      "beat": 3,
+      "at": 0.1875
+     },
+     {
+      "name": "turn",
+      "phase": "transform",
+      "beat": 6,
+      "at": 0.375
+     },
+     {
+      "name": "focal",
+      "phase": "peak",
+      "beat": 10,
+      "at": 0.625
+     },
+     {
+      "name": "release",
+      "phase": "release",
+      "beat": 13,
+      "at": 0.8125
+     }
+    ],
+    "transitions": {
+     "phases": "hold",
+     "description": "one phase holds while the others change"
+    },
+    "loop": {
+     "closes": true,
+     "wholeCycles": true,
+     "seamless": true
+    },
+    "description": "one entrance per loop that lands and holds; the rest stays still"
+   },
+   {
+    "version": 1,
+    "archetype": "surge",
+    "archetypeSet": [
+     "settle",
+     "surge",
+     "ripple"
+    ],
+    "axes": {
+     "energy": 0.489,
+     "elasticity": 0.353,
+     "anticipation": 0.487,
+     "continuity": 0.792,
+     "rhythm": 0.33
+    },
+    "timing": {
+     "bpm": 120,
+     "bars": 4,
+     "fps": 30,
+     "loopFrames": 240,
+     "cyclesPerLoop": 4,
+     "framesPerCycle": 60.0,
+     "beatsPerCycle": 4.0,
+     "sixteenthFrames": 3.75
+    },
+    "easing": {
+     "id": "ramp-drop",
+     "description": "a slow linear build that drops at the end of the cycle"
+    },
+    "spring": {
+     "zeta": 0.6894,
+     "wn": 12.379,
+     "ta": 0.0,
+     "depth": 0.0,
+     "steps": 26,
+     "cycles": 4,
+     "amp": 0.4134,
+     "overshoot": 0.0503
+    },
+    "anticipation": {
+     "fraction": 0.0,
+     "frames": 0.0
+    },
+    "settle": {
+     "fraction": 0.469,
+     "frames": 28.14
+    },
+    "hold": 0.0,
+    "hierarchy": {
+     "hero": {
+      "behavior": "lead",
+      "shape": "saw",
+      "cycles": 4,
+      "drive": "target",
+      "amp": 0.4134,
+      "spring": {
+       "zeta": 0.6894,
+       "wn": 12.379,
+       "ta": 0.0,
+       "depth": 0.0,
+       "steps": 26
+      },
+      "lag": {
+       "steps": 0,
+       "lag": 0.0,
+       "frames": 0.0
+      }
+     },
+     "structure": {
+      "behavior": "follow",
+      "shape": "saw",
+      "cycles": 4,
+      "drive": "target",
+      "amp": 0.2067,
+      "spring": {
+       "zeta": 0.8447,
+       "wn": 10.765,
+       "ta": 0,
+       "depth": 0,
+       "steps": 26
+      },
+      "lag": {
+       "steps": 1,
+       "lag": 0.0156,
+       "frames": 3.75
+      }
+     },
+     "ground": {
+      "behavior": "ambient",
+      "lag": {
+       "steps": 2,
+       "lag": 0.0312,
+       "frames": 7.5
+      }
+     },
+     "instrument": {
+      "behavior": "accent"
+     },
+     "text": {
+      "behavior": "reveal"
+     }
+    },
+    "choreography": [
+     {
+      "name": "establish",
+      "at": 0.0,
+      "lead": "ground",
+      "energy": 0.6,
+      "transition": "cut"
+     },
+     {
+      "name": "develop",
+      "at": 0.2,
+      "lead": "structure",
+      "energy": 0.8,
+      "transition": "cut"
+     },
+     {
+      "name": "transform",
+      "at": 0.4,
+      "lead": "hero",
+      "energy": 1.0,
+      "transition": "cut"
+     },
+     {
+      "name": "peak",
+      "at": 0.6,
+      "lead": "hero",
+      "energy": 1.2,
+      "transition": "cut"
+     },
+     {
+      "name": "release",
+      "at": 0.8,
+      "lead": "ground",
+      "energy": 0.9,
+      "transition": "cut"
+     }
+    ],
+    "events": [
+     {
+      "name": "establish",
+      "phase": "establish",
+      "beat": 0,
+      "at": 0.0
+     },
+     {
+      "name": "build",
+      "phase": "develop",
+      "beat": 3,
+      "at": 0.1875
+     },
+     {
+      "name": "turn",
+      "phase": "transform",
+      "beat": 6,
+      "at": 0.375
+     },
+     {
+      "name": "focal",
+      "phase": "peak",
+      "beat": 10,
+      "at": 0.625
+     },
+     {
+      "name": "release",
+      "phase": "release",
+      "beat": 13,
+      "at": 0.8125
+     }
+    ],
+    "transitions": {
+     "phases": "cut",
+     "description": "phases change on the beat, no blend"
+    },
+    "loop": {
+     "closes": true,
+     "wholeCycles": true,
+     "seamless": true
+    },
+    "description": "a slow build once per bar that drops at the end of the bar"
+   }
+  ],
+  "surfaceIR": {
+   "version": 1,
+   "canvas": {
+    "w": 1920,
+    "h": 1520,
+    "aspect": 1.263,
+    "aspectClass": "standard",
+    "orientation": "wide"
+   },
+   "facts": [
+    {
+     "id": "size",
+     "value": [
+      1920,
+      1520
+     ],
+     "confidence": "EXPLICIT",
+     "basis": "declared canvas size in pixels"
+    },
+    {
+     "id": "aspect",
+     "value": 1.263,
+     "confidence": "EXPLICIT",
+     "basis": "exact arithmetic on the declared size"
+    },
+    {
+     "id": "walls",
+     "value": 1,
+     "confidence": "INFERRED",
+     "basis": "no folds declared: one wall is assumed"
+    },
+    {
+     "id": "activeArea",
+     "value": 1.0,
+     "confidence": "INFERRED",
+     "basis": "no regions given: the whole canvas is treated as surface"
+    },
+    {
+     "id": "layout",
+     "value": null,
+     "confidence": "UNKNOWN",
+     "basis": "no regions to measure"
+    },
+    {
+     "id": "symmetry",
+     "value": null,
+     "confidence": "UNKNOWN",
+     "basis": "no regions to measure"
+    },
+    {
+     "id": "readingAxis",
+     "value": "none",
+     "confidence": "INFERRED",
+     "basis": "the long side of the canvas is where the eye travels"
+    },
+    {
+     "id": "pitch",
+     "value": null,
+     "confidence": "UNKNOWN",
+     "basis": "sem o passo do LED não há como saber o menor traço legível"
+    },
+    {
+     "id": "viewingDistance",
+     "value": null,
+     "confidence": "UNKNOWN",
+     "basis": "sem a distância do espectador mais distante não há como saber o menor texto legível"
+    },
+    {
+     "id": "legibility",
+     "value": null,
+     "confidence": "UNKNOWN",
+     "basis": "needs the LED pitch and the viewing distance"
+    }
+   ],
+   "walls": [
+    {
+     "from": 0.0,
+     "to": 1.0
+    }
+   ],
+   "regions": null,
+   "grid": null,
+   "constraints": [
+    {
+     "id": "safeArea",
+     "kind": "margin",
+     "strength": "soft",
+     "confidence": "INFERRED",
+     "value": {
+      "x": 0.05,
+      "y": 0.05,
+      "w": 0.9,
+      "h": 0.9
+     },
+     "rule": "default margin: no regions to measure"
+    },
+    {
+     "id": "readingAxis",
+     "kind": "advice",
+     "strength": "soft",
+     "confidence": "INFERRED",
+     "value": "none",
+     "rule": "movement along the long side reads better than across it"
+    }
+   ],
+   "unknowns": [
+    {
+     "id": "depth",
+     "why": "a imagem 2D não diz se a superfície tem relevo ou profundidade",
+     "ask": "A superfície é plana ou tem relevo (volumes, recortes)?"
+    },
+    {
+     "id": "curvature",
+     "why": "curvatura não aparece em largura e altura",
+     "ask": "A superfície é plana, côncava, convexa ou em cilindro?"
+    },
+    {
+     "id": "ambientLight",
+     "why": "a luz do local muda contraste e cor percebidos",
+     "ask": "O local é escuro, penumbra ou com luz do dia?"
+    },
+    {
+     "id": "material",
+     "why": "o acabamento do painel muda brilho e moiré",
+     "ask": "Qual o acabamento (LED, tela, parede branca, outro)?"
+    },
+    {
+     "id": "pitch",
+     "why": "sem o passo do LED não há como saber o menor traço legível",
+     "ask": "Qual o passo do pixel em mm?"
+    },
+    {
+     "id": "viewingDistance",
+     "why": "sem a distância do espectador mais distante não há como saber o menor texto legível",
+     "ask": "A que distância fica o espectador mais longe, em metros?"
+    },
+    {
+     "id": "regions",
+     "why": "sem as regiões ativas o canvas inteiro é tratado como superfície",
+     "ask": "Importe um CSV ou uma máscara PNG: há partes do canvas que não existem fisicamente?"
+    }
+   ],
+   "summary": {
+    "EXPLICIT": 2,
+    "DETECTED": 0,
+    "INFERRED": 3,
+    "UNKNOWN": 5
+   }
+  }
+ },
+ "canvas": {
+  "w": 1920,
+  "h": 1520,
+  "fps": 30,
+  "target": "mapping",
+  "safe": 0.03
+ },
+ "time": {
+  "bpm": 100,
+  "bars": 16,
+  "loop": true,
+  "seamless": true,
+  "mode": "loop",
+  "transition": "fade",
+  "trBeats": 1
+ },
+ "audio": {
+  "reactive": true,
+  "sens": 1,
+  "smooth": 0.7
+ },
+ "palette": {
+  "bg": "#000000",
+  "primary": "#36F1FF",
+  "secondary": "#B6FF3B",
+  "accent": "#FF3D9A"
+ },
+ "compositions": [
+  {
+   "name": "CALIBRAÇÃO",
+   "hypothesis": "ABERTURA — the probe wakes in the dark and reads the facade: a sweep descends, sonar rings leave every opening, and the windows open as depth grids.",
+   "motion": "step",
+   "palette": {
+    "primary": "#36F1FF",
+    "secondary": "#E9FFFF",
+    "accent": "#FF3D9A"
+   },
+   "layers": [
+    {
+     "type": "bg",
+     "name": "NOITE DA PRAÇA",
+     "role": "ground: pure black, the facade only exists where the probe lights it",
+     "on": true,
+     "p": {
+      "grain": 0
+     }
+    },
+    {
+     "type": "shader",
+     "name": "SONAR DAS ABERTURAS",
+     "role": "hero: topographic rings, ticks and lattice that follow each opening, column and tower; revealed behind the descending scan",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "src": "\n#define PI 3.14159265\nvec2 FP(){ return vec2(gl_FragCoord.x/uRes.x*1920., (1.-gl_FragCoord.y/uRes.y)*1520.); }\nfloat bx(vec2 P,vec4 r){ vec2 c=(r.xy+r.zw)*.5,h=(r.zw-r.xy)*.5,d=abs(P-c)-h; return length(max(d,0.))+min(max(d.x,d.y),0.); }\nfloat ar(vec2 P,vec4 r){ float rd=(r.z-r.x)*.5; return min(bx(P,vec4(r.x,r.y+rd,r.z,r.w)),length(P-vec2((r.x+r.z)*.5,r.y+rd))-rd); }\nfloat fa(vec2 P,vec4 r){ vec2 c=vec2((r.x+r.z)*.5,r.w); float rx=(r.z-r.x)*.5, ry=r.w-r.y; float e=(length((P-c)/vec2(rx,ry))-1.)*min(rx,ry); return max(e,P.y-r.w); }\nfloat ci(vec2 P,vec4 r){ return length(P-(r.xy+r.zw)*.5)-(r.z-r.x)*.5; }\nfloat mkk(float d,float w){ return smoothstep(w,-w,d); }\nfloat h11(float n){ return fract(sin(n*127.1)*43758.5453); }\nfloat lw(float x,float w){ float f=fract(x); return 1.-smoothstep(0.,w,min(f,1.-f)); }\nfloat gdm; vec4 grc; float gpid;\nvoid portals(vec2 P){ float dm=1e5; vec4 rc=vec4(0.); float pid=0.; float d;\n d=bx(P,vec4(254.,650.,394.,858.)); if(d<dm){dm=d;rc=vec4(254.,650.,394.,858.);pid=1.;}\n d=bx(P,vec4(254.,1112.,392.,1306.)); if(d<dm){dm=d;rc=vec4(254.,1112.,392.,1306.);pid=2.;}\n d=bx(P,vec4(1512.,650.,1662.,858.)); if(d<dm){dm=d;rc=vec4(1512.,650.,1662.,858.);pid=3.;}\n d=bx(P,vec4(1510.,1118.,1662.,1334.)); if(d<dm){dm=d;rc=vec4(1510.,1118.,1662.,1334.);pid=4.;}\n d=bx(P,vec4(873.,652.,1022.,858.)); if(d<dm){dm=d;rc=vec4(873.,652.,1022.,858.);pid=5.;}\n d=ar(P,vec4(624.,656.,766.,857.)); if(d<dm){dm=d;rc=vec4(624.,656.,766.,857.);pid=6.;}\n d=ar(P,vec4(1130.,656.,1272.,858.)); if(d<dm){dm=d;rc=vec4(1130.,656.,1272.,858.);pid=7.;}\n d=bx(P,vec4(534.,657.,678.,857.)); if(d<dm){dm=d;rc=vec4(534.,657.,678.,857.);pid=8.;}\n d=bx(P,vec4(1230.,657.,1362.,858.)); if(d<dm){dm=d;rc=vec4(1230.,657.,1362.,858.);pid=9.;}\n d=bx(P,vec4(621.,1097.,767.,1320.)); if(d<dm){dm=d;rc=vec4(621.,1097.,767.,1320.);pid=10.;}\n d=bx(P,vec4(871.,1097.,1015.,1420.)); if(d<dm){dm=d;rc=vec4(871.,1097.,1015.,1420.);pid=11.;}\n d=bx(P,vec4(1127.,1097.,1273.,1320.)); if(d<dm){dm=d;rc=vec4(1127.,1097.,1273.,1320.);pid=12.;}\n d=fa(P,vec4(603.,1030.,787.,1095.)); if(d<dm){dm=d;rc=vec4(603.,1030.,787.,1095.);pid=13.;}\n d=fa(P,vec4(853.,1030.,1037.,1095.)); if(d<dm){dm=d;rc=vec4(853.,1030.,1037.,1095.);pid=14.;}\n d=fa(P,vec4(1109.,1030.,1297.,1095.)); if(d<dm){dm=d;rc=vec4(1109.,1030.,1297.,1095.);pid=15.;}\n d=ar(P,vec4(510.,366.,532.,414.)); if(d<dm){dm=d;rc=vec4(510.,366.,532.,414.);pid=16.;}\n d=ar(P,vec4(557.,366.,579.,414.)); if(d<dm){dm=d;rc=vec4(557.,366.,579.,414.);pid=17.;}\n d=ar(P,vec4(603.,366.,625.,414.)); if(d<dm){dm=d;rc=vec4(603.,366.,625.,414.);pid=18.;}\n d=ar(P,vec4(649.,366.,671.,414.)); if(d<dm){dm=d;rc=vec4(649.,366.,671.,414.);pid=19.;}\n d=ar(P,vec4(696.,366.,718.,414.)); if(d<dm){dm=d;rc=vec4(696.,366.,718.,414.);pid=20.;}\n d=ar(P,vec4(747.,366.,769.,414.)); if(d<dm){dm=d;rc=vec4(747.,366.,769.,414.);pid=21.;}\n d=ar(P,vec4(1132.,366.,1154.,414.)); if(d<dm){dm=d;rc=vec4(1132.,366.,1154.,414.);pid=22.;}\n d=ar(P,vec4(1179.,366.,1201.,414.)); if(d<dm){dm=d;rc=vec4(1179.,366.,1201.,414.);pid=23.;}\n d=ar(P,vec4(1226.,366.,1248.,414.)); if(d<dm){dm=d;rc=vec4(1226.,366.,1248.,414.);pid=24.;}\n d=ar(P,vec4(1273.,366.,1295.,414.)); if(d<dm){dm=d;rc=vec4(1273.,366.,1295.,414.);pid=25.;}\n d=ar(P,vec4(1320.,366.,1342.,414.)); if(d<dm){dm=d;rc=vec4(1320.,366.,1342.,414.);pid=26.;}\n d=ar(P,vec4(1367.,366.,1389.,414.)); if(d<dm){dm=d;rc=vec4(1367.,366.,1389.,414.);pid=27.;}\n d=bx(P,vec4(813.,369.,835.,400.)); if(d<dm){dm=d;rc=vec4(813.,369.,835.,400.);pid=28.;}\n d=bx(P,vec4(1069.,369.,1091.,400.)); if(d<dm){dm=d;rc=vec4(1069.,369.,1091.,400.);pid=29.;}\n d=ci(P,vec4(245.,428.,353.,536.)); if(d<dm){dm=d;rc=vec4(245.,428.,353.,536.);pid=30.;}\n d=ci(P,vec4(1553.,415.,1661.,523.)); if(d<dm){dm=d;rc=vec4(1553.,415.,1661.,523.);pid=31.;}\n gdm=dm; grc=rc; gpid=pid; }\nfloat gCol(vec2 P){ float d=bx(P,vec4(77.,587.,139.,1485.)); d=min(d,bx(P,vec4(117.,587.,213.,1485.))); d=min(d,bx(P,vec4(389.,587.,492.,1485.)));\n  d=min(d,bx(P,vec4(1403.,580.,1505.,1485.))); d=min(d,bx(P,vec4(1691.,580.,1795.,1485.))); d=min(d,bx(P,vec4(1776.,604.,1853.,1485.))); return d; }\nfloat colU(vec2 P){ float u=0.; float best=1e5; \n  float x0=77.,x1=139.; float d=bx(P,vec4(77.,587.,139.,1485.)); if(d<best){best=d;u=(P.x-108.)/31.;}\n  d=bx(P,vec4(117.,587.,213.,1485.)); if(d<best){best=d;u=(P.x-165.)/48.;}\n  d=bx(P,vec4(389.,587.,492.,1485.)); if(d<best){best=d;u=(P.x-440.)/51.;}\n  d=bx(P,vec4(1403.,580.,1505.,1485.)); if(d<best){best=d;u=(P.x-1454.)/51.;}\n  d=bx(P,vec4(1691.,580.,1795.,1485.)); if(d<best){best=d;u=(P.x-1743.)/52.;}\n  d=bx(P,vec4(1776.,604.,1853.,1485.)); if(d<best){best=d;u=(P.x-1814.)/38.;}\n  return clamp(u,-1.,1.); }\nfloat gBalu(vec2 P){ return min(bx(P,vec4(249.,869.,392.,958.)),bx(P,vec4(1514.,869.,1662.,958.))); }\nfloat gStair(vec2 P){ return bx(P,vec4(720.,1383.,1165.,1515.)); }\nfloat gTow(vec2 P){ float a=abs(P.x-950.)-450.; return max(P.y-600.,-a); }\nfloat gCrown(vec2 P){ float a=abs(P.x-950.)-450.; return max(P.y-602.,a); }\nvec3 zones(vec2 P){ // x: colunas, y: torres+coroa, z: balaustres  (0..1)\n  return vec3(mkk(gCol(P),3.), max(mkk(gTow(P),4.),mkk(gCrown(P),4.)), max(mkk(gBalu(P),2.),mkk(gStair(P),3.))); }\n\nvoid main(){\n  vec2 P=FP(); float ph=uPh; portals(P); float dm=gdm; vec4 rc=grc; float pid=gpid; vec3 z=zones(P);\n  float env=smoothstep(0.,.08,ph)*(1.-smoothstep(.88,1.,ph));\n  float sy=mix(-120.,1700.,smoothstep(.06,.74,ph));\n  float reach=1.-smoothstep(sy-30.,sy,P.y);\n  float trail=exp(-(sy-P.y)/420.)*step(P.y,sy);\n  vec3 col=vec3(0.);\n  float iso=lw(dm/24.-ph*8.,.05+.025*uBass)*exp(-max(dm,0.)/230.)*step(0.,dm);\n  col+=uC1*iso*(.55+.5*trail)*reach;\n  float tick=lw(P.y/20.,.05)*(.3+.7*lw(P.y/100.,.05)); col+=uC1*tick*z.x*reach*(.45+.4*uMid);\n  float dots=smoothstep(2.4,1.0,length(mod(P,24.)-12.)); col+=uC1*dots*.28*reach*(1.-z.x);\n  float rs=min(length(P-vec2(299.,482.)),length(P-vec2(1607.,469.)));\n  col+=mix(uC1,vec3(1.),.4)*lw(rs/17.-ph*8.,.06)*reach*z.y*(.5+.6*uBass)*exp(-rs/380.);\n  float bars=lw(P.x/7.,.18)*step(P.y,mix(960.,880.,.5+.5*sin(floor(P.x/7.)*.8+ph*PI*8.+uMid*3.))); col+=uC2*bars*z.z*reach*.8;\n  float edge=exp(-abs(dm)/4.5); col+=mix(uC1,vec3(1.),.55)*edge*reach*(.5+.9*uHit);\n  float band=exp(-abs(P.y-sy)/5.)+.35*exp(-abs(P.y-sy)/46.); col+=mix(uC1,vec3(1.),.6+.4*uHit)*band*(1.-step(1700.,sy))*smoothstep(0.,.08,ph);\n  col+=uC2*step(.985,hash(floor(P/9.)+floor(ph*40.)+uSeed))*uHigh*reach*.9;\n  col*=smoothstep(-2.,2.,dm); col+=uBg*.12*reach*trail*(1.-smoothstep(-2.,2.,dm)*0.);\n  col*=env*(.85+.25*uRms); gl_FragColor=outc(col,1.); }\n",
+      "alphaMode": "opaque",
+      "c1": "primary",
+      "c2": "accent",
+      "cbg": "#0B2A55",
+      "res": 1
+     }
+    },
+    {
+     "type": "shader",
+     "name": "TÚNEIS DE PROFUNDIDADE",
+     "role": "hero: each window opens as a perspective grid tunnel, one after the other, to sell depth behind the wall",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "src": "\n#define PI 3.14159265\nvec2 FP(){ return vec2(gl_FragCoord.x/uRes.x*1920., (1.-gl_FragCoord.y/uRes.y)*1520.); }\nfloat bx(vec2 P,vec4 r){ vec2 c=(r.xy+r.zw)*.5,h=(r.zw-r.xy)*.5,d=abs(P-c)-h; return length(max(d,0.))+min(max(d.x,d.y),0.); }\nfloat ar(vec2 P,vec4 r){ float rd=(r.z-r.x)*.5; return min(bx(P,vec4(r.x,r.y+rd,r.z,r.w)),length(P-vec2((r.x+r.z)*.5,r.y+rd))-rd); }\nfloat fa(vec2 P,vec4 r){ vec2 c=vec2((r.x+r.z)*.5,r.w); float rx=(r.z-r.x)*.5, ry=r.w-r.y; float e=(length((P-c)/vec2(rx,ry))-1.)*min(rx,ry); return max(e,P.y-r.w); }\nfloat ci(vec2 P,vec4 r){ return length(P-(r.xy+r.zw)*.5)-(r.z-r.x)*.5; }\nfloat mkk(float d,float w){ return smoothstep(w,-w,d); }\nfloat h11(float n){ return fract(sin(n*127.1)*43758.5453); }\nfloat lw(float x,float w){ float f=fract(x); return 1.-smoothstep(0.,w,min(f,1.-f)); }\nfloat gdm; vec4 grc; float gpid;\nvoid portals(vec2 P){ float dm=1e5; vec4 rc=vec4(0.); float pid=0.; float d;\n d=bx(P,vec4(254.,650.,394.,858.)); if(d<dm){dm=d;rc=vec4(254.,650.,394.,858.);pid=1.;}\n d=bx(P,vec4(254.,1112.,392.,1306.)); if(d<dm){dm=d;rc=vec4(254.,1112.,392.,1306.);pid=2.;}\n d=bx(P,vec4(1512.,650.,1662.,858.)); if(d<dm){dm=d;rc=vec4(1512.,650.,1662.,858.);pid=3.;}\n d=bx(P,vec4(1510.,1118.,1662.,1334.)); if(d<dm){dm=d;rc=vec4(1510.,1118.,1662.,1334.);pid=4.;}\n d=bx(P,vec4(873.,652.,1022.,858.)); if(d<dm){dm=d;rc=vec4(873.,652.,1022.,858.);pid=5.;}\n d=ar(P,vec4(624.,656.,766.,857.)); if(d<dm){dm=d;rc=vec4(624.,656.,766.,857.);pid=6.;}\n d=ar(P,vec4(1130.,656.,1272.,858.)); if(d<dm){dm=d;rc=vec4(1130.,656.,1272.,858.);pid=7.;}\n d=bx(P,vec4(534.,657.,678.,857.)); if(d<dm){dm=d;rc=vec4(534.,657.,678.,857.);pid=8.;}\n d=bx(P,vec4(1230.,657.,1362.,858.)); if(d<dm){dm=d;rc=vec4(1230.,657.,1362.,858.);pid=9.;}\n d=bx(P,vec4(621.,1097.,767.,1320.)); if(d<dm){dm=d;rc=vec4(621.,1097.,767.,1320.);pid=10.;}\n d=bx(P,vec4(871.,1097.,1015.,1420.)); if(d<dm){dm=d;rc=vec4(871.,1097.,1015.,1420.);pid=11.;}\n d=bx(P,vec4(1127.,1097.,1273.,1320.)); if(d<dm){dm=d;rc=vec4(1127.,1097.,1273.,1320.);pid=12.;}\n d=fa(P,vec4(603.,1030.,787.,1095.)); if(d<dm){dm=d;rc=vec4(603.,1030.,787.,1095.);pid=13.;}\n d=fa(P,vec4(853.,1030.,1037.,1095.)); if(d<dm){dm=d;rc=vec4(853.,1030.,1037.,1095.);pid=14.;}\n d=fa(P,vec4(1109.,1030.,1297.,1095.)); if(d<dm){dm=d;rc=vec4(1109.,1030.,1297.,1095.);pid=15.;}\n d=ar(P,vec4(510.,366.,532.,414.)); if(d<dm){dm=d;rc=vec4(510.,366.,532.,414.);pid=16.;}\n d=ar(P,vec4(557.,366.,579.,414.)); if(d<dm){dm=d;rc=vec4(557.,366.,579.,414.);pid=17.;}\n d=ar(P,vec4(603.,366.,625.,414.)); if(d<dm){dm=d;rc=vec4(603.,366.,625.,414.);pid=18.;}\n d=ar(P,vec4(649.,366.,671.,414.)); if(d<dm){dm=d;rc=vec4(649.,366.,671.,414.);pid=19.;}\n d=ar(P,vec4(696.,366.,718.,414.)); if(d<dm){dm=d;rc=vec4(696.,366.,718.,414.);pid=20.;}\n d=ar(P,vec4(747.,366.,769.,414.)); if(d<dm){dm=d;rc=vec4(747.,366.,769.,414.);pid=21.;}\n d=ar(P,vec4(1132.,366.,1154.,414.)); if(d<dm){dm=d;rc=vec4(1132.,366.,1154.,414.);pid=22.;}\n d=ar(P,vec4(1179.,366.,1201.,414.)); if(d<dm){dm=d;rc=vec4(1179.,366.,1201.,414.);pid=23.;}\n d=ar(P,vec4(1226.,366.,1248.,414.)); if(d<dm){dm=d;rc=vec4(1226.,366.,1248.,414.);pid=24.;}\n d=ar(P,vec4(1273.,366.,1295.,414.)); if(d<dm){dm=d;rc=vec4(1273.,366.,1295.,414.);pid=25.;}\n d=ar(P,vec4(1320.,366.,1342.,414.)); if(d<dm){dm=d;rc=vec4(1320.,366.,1342.,414.);pid=26.;}\n d=ar(P,vec4(1367.,366.,1389.,414.)); if(d<dm){dm=d;rc=vec4(1367.,366.,1389.,414.);pid=27.;}\n d=bx(P,vec4(813.,369.,835.,400.)); if(d<dm){dm=d;rc=vec4(813.,369.,835.,400.);pid=28.;}\n d=bx(P,vec4(1069.,369.,1091.,400.)); if(d<dm){dm=d;rc=vec4(1069.,369.,1091.,400.);pid=29.;}\n d=ci(P,vec4(245.,428.,353.,536.)); if(d<dm){dm=d;rc=vec4(245.,428.,353.,536.);pid=30.;}\n d=ci(P,vec4(1553.,415.,1661.,523.)); if(d<dm){dm=d;rc=vec4(1553.,415.,1661.,523.);pid=31.;}\n gdm=dm; grc=rc; gpid=pid; }\nfloat gCol(vec2 P){ float d=bx(P,vec4(77.,587.,139.,1485.)); d=min(d,bx(P,vec4(117.,587.,213.,1485.))); d=min(d,bx(P,vec4(389.,587.,492.,1485.)));\n  d=min(d,bx(P,vec4(1403.,580.,1505.,1485.))); d=min(d,bx(P,vec4(1691.,580.,1795.,1485.))); d=min(d,bx(P,vec4(1776.,604.,1853.,1485.))); return d; }\nfloat colU(vec2 P){ float u=0.; float best=1e5; \n  float x0=77.,x1=139.; float d=bx(P,vec4(77.,587.,139.,1485.)); if(d<best){best=d;u=(P.x-108.)/31.;}\n  d=bx(P,vec4(117.,587.,213.,1485.)); if(d<best){best=d;u=(P.x-165.)/48.;}\n  d=bx(P,vec4(389.,587.,492.,1485.)); if(d<best){best=d;u=(P.x-440.)/51.;}\n  d=bx(P,vec4(1403.,580.,1505.,1485.)); if(d<best){best=d;u=(P.x-1454.)/51.;}\n  d=bx(P,vec4(1691.,580.,1795.,1485.)); if(d<best){best=d;u=(P.x-1743.)/52.;}\n  d=bx(P,vec4(1776.,604.,1853.,1485.)); if(d<best){best=d;u=(P.x-1814.)/38.;}\n  return clamp(u,-1.,1.); }\nfloat gBalu(vec2 P){ return min(bx(P,vec4(249.,869.,392.,958.)),bx(P,vec4(1514.,869.,1662.,958.))); }\nfloat gStair(vec2 P){ return bx(P,vec4(720.,1383.,1165.,1515.)); }\nfloat gTow(vec2 P){ float a=abs(P.x-950.)-450.; return max(P.y-600.,-a); }\nfloat gCrown(vec2 P){ float a=abs(P.x-950.)-450.; return max(P.y-602.,a); }\nvec3 zones(vec2 P){ // x: colunas, y: torres+coroa, z: balaustres  (0..1)\n  return vec3(mkk(gCol(P),3.), max(mkk(gTow(P),4.),mkk(gCrown(P),4.)), max(mkk(gBalu(P),2.),mkk(gStair(P),3.))); }\n\nvoid main(){\n  vec2 P=FP(); portals(P); float dm=gdm; vec4 rc=grc; float pid=gpid;\n  vec2 c=(rc.xy+rc.zw)*.5; vec2 hs=(rc.zw-rc.xy)*.5; vec2 qn=(P-c)/hs; float ph=uPh;\n  float syy=mix(-120.,1700.,smoothstep(.06,.74,ph)); float open=clamp((syy-c.y)/300.,0.,1.)*(1.-smoothstep(.84,.95,ph));\n  float R=open*2.4; float ir=1.-smoothstep(R-.25,R,length(qn));\n  float r=max(max(abs(qn.x),abs(qn.y)),.0001); float zz=1./r;\n  float rings=lw(zz*1.15-ph*6.,.07); float a=atan(qn.y,qn.x); float rays=lw(a/(PI/8.),.035)*smoothstep(.02,.25,r);\n  vec3 col=mix(uBg*1.4,uC1,.3+.7*smoothstep(.0,1.,r))*.12;\n  vec3 gc=mix(uC2,uC1,smoothstep(.05,.95,r));\n  col+=gc*(rings*.85+rays*.55)*(.6+.5*uMid);\n  float nodes=rings*rays; col+=vec3(1.)*nodes*(.3+uHigh*1.4);\n  col+=uC2*exp(-r*3.2)*(.35+uBass*.9);\n  float inner=smoothstep(0.,26.,-dm); col*=.4+.6*inner;\n  if(pid>29.){ vec2 qc=P-c; float ang=atan(qc.y,qc.x); float sw=fract(ang/TAU-ph*3.); float tr=pow(sw,4.)*step(length(qc),hs.x); float rg=lw(length(qc)/(hs.x/4.)-.0,.06);\n    col=uBg*.25+uC1*(tr*1.2+rg*.35)+vec3(1.)*smoothstep(.2,0.,length(qc))*(.3+uHit); }\n  float al=mkk(dm+1.,1.5)*ir; gl_FragColor=outc(col*(.85+.25*uRms),al); }\n",
+      "alphaMode": "alpha",
+      "c1": "primary",
+      "c2": "accent",
+      "cbg": "#0B2A55",
+      "res": 1
+     }
+    },
+    {
+     "type": "image",
+     "name": "RELEVO DE PEDRA",
+     "role": "structure: the clay render multiplies the light, so cornices, columns and recesses cast the shading that fakes real volume",
+     "on": true,
+     "opacity": 0.55,
+     "blend": "multiply",
+     "p": {
+      "media": "relevo.png",
+      "fit": "fill"
+     }
+    },
+    {
+     "type": "code",
+     "name": "CONTORNO DA SONDA",
+     "role": "instrument: the architect's own outline, drawn by the probe as it reads the facade",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "src": "\nconst ph=K.t.lph; const rv=K.clamp((ph-.06)/.68,0,1); const fade=1-K.clamp((ph-.86)/.12,0,1);\nc.save(); c.globalAlpha=(.25+.75*rv)*fade*(.7+.3*K.t.pulse);\nc.beginPath(); c.rect(0,0,K.w,K.h*rv); c.clip();\nK.drawImg(c,'linhas.png',K.w/2,K.h/2,K.w,K.h,K.col('primary'),1);\nc.restore();\n"
+     }
+    },
+    {
+     "type": "instrument",
+     "name": "OLHO ESQUERDO",
+     "role": "instrument: the star medallion becomes a sensor eye; radar sweeps once per bar",
+     "on": true,
+     "opacity": 1,
+     "blend": "add",
+     "p": {
+      "kind": "radar",
+      "n": 48,
+      "size": 0.075,
+      "cx": 0.15572916666666667,
+      "cy": 0.3171052631578947,
+      "weight": 3,
+      "color": "primary",
+      "hot": "accent"
+     }
+    },
+    {
+     "type": "instrument",
+     "name": "OLHO DIREITO",
+     "role": "instrument: the star medallion becomes a sensor eye; radar sweeps once per bar",
+     "on": true,
+     "opacity": 1,
+     "blend": "add",
+     "p": {
+      "kind": "radar",
+      "n": 48,
+      "size": 0.075,
+      "cx": 0.8369791666666667,
+      "cy": 0.30855263157894736,
+      "weight": 3,
+      "color": "primary",
+      "hot": "accent"
+     }
+    },
+    {
+     "type": "fx",
+     "name": "BRILHO DA LENTE",
+     "role": "finish: soft bloom, the lamp of the probe",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "preset": "BLOOM",
+      "p1": 14,
+      "p2": 0.5,
+      "p3": 1.0,
+      "p4": 0.3,
+      "mix": 0.7,
+      "res": 0.5
+     }
+    },
+    {
+     "type": "image",
+     "name": "FORA DA FACHADA",
+     "role": "finish: black outside the building silhouette, no light is wasted on the sky",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "media": "fora.png",
+      "fit": "fill"
+     }
+    }
+   ]
+  },
+  {
+   "name": "DOSSEL",
+   "hypothesis": "MERGULHO — the probe descends into the Amazon: vines grow from the stairs up the stone, and every window opens, as the vines reach it, onto a living canopy; the stars become jaguar eyes.",
+   "motion": "smooth",
+   "palette": {
+    "primary": "#36F1FF",
+    "secondary": "#7CFF3B",
+    "accent": "#FF2E97"
+   },
+   "layers": [
+    {
+     "type": "bg",
+     "name": "MATA FECHADA",
+     "role": "ground: black forest floor, the stone is only alive where vines have reached",
+     "on": true,
+     "p": {
+      "grain": 0
+     }
+    },
+    {
+     "type": "shader",
+     "name": "SEIVA E CIPÓS",
+     "role": "hero: a wavefront of veins, leaves and lianas grows from the stairs over walls, columns and towers, then withdraws",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "src": "\n#define PI 3.14159265\nvec2 FP(){ return vec2(gl_FragCoord.x/uRes.x*1920., (1.-gl_FragCoord.y/uRes.y)*1520.); }\nfloat bx(vec2 P,vec4 r){ vec2 c=(r.xy+r.zw)*.5,h=(r.zw-r.xy)*.5,d=abs(P-c)-h; return length(max(d,0.))+min(max(d.x,d.y),0.); }\nfloat ar(vec2 P,vec4 r){ float rd=(r.z-r.x)*.5; return min(bx(P,vec4(r.x,r.y+rd,r.z,r.w)),length(P-vec2((r.x+r.z)*.5,r.y+rd))-rd); }\nfloat fa(vec2 P,vec4 r){ vec2 c=vec2((r.x+r.z)*.5,r.w); float rx=(r.z-r.x)*.5, ry=r.w-r.y; float e=(length((P-c)/vec2(rx,ry))-1.)*min(rx,ry); return max(e,P.y-r.w); }\nfloat ci(vec2 P,vec4 r){ return length(P-(r.xy+r.zw)*.5)-(r.z-r.x)*.5; }\nfloat mkk(float d,float w){ return smoothstep(w,-w,d); }\nfloat h11(float n){ return fract(sin(n*127.1)*43758.5453); }\nfloat lw(float x,float w){ float f=fract(x); return 1.-smoothstep(0.,w,min(f,1.-f)); }\nfloat gdm; vec4 grc; float gpid;\nvoid portals(vec2 P){ float dm=1e5; vec4 rc=vec4(0.); float pid=0.; float d;\n d=bx(P,vec4(254.,650.,394.,858.)); if(d<dm){dm=d;rc=vec4(254.,650.,394.,858.);pid=1.;}\n d=bx(P,vec4(254.,1112.,392.,1306.)); if(d<dm){dm=d;rc=vec4(254.,1112.,392.,1306.);pid=2.;}\n d=bx(P,vec4(1512.,650.,1662.,858.)); if(d<dm){dm=d;rc=vec4(1512.,650.,1662.,858.);pid=3.;}\n d=bx(P,vec4(1510.,1118.,1662.,1334.)); if(d<dm){dm=d;rc=vec4(1510.,1118.,1662.,1334.);pid=4.;}\n d=bx(P,vec4(873.,652.,1022.,858.)); if(d<dm){dm=d;rc=vec4(873.,652.,1022.,858.);pid=5.;}\n d=ar(P,vec4(624.,656.,766.,857.)); if(d<dm){dm=d;rc=vec4(624.,656.,766.,857.);pid=6.;}\n d=ar(P,vec4(1130.,656.,1272.,858.)); if(d<dm){dm=d;rc=vec4(1130.,656.,1272.,858.);pid=7.;}\n d=bx(P,vec4(534.,657.,678.,857.)); if(d<dm){dm=d;rc=vec4(534.,657.,678.,857.);pid=8.;}\n d=bx(P,vec4(1230.,657.,1362.,858.)); if(d<dm){dm=d;rc=vec4(1230.,657.,1362.,858.);pid=9.;}\n d=bx(P,vec4(621.,1097.,767.,1320.)); if(d<dm){dm=d;rc=vec4(621.,1097.,767.,1320.);pid=10.;}\n d=bx(P,vec4(871.,1097.,1015.,1420.)); if(d<dm){dm=d;rc=vec4(871.,1097.,1015.,1420.);pid=11.;}\n d=bx(P,vec4(1127.,1097.,1273.,1320.)); if(d<dm){dm=d;rc=vec4(1127.,1097.,1273.,1320.);pid=12.;}\n d=fa(P,vec4(603.,1030.,787.,1095.)); if(d<dm){dm=d;rc=vec4(603.,1030.,787.,1095.);pid=13.;}\n d=fa(P,vec4(853.,1030.,1037.,1095.)); if(d<dm){dm=d;rc=vec4(853.,1030.,1037.,1095.);pid=14.;}\n d=fa(P,vec4(1109.,1030.,1297.,1095.)); if(d<dm){dm=d;rc=vec4(1109.,1030.,1297.,1095.);pid=15.;}\n d=ar(P,vec4(510.,366.,532.,414.)); if(d<dm){dm=d;rc=vec4(510.,366.,532.,414.);pid=16.;}\n d=ar(P,vec4(557.,366.,579.,414.)); if(d<dm){dm=d;rc=vec4(557.,366.,579.,414.);pid=17.;}\n d=ar(P,vec4(603.,366.,625.,414.)); if(d<dm){dm=d;rc=vec4(603.,366.,625.,414.);pid=18.;}\n d=ar(P,vec4(649.,366.,671.,414.)); if(d<dm){dm=d;rc=vec4(649.,366.,671.,414.);pid=19.;}\n d=ar(P,vec4(696.,366.,718.,414.)); if(d<dm){dm=d;rc=vec4(696.,366.,718.,414.);pid=20.;}\n d=ar(P,vec4(747.,366.,769.,414.)); if(d<dm){dm=d;rc=vec4(747.,366.,769.,414.);pid=21.;}\n d=ar(P,vec4(1132.,366.,1154.,414.)); if(d<dm){dm=d;rc=vec4(1132.,366.,1154.,414.);pid=22.;}\n d=ar(P,vec4(1179.,366.,1201.,414.)); if(d<dm){dm=d;rc=vec4(1179.,366.,1201.,414.);pid=23.;}\n d=ar(P,vec4(1226.,366.,1248.,414.)); if(d<dm){dm=d;rc=vec4(1226.,366.,1248.,414.);pid=24.;}\n d=ar(P,vec4(1273.,366.,1295.,414.)); if(d<dm){dm=d;rc=vec4(1273.,366.,1295.,414.);pid=25.;}\n d=ar(P,vec4(1320.,366.,1342.,414.)); if(d<dm){dm=d;rc=vec4(1320.,366.,1342.,414.);pid=26.;}\n d=ar(P,vec4(1367.,366.,1389.,414.)); if(d<dm){dm=d;rc=vec4(1367.,366.,1389.,414.);pid=27.;}\n d=bx(P,vec4(813.,369.,835.,400.)); if(d<dm){dm=d;rc=vec4(813.,369.,835.,400.);pid=28.;}\n d=bx(P,vec4(1069.,369.,1091.,400.)); if(d<dm){dm=d;rc=vec4(1069.,369.,1091.,400.);pid=29.;}\n d=ci(P,vec4(245.,428.,353.,536.)); if(d<dm){dm=d;rc=vec4(245.,428.,353.,536.);pid=30.;}\n d=ci(P,vec4(1553.,415.,1661.,523.)); if(d<dm){dm=d;rc=vec4(1553.,415.,1661.,523.);pid=31.;}\n gdm=dm; grc=rc; gpid=pid; }\nfloat gCol(vec2 P){ float d=bx(P,vec4(77.,587.,139.,1485.)); d=min(d,bx(P,vec4(117.,587.,213.,1485.))); d=min(d,bx(P,vec4(389.,587.,492.,1485.)));\n  d=min(d,bx(P,vec4(1403.,580.,1505.,1485.))); d=min(d,bx(P,vec4(1691.,580.,1795.,1485.))); d=min(d,bx(P,vec4(1776.,604.,1853.,1485.))); return d; }\nfloat colU(vec2 P){ float u=0.; float best=1e5; \n  float x0=77.,x1=139.; float d=bx(P,vec4(77.,587.,139.,1485.)); if(d<best){best=d;u=(P.x-108.)/31.;}\n  d=bx(P,vec4(117.,587.,213.,1485.)); if(d<best){best=d;u=(P.x-165.)/48.;}\n  d=bx(P,vec4(389.,587.,492.,1485.)); if(d<best){best=d;u=(P.x-440.)/51.;}\n  d=bx(P,vec4(1403.,580.,1505.,1485.)); if(d<best){best=d;u=(P.x-1454.)/51.;}\n  d=bx(P,vec4(1691.,580.,1795.,1485.)); if(d<best){best=d;u=(P.x-1743.)/52.;}\n  d=bx(P,vec4(1776.,604.,1853.,1485.)); if(d<best){best=d;u=(P.x-1814.)/38.;}\n  return clamp(u,-1.,1.); }\nfloat gBalu(vec2 P){ return min(bx(P,vec4(249.,869.,392.,958.)),bx(P,vec4(1514.,869.,1662.,958.))); }\nfloat gStair(vec2 P){ return bx(P,vec4(720.,1383.,1165.,1515.)); }\nfloat gTow(vec2 P){ float a=abs(P.x-950.)-450.; return max(P.y-600.,-a); }\nfloat gCrown(vec2 P){ float a=abs(P.x-950.)-450.; return max(P.y-602.,a); }\nvec3 zones(vec2 P){ // x: colunas, y: torres+coroa, z: balaustres  (0..1)\n  return vec3(mkk(gCol(P),3.), max(mkk(gTow(P),4.),mkk(gCrown(P),4.)), max(mkk(gBalu(P),2.),mkk(gStair(P),3.))); }\n\nvoid main(){\n  vec2 P=FP(); float ph=uPh; portals(P); float dm=gdm; vec3 z=zones(P);\n  float env=smoothstep(0.,.07,ph)*(1.-smoothstep(.93,1.,ph));\n  float g=smoothstep(.04,.52,ph)*(1.-smoothstep(.72,.97,ph));\n  float dist=length((P-vec2(958.,1500.))*vec2(1.,1.2)); float front=g*3300.;\n  float inside=1.-smoothstep(front-160.,front,dist);\n  float edgeF=exp(-abs(dist-front)/14.)*step(.02,g);\n  vec2 q=P*.0062; float w1=fbm(q*1.3+uSeed); vec2 qq=q+vec2(w1,fbm(q+3.1))*1.5+vec2(sin(ph*TAU),cos(ph*TAU))*.3;\n  float vein=1.-smoothstep(0.,.04+.02*uBass,abs(fbm(qq*1.7)-.5)); float vein2=1.-smoothstep(0.,.012,abs(fbm(qq*3.6+9.)-.5));\n  vec2 lg=P/36.; vec2 lid=floor(lg); vec2 lf=fract(lg)-.5; float lr=hash(lid+uSeed); lf=vjRot(lr*6.283)*lf;\n  float leaf=smoothstep(.07,-.03,length(lf*vec2(1.,2.6))-.34)*step(.5,hash(lid*1.3+5.))*smoothstep(.1,.5,vein+fbm(qq*2.)*.5);\n  vec3 lime=uC1, orch=uC2, deep=uBg;\n  vec3 col=deep*(.5+.5*fbm(P*.005+ph*1.))*inside;\n  col+=mix(deep*2.,lime,.55+.45*sin(P.y*.01+ph*TAU))*vein*inside*(.75+.5*uMid);\n  col+=orch*vein2*inside*.5*(.5+uHigh); col+=mix(lime,vec3(.8,1.,.5),hash(lid))*leaf*inside*.8; float flo=step(.9,hash(lid*2.7+2.))*smoothstep(.22,.0,length(lf))*smoothstep(.2,.6,vein+leaf); col+=mix(orch,vec3(1.,.75,.1),hash(lid+1.))*flo*inside*1.3;\n  float cu=colU(P); float cyl=.25+.75*sqrt(max(1.-cu*cu,0.)); \n  float liana=lw(cu*1.6+.28*sin(P.y*.017-ph*TAU*2.+cu*2.),.07); \n  col=mix(col,deep*cyl*.8,z.x*.8*inside)+z.x*(lime*liana*cyl*inside*.9+lime*.07*cyl*cyl*inside*fbm(vec2(cu*3.,P.y*.01+ph*TAU))+orch*step(.985,hash(floor(P/14.)+floor(ph*20.)+uSeed))*inside);\n  float rs=min(length(P-vec2(299.,482.)),length(P-vec2(1607.,469.)));\n  col+=orch*lw(rs/19.-ph*5.,.07)*z.y*inside*(.4+.8*uBass)*exp(-rs/420.);\n  col+=lime*smoothstep(3.,1.,length(mod(P,26.)-13.))*z.y*inside*.35*(1.-z.x);\n  col+=lime*lw(P.x/9.,.14)*z.z*inside*.7*(.5+.6*uMid);\n  col+=mix(lime,vec3(1.),.5)*exp(-abs(dm)/5.)*inside*(.5+.9*uHit);\n  col+=mix(lime,vec3(1.),.4)*edgeF*.7*(.6+uHit);\n  col*=smoothstep(-2.,2.,dm); col*=env*(.88+.22*uRms); gl_FragColor=outc(col,1.); }\n",
+      "alphaMode": "opaque",
+      "c1": "secondary",
+      "c2": "accent",
+      "cbg": "#021A10",
+      "res": 1
+     }
+    },
+    {
+     "type": "shader",
+     "name": "DOSSEL PROFUNDO",
+     "role": "hero: each opening is a window into layered canopy with parallax, light shafts and fireflies; it opens when the vine front arrives",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "src": "\n#define PI 3.14159265\nvec2 FP(){ return vec2(gl_FragCoord.x/uRes.x*1920., (1.-gl_FragCoord.y/uRes.y)*1520.); }\nfloat bx(vec2 P,vec4 r){ vec2 c=(r.xy+r.zw)*.5,h=(r.zw-r.xy)*.5,d=abs(P-c)-h; return length(max(d,0.))+min(max(d.x,d.y),0.); }\nfloat ar(vec2 P,vec4 r){ float rd=(r.z-r.x)*.5; return min(bx(P,vec4(r.x,r.y+rd,r.z,r.w)),length(P-vec2((r.x+r.z)*.5,r.y+rd))-rd); }\nfloat fa(vec2 P,vec4 r){ vec2 c=vec2((r.x+r.z)*.5,r.w); float rx=(r.z-r.x)*.5, ry=r.w-r.y; float e=(length((P-c)/vec2(rx,ry))-1.)*min(rx,ry); return max(e,P.y-r.w); }\nfloat ci(vec2 P,vec4 r){ return length(P-(r.xy+r.zw)*.5)-(r.z-r.x)*.5; }\nfloat mkk(float d,float w){ return smoothstep(w,-w,d); }\nfloat h11(float n){ return fract(sin(n*127.1)*43758.5453); }\nfloat lw(float x,float w){ float f=fract(x); return 1.-smoothstep(0.,w,min(f,1.-f)); }\nfloat gdm; vec4 grc; float gpid;\nvoid portals(vec2 P){ float dm=1e5; vec4 rc=vec4(0.); float pid=0.; float d;\n d=bx(P,vec4(254.,650.,394.,858.)); if(d<dm){dm=d;rc=vec4(254.,650.,394.,858.);pid=1.;}\n d=bx(P,vec4(254.,1112.,392.,1306.)); if(d<dm){dm=d;rc=vec4(254.,1112.,392.,1306.);pid=2.;}\n d=bx(P,vec4(1512.,650.,1662.,858.)); if(d<dm){dm=d;rc=vec4(1512.,650.,1662.,858.);pid=3.;}\n d=bx(P,vec4(1510.,1118.,1662.,1334.)); if(d<dm){dm=d;rc=vec4(1510.,1118.,1662.,1334.);pid=4.;}\n d=bx(P,vec4(873.,652.,1022.,858.)); if(d<dm){dm=d;rc=vec4(873.,652.,1022.,858.);pid=5.;}\n d=ar(P,vec4(624.,656.,766.,857.)); if(d<dm){dm=d;rc=vec4(624.,656.,766.,857.);pid=6.;}\n d=ar(P,vec4(1130.,656.,1272.,858.)); if(d<dm){dm=d;rc=vec4(1130.,656.,1272.,858.);pid=7.;}\n d=bx(P,vec4(534.,657.,678.,857.)); if(d<dm){dm=d;rc=vec4(534.,657.,678.,857.);pid=8.;}\n d=bx(P,vec4(1230.,657.,1362.,858.)); if(d<dm){dm=d;rc=vec4(1230.,657.,1362.,858.);pid=9.;}\n d=bx(P,vec4(621.,1097.,767.,1320.)); if(d<dm){dm=d;rc=vec4(621.,1097.,767.,1320.);pid=10.;}\n d=bx(P,vec4(871.,1097.,1015.,1420.)); if(d<dm){dm=d;rc=vec4(871.,1097.,1015.,1420.);pid=11.;}\n d=bx(P,vec4(1127.,1097.,1273.,1320.)); if(d<dm){dm=d;rc=vec4(1127.,1097.,1273.,1320.);pid=12.;}\n d=fa(P,vec4(603.,1030.,787.,1095.)); if(d<dm){dm=d;rc=vec4(603.,1030.,787.,1095.);pid=13.;}\n d=fa(P,vec4(853.,1030.,1037.,1095.)); if(d<dm){dm=d;rc=vec4(853.,1030.,1037.,1095.);pid=14.;}\n d=fa(P,vec4(1109.,1030.,1297.,1095.)); if(d<dm){dm=d;rc=vec4(1109.,1030.,1297.,1095.);pid=15.;}\n d=ar(P,vec4(510.,366.,532.,414.)); if(d<dm){dm=d;rc=vec4(510.,366.,532.,414.);pid=16.;}\n d=ar(P,vec4(557.,366.,579.,414.)); if(d<dm){dm=d;rc=vec4(557.,366.,579.,414.);pid=17.;}\n d=ar(P,vec4(603.,366.,625.,414.)); if(d<dm){dm=d;rc=vec4(603.,366.,625.,414.);pid=18.;}\n d=ar(P,vec4(649.,366.,671.,414.)); if(d<dm){dm=d;rc=vec4(649.,366.,671.,414.);pid=19.;}\n d=ar(P,vec4(696.,366.,718.,414.)); if(d<dm){dm=d;rc=vec4(696.,366.,718.,414.);pid=20.;}\n d=ar(P,vec4(747.,366.,769.,414.)); if(d<dm){dm=d;rc=vec4(747.,366.,769.,414.);pid=21.;}\n d=ar(P,vec4(1132.,366.,1154.,414.)); if(d<dm){dm=d;rc=vec4(1132.,366.,1154.,414.);pid=22.;}\n d=ar(P,vec4(1179.,366.,1201.,414.)); if(d<dm){dm=d;rc=vec4(1179.,366.,1201.,414.);pid=23.;}\n d=ar(P,vec4(1226.,366.,1248.,414.)); if(d<dm){dm=d;rc=vec4(1226.,366.,1248.,414.);pid=24.;}\n d=ar(P,vec4(1273.,366.,1295.,414.)); if(d<dm){dm=d;rc=vec4(1273.,366.,1295.,414.);pid=25.;}\n d=ar(P,vec4(1320.,366.,1342.,414.)); if(d<dm){dm=d;rc=vec4(1320.,366.,1342.,414.);pid=26.;}\n d=ar(P,vec4(1367.,366.,1389.,414.)); if(d<dm){dm=d;rc=vec4(1367.,366.,1389.,414.);pid=27.;}\n d=bx(P,vec4(813.,369.,835.,400.)); if(d<dm){dm=d;rc=vec4(813.,369.,835.,400.);pid=28.;}\n d=bx(P,vec4(1069.,369.,1091.,400.)); if(d<dm){dm=d;rc=vec4(1069.,369.,1091.,400.);pid=29.;}\n d=ci(P,vec4(245.,428.,353.,536.)); if(d<dm){dm=d;rc=vec4(245.,428.,353.,536.);pid=30.;}\n d=ci(P,vec4(1553.,415.,1661.,523.)); if(d<dm){dm=d;rc=vec4(1553.,415.,1661.,523.);pid=31.;}\n gdm=dm; grc=rc; gpid=pid; }\nfloat gCol(vec2 P){ float d=bx(P,vec4(77.,587.,139.,1485.)); d=min(d,bx(P,vec4(117.,587.,213.,1485.))); d=min(d,bx(P,vec4(389.,587.,492.,1485.)));\n  d=min(d,bx(P,vec4(1403.,580.,1505.,1485.))); d=min(d,bx(P,vec4(1691.,580.,1795.,1485.))); d=min(d,bx(P,vec4(1776.,604.,1853.,1485.))); return d; }\nfloat colU(vec2 P){ float u=0.; float best=1e5; \n  float x0=77.,x1=139.; float d=bx(P,vec4(77.,587.,139.,1485.)); if(d<best){best=d;u=(P.x-108.)/31.;}\n  d=bx(P,vec4(117.,587.,213.,1485.)); if(d<best){best=d;u=(P.x-165.)/48.;}\n  d=bx(P,vec4(389.,587.,492.,1485.)); if(d<best){best=d;u=(P.x-440.)/51.;}\n  d=bx(P,vec4(1403.,580.,1505.,1485.)); if(d<best){best=d;u=(P.x-1454.)/51.;}\n  d=bx(P,vec4(1691.,580.,1795.,1485.)); if(d<best){best=d;u=(P.x-1743.)/52.;}\n  d=bx(P,vec4(1776.,604.,1853.,1485.)); if(d<best){best=d;u=(P.x-1814.)/38.;}\n  return clamp(u,-1.,1.); }\nfloat gBalu(vec2 P){ return min(bx(P,vec4(249.,869.,392.,958.)),bx(P,vec4(1514.,869.,1662.,958.))); }\nfloat gStair(vec2 P){ return bx(P,vec4(720.,1383.,1165.,1515.)); }\nfloat gTow(vec2 P){ float a=abs(P.x-950.)-450.; return max(P.y-600.,-a); }\nfloat gCrown(vec2 P){ float a=abs(P.x-950.)-450.; return max(P.y-602.,a); }\nvec3 zones(vec2 P){ // x: colunas, y: torres+coroa, z: balaustres  (0..1)\n  return vec3(mkk(gCol(P),3.), max(mkk(gTow(P),4.),mkk(gCrown(P),4.)), max(mkk(gBalu(P),2.),mkk(gStair(P),3.))); }\n\nfloat leafLayer(vec2 uv,float sd){ vec2 g=uv; vec2 id0=floor(g-.5); float cov=0.;\n  for(int j=0;j<=1;j++){ for(int i=0;i<=1;i++){ vec2 id=id0+vec2(float(i),float(j)); float r=hash(id+sd); vec2 ce=id+.5+(vec2(hash(id+sd+9.),hash(id+sd+21.))-.5)*.4;\n    vec2 f=vjRot(r*6.2832)*(g-ce); float k=smoothstep(.06,-.06,length(f*vec2(1.,2.6))-.5)*step(.2,hash(id*1.7+sd+3.)); cov=max(cov,k); } }\n  return cov; }\nvec3 dioAmazon(vec2 q,vec2 cam,float t,float sd){\n  vec3 col=mix(vec3(.03,.24,.12),vec3(.62,1.,.28),smoothstep(1.4,-1.8,q.y)*.6);\n  vec2 s=q-vec2(.15+cam.x*.5,-1.9); float ang=atan(s.x,s.y);\n  float rays=pow(.5+.5*sin(ang*16.+sd*7.+sin(t)*.8),3.)*smoothstep(3.4,.2,length(s));\n  col+=vec3(1.,.95,.4)*rays*.55;\n  for(int i=0;i<4;i++){ float fi=float(i); float sc=1.7-fi*.3; vec2 uv=q*sc+cam*(.4+fi*.7)+vec2(sd*13.,fi*5.); float k=leafLayer(uv,fi*19.+sd);\n    vec3 lc=mix(vec3(.10,.62,.28),vec3(.0,.05,.03),fi/3.)+vec3(.45,1.,.25)*pow(1.-fi/3.,2.)*.5*(.4+.6*hash(floor(uv)+fi));\n    col=mix(col,lc,k*(.6+fi*.1));\n    vec2 fg=uv*2.; vec2 fi2=floor(fg); float fl=smoothstep(.2,.0,length(fract(fg)-.5))*step(.93,hash(fi2*2.7+fi+sd)); col=mix(col,mix(vec3(1.,.15,.55),vec3(1.,.7,.1),hash(fi2)),fl*.9*step(fi,2.5)); }\n  vec2 fq=q*3.+vec2(cam.x*2.,t*.5); vec2 fid=floor(fq); vec2 fo=vec2(hash(fid)-.5,hash(fid+7.)-.5)*.5; float fl=smoothstep(.12,0.,length(fract(fq)-.5-fo*sin(t+hash(fid)*6.)));\n  col+=vec3(.9,1.,.4)*fl*(.5+.5*sin(t*2.+hash(fid)*9.)); return col; }\nvec3 dioPantanal(vec2 q,vec2 cam,float t,float sd){\n  float hz=.05+cam.y*.15; vec3 col;\n  if(q.y<hz){ float u=smoothstep(hz,-1.8,q.y); col=mix(vec3(1.,.62,.28),vec3(.10,.28,.85),u); col=mix(col,vec3(1.,.25,.5),smoothstep(.0,.6,u)*(1.-smoothstep(.6,1.,u))*.5);\n    float sd2=length(q-vec2(cam.x*.4,hz-.14)); col+=vec3(1.,.85,.4)*(smoothstep(.2,.17,sd2)+.35*smoothstep(.9,0.,sd2)); }\n  else { float dd=q.y-hz; vec2 rq=vec2(q.x+.05*sin(dd*34.+t)*dd,hz-dd); float u=smoothstep(hz,-1.8,rq.y); col=mix(vec3(.9,.45,.25),vec3(.06,.22,.7),u);\n    col=mix(col,vec3(.0,.35,.45),.35+.4*smoothstep(0.,1.2,dd)); float g=pow(.5+.5*sin(q.x*60.+dd*40.-t*2.),6.)*exp(-abs(q.x-cam.x*.4)*4.)*exp(-dd*1.5); col+=vec3(1.,.9,.5)*g*.6;\n    vec2 lg=vec2(q.x*4.+sd*5.,dd*9.); vec2 li=floor(lg); float lp=smoothstep(.3,.26,length((fract(lg)-.5)*vec2(1.,2.2))); col=mix(col,vec3(.1,.6,.2),lp*step(.55,hash(li+sd))*smoothstep(.1,.5,dd)); }\n  float bl=lw(q.x*7.+sd+sin(q.y*3.+t+q.x)*.1,.1); float bh=.55+.35*hash(vec2(floor(q.x*7.+sd),2.)); col=mix(col,vec3(.02,.14,.06),bl*step(q.y,2.)*step(bh*1.0+.35,q.y+.55)*smoothstep(.2,1.,q.y+.3));\n  return col; }\nfloat hills(float x,float s,float a){ return a*(noise(vec2(x*1.7+s,s))-.5); }\nvec3 dioCerrado(vec2 q,vec2 cam,float t,float sd){\n  float hz=.15; vec3 col=mix(vec3(1.,.82,.25),vec3(.75,.10,.40),smoothstep(hz,-1.8,q.y)); float sd2=length(q-vec2(cam.x*.3,hz-.22));\n  col+=vec3(1.,.55,.15)*(smoothstep(.33,.30,sd2)*.9+.4*smoothstep(1.2,0.,sd2));\n  for(int i=0;i<4;i++){ float fi=float(i); float y=hz+.05+fi*.28+hills(q.x+cam.x*(.2+fi*.3),fi*3.+sd,.5); vec3 hc=mix(vec3(.65,.2,.25),vec3(.12,.02,.10),fi/3.); col=mix(col,hc,smoothstep(.01,-.01,y-q.y)); }\n  float gr=lw(q.x*14.+sd+sin(q.y*2.+t+q.x*3.)*.15,.12); col=mix(col,vec3(1.,.7,.1),gr*smoothstep(.6,1.4,q.y)*.8);\n  return col; }\nvec3 dioCaatinga(vec2 q,vec2 cam,float t,float sd){\n  float hz=.35; vec3 col=mix(vec3(1.,.45,.2),vec3(.35,.05,.55),smoothstep(hz,-1.6,q.y)); float sd2=length(q-vec2(-cam.x*.3+.2,hz-.3)); col+=vec3(1.,.8,.3)*smoothstep(.2,.17,sd2);\n  if(q.y>hz){ vec2 g=vec2(q.x*3.,(q.y-hz)*3.+cam.y); vec2 id=floor(g); float c=lw(g.x+hash(id)*.3,.05)+lw(g.y+hash(id+3.)*.3,.05); col=mix(vec3(.55,.22,.1),vec3(.2,.05,.05),smoothstep(hz,1.6,q.y)); col+=vec3(1.,.4,.1)*clamp(c,0.,1.)*.35; }\n  for(int i=0;i<3;i++){ float fi=float(i); float cx=(fi-1.)*.7+cam.x*(.4+fi*.2)+sd*.3; float w=.07+.03*fi; vec2 p=q-vec2(cx,hz+.05+fi*.1);\n    float body=length(vec2(max(abs(p.x)-w,0.),max(-p.y-(.5+fi*.1),0.)+max(p.y,0.)))-w*.1; float arm=length(vec2(p.x-.2*sign(sin(fi*5.+sd)),max(abs(p.y+.3)-.12,0.)))-w*.8; col=mix(col,vec3(.04,.18,.10),smoothstep(.015,-.01,min(body,arm))); }\n  return col; }\nvec3 dioMata(vec2 q,vec2 cam,float t,float sd){\n  vec3 col=mix(vec3(.05,.45,.55),vec3(1.,.55,.50),smoothstep(-1.5,.8,q.y)); \n  for(int i=0;i<5;i++){ float fi=float(i); float y=-.55+fi*.32+hills(q.x+cam.x*(.15+fi*.25),fi*4.+sd,.6); vec3 rc=mix(vec3(.50,.85,.85),vec3(.02,.20,.18),fi/4.); float k=smoothstep(.015,-.015,y-q.y); col=mix(col,rc,k); col=mix(col,vec3(.95,.80,.85),smoothstep(.0,.6,q.y-y+.1)*smoothstep(.7,.0,q.y-y+.1)*.25*(1.-k)); }\n  vec2 rq=vec2(q.x*9.+q.y*2.,q.y*3.-t*3.); col+=vec3(.7,.95,1.)*step(.93,hash(floor(rq)+sd))*.35; return col; }\nvec3 dio(float k,vec2 q,vec2 cam,float t,float sd){ k=mod(k,5.); if(k<1.) return dioAmazon(q,cam,t,sd); if(k<2.) return dioPantanal(q,cam,t,sd); if(k<3.) return dioCerrado(q,cam,t,sd); if(k<4.) return dioCaatinga(q,cam,t,sd); return dioMata(q,cam,t,sd); }\n\n\nvoid main(){\n  vec2 P=FP(); portals(P); float dm=gdm; vec4 rc=grc; float pid=gpid; vec2 c=(rc.xy+rc.zw)*.5; vec2 hs=(rc.zw-rc.xy)*.5; vec2 q=(P-c)/hs.x; float ph=uPh;\n  float g=smoothstep(.04,.52,ph)*(1.-smoothstep(.72,.97,ph)); float dc=length((c-vec2(958.,1500.))*vec2(1.,1.2)); float open=clamp((g*3300.-dc)/260.,0.,1.);\n  float R=open*(2.6+hs.y/hs.x); float ir=1.-smoothstep(R-.3,R,length(q));\n  float t=ph*TAU; vec2 cam=vec2(sin(t+pid),.5*cos(t+pid*1.7))*.22; vec3 col=dioAmazon(q,cam,t,pid+uSeed);\n  col*=(.85+.4*uRms+.5*uBass*exp(-length(q)));\n  col+=vec3(.9,1.,.4)*uHigh*step(.97,hash(floor(q*14.)+floor(ph*30.)))*.6;\n  float inner=smoothstep(0.,22.,-dm); col*=.35+.65*inner;\n  if(pid>29.){ vec2 e=P-c; float r=length(e)/hs.x; float irisM=smoothstep(.98,.9,r); vec3 ic=mix(uC2,vec3(1.,.8,.2),smoothstep(.2,.9,r)); \n    float slit=smoothstep(.2,.1,abs(e.x/hs.x)*(1.+2.*abs(e.y/hs.x))*1.0+.0); float bl=1.-smoothstep(.0,.12,abs(fract(ph*4.)-.5)-.40);\n    col=ic*irisM*(.6+.5*uBass)*(1.-slit*.97)*(1.-bl*.9)+vec3(.0,.05,.0)*irisM; col+=vec3(1.)*smoothstep(.12,.0,length(e-vec2(-.25,-.25)*hs.x))*.9*(1.-bl); }\n  float al=mkk(dm+1.,1.5)*ir; gl_FragColor=outc(col,al); }\n",
+      "alphaMode": "alpha",
+      "c1": "secondary",
+      "c2": "accent",
+      "cbg": "#021A10",
+      "res": 1
+     }
+    },
+    {
+     "type": "flow",
+     "name": "ESPÓRULOS",
+     "role": "instrument: spores drift through the wavefront, the air of the forest",
+     "on": true,
+     "opacity": 1,
+     "blend": "add",
+     "p": {
+      "count": 420,
+      "trail": 7,
+      "amp": 0.12,
+      "scale": 2.2,
+      "radius": 0.9,
+      "width": 1.6,
+      "alpha": 0.55,
+      "acc": 0.12,
+      "color": "secondary",
+      "hot": "accent"
+     }
+    },
+    {
+     "type": "image",
+     "name": "RELEVO DE PEDRA",
+     "role": "structure: the clay render multiplies the light, so cornices, columns and recesses cast the shading that fakes real volume",
+     "on": true,
+     "opacity": 0.6,
+     "blend": "multiply",
+     "p": {
+      "media": "relevo.png",
+      "fit": "fill"
+     }
+    },
+    {
+     "type": "code",
+     "name": "CONTORNO DA SONDA",
+     "role": "instrument: the architect's own outline, drawn by the probe as it reads the facade",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "src": "\nconst ph=K.t.lph; const g=Math.sin(Math.PI*K.clamp((ph-.03)/.92,0,1)); const a=.12+.5*g*g;\nc.save(); c.globalAlpha=a*(.75+.25*K.t.pulse); K.drawImg(c,'linhas.png',K.w/2,K.h/2,K.w,K.h,K.col('secondary'),1); c.restore();\n"
+     }
+    },
+    {
+     "type": "fx",
+     "name": "RESPIRO DA PEDRA",
+     "role": "structure: the stone breathes, a slow displacement while the vines are alive",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "preset": "DESLOCAR",
+      "p1": 9,
+      "p2": 3,
+      "p3": 1,
+      "p4": 90,
+      "mix": 0.0,
+      "res": 0.6
+     },
+     "mod": [
+      {
+       "k": "mix",
+       "src": "lfo",
+       "shape": "env",
+       "cycles": 1,
+       "keys": [
+        0,
+        0.7,
+        1,
+        0.7,
+        0
+       ],
+       "min": 0,
+       "max": 0.55,
+       "mode": "set"
+      }
+     ]
+    },
+    {
+     "type": "fx",
+     "name": "BRILHO DA LENTE",
+     "role": "finish: soft bloom, the lamp of the probe",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "preset": "BLOOM",
+      "p1": 16,
+      "p2": 0.45,
+      "p3": 1.1,
+      "p4": 0.3,
+      "mix": 0.75,
+      "res": 0.5
+     }
+    },
+    {
+     "type": "image",
+     "name": "FORA DA FACHADA",
+     "role": "finish: black outside the building silhouette, no light is wasted on the sky",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "media": "fora.png",
+      "fit": "fill"
+     }
+    }
+   ]
+  },
+  {
+   "name": "ÁGUAS",
+   "hypothesis": "MARÉ — the probe reaches the Pantanal: water rises through the facade, the lower floors dissolve into caustics and reeds, and every window opens onto a sunrise horizon reflected on the flood.",
+   "motion": "smooth",
+   "palette": {
+    "primary": "#36F1FF",
+    "secondary": "#00C2FF",
+    "accent": "#FFB347"
+   },
+   "layers": [
+    {
+     "type": "bg",
+     "name": "NOITE ALAGADA",
+     "role": "ground: black, the water is the only light that rises",
+     "on": true,
+     "p": {
+      "grain": 0
+     }
+    },
+    {
+     "type": "shader",
+     "name": "ÁGUA QUE SOBE",
+     "role": "hero: the waterline climbs the stone with waves, caustics, bubbles and reeds, and drops ripple rings on every beat; above it, dawn colours the wall",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "src": "\n#define PI 3.14159265\nvec2 FP(){ return vec2(gl_FragCoord.x/uRes.x*1920., (1.-gl_FragCoord.y/uRes.y)*1520.); }\nfloat bx(vec2 P,vec4 r){ vec2 c=(r.xy+r.zw)*.5,h=(r.zw-r.xy)*.5,d=abs(P-c)-h; return length(max(d,0.))+min(max(d.x,d.y),0.); }\nfloat ar(vec2 P,vec4 r){ float rd=(r.z-r.x)*.5; return min(bx(P,vec4(r.x,r.y+rd,r.z,r.w)),length(P-vec2((r.x+r.z)*.5,r.y+rd))-rd); }\nfloat fa(vec2 P,vec4 r){ vec2 c=vec2((r.x+r.z)*.5,r.w); float rx=(r.z-r.x)*.5, ry=r.w-r.y; float e=(length((P-c)/vec2(rx,ry))-1.)*min(rx,ry); return max(e,P.y-r.w); }\nfloat ci(vec2 P,vec4 r){ return length(P-(r.xy+r.zw)*.5)-(r.z-r.x)*.5; }\nfloat mkk(float d,float w){ return smoothstep(w,-w,d); }\nfloat h11(float n){ return fract(sin(n*127.1)*43758.5453); }\nfloat lw(float x,float w){ float f=fract(x); return 1.-smoothstep(0.,w,min(f,1.-f)); }\nfloat gdm; vec4 grc; float gpid;\nvoid portals(vec2 P){ float dm=1e5; vec4 rc=vec4(0.); float pid=0.; float d;\n d=bx(P,vec4(254.,650.,394.,858.)); if(d<dm){dm=d;rc=vec4(254.,650.,394.,858.);pid=1.;}\n d=bx(P,vec4(254.,1112.,392.,1306.)); if(d<dm){dm=d;rc=vec4(254.,1112.,392.,1306.);pid=2.;}\n d=bx(P,vec4(1512.,650.,1662.,858.)); if(d<dm){dm=d;rc=vec4(1512.,650.,1662.,858.);pid=3.;}\n d=bx(P,vec4(1510.,1118.,1662.,1334.)); if(d<dm){dm=d;rc=vec4(1510.,1118.,1662.,1334.);pid=4.;}\n d=bx(P,vec4(873.,652.,1022.,858.)); if(d<dm){dm=d;rc=vec4(873.,652.,1022.,858.);pid=5.;}\n d=ar(P,vec4(624.,656.,766.,857.)); if(d<dm){dm=d;rc=vec4(624.,656.,766.,857.);pid=6.;}\n d=ar(P,vec4(1130.,656.,1272.,858.)); if(d<dm){dm=d;rc=vec4(1130.,656.,1272.,858.);pid=7.;}\n d=bx(P,vec4(534.,657.,678.,857.)); if(d<dm){dm=d;rc=vec4(534.,657.,678.,857.);pid=8.;}\n d=bx(P,vec4(1230.,657.,1362.,858.)); if(d<dm){dm=d;rc=vec4(1230.,657.,1362.,858.);pid=9.;}\n d=bx(P,vec4(621.,1097.,767.,1320.)); if(d<dm){dm=d;rc=vec4(621.,1097.,767.,1320.);pid=10.;}\n d=bx(P,vec4(871.,1097.,1015.,1420.)); if(d<dm){dm=d;rc=vec4(871.,1097.,1015.,1420.);pid=11.;}\n d=bx(P,vec4(1127.,1097.,1273.,1320.)); if(d<dm){dm=d;rc=vec4(1127.,1097.,1273.,1320.);pid=12.;}\n d=fa(P,vec4(603.,1030.,787.,1095.)); if(d<dm){dm=d;rc=vec4(603.,1030.,787.,1095.);pid=13.;}\n d=fa(P,vec4(853.,1030.,1037.,1095.)); if(d<dm){dm=d;rc=vec4(853.,1030.,1037.,1095.);pid=14.;}\n d=fa(P,vec4(1109.,1030.,1297.,1095.)); if(d<dm){dm=d;rc=vec4(1109.,1030.,1297.,1095.);pid=15.;}\n d=ar(P,vec4(510.,366.,532.,414.)); if(d<dm){dm=d;rc=vec4(510.,366.,532.,414.);pid=16.;}\n d=ar(P,vec4(557.,366.,579.,414.)); if(d<dm){dm=d;rc=vec4(557.,366.,579.,414.);pid=17.;}\n d=ar(P,vec4(603.,366.,625.,414.)); if(d<dm){dm=d;rc=vec4(603.,366.,625.,414.);pid=18.;}\n d=ar(P,vec4(649.,366.,671.,414.)); if(d<dm){dm=d;rc=vec4(649.,366.,671.,414.);pid=19.;}\n d=ar(P,vec4(696.,366.,718.,414.)); if(d<dm){dm=d;rc=vec4(696.,366.,718.,414.);pid=20.;}\n d=ar(P,vec4(747.,366.,769.,414.)); if(d<dm){dm=d;rc=vec4(747.,366.,769.,414.);pid=21.;}\n d=ar(P,vec4(1132.,366.,1154.,414.)); if(d<dm){dm=d;rc=vec4(1132.,366.,1154.,414.);pid=22.;}\n d=ar(P,vec4(1179.,366.,1201.,414.)); if(d<dm){dm=d;rc=vec4(1179.,366.,1201.,414.);pid=23.;}\n d=ar(P,vec4(1226.,366.,1248.,414.)); if(d<dm){dm=d;rc=vec4(1226.,366.,1248.,414.);pid=24.;}\n d=ar(P,vec4(1273.,366.,1295.,414.)); if(d<dm){dm=d;rc=vec4(1273.,366.,1295.,414.);pid=25.;}\n d=ar(P,vec4(1320.,366.,1342.,414.)); if(d<dm){dm=d;rc=vec4(1320.,366.,1342.,414.);pid=26.;}\n d=ar(P,vec4(1367.,366.,1389.,414.)); if(d<dm){dm=d;rc=vec4(1367.,366.,1389.,414.);pid=27.;}\n d=bx(P,vec4(813.,369.,835.,400.)); if(d<dm){dm=d;rc=vec4(813.,369.,835.,400.);pid=28.;}\n d=bx(P,vec4(1069.,369.,1091.,400.)); if(d<dm){dm=d;rc=vec4(1069.,369.,1091.,400.);pid=29.;}\n d=ci(P,vec4(245.,428.,353.,536.)); if(d<dm){dm=d;rc=vec4(245.,428.,353.,536.);pid=30.;}\n d=ci(P,vec4(1553.,415.,1661.,523.)); if(d<dm){dm=d;rc=vec4(1553.,415.,1661.,523.);pid=31.;}\n gdm=dm; grc=rc; gpid=pid; }\nfloat gCol(vec2 P){ float d=bx(P,vec4(77.,587.,139.,1485.)); d=min(d,bx(P,vec4(117.,587.,213.,1485.))); d=min(d,bx(P,vec4(389.,587.,492.,1485.)));\n  d=min(d,bx(P,vec4(1403.,580.,1505.,1485.))); d=min(d,bx(P,vec4(1691.,580.,1795.,1485.))); d=min(d,bx(P,vec4(1776.,604.,1853.,1485.))); return d; }\nfloat colU(vec2 P){ float u=0.; float best=1e5; \n  float x0=77.,x1=139.; float d=bx(P,vec4(77.,587.,139.,1485.)); if(d<best){best=d;u=(P.x-108.)/31.;}\n  d=bx(P,vec4(117.,587.,213.,1485.)); if(d<best){best=d;u=(P.x-165.)/48.;}\n  d=bx(P,vec4(389.,587.,492.,1485.)); if(d<best){best=d;u=(P.x-440.)/51.;}\n  d=bx(P,vec4(1403.,580.,1505.,1485.)); if(d<best){best=d;u=(P.x-1454.)/51.;}\n  d=bx(P,vec4(1691.,580.,1795.,1485.)); if(d<best){best=d;u=(P.x-1743.)/52.;}\n  d=bx(P,vec4(1776.,604.,1853.,1485.)); if(d<best){best=d;u=(P.x-1814.)/38.;}\n  return clamp(u,-1.,1.); }\nfloat gBalu(vec2 P){ return min(bx(P,vec4(249.,869.,392.,958.)),bx(P,vec4(1514.,869.,1662.,958.))); }\nfloat gStair(vec2 P){ return bx(P,vec4(720.,1383.,1165.,1515.)); }\nfloat gTow(vec2 P){ float a=abs(P.x-950.)-450.; return max(P.y-600.,-a); }\nfloat gCrown(vec2 P){ float a=abs(P.x-950.)-450.; return max(P.y-602.,a); }\nvec3 zones(vec2 P){ // x: colunas, y: torres+coroa, z: balaustres  (0..1)\n  return vec3(mkk(gCol(P),3.), max(mkk(gTow(P),4.),mkk(gCrown(P),4.)), max(mkk(gBalu(P),2.),mkk(gStair(P),3.))); }\nfloat wlv(vec2 P,float ph){ float rise=smoothstep(.06,.46,ph)*(1.-smoothstep(.62,.92,ph)); return mix(1580.,640.,rise)+11.*sin(P.x*.021+ph*TAU*3.)+6.*sin(P.x*.057-ph*TAU*5.)*(1.-.4*rise); }\n\nvoid main(){\n  vec2 P=FP(); float ph=uPh; portals(P); float dm=gdm; vec3 z=zones(P);\n  float env=smoothstep(0.,.06,ph)*(1.-smoothstep(.94,1.,ph));\n  float rise=smoothstep(.06,.46,ph)*(1.-smoothstep(.62,.92,ph));\n  float wl=wlv(P,ph); float under=smoothstep(wl-2.,wl+2.,P.y); float depth=clamp((P.y-wl)/700.,0.,1.);\n  float yy=P.y/1520.; vec3 sky=mix(vec3(.06,.14,.55),vec3(1.,.38,.40),smoothstep(.05,.75,yy)); sky=mix(sky,vec3(1.,.85,.35),smoothstep(.55,1.,yy)*.75);\n  float cl=fbm(vec2(P.x*.004+sin(ph*TAU)*.5,P.y*.009+uSeed)); sky*=(.30+.7*cl)*(.45+.25*uMid)*rise*1.5;\n  vec3 wcol=mix(uC1*.30,uBg,depth*.85);\n  float c1=sin(P.x*.03+sin(P.y*.04+ph*TAU*2.)*2.)*sin(P.y*.028+sin(P.x*.05-ph*TAU*3.)*2.); float ca=pow(1.-abs(c1),7.);\n  wcol+=mix(uC1,vec3(1.),.4)*ca*.7*(1.-depth*.6)+vec3(.8,1.,1.)*ca*uHigh*.6;\n  vec2 bg=vec2(P.x/22.,P.y/22.+ph*TAU*3.); vec2 bi=floor(bg); wcol+=vec3(.7,1.,1.)*smoothstep(.2,.0,length(fract(bg)-.5-(vec2(hash(bi),hash(bi+4.))-.5)*.5))*step(.82,hash(bi+uSeed))*.7;\n  vec3 col=mix(sky,wcol,under)*step(.001,rise);\n  col+=mix(uC1,vec3(1.),.7)*exp(-abs(P.y-wl)/3.)*step(.01,rise)*(.8+uHit);\n  float sw=sin(ph*TAU*2.+P.x*.02); float cell=floor(P.x/9.); float hb=(50.+300.*hash(vec2(cell,uSeed)))*smoothstep(.04,.3,ph)*(1.-smoothstep(.9,.99,ph));\n  float by=1520.-P.y; float taper=1.-by/max(hb,1.); float blade=step(by,hb)*step(abs(fract(P.x/9.+sw*.0004*by)-.5),.30*taper+.02);\n  col+=mix(vec3(.1,.7,.25),vec3(.9,.95,.3),by/max(hb,1.))*blade*.8;\n  float beatF=ph*64.; float bI=floor(beatF);\n  for(int k=0;k<3;k++){ float bi2=bI-float(k); vec2 dp=vec2(hash(vec2(bi2,uSeed))*1920.,min(wl+60.+hash(vec2(bi2,5.))*400.,1500.)); float age=beatF-bi2; float rr=age*95.;\n    col+=vec3(.9,1.,1.)*exp(-abs(length((P-dp)*vec2(1.,2.4))-rr)/3.)*(1.-age/3.)*step(age,3.)*under*.7; }\n  float cu=colU(P); float cyl=.3+.7*sqrt(max(1.-cu*cu,0.));\n  col=mix(col,col*cyl,z.x);\n  col+=uC1*lw(P.y/8.+cu*.5,.1)*z.x*under*.5*(.5+uMid);\n  float rs=min(length(P-vec2(299.,482.)),length(P-vec2(1607.,469.)));\n  col+=vec3(1.,.8,.35)*exp(-rs/150.)*z.y*rise*(.5+.8*uBass)+uC2*lw(rs/18.-ph*5.,.07)*z.y*rise*exp(-rs/360.)*.6;\n  col+=uC2*lw(P.x/8.,.16)*z.z*rise*.6*(.5+uMid);\n  col+=mix(uC1,vec3(1.),.5)*exp(-abs(dm)/5.)*rise*(.5+.9*uHit);\n  col*=smoothstep(-2.,2.,dm); col*=env*(.9+.2*uRms); gl_FragColor=outc(col,1.); }\n",
+      "alphaMode": "opaque",
+      "c1": "secondary",
+      "c2": "accent",
+      "cbg": "#021A3A",
+      "res": 1
+     }
+    },
+    {
+     "type": "shader",
+     "name": "HORIZONTES",
+     "role": "hero: each opening shows a sunrise horizon with its reflection on the water; the flood tints whatever sinks below the line",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "src": "\n#define PI 3.14159265\nvec2 FP(){ return vec2(gl_FragCoord.x/uRes.x*1920., (1.-gl_FragCoord.y/uRes.y)*1520.); }\nfloat bx(vec2 P,vec4 r){ vec2 c=(r.xy+r.zw)*.5,h=(r.zw-r.xy)*.5,d=abs(P-c)-h; return length(max(d,0.))+min(max(d.x,d.y),0.); }\nfloat ar(vec2 P,vec4 r){ float rd=(r.z-r.x)*.5; return min(bx(P,vec4(r.x,r.y+rd,r.z,r.w)),length(P-vec2((r.x+r.z)*.5,r.y+rd))-rd); }\nfloat fa(vec2 P,vec4 r){ vec2 c=vec2((r.x+r.z)*.5,r.w); float rx=(r.z-r.x)*.5, ry=r.w-r.y; float e=(length((P-c)/vec2(rx,ry))-1.)*min(rx,ry); return max(e,P.y-r.w); }\nfloat ci(vec2 P,vec4 r){ return length(P-(r.xy+r.zw)*.5)-(r.z-r.x)*.5; }\nfloat mkk(float d,float w){ return smoothstep(w,-w,d); }\nfloat h11(float n){ return fract(sin(n*127.1)*43758.5453); }\nfloat lw(float x,float w){ float f=fract(x); return 1.-smoothstep(0.,w,min(f,1.-f)); }\nfloat gdm; vec4 grc; float gpid;\nvoid portals(vec2 P){ float dm=1e5; vec4 rc=vec4(0.); float pid=0.; float d;\n d=bx(P,vec4(254.,650.,394.,858.)); if(d<dm){dm=d;rc=vec4(254.,650.,394.,858.);pid=1.;}\n d=bx(P,vec4(254.,1112.,392.,1306.)); if(d<dm){dm=d;rc=vec4(254.,1112.,392.,1306.);pid=2.;}\n d=bx(P,vec4(1512.,650.,1662.,858.)); if(d<dm){dm=d;rc=vec4(1512.,650.,1662.,858.);pid=3.;}\n d=bx(P,vec4(1510.,1118.,1662.,1334.)); if(d<dm){dm=d;rc=vec4(1510.,1118.,1662.,1334.);pid=4.;}\n d=bx(P,vec4(873.,652.,1022.,858.)); if(d<dm){dm=d;rc=vec4(873.,652.,1022.,858.);pid=5.;}\n d=ar(P,vec4(624.,656.,766.,857.)); if(d<dm){dm=d;rc=vec4(624.,656.,766.,857.);pid=6.;}\n d=ar(P,vec4(1130.,656.,1272.,858.)); if(d<dm){dm=d;rc=vec4(1130.,656.,1272.,858.);pid=7.;}\n d=bx(P,vec4(534.,657.,678.,857.)); if(d<dm){dm=d;rc=vec4(534.,657.,678.,857.);pid=8.;}\n d=bx(P,vec4(1230.,657.,1362.,858.)); if(d<dm){dm=d;rc=vec4(1230.,657.,1362.,858.);pid=9.;}\n d=bx(P,vec4(621.,1097.,767.,1320.)); if(d<dm){dm=d;rc=vec4(621.,1097.,767.,1320.);pid=10.;}\n d=bx(P,vec4(871.,1097.,1015.,1420.)); if(d<dm){dm=d;rc=vec4(871.,1097.,1015.,1420.);pid=11.;}\n d=bx(P,vec4(1127.,1097.,1273.,1320.)); if(d<dm){dm=d;rc=vec4(1127.,1097.,1273.,1320.);pid=12.;}\n d=fa(P,vec4(603.,1030.,787.,1095.)); if(d<dm){dm=d;rc=vec4(603.,1030.,787.,1095.);pid=13.;}\n d=fa(P,vec4(853.,1030.,1037.,1095.)); if(d<dm){dm=d;rc=vec4(853.,1030.,1037.,1095.);pid=14.;}\n d=fa(P,vec4(1109.,1030.,1297.,1095.)); if(d<dm){dm=d;rc=vec4(1109.,1030.,1297.,1095.);pid=15.;}\n d=ar(P,vec4(510.,366.,532.,414.)); if(d<dm){dm=d;rc=vec4(510.,366.,532.,414.);pid=16.;}\n d=ar(P,vec4(557.,366.,579.,414.)); if(d<dm){dm=d;rc=vec4(557.,366.,579.,414.);pid=17.;}\n d=ar(P,vec4(603.,366.,625.,414.)); if(d<dm){dm=d;rc=vec4(603.,366.,625.,414.);pid=18.;}\n d=ar(P,vec4(649.,366.,671.,414.)); if(d<dm){dm=d;rc=vec4(649.,366.,671.,414.);pid=19.;}\n d=ar(P,vec4(696.,366.,718.,414.)); if(d<dm){dm=d;rc=vec4(696.,366.,718.,414.);pid=20.;}\n d=ar(P,vec4(747.,366.,769.,414.)); if(d<dm){dm=d;rc=vec4(747.,366.,769.,414.);pid=21.;}\n d=ar(P,vec4(1132.,366.,1154.,414.)); if(d<dm){dm=d;rc=vec4(1132.,366.,1154.,414.);pid=22.;}\n d=ar(P,vec4(1179.,366.,1201.,414.)); if(d<dm){dm=d;rc=vec4(1179.,366.,1201.,414.);pid=23.;}\n d=ar(P,vec4(1226.,366.,1248.,414.)); if(d<dm){dm=d;rc=vec4(1226.,366.,1248.,414.);pid=24.;}\n d=ar(P,vec4(1273.,366.,1295.,414.)); if(d<dm){dm=d;rc=vec4(1273.,366.,1295.,414.);pid=25.;}\n d=ar(P,vec4(1320.,366.,1342.,414.)); if(d<dm){dm=d;rc=vec4(1320.,366.,1342.,414.);pid=26.;}\n d=ar(P,vec4(1367.,366.,1389.,414.)); if(d<dm){dm=d;rc=vec4(1367.,366.,1389.,414.);pid=27.;}\n d=bx(P,vec4(813.,369.,835.,400.)); if(d<dm){dm=d;rc=vec4(813.,369.,835.,400.);pid=28.;}\n d=bx(P,vec4(1069.,369.,1091.,400.)); if(d<dm){dm=d;rc=vec4(1069.,369.,1091.,400.);pid=29.;}\n d=ci(P,vec4(245.,428.,353.,536.)); if(d<dm){dm=d;rc=vec4(245.,428.,353.,536.);pid=30.;}\n d=ci(P,vec4(1553.,415.,1661.,523.)); if(d<dm){dm=d;rc=vec4(1553.,415.,1661.,523.);pid=31.;}\n gdm=dm; grc=rc; gpid=pid; }\nfloat gCol(vec2 P){ float d=bx(P,vec4(77.,587.,139.,1485.)); d=min(d,bx(P,vec4(117.,587.,213.,1485.))); d=min(d,bx(P,vec4(389.,587.,492.,1485.)));\n  d=min(d,bx(P,vec4(1403.,580.,1505.,1485.))); d=min(d,bx(P,vec4(1691.,580.,1795.,1485.))); d=min(d,bx(P,vec4(1776.,604.,1853.,1485.))); return d; }\nfloat colU(vec2 P){ float u=0.; float best=1e5; \n  float x0=77.,x1=139.; float d=bx(P,vec4(77.,587.,139.,1485.)); if(d<best){best=d;u=(P.x-108.)/31.;}\n  d=bx(P,vec4(117.,587.,213.,1485.)); if(d<best){best=d;u=(P.x-165.)/48.;}\n  d=bx(P,vec4(389.,587.,492.,1485.)); if(d<best){best=d;u=(P.x-440.)/51.;}\n  d=bx(P,vec4(1403.,580.,1505.,1485.)); if(d<best){best=d;u=(P.x-1454.)/51.;}\n  d=bx(P,vec4(1691.,580.,1795.,1485.)); if(d<best){best=d;u=(P.x-1743.)/52.;}\n  d=bx(P,vec4(1776.,604.,1853.,1485.)); if(d<best){best=d;u=(P.x-1814.)/38.;}\n  return clamp(u,-1.,1.); }\nfloat gBalu(vec2 P){ return min(bx(P,vec4(249.,869.,392.,958.)),bx(P,vec4(1514.,869.,1662.,958.))); }\nfloat gStair(vec2 P){ return bx(P,vec4(720.,1383.,1165.,1515.)); }\nfloat gTow(vec2 P){ float a=abs(P.x-950.)-450.; return max(P.y-600.,-a); }\nfloat gCrown(vec2 P){ float a=abs(P.x-950.)-450.; return max(P.y-602.,a); }\nvec3 zones(vec2 P){ // x: colunas, y: torres+coroa, z: balaustres  (0..1)\n  return vec3(mkk(gCol(P),3.), max(mkk(gTow(P),4.),mkk(gCrown(P),4.)), max(mkk(gBalu(P),2.),mkk(gStair(P),3.))); }\n\nfloat leafLayer(vec2 uv,float sd){ vec2 g=uv; vec2 id0=floor(g-.5); float cov=0.;\n  for(int j=0;j<=1;j++){ for(int i=0;i<=1;i++){ vec2 id=id0+vec2(float(i),float(j)); float r=hash(id+sd); vec2 ce=id+.5+(vec2(hash(id+sd+9.),hash(id+sd+21.))-.5)*.4;\n    vec2 f=vjRot(r*6.2832)*(g-ce); float k=smoothstep(.06,-.06,length(f*vec2(1.,2.6))-.5)*step(.2,hash(id*1.7+sd+3.)); cov=max(cov,k); } }\n  return cov; }\nvec3 dioAmazon(vec2 q,vec2 cam,float t,float sd){\n  vec3 col=mix(vec3(.03,.24,.12),vec3(.62,1.,.28),smoothstep(1.4,-1.8,q.y)*.6);\n  vec2 s=q-vec2(.15+cam.x*.5,-1.9); float ang=atan(s.x,s.y);\n  float rays=pow(.5+.5*sin(ang*16.+sd*7.+sin(t)*.8),3.)*smoothstep(3.4,.2,length(s));\n  col+=vec3(1.,.95,.4)*rays*.55;\n  for(int i=0;i<4;i++){ float fi=float(i); float sc=1.7-fi*.3; vec2 uv=q*sc+cam*(.4+fi*.7)+vec2(sd*13.,fi*5.); float k=leafLayer(uv,fi*19.+sd);\n    vec3 lc=mix(vec3(.10,.62,.28),vec3(.0,.05,.03),fi/3.)+vec3(.45,1.,.25)*pow(1.-fi/3.,2.)*.5*(.4+.6*hash(floor(uv)+fi));\n    col=mix(col,lc,k*(.6+fi*.1));\n    vec2 fg=uv*2.; vec2 fi2=floor(fg); float fl=smoothstep(.2,.0,length(fract(fg)-.5))*step(.93,hash(fi2*2.7+fi+sd)); col=mix(col,mix(vec3(1.,.15,.55),vec3(1.,.7,.1),hash(fi2)),fl*.9*step(fi,2.5)); }\n  vec2 fq=q*3.+vec2(cam.x*2.,t*.5); vec2 fid=floor(fq); vec2 fo=vec2(hash(fid)-.5,hash(fid+7.)-.5)*.5; float fl=smoothstep(.12,0.,length(fract(fq)-.5-fo*sin(t+hash(fid)*6.)));\n  col+=vec3(.9,1.,.4)*fl*(.5+.5*sin(t*2.+hash(fid)*9.)); return col; }\nvec3 dioPantanal(vec2 q,vec2 cam,float t,float sd){\n  float hz=.05+cam.y*.15; vec3 col;\n  if(q.y<hz){ float u=smoothstep(hz,-1.8,q.y); col=mix(vec3(1.,.62,.28),vec3(.10,.28,.85),u); col=mix(col,vec3(1.,.25,.5),smoothstep(.0,.6,u)*(1.-smoothstep(.6,1.,u))*.5);\n    float sd2=length(q-vec2(cam.x*.4,hz-.14)); col+=vec3(1.,.85,.4)*(smoothstep(.2,.17,sd2)+.35*smoothstep(.9,0.,sd2)); }\n  else { float dd=q.y-hz; vec2 rq=vec2(q.x+.05*sin(dd*34.+t)*dd,hz-dd); float u=smoothstep(hz,-1.8,rq.y); col=mix(vec3(.9,.45,.25),vec3(.06,.22,.7),u);\n    col=mix(col,vec3(.0,.35,.45),.35+.4*smoothstep(0.,1.2,dd)); float g=pow(.5+.5*sin(q.x*60.+dd*40.-t*2.),6.)*exp(-abs(q.x-cam.x*.4)*4.)*exp(-dd*1.5); col+=vec3(1.,.9,.5)*g*.6;\n    vec2 lg=vec2(q.x*4.+sd*5.,dd*9.); vec2 li=floor(lg); float lp=smoothstep(.3,.26,length((fract(lg)-.5)*vec2(1.,2.2))); col=mix(col,vec3(.1,.6,.2),lp*step(.55,hash(li+sd))*smoothstep(.1,.5,dd)); }\n  float bl=lw(q.x*7.+sd+sin(q.y*3.+t+q.x)*.1,.1); float bh=.55+.35*hash(vec2(floor(q.x*7.+sd),2.)); col=mix(col,vec3(.02,.14,.06),bl*step(q.y,2.)*step(bh*1.0+.35,q.y+.55)*smoothstep(.2,1.,q.y+.3));\n  return col; }\nfloat hills(float x,float s,float a){ return a*(noise(vec2(x*1.7+s,s))-.5); }\nvec3 dioCerrado(vec2 q,vec2 cam,float t,float sd){\n  float hz=.15; vec3 col=mix(vec3(1.,.82,.25),vec3(.75,.10,.40),smoothstep(hz,-1.8,q.y)); float sd2=length(q-vec2(cam.x*.3,hz-.22));\n  col+=vec3(1.,.55,.15)*(smoothstep(.33,.30,sd2)*.9+.4*smoothstep(1.2,0.,sd2));\n  for(int i=0;i<4;i++){ float fi=float(i); float y=hz+.05+fi*.28+hills(q.x+cam.x*(.2+fi*.3),fi*3.+sd,.5); vec3 hc=mix(vec3(.65,.2,.25),vec3(.12,.02,.10),fi/3.); col=mix(col,hc,smoothstep(.01,-.01,y-q.y)); }\n  float gr=lw(q.x*14.+sd+sin(q.y*2.+t+q.x*3.)*.15,.12); col=mix(col,vec3(1.,.7,.1),gr*smoothstep(.6,1.4,q.y)*.8);\n  return col; }\nvec3 dioCaatinga(vec2 q,vec2 cam,float t,float sd){\n  float hz=.35; vec3 col=mix(vec3(1.,.45,.2),vec3(.35,.05,.55),smoothstep(hz,-1.6,q.y)); float sd2=length(q-vec2(-cam.x*.3+.2,hz-.3)); col+=vec3(1.,.8,.3)*smoothstep(.2,.17,sd2);\n  if(q.y>hz){ vec2 g=vec2(q.x*3.,(q.y-hz)*3.+cam.y); vec2 id=floor(g); float c=lw(g.x+hash(id)*.3,.05)+lw(g.y+hash(id+3.)*.3,.05); col=mix(vec3(.55,.22,.1),vec3(.2,.05,.05),smoothstep(hz,1.6,q.y)); col+=vec3(1.,.4,.1)*clamp(c,0.,1.)*.35; }\n  for(int i=0;i<3;i++){ float fi=float(i); float cx=(fi-1.)*.7+cam.x*(.4+fi*.2)+sd*.3; float w=.07+.03*fi; vec2 p=q-vec2(cx,hz+.05+fi*.1);\n    float body=length(vec2(max(abs(p.x)-w,0.),max(-p.y-(.5+fi*.1),0.)+max(p.y,0.)))-w*.1; float arm=length(vec2(p.x-.2*sign(sin(fi*5.+sd)),max(abs(p.y+.3)-.12,0.)))-w*.8; col=mix(col,vec3(.04,.18,.10),smoothstep(.015,-.01,min(body,arm))); }\n  return col; }\nvec3 dioMata(vec2 q,vec2 cam,float t,float sd){\n  vec3 col=mix(vec3(.05,.45,.55),vec3(1.,.55,.50),smoothstep(-1.5,.8,q.y)); \n  for(int i=0;i<5;i++){ float fi=float(i); float y=-.55+fi*.32+hills(q.x+cam.x*(.15+fi*.25),fi*4.+sd,.6); vec3 rc=mix(vec3(.50,.85,.85),vec3(.02,.20,.18),fi/4.); float k=smoothstep(.015,-.015,y-q.y); col=mix(col,rc,k); col=mix(col,vec3(.95,.80,.85),smoothstep(.0,.6,q.y-y+.1)*smoothstep(.7,.0,q.y-y+.1)*.25*(1.-k)); }\n  vec2 rq=vec2(q.x*9.+q.y*2.,q.y*3.-t*3.); col+=vec3(.7,.95,1.)*step(.93,hash(floor(rq)+sd))*.35; return col; }\nvec3 dio(float k,vec2 q,vec2 cam,float t,float sd){ k=mod(k,5.); if(k<1.) return dioAmazon(q,cam,t,sd); if(k<2.) return dioPantanal(q,cam,t,sd); if(k<3.) return dioCerrado(q,cam,t,sd); if(k<4.) return dioCaatinga(q,cam,t,sd); return dioMata(q,cam,t,sd); }\n\nfloat wlv(vec2 P,float ph){ float rise=smoothstep(.06,.46,ph)*(1.-smoothstep(.62,.92,ph)); return mix(1580.,640.,rise)+11.*sin(P.x*.021+ph*TAU*3.)+6.*sin(P.x*.057-ph*TAU*5.)*(1.-.4*rise); }\n\nvoid main(){\n  vec2 P=FP(); portals(P); float dm=gdm; vec4 rc=grc; float pid=gpid; vec2 c=(rc.xy+rc.zw)*.5; vec2 hs=(rc.zw-rc.xy)*.5; vec2 q=(P-c)/hs.x; float ph=uPh;\n  float open=clamp((ph-.08-.2*hash(vec2(pid,3.+uSeed)))/.12,0.,1.)*(1.-smoothstep(.86,.95,ph));\n  float R=open*(2.6+hs.y/hs.x); float ir=1.-smoothstep(R-.3,R,length(q));\n  float t=ph*TAU; vec2 cam=vec2(sin(t+pid),.4*cos(t+pid*1.7))*.25; vec3 col=dioPantanal(q,cam,t,pid+uSeed);\n  float wl=wlv(P,ph); col=mix(col,vec3(.0,.35,.5)*(.4+.6*exp(-(P.y-wl)*.004)),smoothstep(wl-2.,wl+2.,P.y)*.7);\n  col*=(.85+.4*uRms+.4*uBass*exp(-length(q))); col+=vec3(1.,.9,.5)*uHigh*step(.97,hash(floor(q*16.)+floor(ph*30.)))*.5;\n  float inner=smoothstep(0.,22.,-dm); col*=.4+.6*inner;\n  if(pid>29.){ vec2 e=P-c; float r=length(e)/hs.x; float sun=smoothstep(.95,.7,r); col=mix(vec3(.05,.1,.3),mix(vec3(1.,.4,.2),vec3(1.,.95,.6),smoothstep(.9,.0,r)),sun)*(.7+.6*uBass);\n    col+=vec3(1.,.8,.4)*pow(.5+.5*sin(atan(e.y,e.x)*10.+ph*TAU*2.),4.)*smoothstep(1.,.2,r)*.5*sun; }\n  float al=mkk(dm+1.,1.5)*ir; gl_FragColor=outc(col,al); }\n",
+      "alphaMode": "alpha",
+      "c1": "secondary",
+      "c2": "accent",
+      "cbg": "#021A3A",
+      "res": 1
+     }
+    },
+    {
+     "type": "flow",
+     "name": "LIBÉLULAS",
+     "role": "instrument: dragonflies, small fast sparks above the flood",
+     "on": true,
+     "opacity": 1,
+     "blend": "add",
+     "p": {
+      "count": 260,
+      "trail": 5,
+      "amp": 0.16,
+      "scale": 3,
+      "radius": 0.9,
+      "width": 1.8,
+      "alpha": 0.7,
+      "acc": 0.12,
+      "color": "accent",
+      "hot": "primary"
+     }
+    },
+    {
+     "type": "image",
+     "name": "RELEVO DE PEDRA",
+     "role": "structure: the clay render multiplies the light, so cornices, columns and recesses cast the shading that fakes real volume",
+     "on": true,
+     "opacity": 0.6,
+     "blend": "multiply",
+     "p": {
+      "media": "relevo.png",
+      "fit": "fill"
+     }
+    },
+    {
+     "type": "code",
+     "name": "CONTORNO DA SONDA",
+     "role": "instrument: the architect's own outline, drawn by the probe as it reads the facade",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "src": "\nconst ph=K.t.lph; const rise=Math.sin(Math.PI*K.clamp((ph-.06)/.86,0,1)); const a=.10+.5*rise*rise;\nc.save(); c.globalAlpha=a*(.75+.25*K.t.pulse); K.drawImg(c,'linhas.png',K.w/2,K.h/2,K.w,K.h,K.col('primary'),1); c.restore();\n"
+     }
+    },
+    {
+     "type": "fx",
+     "name": "FACHADA DERRETE EM ÁGUA",
+     "role": "structure: a liquid-glass refraction melts the stone into the flood while the water is high",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "preset": "VIDRO LÍQUIDO",
+      "p1": 22,
+      "p2": 6,
+      "p3": 0.6,
+      "p4": 0.5,
+      "mix": 0.0,
+      "res": 0.6
+     },
+     "mod": [
+      {
+       "k": "mix",
+       "src": "lfo",
+       "shape": "env",
+       "cycles": 1,
+       "keys": [
+        0,
+        0,
+        0.5,
+        0.9,
+        0.9,
+        0.6,
+        0.1,
+        0
+       ],
+       "min": 0,
+       "max": 0.8,
+       "mode": "set"
+      }
+     ]
+    },
+    {
+     "type": "fx",
+     "name": "BRILHO DA LENTE",
+     "role": "finish: soft bloom, the lamp of the probe",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "preset": "BLOOM",
+      "p1": 16,
+      "p2": 0.45,
+      "p3": 1.1,
+      "p4": 0.3,
+      "mix": 0.7,
+      "res": 0.5
+     }
+    },
+    {
+     "type": "image",
+     "name": "FORA DA FACHADA",
+     "role": "finish: black outside the building silhouette, no light is wasted on the sky",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "media": "fora.png",
+      "fit": "fill"
+     }
+    }
+   ]
+  },
+  {
+   "name": "BRASA",
+   "hypothesis": "SECA — Cerrado and Caatinga: heat rises from the ground cracking the stone, cornices and columns melt like wax, then the first rain blooms ipê flowers out of the cracks.",
+   "motion": "smooth",
+   "palette": {
+    "primary": "#36F1FF",
+    "secondary": "#FF8A00",
+    "accent": "#FF2E7A"
+   },
+   "layers": [
+    {
+     "type": "bg",
+     "name": "CHÃO SECO",
+     "role": "ground: black ground until the heat reaches it",
+     "on": true,
+     "p": {
+      "grain": 0
+     }
+    },
+    {
+     "type": "shader",
+     "name": "TERRA RACHADA",
+     "role": "hero: voronoi earth cracks lit from below by rising lava, then wax-like drips fall from every ledge, then ipê flowers open from the cells",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "src": "\n#define PI 3.14159265\nvec2 FP(){ return vec2(gl_FragCoord.x/uRes.x*1920., (1.-gl_FragCoord.y/uRes.y)*1520.); }\nfloat bx(vec2 P,vec4 r){ vec2 c=(r.xy+r.zw)*.5,h=(r.zw-r.xy)*.5,d=abs(P-c)-h; return length(max(d,0.))+min(max(d.x,d.y),0.); }\nfloat ar(vec2 P,vec4 r){ float rd=(r.z-r.x)*.5; return min(bx(P,vec4(r.x,r.y+rd,r.z,r.w)),length(P-vec2((r.x+r.z)*.5,r.y+rd))-rd); }\nfloat fa(vec2 P,vec4 r){ vec2 c=vec2((r.x+r.z)*.5,r.w); float rx=(r.z-r.x)*.5, ry=r.w-r.y; float e=(length((P-c)/vec2(rx,ry))-1.)*min(rx,ry); return max(e,P.y-r.w); }\nfloat ci(vec2 P,vec4 r){ return length(P-(r.xy+r.zw)*.5)-(r.z-r.x)*.5; }\nfloat mkk(float d,float w){ return smoothstep(w,-w,d); }\nfloat h11(float n){ return fract(sin(n*127.1)*43758.5453); }\nfloat lw(float x,float w){ float f=fract(x); return 1.-smoothstep(0.,w,min(f,1.-f)); }\nfloat gdm; vec4 grc; float gpid;\nvoid portals(vec2 P){ float dm=1e5; vec4 rc=vec4(0.); float pid=0.; float d;\n d=bx(P,vec4(254.,650.,394.,858.)); if(d<dm){dm=d;rc=vec4(254.,650.,394.,858.);pid=1.;}\n d=bx(P,vec4(254.,1112.,392.,1306.)); if(d<dm){dm=d;rc=vec4(254.,1112.,392.,1306.);pid=2.;}\n d=bx(P,vec4(1512.,650.,1662.,858.)); if(d<dm){dm=d;rc=vec4(1512.,650.,1662.,858.);pid=3.;}\n d=bx(P,vec4(1510.,1118.,1662.,1334.)); if(d<dm){dm=d;rc=vec4(1510.,1118.,1662.,1334.);pid=4.;}\n d=bx(P,vec4(873.,652.,1022.,858.)); if(d<dm){dm=d;rc=vec4(873.,652.,1022.,858.);pid=5.;}\n d=ar(P,vec4(624.,656.,766.,857.)); if(d<dm){dm=d;rc=vec4(624.,656.,766.,857.);pid=6.;}\n d=ar(P,vec4(1130.,656.,1272.,858.)); if(d<dm){dm=d;rc=vec4(1130.,656.,1272.,858.);pid=7.;}\n d=bx(P,vec4(534.,657.,678.,857.)); if(d<dm){dm=d;rc=vec4(534.,657.,678.,857.);pid=8.;}\n d=bx(P,vec4(1230.,657.,1362.,858.)); if(d<dm){dm=d;rc=vec4(1230.,657.,1362.,858.);pid=9.;}\n d=bx(P,vec4(621.,1097.,767.,1320.)); if(d<dm){dm=d;rc=vec4(621.,1097.,767.,1320.);pid=10.;}\n d=bx(P,vec4(871.,1097.,1015.,1420.)); if(d<dm){dm=d;rc=vec4(871.,1097.,1015.,1420.);pid=11.;}\n d=bx(P,vec4(1127.,1097.,1273.,1320.)); if(d<dm){dm=d;rc=vec4(1127.,1097.,1273.,1320.);pid=12.;}\n d=fa(P,vec4(603.,1030.,787.,1095.)); if(d<dm){dm=d;rc=vec4(603.,1030.,787.,1095.);pid=13.;}\n d=fa(P,vec4(853.,1030.,1037.,1095.)); if(d<dm){dm=d;rc=vec4(853.,1030.,1037.,1095.);pid=14.;}\n d=fa(P,vec4(1109.,1030.,1297.,1095.)); if(d<dm){dm=d;rc=vec4(1109.,1030.,1297.,1095.);pid=15.;}\n d=ar(P,vec4(510.,366.,532.,414.)); if(d<dm){dm=d;rc=vec4(510.,366.,532.,414.);pid=16.;}\n d=ar(P,vec4(557.,366.,579.,414.)); if(d<dm){dm=d;rc=vec4(557.,366.,579.,414.);pid=17.;}\n d=ar(P,vec4(603.,366.,625.,414.)); if(d<dm){dm=d;rc=vec4(603.,366.,625.,414.);pid=18.;}\n d=ar(P,vec4(649.,366.,671.,414.)); if(d<dm){dm=d;rc=vec4(649.,366.,671.,414.);pid=19.;}\n d=ar(P,vec4(696.,366.,718.,414.)); if(d<dm){dm=d;rc=vec4(696.,366.,718.,414.);pid=20.;}\n d=ar(P,vec4(747.,366.,769.,414.)); if(d<dm){dm=d;rc=vec4(747.,366.,769.,414.);pid=21.;}\n d=ar(P,vec4(1132.,366.,1154.,414.)); if(d<dm){dm=d;rc=vec4(1132.,366.,1154.,414.);pid=22.;}\n d=ar(P,vec4(1179.,366.,1201.,414.)); if(d<dm){dm=d;rc=vec4(1179.,366.,1201.,414.);pid=23.;}\n d=ar(P,vec4(1226.,366.,1248.,414.)); if(d<dm){dm=d;rc=vec4(1226.,366.,1248.,414.);pid=24.;}\n d=ar(P,vec4(1273.,366.,1295.,414.)); if(d<dm){dm=d;rc=vec4(1273.,366.,1295.,414.);pid=25.;}\n d=ar(P,vec4(1320.,366.,1342.,414.)); if(d<dm){dm=d;rc=vec4(1320.,366.,1342.,414.);pid=26.;}\n d=ar(P,vec4(1367.,366.,1389.,414.)); if(d<dm){dm=d;rc=vec4(1367.,366.,1389.,414.);pid=27.;}\n d=bx(P,vec4(813.,369.,835.,400.)); if(d<dm){dm=d;rc=vec4(813.,369.,835.,400.);pid=28.;}\n d=bx(P,vec4(1069.,369.,1091.,400.)); if(d<dm){dm=d;rc=vec4(1069.,369.,1091.,400.);pid=29.;}\n d=ci(P,vec4(245.,428.,353.,536.)); if(d<dm){dm=d;rc=vec4(245.,428.,353.,536.);pid=30.;}\n d=ci(P,vec4(1553.,415.,1661.,523.)); if(d<dm){dm=d;rc=vec4(1553.,415.,1661.,523.);pid=31.;}\n gdm=dm; grc=rc; gpid=pid; }\nfloat gCol(vec2 P){ float d=bx(P,vec4(77.,587.,139.,1485.)); d=min(d,bx(P,vec4(117.,587.,213.,1485.))); d=min(d,bx(P,vec4(389.,587.,492.,1485.)));\n  d=min(d,bx(P,vec4(1403.,580.,1505.,1485.))); d=min(d,bx(P,vec4(1691.,580.,1795.,1485.))); d=min(d,bx(P,vec4(1776.,604.,1853.,1485.))); return d; }\nfloat colU(vec2 P){ float u=0.; float best=1e5; \n  float x0=77.,x1=139.; float d=bx(P,vec4(77.,587.,139.,1485.)); if(d<best){best=d;u=(P.x-108.)/31.;}\n  d=bx(P,vec4(117.,587.,213.,1485.)); if(d<best){best=d;u=(P.x-165.)/48.;}\n  d=bx(P,vec4(389.,587.,492.,1485.)); if(d<best){best=d;u=(P.x-440.)/51.;}\n  d=bx(P,vec4(1403.,580.,1505.,1485.)); if(d<best){best=d;u=(P.x-1454.)/51.;}\n  d=bx(P,vec4(1691.,580.,1795.,1485.)); if(d<best){best=d;u=(P.x-1743.)/52.;}\n  d=bx(P,vec4(1776.,604.,1853.,1485.)); if(d<best){best=d;u=(P.x-1814.)/38.;}\n  return clamp(u,-1.,1.); }\nfloat gBalu(vec2 P){ return min(bx(P,vec4(249.,869.,392.,958.)),bx(P,vec4(1514.,869.,1662.,958.))); }\nfloat gStair(vec2 P){ return bx(P,vec4(720.,1383.,1165.,1515.)); }\nfloat gTow(vec2 P){ float a=abs(P.x-950.)-450.; return max(P.y-600.,-a); }\nfloat gCrown(vec2 P){ float a=abs(P.x-950.)-450.; return max(P.y-602.,a); }\nvec3 zones(vec2 P){ // x: colunas, y: torres+coroa, z: balaustres  (0..1)\n  return vec3(mkk(gCol(P),3.), max(mkk(gTow(P),4.),mkk(gCrown(P),4.)), max(mkk(gBalu(P),2.),mkk(gStair(P),3.))); }\n\nvec4 vor(vec2 p){ vec2 n=floor(p), f=fract(p); float d1=8., d2=8.; vec2 cid=vec2(0.), rb=vec2(0.);\n  for(int j=-1;j<=1;j++){ for(int i=-1;i<=1;i++){ vec2 g=vec2(float(i),float(j)); vec2 o=vec2(hash(n+g+uSeed),hash(n+g+vec2(37.,17.))); vec2 r=g+o-f; float d=dot(r,r);\n    if(d<d1){ d2=d1; d1=d; cid=n+g; rb=r; } else if(d<d2){ d2=d; } } }\n  return vec4(rb,sqrt(d2)-sqrt(d1),hash(cid)); }\n\nvoid main(){\n  vec2 P=FP(); float ph=uPh; portals(P); float dm=gdm; vec3 z=zones(P);\n  float env=smoothstep(0.,.06,ph)*(1.-smoothstep(.94,1.,ph));\n  float heat=smoothstep(.04,.30,ph)*(1.-smoothstep(.45,.58,ph)); float melt=smoothstep(.34,.62,ph)*(1.-smoothstep(.70,.80,ph)); float bl=smoothstep(.56,.80,ph)*(1.-smoothstep(.90,.98,ph));\n  vec4 v=vor(P/74.); float crack=1.-smoothstep(0.,.07,v.z);\n  vec3 tile=mix(vec3(.50,.18,.05),vec3(.16,.04,.03),v.w)*(.55+.45*noise(P*.02+uSeed));\n  float heatH=heat*1750.; float lavaM=smoothstep(1520.-heatH-140.,1520.-heatH,P.y)*step(.003,heat);\n  float vis=clamp(lavaM+(1.-lavaM)*smoothstep(.34,.5,ph)*(1.-smoothstep(.9,.98,ph)),0.,1.);\n  vec3 col=tile*vis*(.55+.35*uMid);\n  col+=mix(uC1,vec3(1.,.9,.3),crack)*crack*(heat*1.3+.35*bl+.2)*(.75+.7*uBass)*vis;\n  for(int i=0;i<5;i++){ float Y=430.+float(i)*0.; if(i==1) Y=602.; if(i==2) Y=862.; if(i==3) Y=963.; if(i==4) Y=1000.;\n    float cell=floor(P.x/11.); float hh=hash(vec2(cell,Y+uSeed)); float len=melt*(40.+300.*hh)*step(.5,hash(vec2(cell,Y+9.))); float dy=P.y-Y; float fx=(fract(P.x/11.)-.5)*11.;\n    float in1=step(0.,dy)*step(dy,len)*(1.-smoothstep(3.2,4.6,abs(fx))); float tip=smoothstep(7.,4.,length(vec2(fx,dy-len)))*step(.5,melt);\n    float dr=max(in1,tip); col+=mix(vec3(.95,.2,.05),vec3(1.,.9,.35),dy/max(len,1.))*dr*1.3; }\n  float rr=length(v.xy*74.); float a=atan(v.y,v.x); float rad=(12.+14.*v.w)*bl*step(.45,hash(vec2(v.w*91.,3.)));\n  float pe=rad*(.5+.5*abs(cos(2.5*a+v.w*6.)));\n  float fl=1.-smoothstep(pe-1.5,pe+1.5,rr);\n  col=mix(col,mix(uC2,vec3(1.,.82,.1),step(.5,hash(vec2(v.w*13.,7.)))),fl); col+=vec3(1.,.5,.1)*(1.-smoothstep(0.,3.,rr))*bl*step(.45,hash(vec2(v.w*91.,3.)));\n  float cu=colU(P); float cyl=.3+.7*sqrt(max(1.-cu*cu,0.)); float stk=fbm(vec2(cu*2.5,P.y*.004)+uSeed);\n  col=mix(col,col*cyl+mix(vec3(.8,.15,.03),vec3(1.,.7,.15),stk)*stk*.6*vis*(heat+melt),z.x);\n  float rs=min(length(P-vec2(299.,482.)),length(P-vec2(1607.,469.)));\n  col+=vec3(1.,.55,.15)*exp(-rs/160.)*z.y*(heat+.3*bl)*(.6+.8*uBass)+uC1*lw(rs/18.-ph*5.,.07)*z.y*vis*exp(-rs/360.)*.6;\n  col+=uC2*lw(P.x/8.,.16)*z.z*bl*.7*(.5+uMid); col+=uC1*step(.985,hash(floor(P/9.)+floor(ph*40.)+uSeed))*uHigh*vis;\n  col+=mix(uC1,vec3(1.),.4)*exp(-abs(dm)/5.)*vis*(.5+.9*uHit);\n  col*=smoothstep(-2.,2.,dm); col*=env*(.9+.2*uRms); gl_FragColor=outc(col,1.); }\n",
+      "alphaMode": "opaque",
+      "c1": "secondary",
+      "c2": "accent",
+      "cbg": "#2A0800",
+      "res": 1
+     }
+    },
+    {
+     "type": "shader",
+     "name": "MIRAGENS",
+     "role": "hero: openings show cerrado sunsets and caatinga cactus under heat shimmer; the eyes of the probe become embers",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "src": "\n#define PI 3.14159265\nvec2 FP(){ return vec2(gl_FragCoord.x/uRes.x*1920., (1.-gl_FragCoord.y/uRes.y)*1520.); }\nfloat bx(vec2 P,vec4 r){ vec2 c=(r.xy+r.zw)*.5,h=(r.zw-r.xy)*.5,d=abs(P-c)-h; return length(max(d,0.))+min(max(d.x,d.y),0.); }\nfloat ar(vec2 P,vec4 r){ float rd=(r.z-r.x)*.5; return min(bx(P,vec4(r.x,r.y+rd,r.z,r.w)),length(P-vec2((r.x+r.z)*.5,r.y+rd))-rd); }\nfloat fa(vec2 P,vec4 r){ vec2 c=vec2((r.x+r.z)*.5,r.w); float rx=(r.z-r.x)*.5, ry=r.w-r.y; float e=(length((P-c)/vec2(rx,ry))-1.)*min(rx,ry); return max(e,P.y-r.w); }\nfloat ci(vec2 P,vec4 r){ return length(P-(r.xy+r.zw)*.5)-(r.z-r.x)*.5; }\nfloat mkk(float d,float w){ return smoothstep(w,-w,d); }\nfloat h11(float n){ return fract(sin(n*127.1)*43758.5453); }\nfloat lw(float x,float w){ float f=fract(x); return 1.-smoothstep(0.,w,min(f,1.-f)); }\nfloat gdm; vec4 grc; float gpid;\nvoid portals(vec2 P){ float dm=1e5; vec4 rc=vec4(0.); float pid=0.; float d;\n d=bx(P,vec4(254.,650.,394.,858.)); if(d<dm){dm=d;rc=vec4(254.,650.,394.,858.);pid=1.;}\n d=bx(P,vec4(254.,1112.,392.,1306.)); if(d<dm){dm=d;rc=vec4(254.,1112.,392.,1306.);pid=2.;}\n d=bx(P,vec4(1512.,650.,1662.,858.)); if(d<dm){dm=d;rc=vec4(1512.,650.,1662.,858.);pid=3.;}\n d=bx(P,vec4(1510.,1118.,1662.,1334.)); if(d<dm){dm=d;rc=vec4(1510.,1118.,1662.,1334.);pid=4.;}\n d=bx(P,vec4(873.,652.,1022.,858.)); if(d<dm){dm=d;rc=vec4(873.,652.,1022.,858.);pid=5.;}\n d=ar(P,vec4(624.,656.,766.,857.)); if(d<dm){dm=d;rc=vec4(624.,656.,766.,857.);pid=6.;}\n d=ar(P,vec4(1130.,656.,1272.,858.)); if(d<dm){dm=d;rc=vec4(1130.,656.,1272.,858.);pid=7.;}\n d=bx(P,vec4(534.,657.,678.,857.)); if(d<dm){dm=d;rc=vec4(534.,657.,678.,857.);pid=8.;}\n d=bx(P,vec4(1230.,657.,1362.,858.)); if(d<dm){dm=d;rc=vec4(1230.,657.,1362.,858.);pid=9.;}\n d=bx(P,vec4(621.,1097.,767.,1320.)); if(d<dm){dm=d;rc=vec4(621.,1097.,767.,1320.);pid=10.;}\n d=bx(P,vec4(871.,1097.,1015.,1420.)); if(d<dm){dm=d;rc=vec4(871.,1097.,1015.,1420.);pid=11.;}\n d=bx(P,vec4(1127.,1097.,1273.,1320.)); if(d<dm){dm=d;rc=vec4(1127.,1097.,1273.,1320.);pid=12.;}\n d=fa(P,vec4(603.,1030.,787.,1095.)); if(d<dm){dm=d;rc=vec4(603.,1030.,787.,1095.);pid=13.;}\n d=fa(P,vec4(853.,1030.,1037.,1095.)); if(d<dm){dm=d;rc=vec4(853.,1030.,1037.,1095.);pid=14.;}\n d=fa(P,vec4(1109.,1030.,1297.,1095.)); if(d<dm){dm=d;rc=vec4(1109.,1030.,1297.,1095.);pid=15.;}\n d=ar(P,vec4(510.,366.,532.,414.)); if(d<dm){dm=d;rc=vec4(510.,366.,532.,414.);pid=16.;}\n d=ar(P,vec4(557.,366.,579.,414.)); if(d<dm){dm=d;rc=vec4(557.,366.,579.,414.);pid=17.;}\n d=ar(P,vec4(603.,366.,625.,414.)); if(d<dm){dm=d;rc=vec4(603.,366.,625.,414.);pid=18.;}\n d=ar(P,vec4(649.,366.,671.,414.)); if(d<dm){dm=d;rc=vec4(649.,366.,671.,414.);pid=19.;}\n d=ar(P,vec4(696.,366.,718.,414.)); if(d<dm){dm=d;rc=vec4(696.,366.,718.,414.);pid=20.;}\n d=ar(P,vec4(747.,366.,769.,414.)); if(d<dm){dm=d;rc=vec4(747.,366.,769.,414.);pid=21.;}\n d=ar(P,vec4(1132.,366.,1154.,414.)); if(d<dm){dm=d;rc=vec4(1132.,366.,1154.,414.);pid=22.;}\n d=ar(P,vec4(1179.,366.,1201.,414.)); if(d<dm){dm=d;rc=vec4(1179.,366.,1201.,414.);pid=23.;}\n d=ar(P,vec4(1226.,366.,1248.,414.)); if(d<dm){dm=d;rc=vec4(1226.,366.,1248.,414.);pid=24.;}\n d=ar(P,vec4(1273.,366.,1295.,414.)); if(d<dm){dm=d;rc=vec4(1273.,366.,1295.,414.);pid=25.;}\n d=ar(P,vec4(1320.,366.,1342.,414.)); if(d<dm){dm=d;rc=vec4(1320.,366.,1342.,414.);pid=26.;}\n d=ar(P,vec4(1367.,366.,1389.,414.)); if(d<dm){dm=d;rc=vec4(1367.,366.,1389.,414.);pid=27.;}\n d=bx(P,vec4(813.,369.,835.,400.)); if(d<dm){dm=d;rc=vec4(813.,369.,835.,400.);pid=28.;}\n d=bx(P,vec4(1069.,369.,1091.,400.)); if(d<dm){dm=d;rc=vec4(1069.,369.,1091.,400.);pid=29.;}\n d=ci(P,vec4(245.,428.,353.,536.)); if(d<dm){dm=d;rc=vec4(245.,428.,353.,536.);pid=30.;}\n d=ci(P,vec4(1553.,415.,1661.,523.)); if(d<dm){dm=d;rc=vec4(1553.,415.,1661.,523.);pid=31.;}\n gdm=dm; grc=rc; gpid=pid; }\nfloat gCol(vec2 P){ float d=bx(P,vec4(77.,587.,139.,1485.)); d=min(d,bx(P,vec4(117.,587.,213.,1485.))); d=min(d,bx(P,vec4(389.,587.,492.,1485.)));\n  d=min(d,bx(P,vec4(1403.,580.,1505.,1485.))); d=min(d,bx(P,vec4(1691.,580.,1795.,1485.))); d=min(d,bx(P,vec4(1776.,604.,1853.,1485.))); return d; }\nfloat colU(vec2 P){ float u=0.; float best=1e5; \n  float x0=77.,x1=139.; float d=bx(P,vec4(77.,587.,139.,1485.)); if(d<best){best=d;u=(P.x-108.)/31.;}\n  d=bx(P,vec4(117.,587.,213.,1485.)); if(d<best){best=d;u=(P.x-165.)/48.;}\n  d=bx(P,vec4(389.,587.,492.,1485.)); if(d<best){best=d;u=(P.x-440.)/51.;}\n  d=bx(P,vec4(1403.,580.,1505.,1485.)); if(d<best){best=d;u=(P.x-1454.)/51.;}\n  d=bx(P,vec4(1691.,580.,1795.,1485.)); if(d<best){best=d;u=(P.x-1743.)/52.;}\n  d=bx(P,vec4(1776.,604.,1853.,1485.)); if(d<best){best=d;u=(P.x-1814.)/38.;}\n  return clamp(u,-1.,1.); }\nfloat gBalu(vec2 P){ return min(bx(P,vec4(249.,869.,392.,958.)),bx(P,vec4(1514.,869.,1662.,958.))); }\nfloat gStair(vec2 P){ return bx(P,vec4(720.,1383.,1165.,1515.)); }\nfloat gTow(vec2 P){ float a=abs(P.x-950.)-450.; return max(P.y-600.,-a); }\nfloat gCrown(vec2 P){ float a=abs(P.x-950.)-450.; return max(P.y-602.,a); }\nvec3 zones(vec2 P){ // x: colunas, y: torres+coroa, z: balaustres  (0..1)\n  return vec3(mkk(gCol(P),3.), max(mkk(gTow(P),4.),mkk(gCrown(P),4.)), max(mkk(gBalu(P),2.),mkk(gStair(P),3.))); }\n\nfloat leafLayer(vec2 uv,float sd){ vec2 g=uv; vec2 id0=floor(g-.5); float cov=0.;\n  for(int j=0;j<=1;j++){ for(int i=0;i<=1;i++){ vec2 id=id0+vec2(float(i),float(j)); float r=hash(id+sd); vec2 ce=id+.5+(vec2(hash(id+sd+9.),hash(id+sd+21.))-.5)*.4;\n    vec2 f=vjRot(r*6.2832)*(g-ce); float k=smoothstep(.06,-.06,length(f*vec2(1.,2.6))-.5)*step(.2,hash(id*1.7+sd+3.)); cov=max(cov,k); } }\n  return cov; }\nvec3 dioAmazon(vec2 q,vec2 cam,float t,float sd){\n  vec3 col=mix(vec3(.03,.24,.12),vec3(.62,1.,.28),smoothstep(1.4,-1.8,q.y)*.6);\n  vec2 s=q-vec2(.15+cam.x*.5,-1.9); float ang=atan(s.x,s.y);\n  float rays=pow(.5+.5*sin(ang*16.+sd*7.+sin(t)*.8),3.)*smoothstep(3.4,.2,length(s));\n  col+=vec3(1.,.95,.4)*rays*.55;\n  for(int i=0;i<4;i++){ float fi=float(i); float sc=1.7-fi*.3; vec2 uv=q*sc+cam*(.4+fi*.7)+vec2(sd*13.,fi*5.); float k=leafLayer(uv,fi*19.+sd);\n    vec3 lc=mix(vec3(.10,.62,.28),vec3(.0,.05,.03),fi/3.)+vec3(.45,1.,.25)*pow(1.-fi/3.,2.)*.5*(.4+.6*hash(floor(uv)+fi));\n    col=mix(col,lc,k*(.6+fi*.1));\n    vec2 fg=uv*2.; vec2 fi2=floor(fg); float fl=smoothstep(.2,.0,length(fract(fg)-.5))*step(.93,hash(fi2*2.7+fi+sd)); col=mix(col,mix(vec3(1.,.15,.55),vec3(1.,.7,.1),hash(fi2)),fl*.9*step(fi,2.5)); }\n  vec2 fq=q*3.+vec2(cam.x*2.,t*.5); vec2 fid=floor(fq); vec2 fo=vec2(hash(fid)-.5,hash(fid+7.)-.5)*.5; float fl=smoothstep(.12,0.,length(fract(fq)-.5-fo*sin(t+hash(fid)*6.)));\n  col+=vec3(.9,1.,.4)*fl*(.5+.5*sin(t*2.+hash(fid)*9.)); return col; }\nvec3 dioPantanal(vec2 q,vec2 cam,float t,float sd){\n  float hz=.05+cam.y*.15; vec3 col;\n  if(q.y<hz){ float u=smoothstep(hz,-1.8,q.y); col=mix(vec3(1.,.62,.28),vec3(.10,.28,.85),u); col=mix(col,vec3(1.,.25,.5),smoothstep(.0,.6,u)*(1.-smoothstep(.6,1.,u))*.5);\n    float sd2=length(q-vec2(cam.x*.4,hz-.14)); col+=vec3(1.,.85,.4)*(smoothstep(.2,.17,sd2)+.35*smoothstep(.9,0.,sd2)); }\n  else { float dd=q.y-hz; vec2 rq=vec2(q.x+.05*sin(dd*34.+t)*dd,hz-dd); float u=smoothstep(hz,-1.8,rq.y); col=mix(vec3(.9,.45,.25),vec3(.06,.22,.7),u);\n    col=mix(col,vec3(.0,.35,.45),.35+.4*smoothstep(0.,1.2,dd)); float g=pow(.5+.5*sin(q.x*60.+dd*40.-t*2.),6.)*exp(-abs(q.x-cam.x*.4)*4.)*exp(-dd*1.5); col+=vec3(1.,.9,.5)*g*.6;\n    vec2 lg=vec2(q.x*4.+sd*5.,dd*9.); vec2 li=floor(lg); float lp=smoothstep(.3,.26,length((fract(lg)-.5)*vec2(1.,2.2))); col=mix(col,vec3(.1,.6,.2),lp*step(.55,hash(li+sd))*smoothstep(.1,.5,dd)); }\n  float bl=lw(q.x*7.+sd+sin(q.y*3.+t+q.x)*.1,.1); float bh=.55+.35*hash(vec2(floor(q.x*7.+sd),2.)); col=mix(col,vec3(.02,.14,.06),bl*step(q.y,2.)*step(bh*1.0+.35,q.y+.55)*smoothstep(.2,1.,q.y+.3));\n  return col; }\nfloat hills(float x,float s,float a){ return a*(noise(vec2(x*1.7+s,s))-.5); }\nvec3 dioCerrado(vec2 q,vec2 cam,float t,float sd){\n  float hz=.15; vec3 col=mix(vec3(1.,.82,.25),vec3(.75,.10,.40),smoothstep(hz,-1.8,q.y)); float sd2=length(q-vec2(cam.x*.3,hz-.22));\n  col+=vec3(1.,.55,.15)*(smoothstep(.33,.30,sd2)*.9+.4*smoothstep(1.2,0.,sd2));\n  for(int i=0;i<4;i++){ float fi=float(i); float y=hz+.05+fi*.28+hills(q.x+cam.x*(.2+fi*.3),fi*3.+sd,.5); vec3 hc=mix(vec3(.65,.2,.25),vec3(.12,.02,.10),fi/3.); col=mix(col,hc,smoothstep(.01,-.01,y-q.y)); }\n  float gr=lw(q.x*14.+sd+sin(q.y*2.+t+q.x*3.)*.15,.12); col=mix(col,vec3(1.,.7,.1),gr*smoothstep(.6,1.4,q.y)*.8);\n  return col; }\nvec3 dioCaatinga(vec2 q,vec2 cam,float t,float sd){\n  float hz=.35; vec3 col=mix(vec3(1.,.45,.2),vec3(.35,.05,.55),smoothstep(hz,-1.6,q.y)); float sd2=length(q-vec2(-cam.x*.3+.2,hz-.3)); col+=vec3(1.,.8,.3)*smoothstep(.2,.17,sd2);\n  if(q.y>hz){ vec2 g=vec2(q.x*3.,(q.y-hz)*3.+cam.y); vec2 id=floor(g); float c=lw(g.x+hash(id)*.3,.05)+lw(g.y+hash(id+3.)*.3,.05); col=mix(vec3(.55,.22,.1),vec3(.2,.05,.05),smoothstep(hz,1.6,q.y)); col+=vec3(1.,.4,.1)*clamp(c,0.,1.)*.35; }\n  for(int i=0;i<3;i++){ float fi=float(i); float cx=(fi-1.)*.7+cam.x*(.4+fi*.2)+sd*.3; float w=.07+.03*fi; vec2 p=q-vec2(cx,hz+.05+fi*.1);\n    float body=length(vec2(max(abs(p.x)-w,0.),max(-p.y-(.5+fi*.1),0.)+max(p.y,0.)))-w*.1; float arm=length(vec2(p.x-.2*sign(sin(fi*5.+sd)),max(abs(p.y+.3)-.12,0.)))-w*.8; col=mix(col,vec3(.04,.18,.10),smoothstep(.015,-.01,min(body,arm))); }\n  return col; }\nvec3 dioMata(vec2 q,vec2 cam,float t,float sd){\n  vec3 col=mix(vec3(.05,.45,.55),vec3(1.,.55,.50),smoothstep(-1.5,.8,q.y)); \n  for(int i=0;i<5;i++){ float fi=float(i); float y=-.55+fi*.32+hills(q.x+cam.x*(.15+fi*.25),fi*4.+sd,.6); vec3 rc=mix(vec3(.50,.85,.85),vec3(.02,.20,.18),fi/4.); float k=smoothstep(.015,-.015,y-q.y); col=mix(col,rc,k); col=mix(col,vec3(.95,.80,.85),smoothstep(.0,.6,q.y-y+.1)*smoothstep(.7,.0,q.y-y+.1)*.25*(1.-k)); }\n  vec2 rq=vec2(q.x*9.+q.y*2.,q.y*3.-t*3.); col+=vec3(.7,.95,1.)*step(.93,hash(floor(rq)+sd))*.35; return col; }\nvec3 dio(float k,vec2 q,vec2 cam,float t,float sd){ k=mod(k,5.); if(k<1.) return dioAmazon(q,cam,t,sd); if(k<2.) return dioPantanal(q,cam,t,sd); if(k<3.) return dioCerrado(q,cam,t,sd); if(k<4.) return dioCaatinga(q,cam,t,sd); return dioMata(q,cam,t,sd); }\n\n\nvoid main(){\n  vec2 P=FP(); portals(P); float dm=gdm; vec4 rc=grc; float pid=gpid; vec2 c=(rc.xy+rc.zw)*.5; vec2 hs=(rc.zw-rc.xy)*.5; vec2 q=(P-c)/hs.x; float ph=uPh;\n  float open=clamp((ph-.30-.16*hash(vec2(pid,3.+uSeed)))/.12,0.,1.)*(1.-smoothstep(.86,.95,ph));\n  float R=open*(2.6+hs.y/hs.x); float ir=1.-smoothstep(R-.3,R,length(q));\n  float t=ph*TAU; vec2 cam=vec2(sin(t+pid),.4*cos(t+pid*1.7))*.25; q.x+=.03*sin(q.y*18.+t*3.);\n  vec3 col=(mod(pid,2.)<1.)?dioCerrado(q,cam,t,pid+uSeed):dioCaatinga(q,cam,t,pid+uSeed);\n  col*=(.85+.4*uRms+.4*uBass*exp(-length(q))); col+=vec3(1.,.8,.3)*uHigh*step(.97,hash(floor(q*16.)+floor(ph*30.)))*.5;\n  float inner=smoothstep(0.,22.,-dm); col*=.4+.6*inner;\n  if(pid>29.){ vec2 e=P-c; float r=length(e)/hs.x; float sun=smoothstep(.95,.8,r); float flick=.8+.2*sin(ph*TAU*12.+pid);\n    col=mix(vec3(.05,.0,.0),mix(vec3(1.,.15,.05),vec3(1.,.85,.2),smoothstep(.9,.1,r)),sun)*flick*(.7+.6*uBass); col*=1.-smoothstep(.25,.18,r)*.9; }\n  float al=mkk(dm+1.,1.5)*ir; gl_FragColor=outc(col,al); }\n",
+      "alphaMode": "alpha",
+      "c1": "secondary",
+      "c2": "accent",
+      "cbg": "#2A0800",
+      "res": 1
+     }
+    },
+    {
+     "type": "flow",
+     "name": "FAÍSCAS",
+     "role": "instrument: embers rising with the heat",
+     "on": true,
+     "opacity": 1,
+     "blend": "add",
+     "p": {
+      "count": 380,
+      "trail": 6,
+      "amp": 0.09,
+      "scale": 2.4,
+      "radius": 0.9,
+      "width": 1.6,
+      "alpha": 0.65,
+      "acc": 0.12,
+      "color": "secondary",
+      "hot": "accent"
+     }
+    },
+    {
+     "type": "image",
+     "name": "RELEVO DE PEDRA",
+     "role": "structure: the clay render multiplies the light, so cornices, columns and recesses cast the shading that fakes real volume",
+     "on": true,
+     "opacity": 0.6,
+     "blend": "multiply",
+     "p": {
+      "media": "relevo.png",
+      "fit": "fill"
+     }
+    },
+    {
+     "type": "code",
+     "name": "CONTORNO DA SONDA",
+     "role": "instrument: the architect's own outline, drawn by the probe as it reads the facade",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "src": "\nconst ph=K.t.lph; const g=Math.sin(Math.PI*K.clamp((ph-.04)/.9,0,1)); const a=.10+.45*g*g;\nc.save(); c.globalAlpha=a*(.75+.25*K.t.pulse); K.drawImg(c,'linhas.png',K.w/2,K.h/2,K.w,K.h,K.col('secondary'),1); c.restore();\n"
+     }
+    },
+    {
+     "type": "fx",
+     "name": "MIRAGEM DE CALOR",
+     "role": "structure: vertical heat shimmer displaces the image while the ground burns and melts",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "preset": "DESLOCAR",
+      "p1": 16,
+      "p2": 4,
+      "p3": 1,
+      "p4": 90,
+      "mix": 0.0,
+      "res": 0.6
+     },
+     "mod": [
+      {
+       "k": "mix",
+       "src": "lfo",
+       "shape": "env",
+       "cycles": 1,
+       "keys": [
+        0,
+        0.5,
+        1,
+        1,
+        0.7,
+        0.2,
+        0,
+        0
+       ],
+       "min": 0,
+       "max": 0.75,
+       "mode": "set"
+      }
+     ]
+    },
+    {
+     "type": "fx",
+     "name": "BRILHO DA LENTE",
+     "role": "finish: soft bloom, the lamp of the probe",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "preset": "BLOOM",
+      "p1": 18,
+      "p2": 0.4,
+      "p3": 1.25,
+      "p4": 0.3,
+      "mix": 0.75,
+      "res": 0.5
+     }
+    },
+    {
+     "type": "image",
+     "name": "FORA DA FACHADA",
+     "role": "finish: black outside the building silhouette, no light is wasted on the sky",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "media": "fora.png",
+      "fit": "fill"
+     }
+    }
+   ]
+  },
+  {
+   "name": "CONVERGÊNCIA",
+   "hypothesis": "TRANSMISSÃO — Mata Atlântica and the meeting of all biomes: each architectural zone carries a different biome, the borders melt, the stars flare and the probe transmits everything it read before going dark.",
+   "motion": "smooth",
+   "palette": {
+    "primary": "#36F1FF",
+    "secondary": "#FF6F61",
+    "accent": "#8A5CFF"
+   },
+   "layers": [
+    {
+     "type": "bg",
+     "name": "NOITE DO BRASIL",
+     "role": "ground: black, the last act starts and ends in the dark",
+     "on": true,
+     "p": {
+      "grain": 0
+     }
+    },
+    {
+     "type": "shader",
+     "name": "MOSAICO DE BIOMAS",
+     "role": "hero: towers carry the forest, columns the flood, the upper floor the dry earth, the lower floor the Atlantic mist; their borders melt into one body at the climax",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "src": "\n#define PI 3.14159265\nvec2 FP(){ return vec2(gl_FragCoord.x/uRes.x*1920., (1.-gl_FragCoord.y/uRes.y)*1520.); }\nfloat bx(vec2 P,vec4 r){ vec2 c=(r.xy+r.zw)*.5,h=(r.zw-r.xy)*.5,d=abs(P-c)-h; return length(max(d,0.))+min(max(d.x,d.y),0.); }\nfloat ar(vec2 P,vec4 r){ float rd=(r.z-r.x)*.5; return min(bx(P,vec4(r.x,r.y+rd,r.z,r.w)),length(P-vec2((r.x+r.z)*.5,r.y+rd))-rd); }\nfloat fa(vec2 P,vec4 r){ vec2 c=vec2((r.x+r.z)*.5,r.w); float rx=(r.z-r.x)*.5, ry=r.w-r.y; float e=(length((P-c)/vec2(rx,ry))-1.)*min(rx,ry); return max(e,P.y-r.w); }\nfloat ci(vec2 P,vec4 r){ return length(P-(r.xy+r.zw)*.5)-(r.z-r.x)*.5; }\nfloat mkk(float d,float w){ return smoothstep(w,-w,d); }\nfloat h11(float n){ return fract(sin(n*127.1)*43758.5453); }\nfloat lw(float x,float w){ float f=fract(x); return 1.-smoothstep(0.,w,min(f,1.-f)); }\nfloat gdm; vec4 grc; float gpid;\nvoid portals(vec2 P){ float dm=1e5; vec4 rc=vec4(0.); float pid=0.; float d;\n d=bx(P,vec4(254.,650.,394.,858.)); if(d<dm){dm=d;rc=vec4(254.,650.,394.,858.);pid=1.;}\n d=bx(P,vec4(254.,1112.,392.,1306.)); if(d<dm){dm=d;rc=vec4(254.,1112.,392.,1306.);pid=2.;}\n d=bx(P,vec4(1512.,650.,1662.,858.)); if(d<dm){dm=d;rc=vec4(1512.,650.,1662.,858.);pid=3.;}\n d=bx(P,vec4(1510.,1118.,1662.,1334.)); if(d<dm){dm=d;rc=vec4(1510.,1118.,1662.,1334.);pid=4.;}\n d=bx(P,vec4(873.,652.,1022.,858.)); if(d<dm){dm=d;rc=vec4(873.,652.,1022.,858.);pid=5.;}\n d=ar(P,vec4(624.,656.,766.,857.)); if(d<dm){dm=d;rc=vec4(624.,656.,766.,857.);pid=6.;}\n d=ar(P,vec4(1130.,656.,1272.,858.)); if(d<dm){dm=d;rc=vec4(1130.,656.,1272.,858.);pid=7.;}\n d=bx(P,vec4(534.,657.,678.,857.)); if(d<dm){dm=d;rc=vec4(534.,657.,678.,857.);pid=8.;}\n d=bx(P,vec4(1230.,657.,1362.,858.)); if(d<dm){dm=d;rc=vec4(1230.,657.,1362.,858.);pid=9.;}\n d=bx(P,vec4(621.,1097.,767.,1320.)); if(d<dm){dm=d;rc=vec4(621.,1097.,767.,1320.);pid=10.;}\n d=bx(P,vec4(871.,1097.,1015.,1420.)); if(d<dm){dm=d;rc=vec4(871.,1097.,1015.,1420.);pid=11.;}\n d=bx(P,vec4(1127.,1097.,1273.,1320.)); if(d<dm){dm=d;rc=vec4(1127.,1097.,1273.,1320.);pid=12.;}\n d=fa(P,vec4(603.,1030.,787.,1095.)); if(d<dm){dm=d;rc=vec4(603.,1030.,787.,1095.);pid=13.;}\n d=fa(P,vec4(853.,1030.,1037.,1095.)); if(d<dm){dm=d;rc=vec4(853.,1030.,1037.,1095.);pid=14.;}\n d=fa(P,vec4(1109.,1030.,1297.,1095.)); if(d<dm){dm=d;rc=vec4(1109.,1030.,1297.,1095.);pid=15.;}\n d=ar(P,vec4(510.,366.,532.,414.)); if(d<dm){dm=d;rc=vec4(510.,366.,532.,414.);pid=16.;}\n d=ar(P,vec4(557.,366.,579.,414.)); if(d<dm){dm=d;rc=vec4(557.,366.,579.,414.);pid=17.;}\n d=ar(P,vec4(603.,366.,625.,414.)); if(d<dm){dm=d;rc=vec4(603.,366.,625.,414.);pid=18.;}\n d=ar(P,vec4(649.,366.,671.,414.)); if(d<dm){dm=d;rc=vec4(649.,366.,671.,414.);pid=19.;}\n d=ar(P,vec4(696.,366.,718.,414.)); if(d<dm){dm=d;rc=vec4(696.,366.,718.,414.);pid=20.;}\n d=ar(P,vec4(747.,366.,769.,414.)); if(d<dm){dm=d;rc=vec4(747.,366.,769.,414.);pid=21.;}\n d=ar(P,vec4(1132.,366.,1154.,414.)); if(d<dm){dm=d;rc=vec4(1132.,366.,1154.,414.);pid=22.;}\n d=ar(P,vec4(1179.,366.,1201.,414.)); if(d<dm){dm=d;rc=vec4(1179.,366.,1201.,414.);pid=23.;}\n d=ar(P,vec4(1226.,366.,1248.,414.)); if(d<dm){dm=d;rc=vec4(1226.,366.,1248.,414.);pid=24.;}\n d=ar(P,vec4(1273.,366.,1295.,414.)); if(d<dm){dm=d;rc=vec4(1273.,366.,1295.,414.);pid=25.;}\n d=ar(P,vec4(1320.,366.,1342.,414.)); if(d<dm){dm=d;rc=vec4(1320.,366.,1342.,414.);pid=26.;}\n d=ar(P,vec4(1367.,366.,1389.,414.)); if(d<dm){dm=d;rc=vec4(1367.,366.,1389.,414.);pid=27.;}\n d=bx(P,vec4(813.,369.,835.,400.)); if(d<dm){dm=d;rc=vec4(813.,369.,835.,400.);pid=28.;}\n d=bx(P,vec4(1069.,369.,1091.,400.)); if(d<dm){dm=d;rc=vec4(1069.,369.,1091.,400.);pid=29.;}\n d=ci(P,vec4(245.,428.,353.,536.)); if(d<dm){dm=d;rc=vec4(245.,428.,353.,536.);pid=30.;}\n d=ci(P,vec4(1553.,415.,1661.,523.)); if(d<dm){dm=d;rc=vec4(1553.,415.,1661.,523.);pid=31.;}\n gdm=dm; grc=rc; gpid=pid; }\nfloat gCol(vec2 P){ float d=bx(P,vec4(77.,587.,139.,1485.)); d=min(d,bx(P,vec4(117.,587.,213.,1485.))); d=min(d,bx(P,vec4(389.,587.,492.,1485.)));\n  d=min(d,bx(P,vec4(1403.,580.,1505.,1485.))); d=min(d,bx(P,vec4(1691.,580.,1795.,1485.))); d=min(d,bx(P,vec4(1776.,604.,1853.,1485.))); return d; }\nfloat colU(vec2 P){ float u=0.; float best=1e5; \n  float x0=77.,x1=139.; float d=bx(P,vec4(77.,587.,139.,1485.)); if(d<best){best=d;u=(P.x-108.)/31.;}\n  d=bx(P,vec4(117.,587.,213.,1485.)); if(d<best){best=d;u=(P.x-165.)/48.;}\n  d=bx(P,vec4(389.,587.,492.,1485.)); if(d<best){best=d;u=(P.x-440.)/51.;}\n  d=bx(P,vec4(1403.,580.,1505.,1485.)); if(d<best){best=d;u=(P.x-1454.)/51.;}\n  d=bx(P,vec4(1691.,580.,1795.,1485.)); if(d<best){best=d;u=(P.x-1743.)/52.;}\n  d=bx(P,vec4(1776.,604.,1853.,1485.)); if(d<best){best=d;u=(P.x-1814.)/38.;}\n  return clamp(u,-1.,1.); }\nfloat gBalu(vec2 P){ return min(bx(P,vec4(249.,869.,392.,958.)),bx(P,vec4(1514.,869.,1662.,958.))); }\nfloat gStair(vec2 P){ return bx(P,vec4(720.,1383.,1165.,1515.)); }\nfloat gTow(vec2 P){ float a=abs(P.x-950.)-450.; return max(P.y-600.,-a); }\nfloat gCrown(vec2 P){ float a=abs(P.x-950.)-450.; return max(P.y-602.,a); }\nvec3 zones(vec2 P){ // x: colunas, y: torres+coroa, z: balaustres  (0..1)\n  return vec3(mkk(gCol(P),3.), max(mkk(gTow(P),4.),mkk(gCrown(P),4.)), max(mkk(gBalu(P),2.),mkk(gStair(P),3.))); }\n\nvec4 vor(vec2 p){ vec2 n=floor(p), f=fract(p); float d1=8., d2=8.; vec2 cid=vec2(0.), rb=vec2(0.);\n  for(int j=-1;j<=1;j++){ for(int i=-1;i<=1;i++){ vec2 g=vec2(float(i),float(j)); vec2 o=vec2(hash(n+g+uSeed),hash(n+g+vec2(37.,17.))); vec2 r=g+o-f; float d=dot(r,r);\n    if(d<d1){ d2=d1; d1=d; cid=n+g; rb=r; } else if(d<d2){ d2=d; } } }\n  return vec4(rb,sqrt(d2)-sqrt(d1),hash(cid)); }\n\nvec3 tAmaz(vec2 P,float ph,vec3 lime,vec3 deep){ vec2 q=P*.0062; vec2 qq=q+vec2(fbm(q*1.3+uSeed),fbm(q+3.1))*1.5+vec2(sin(ph*TAU),cos(ph*TAU))*.3;\n  float vein=1.-smoothstep(0.,.045+.02*uBass,abs(fbm(qq*1.7)-.5)); return deep*.7+lime*vein*(.8+.4*uMid)+vec3(1.,.2,.6)*(1.-smoothstep(0.,.012,abs(fbm(qq*3.6+9.)-.5)))*.5; }\nvec3 tAgua(vec2 P,float ph,vec3 aq){ float c1=sin(P.x*.03+sin(P.y*.04+ph*TAU*2.)*2.)*sin(P.y*.028+sin(P.x*.05-ph*TAU*3.)*2.); float ca=pow(1.-abs(c1),7.);\n  return aq*.45+mix(aq,vec3(1.),.4)*ca*1.1; }\nvec3 tTerra(vec2 P,float ph,vec3 am){ vec4 v=vor(P/74.); float crack=1.-smoothstep(0.,.07,v.z); vec3 tile=mix(vec3(.50,.18,.05),vec3(.16,.04,.03),v.w);\n  return tile*(.6+.4*uMid)+mix(am,vec3(1.,.9,.3),crack)*crack*(.9+.7*uBass); }\nvec3 tMata(vec2 P,float ph,vec3 co,vec3 vi){ float n=fbm(vec2(P.x*.003+sin(ph*TAU)*.6,P.y*.012)+uSeed); float band=smoothstep(.45,.55,n); vec3 c=mix(vi*.5,co,band);\n  float rain=step(.93,hash(vec2(floor(P.x/6.),floor(P.y/90.+ph*TAU*6.)+uSeed))); return c*.7+vec3(.8,1.,1.)*rain*.4+co*smoothstep(.46,.5,n)*(1.-smoothstep(.5,.55,n))*.8; }\n\nvoid main(){\n  vec2 P=FP(); float ph=uPh; portals(P); float dm=gdm; vec3 z=zones(P);\n  float env=smoothstep(0.,.05,ph)*(1.-smoothstep(.90,1.,ph));\n  float merge=smoothstep(.38,.66,ph)*(1.-smoothstep(.74,.9,ph)); float flash=smoothstep(.62,.70,ph)*(1.-smoothstep(.70,.8,ph));\n  vec2 Pw=P+merge*vec2(fbm(P*.004+ph*3.)-.5,fbm(P*.004+7.))*160.;\n  float upper=step(600.,P.y)*step(P.y,985.)*(1.-z.x)*(1.-z.y); float lower=step(985.,P.y)*(1.-z.x)*(1.-z.y);\n  float wA=z.y+merge*.2; float wW=z.x+merge*.2; float wT=upper+merge*.2; float wM=lower+merge*.2;\n  float ws=max(wA+wW+wT+wM,.001);\n  vec3 col=(tAmaz(Pw,ph,vec3(.4,1.,.2),vec3(.0,.12,.05))*wA+tAgua(Pw,ph,vec3(.1,.7,1.))*wW+tTerra(Pw,ph,vec3(1.,.5,.05))*wT+tMata(Pw,ph,vec3(1.,.42,.38),vec3(.5,.25,1.))*wM)/ws;\n  float rise=smoothstep(.04,.2,ph); col*=rise;\n  float cu=colU(P); col=mix(col,col*(.3+.7*sqrt(max(1.-cu*cu,0.))),z.x);\n  vec2 e1=P-vec2(299.,482.), e2=P-vec2(1607.,469.); float rs=min(length(e1),length(e2)); vec2 ee=(length(e1)<length(e2))?e1:e2;\n  float ang=atan(ee.y,ee.x); float beams=pow(.5+.5*sin(ang*9.+ph*TAU*3.),6.)*exp(-rs/900.)*flash*(.7+uHit);\n  col+=vec3(1.,.95,.85)*beams*1.0+vec3(1.,.9,.7)*exp(-rs/130.)*(flash*1.2+.35*rise)*(.6+.6*uBass);\n  col+=mix(uC1,vec3(1.),.5)*exp(-abs(dm)/5.)*rise*(.5+.9*uHit)+uC2*step(.985,hash(floor(P/9.)+floor(ph*40.)+uSeed))*uHigh*rise;\n  col+=vec3(1.)*flash*.10*(.4+.6*fbm(P*.01+ph));\n  col*=smoothstep(-2.,2.,dm); col*=env*(.9+.2*uRms); gl_FragColor=outc(col,1.); }\n",
+      "alphaMode": "opaque",
+      "c1": "secondary",
+      "c2": "accent",
+      "cbg": "#0A0A22",
+      "res": 1
+     }
+    },
+    {
+     "type": "shader",
+     "name": "PORTAIS EM CARROSSEL",
+     "role": "hero: every opening cycles through the five biomes, handing the world to the next window",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "src": "\n#define PI 3.14159265\nvec2 FP(){ return vec2(gl_FragCoord.x/uRes.x*1920., (1.-gl_FragCoord.y/uRes.y)*1520.); }\nfloat bx(vec2 P,vec4 r){ vec2 c=(r.xy+r.zw)*.5,h=(r.zw-r.xy)*.5,d=abs(P-c)-h; return length(max(d,0.))+min(max(d.x,d.y),0.); }\nfloat ar(vec2 P,vec4 r){ float rd=(r.z-r.x)*.5; return min(bx(P,vec4(r.x,r.y+rd,r.z,r.w)),length(P-vec2((r.x+r.z)*.5,r.y+rd))-rd); }\nfloat fa(vec2 P,vec4 r){ vec2 c=vec2((r.x+r.z)*.5,r.w); float rx=(r.z-r.x)*.5, ry=r.w-r.y; float e=(length((P-c)/vec2(rx,ry))-1.)*min(rx,ry); return max(e,P.y-r.w); }\nfloat ci(vec2 P,vec4 r){ return length(P-(r.xy+r.zw)*.5)-(r.z-r.x)*.5; }\nfloat mkk(float d,float w){ return smoothstep(w,-w,d); }\nfloat h11(float n){ return fract(sin(n*127.1)*43758.5453); }\nfloat lw(float x,float w){ float f=fract(x); return 1.-smoothstep(0.,w,min(f,1.-f)); }\nfloat gdm; vec4 grc; float gpid;\nvoid portals(vec2 P){ float dm=1e5; vec4 rc=vec4(0.); float pid=0.; float d;\n d=bx(P,vec4(254.,650.,394.,858.)); if(d<dm){dm=d;rc=vec4(254.,650.,394.,858.);pid=1.;}\n d=bx(P,vec4(254.,1112.,392.,1306.)); if(d<dm){dm=d;rc=vec4(254.,1112.,392.,1306.);pid=2.;}\n d=bx(P,vec4(1512.,650.,1662.,858.)); if(d<dm){dm=d;rc=vec4(1512.,650.,1662.,858.);pid=3.;}\n d=bx(P,vec4(1510.,1118.,1662.,1334.)); if(d<dm){dm=d;rc=vec4(1510.,1118.,1662.,1334.);pid=4.;}\n d=bx(P,vec4(873.,652.,1022.,858.)); if(d<dm){dm=d;rc=vec4(873.,652.,1022.,858.);pid=5.;}\n d=ar(P,vec4(624.,656.,766.,857.)); if(d<dm){dm=d;rc=vec4(624.,656.,766.,857.);pid=6.;}\n d=ar(P,vec4(1130.,656.,1272.,858.)); if(d<dm){dm=d;rc=vec4(1130.,656.,1272.,858.);pid=7.;}\n d=bx(P,vec4(534.,657.,678.,857.)); if(d<dm){dm=d;rc=vec4(534.,657.,678.,857.);pid=8.;}\n d=bx(P,vec4(1230.,657.,1362.,858.)); if(d<dm){dm=d;rc=vec4(1230.,657.,1362.,858.);pid=9.;}\n d=bx(P,vec4(621.,1097.,767.,1320.)); if(d<dm){dm=d;rc=vec4(621.,1097.,767.,1320.);pid=10.;}\n d=bx(P,vec4(871.,1097.,1015.,1420.)); if(d<dm){dm=d;rc=vec4(871.,1097.,1015.,1420.);pid=11.;}\n d=bx(P,vec4(1127.,1097.,1273.,1320.)); if(d<dm){dm=d;rc=vec4(1127.,1097.,1273.,1320.);pid=12.;}\n d=fa(P,vec4(603.,1030.,787.,1095.)); if(d<dm){dm=d;rc=vec4(603.,1030.,787.,1095.);pid=13.;}\n d=fa(P,vec4(853.,1030.,1037.,1095.)); if(d<dm){dm=d;rc=vec4(853.,1030.,1037.,1095.);pid=14.;}\n d=fa(P,vec4(1109.,1030.,1297.,1095.)); if(d<dm){dm=d;rc=vec4(1109.,1030.,1297.,1095.);pid=15.;}\n d=ar(P,vec4(510.,366.,532.,414.)); if(d<dm){dm=d;rc=vec4(510.,366.,532.,414.);pid=16.;}\n d=ar(P,vec4(557.,366.,579.,414.)); if(d<dm){dm=d;rc=vec4(557.,366.,579.,414.);pid=17.;}\n d=ar(P,vec4(603.,366.,625.,414.)); if(d<dm){dm=d;rc=vec4(603.,366.,625.,414.);pid=18.;}\n d=ar(P,vec4(649.,366.,671.,414.)); if(d<dm){dm=d;rc=vec4(649.,366.,671.,414.);pid=19.;}\n d=ar(P,vec4(696.,366.,718.,414.)); if(d<dm){dm=d;rc=vec4(696.,366.,718.,414.);pid=20.;}\n d=ar(P,vec4(747.,366.,769.,414.)); if(d<dm){dm=d;rc=vec4(747.,366.,769.,414.);pid=21.;}\n d=ar(P,vec4(1132.,366.,1154.,414.)); if(d<dm){dm=d;rc=vec4(1132.,366.,1154.,414.);pid=22.;}\n d=ar(P,vec4(1179.,366.,1201.,414.)); if(d<dm){dm=d;rc=vec4(1179.,366.,1201.,414.);pid=23.;}\n d=ar(P,vec4(1226.,366.,1248.,414.)); if(d<dm){dm=d;rc=vec4(1226.,366.,1248.,414.);pid=24.;}\n d=ar(P,vec4(1273.,366.,1295.,414.)); if(d<dm){dm=d;rc=vec4(1273.,366.,1295.,414.);pid=25.;}\n d=ar(P,vec4(1320.,366.,1342.,414.)); if(d<dm){dm=d;rc=vec4(1320.,366.,1342.,414.);pid=26.;}\n d=ar(P,vec4(1367.,366.,1389.,414.)); if(d<dm){dm=d;rc=vec4(1367.,366.,1389.,414.);pid=27.;}\n d=bx(P,vec4(813.,369.,835.,400.)); if(d<dm){dm=d;rc=vec4(813.,369.,835.,400.);pid=28.;}\n d=bx(P,vec4(1069.,369.,1091.,400.)); if(d<dm){dm=d;rc=vec4(1069.,369.,1091.,400.);pid=29.;}\n d=ci(P,vec4(245.,428.,353.,536.)); if(d<dm){dm=d;rc=vec4(245.,428.,353.,536.);pid=30.;}\n d=ci(P,vec4(1553.,415.,1661.,523.)); if(d<dm){dm=d;rc=vec4(1553.,415.,1661.,523.);pid=31.;}\n gdm=dm; grc=rc; gpid=pid; }\nfloat gCol(vec2 P){ float d=bx(P,vec4(77.,587.,139.,1485.)); d=min(d,bx(P,vec4(117.,587.,213.,1485.))); d=min(d,bx(P,vec4(389.,587.,492.,1485.)));\n  d=min(d,bx(P,vec4(1403.,580.,1505.,1485.))); d=min(d,bx(P,vec4(1691.,580.,1795.,1485.))); d=min(d,bx(P,vec4(1776.,604.,1853.,1485.))); return d; }\nfloat colU(vec2 P){ float u=0.; float best=1e5; \n  float x0=77.,x1=139.; float d=bx(P,vec4(77.,587.,139.,1485.)); if(d<best){best=d;u=(P.x-108.)/31.;}\n  d=bx(P,vec4(117.,587.,213.,1485.)); if(d<best){best=d;u=(P.x-165.)/48.;}\n  d=bx(P,vec4(389.,587.,492.,1485.)); if(d<best){best=d;u=(P.x-440.)/51.;}\n  d=bx(P,vec4(1403.,580.,1505.,1485.)); if(d<best){best=d;u=(P.x-1454.)/51.;}\n  d=bx(P,vec4(1691.,580.,1795.,1485.)); if(d<best){best=d;u=(P.x-1743.)/52.;}\n  d=bx(P,vec4(1776.,604.,1853.,1485.)); if(d<best){best=d;u=(P.x-1814.)/38.;}\n  return clamp(u,-1.,1.); }\nfloat gBalu(vec2 P){ return min(bx(P,vec4(249.,869.,392.,958.)),bx(P,vec4(1514.,869.,1662.,958.))); }\nfloat gStair(vec2 P){ return bx(P,vec4(720.,1383.,1165.,1515.)); }\nfloat gTow(vec2 P){ float a=abs(P.x-950.)-450.; return max(P.y-600.,-a); }\nfloat gCrown(vec2 P){ float a=abs(P.x-950.)-450.; return max(P.y-602.,a); }\nvec3 zones(vec2 P){ // x: colunas, y: torres+coroa, z: balaustres  (0..1)\n  return vec3(mkk(gCol(P),3.), max(mkk(gTow(P),4.),mkk(gCrown(P),4.)), max(mkk(gBalu(P),2.),mkk(gStair(P),3.))); }\n\nfloat leafLayer(vec2 uv,float sd){ vec2 g=uv; vec2 id0=floor(g-.5); float cov=0.;\n  for(int j=0;j<=1;j++){ for(int i=0;i<=1;i++){ vec2 id=id0+vec2(float(i),float(j)); float r=hash(id+sd); vec2 ce=id+.5+(vec2(hash(id+sd+9.),hash(id+sd+21.))-.5)*.4;\n    vec2 f=vjRot(r*6.2832)*(g-ce); float k=smoothstep(.06,-.06,length(f*vec2(1.,2.6))-.5)*step(.2,hash(id*1.7+sd+3.)); cov=max(cov,k); } }\n  return cov; }\nvec3 dioAmazon(vec2 q,vec2 cam,float t,float sd){\n  vec3 col=mix(vec3(.03,.24,.12),vec3(.62,1.,.28),smoothstep(1.4,-1.8,q.y)*.6);\n  vec2 s=q-vec2(.15+cam.x*.5,-1.9); float ang=atan(s.x,s.y);\n  float rays=pow(.5+.5*sin(ang*16.+sd*7.+sin(t)*.8),3.)*smoothstep(3.4,.2,length(s));\n  col+=vec3(1.,.95,.4)*rays*.55;\n  for(int i=0;i<4;i++){ float fi=float(i); float sc=1.7-fi*.3; vec2 uv=q*sc+cam*(.4+fi*.7)+vec2(sd*13.,fi*5.); float k=leafLayer(uv,fi*19.+sd);\n    vec3 lc=mix(vec3(.10,.62,.28),vec3(.0,.05,.03),fi/3.)+vec3(.45,1.,.25)*pow(1.-fi/3.,2.)*.5*(.4+.6*hash(floor(uv)+fi));\n    col=mix(col,lc,k*(.6+fi*.1));\n    vec2 fg=uv*2.; vec2 fi2=floor(fg); float fl=smoothstep(.2,.0,length(fract(fg)-.5))*step(.93,hash(fi2*2.7+fi+sd)); col=mix(col,mix(vec3(1.,.15,.55),vec3(1.,.7,.1),hash(fi2)),fl*.9*step(fi,2.5)); }\n  vec2 fq=q*3.+vec2(cam.x*2.,t*.5); vec2 fid=floor(fq); vec2 fo=vec2(hash(fid)-.5,hash(fid+7.)-.5)*.5; float fl=smoothstep(.12,0.,length(fract(fq)-.5-fo*sin(t+hash(fid)*6.)));\n  col+=vec3(.9,1.,.4)*fl*(.5+.5*sin(t*2.+hash(fid)*9.)); return col; }\nvec3 dioPantanal(vec2 q,vec2 cam,float t,float sd){\n  float hz=.05+cam.y*.15; vec3 col;\n  if(q.y<hz){ float u=smoothstep(hz,-1.8,q.y); col=mix(vec3(1.,.62,.28),vec3(.10,.28,.85),u); col=mix(col,vec3(1.,.25,.5),smoothstep(.0,.6,u)*(1.-smoothstep(.6,1.,u))*.5);\n    float sd2=length(q-vec2(cam.x*.4,hz-.14)); col+=vec3(1.,.85,.4)*(smoothstep(.2,.17,sd2)+.35*smoothstep(.9,0.,sd2)); }\n  else { float dd=q.y-hz; vec2 rq=vec2(q.x+.05*sin(dd*34.+t)*dd,hz-dd); float u=smoothstep(hz,-1.8,rq.y); col=mix(vec3(.9,.45,.25),vec3(.06,.22,.7),u);\n    col=mix(col,vec3(.0,.35,.45),.35+.4*smoothstep(0.,1.2,dd)); float g=pow(.5+.5*sin(q.x*60.+dd*40.-t*2.),6.)*exp(-abs(q.x-cam.x*.4)*4.)*exp(-dd*1.5); col+=vec3(1.,.9,.5)*g*.6;\n    vec2 lg=vec2(q.x*4.+sd*5.,dd*9.); vec2 li=floor(lg); float lp=smoothstep(.3,.26,length((fract(lg)-.5)*vec2(1.,2.2))); col=mix(col,vec3(.1,.6,.2),lp*step(.55,hash(li+sd))*smoothstep(.1,.5,dd)); }\n  float bl=lw(q.x*7.+sd+sin(q.y*3.+t+q.x)*.1,.1); float bh=.55+.35*hash(vec2(floor(q.x*7.+sd),2.)); col=mix(col,vec3(.02,.14,.06),bl*step(q.y,2.)*step(bh*1.0+.35,q.y+.55)*smoothstep(.2,1.,q.y+.3));\n  return col; }\nfloat hills(float x,float s,float a){ return a*(noise(vec2(x*1.7+s,s))-.5); }\nvec3 dioCerrado(vec2 q,vec2 cam,float t,float sd){\n  float hz=.15; vec3 col=mix(vec3(1.,.82,.25),vec3(.75,.10,.40),smoothstep(hz,-1.8,q.y)); float sd2=length(q-vec2(cam.x*.3,hz-.22));\n  col+=vec3(1.,.55,.15)*(smoothstep(.33,.30,sd2)*.9+.4*smoothstep(1.2,0.,sd2));\n  for(int i=0;i<4;i++){ float fi=float(i); float y=hz+.05+fi*.28+hills(q.x+cam.x*(.2+fi*.3),fi*3.+sd,.5); vec3 hc=mix(vec3(.65,.2,.25),vec3(.12,.02,.10),fi/3.); col=mix(col,hc,smoothstep(.01,-.01,y-q.y)); }\n  float gr=lw(q.x*14.+sd+sin(q.y*2.+t+q.x*3.)*.15,.12); col=mix(col,vec3(1.,.7,.1),gr*smoothstep(.6,1.4,q.y)*.8);\n  return col; }\nvec3 dioCaatinga(vec2 q,vec2 cam,float t,float sd){\n  float hz=.35; vec3 col=mix(vec3(1.,.45,.2),vec3(.35,.05,.55),smoothstep(hz,-1.6,q.y)); float sd2=length(q-vec2(-cam.x*.3+.2,hz-.3)); col+=vec3(1.,.8,.3)*smoothstep(.2,.17,sd2);\n  if(q.y>hz){ vec2 g=vec2(q.x*3.,(q.y-hz)*3.+cam.y); vec2 id=floor(g); float c=lw(g.x+hash(id)*.3,.05)+lw(g.y+hash(id+3.)*.3,.05); col=mix(vec3(.55,.22,.1),vec3(.2,.05,.05),smoothstep(hz,1.6,q.y)); col+=vec3(1.,.4,.1)*clamp(c,0.,1.)*.35; }\n  for(int i=0;i<3;i++){ float fi=float(i); float cx=(fi-1.)*.7+cam.x*(.4+fi*.2)+sd*.3; float w=.07+.03*fi; vec2 p=q-vec2(cx,hz+.05+fi*.1);\n    float body=length(vec2(max(abs(p.x)-w,0.),max(-p.y-(.5+fi*.1),0.)+max(p.y,0.)))-w*.1; float arm=length(vec2(p.x-.2*sign(sin(fi*5.+sd)),max(abs(p.y+.3)-.12,0.)))-w*.8; col=mix(col,vec3(.04,.18,.10),smoothstep(.015,-.01,min(body,arm))); }\n  return col; }\nvec3 dioMata(vec2 q,vec2 cam,float t,float sd){\n  vec3 col=mix(vec3(.05,.45,.55),vec3(1.,.55,.50),smoothstep(-1.5,.8,q.y)); \n  for(int i=0;i<5;i++){ float fi=float(i); float y=-.55+fi*.32+hills(q.x+cam.x*(.15+fi*.25),fi*4.+sd,.6); vec3 rc=mix(vec3(.50,.85,.85),vec3(.02,.20,.18),fi/4.); float k=smoothstep(.015,-.015,y-q.y); col=mix(col,rc,k); col=mix(col,vec3(.95,.80,.85),smoothstep(.0,.6,q.y-y+.1)*smoothstep(.7,.0,q.y-y+.1)*.25*(1.-k)); }\n  vec2 rq=vec2(q.x*9.+q.y*2.,q.y*3.-t*3.); col+=vec3(.7,.95,1.)*step(.93,hash(floor(rq)+sd))*.35; return col; }\nvec3 dio(float k,vec2 q,vec2 cam,float t,float sd){ k=mod(k,5.); if(k<1.) return dioAmazon(q,cam,t,sd); if(k<2.) return dioPantanal(q,cam,t,sd); if(k<3.) return dioCerrado(q,cam,t,sd); if(k<4.) return dioCaatinga(q,cam,t,sd); return dioMata(q,cam,t,sd); }\n\n\nvoid main(){\n  vec2 P=FP(); portals(P); float dm=gdm; vec4 rc=grc; float pid=gpid; vec2 c=(rc.xy+rc.zw)*.5; vec2 hs=(rc.zw-rc.xy)*.5; vec2 q=(P-c)/hs.x; float ph=uPh;\n  float open=clamp((ph-.06-.2*hash(vec2(pid,3.+uSeed)))/.12,0.,1.)*(1.-smoothstep(.86,.95,ph));\n  float R=open*(2.6+hs.y/hs.x); float ir=1.-smoothstep(R-.3,R,length(q));\n  float t=ph*TAU; vec2 cam=vec2(sin(t+pid),.4*cos(t+pid*1.7))*.25; float k=pid*.7+ph*5.;\n  vec3 col=mix(dio(floor(k),q,cam,t,pid+uSeed),dio(floor(k)+1.,q,cam,t,pid+uSeed),smoothstep(.55,.95,fract(k)));\n  col*=(.85+.4*uRms+.4*uBass*exp(-length(q))); col+=vec3(1.)*uHigh*step(.97,hash(floor(q*16.)+floor(ph*30.)))*.5;\n  float inner=smoothstep(0.,22.,-dm); col*=.4+.6*inner;\n  if(pid>29.){ vec2 e=P-c; float r=length(e)/hs.x; float sun=smoothstep(1.,.5,r); float fl=smoothstep(.62,.70,ph)*(1.-smoothstep(.70,.8,ph));\n    col=mix(col*.3,vec3(1.,.97,.9),sun*(.35+.65*fl+.2*uBass)); }\n  float al=mkk(dm+1.,1.5)*ir; gl_FragColor=outc(col,al); }\n",
+      "alphaMode": "alpha",
+      "c1": "secondary",
+      "c2": "accent",
+      "cbg": "#0A0A22",
+      "res": 1
+     }
+    },
+    {
+     "type": "flow",
+     "name": "DADOS EM VOO",
+     "role": "instrument: points of light carry the collected data up and away at the end",
+     "on": true,
+     "opacity": 1,
+     "blend": "add",
+     "p": {
+      "count": 520,
+      "trail": 8,
+      "amp": 0.13,
+      "scale": 2.8,
+      "radius": 0.9,
+      "width": 1.6,
+      "alpha": 0.6,
+      "acc": 0.12,
+      "color": "primary",
+      "hot": "secondary"
+     }
+    },
+    {
+     "type": "image",
+     "name": "RELEVO DE PEDRA",
+     "role": "structure: the clay render multiplies the light, so cornices, columns and recesses cast the shading that fakes real volume",
+     "on": true,
+     "opacity": 0.6,
+     "blend": "multiply",
+     "p": {
+      "media": "relevo.png",
+      "fit": "fill"
+     }
+    },
+    {
+     "type": "code",
+     "name": "CONTORNO DA SONDA",
+     "role": "instrument: the architect's own outline, drawn by the probe as it reads the facade",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "src": "\nconst ph=K.t.lph; const g=Math.sin(Math.PI*K.clamp((ph-.04)/.88,0,1)); const a=.12+.7*g*g;\nc.save(); c.globalAlpha=a*(.7+.3*K.t.pulse); K.drawImg(c,'linhas.png',K.w/2,K.h/2,K.w,K.h,'#FFFFFF',1); c.restore();\n"
+     }
+    },
+    {
+     "type": "fx",
+     "name": "FUSÃO DOS LIMITES",
+     "role": "structure: auto-modulation folds the image into itself at the peak, the borders between biomes melt",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "preset": "AUTOMODULAÇÃO",
+      "p1": 26,
+      "p2": 1.3,
+      "p3": 1,
+      "p4": 0,
+      "mix": 0.0,
+      "res": 0.6
+     },
+     "mod": [
+      {
+       "k": "mix",
+       "src": "lfo",
+       "shape": "env",
+       "cycles": 1,
+       "keys": [
+        0,
+        0,
+        0.2,
+        0.6,
+        1,
+        0.7,
+        0.2,
+        0
+       ],
+       "min": 0,
+       "max": 0.7,
+       "mode": "set"
+      }
+     ]
+    },
+    {
+     "type": "fx",
+     "name": "BRILHO DA LENTE",
+     "role": "finish: soft bloom, the lamp of the probe",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "preset": "BLOOM",
+      "p1": 20,
+      "p2": 0.35,
+      "p3": 1.4,
+      "p4": 0.3,
+      "mix": 0.85,
+      "res": 0.5
+     }
+    },
+    {
+     "type": "image",
+     "name": "FORA DA FACHADA",
+     "role": "finish: black outside the building silhouette, no light is wasted on the sky",
+     "on": true,
+     "opacity": 1,
+     "blend": "normal",
+     "p": {
+      "media": "fora.png",
+      "fit": "fill"
+     }
+    }
+   ]
+  }
+ ],
+ "capabilities": {
+  "supported": [
+   "preview",
+   "fullscreenPreview"
+  ],
+  "exportable": [
+   "pngSequenceAlpha",
+   "mp4",
+   "pngSequence"
+  ],
+  "inputOnly": [
+   "surfaceBitmap"
+  ],
+  "notSupported": [
+   "midi",
+   "osc",
+   "ndi",
+   "spout",
+   "syphon",
+   "resolume",
+   "madmapper",
+   "pixelMap",
+   "blueprint"
+  ]
+ }
+}
