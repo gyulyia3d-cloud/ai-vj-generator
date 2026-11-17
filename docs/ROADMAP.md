@@ -10,8 +10,6 @@ Cadeia de decisão: intenção, significado, conceito, linguagem visual, composi
 ## Fora de escopo (não planejar, não prometer)
 Software de performance ou VJ playback, media server, projection mapping, geração de pixel map ou blueprint, gestão de LED wall, MIDI, OSC, NDI, controle remoto, integração com Resolume, TouchDesigner ou OBS, domo, DOOH, simulação do prédio ou do projetor, visualização 3D da instalação, tracking físico. O 3D existe só para gerar a animação.
 
-Referências antigas a isso ficam apenas no `CHANGELOG.md`.
-
 ## Fases (ordem obrigatória; ver a ordem revisada abaixo da tabela)
 | Fase | Foco | Estado |
 |---|---|---|

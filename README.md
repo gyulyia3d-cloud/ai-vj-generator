@@ -168,14 +168,7 @@ Pixelate, Halftone, Dither, CRT, VHS, Aberração cromática, Bordas neon, Kuwah
 
 ![Mosaico com as miniaturas dos 84 shaders ISF da biblioteca](docs/assets/isf-mosaico.webp)
 
-| Origem | Qtd. | Licença |
-|---|---|---|
-| `original/` (AIVJ), escritos para o projeto; loop fecha exatamente | 11 | MIT, deste repositório |
-| `third-party/` Vidvox | 27 | MIT |
-| `third-party/` ProjectileObjects | 1 | MIT |
-| `third-party/glslop-*` | 45 | CC0-1.0 |
-
-Cada arquivo mantém o seu `CREDIT`; o manifesto guarda autoria, licença e origem. Ficaram de fora arquivos com licença incompatível ou incerta, filtros que precisam de imagem de entrada e ISF com `PASSES` ou áudio. Detalhes: [skill/ai-vj-generator/isf-library/README.md](skill/ai-vj-generator/isf-library/README.md).
+A biblioteca reúne shaders do projeto e shaders de terceiros. Consulte os [avisos de licença](skill/ai-vj-generator/isf-library/README.md).
 
 </details>
 
@@ -332,7 +325,7 @@ node scripts/render.mjs projeto.aivj.json --out saida --format mp4
 node scripts/bench.mjs projeto.aivj.json             # custo por camada
 node scripts/readme-assets.mjs                       # regera os infográficos do README (docs/assets/*.svg)
 ```
-Sem dependências de npm; a única biblioteca de terceiros é o JSZip 3.10.1 (MIT ou GPLv3), embutida em `app/vendor/` (sem CDN: o export em ZIP funciona sem rede); só as fontes web vêm de fora e têm fallback do sistema. Regras do repositório: [AGENTS.md](AGENTS.md) e [CONTRIBUTING.md](CONTRIBUTING.md). Histórico: [CHANGELOG.md](CHANGELOG.md).
+Sem dependências de npm; a única biblioteca de terceiros é o JSZip 3.10.1 (MIT ou GPLv3), embutida em `app/vendor/` (sem CDN: o export em ZIP funciona sem rede); só as fontes web vêm de fora e têm fallback do sistema. Regras do repositório: [AGENTS.md](AGENTS.md) e [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## English summary
 
