@@ -1,4 +1,4 @@
-/* Proxy da IA gratuita do AI VJ Generator (Cloudflare Worker, sem dependências). Esconde as chaves, limita a 14 gerações por dia para o site inteiro,
+/* Proxy da IA gratuita do AI VJ Generator (Cloudflare Worker, sem dependências). Esconde as chaves, limita a 14 tentativas de geração por dia para o site inteiro,
    e devolve só JSON: o navegador valida tudo de novo (BRIEFGEN.sanitizeSpec). Não registra texto nem imagens. Passos de instalação: worker/README.md.
    Texto: Groq (JSON mode); visão: Gemini; cada um serve de reserva do outro. Modelos por variável de ambiente (os nomes mudam). */
 export const ENUMS = {
@@ -34,21 +34,55 @@ const IMAGE_PROMPT = `Describe these reference images for a visual-effects art d
 
 const cors = (req, env) => {
   const o = req.headers.get('Origin') || '', allow = String(env.ALLOWED_ORIGINS || 'https://gyulyia3d-cloud.github.io').split(',').map(s => s.trim()).filter(Boolean);
-  if (env.ALLOW_FILE_ORIGIN !== 'false') allow.push('null');
+  if (env.ALLOW_FILE_ORIGIN === 'true') allow.push('null');
   return allow.includes(o) ? { 'Access-Control-Allow-Origin': o, 'Vary': 'Origin', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'content-type', 'Access-Control-Max-Age': '600' } : null;
 };
 const reply = (status, body, h) => new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', ...(h || {}) } });
-const today = () => new Date().toISOString().slice(0, 10);
+export class DailyBudget {
+  constructor(ctx, env) {
+    this.storage = ctx.storage.kv;
+    const limit = Number(env.DAILY_LIMIT);
+    this.limit = Number.isSafeInteger(limit) && limit > 0 ? limit : DEFAULT_LIMIT;
+  }
 
-/* orçamento do dia para o site todo (KV não é atômico: serve de freio, não de contabilidade) */
-async function reserve(env) {
-  const limit = Math.max(1, +env.DAILY_LIMIT || DEFAULT_LIMIT), key = 'd:' + today();
-  const used = +(await env.BUDGET.get(key)) || 0;
-  if (used >= limit) return { ok: false, remaining: 0 };
-  await env.BUDGET.put(key, String(used + 1), { expirationTtl: 172800 });
-  return { ok: true, remaining: limit - used - 1, key, used: used + 1 };
+  fetch() {
+    // Um objeto global serializa as reservas; a leitura e a gravação são síncronas.
+    const day = new Date().toISOString().slice(0, 10);
+    const previous = this.storage.get('usage');
+    const used = previous?.day === day ? previous.used : 0;
+    if (used >= this.limit) return Response.json({ ok: false, remaining: 0 });
+
+    this.storage.put('usage', { day, used: used + 1 });
+    return Response.json({ ok: true, remaining: this.limit - used - 1 });
+  }
 }
-const refund = async (env, r) => { try { const n = +(await env.BUDGET.get(r.key)) || 0; if (n > 0) await env.BUDGET.put(r.key, String(n - 1), { expirationTtl: 172800 }); } catch (e) { /* freio best effort */ } };
+
+async function readBody(req) {
+  if (Number(req.headers.get('content-length')) > MAX_BODY) return { tooLarge: true };
+  if (!req.body) return { body: null };
+
+  const reader = req.body.getReader();
+  const decoder = new TextDecoder('utf-8', { fatal: true });
+  let raw = '', bytes = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      bytes += value.byteLength;
+      if (bytes > MAX_BODY) {
+        await reader.cancel().catch(() => {});
+        return { tooLarge: true };
+      }
+      raw += decoder.decode(value, { stream: true });
+    }
+    return { body: JSON.parse(raw + decoder.decode()) };
+  } catch {
+    await reader.cancel().catch(() => {});
+    return { body: null };
+  } finally {
+    reader.releaseLock();
+  }
+}
 
 /* modelos de raciocínio (gpt-oss, Gemini 2.5) gastam parte de max_tokens pensando: com pouco teto a resposta vem vazia. reasoning_effort baixo e teto folgado. */
 async function chat(url, key, model, messages, signal) {
@@ -86,21 +120,37 @@ export default {
     const url = new URL(req.url);
     if (req.method !== 'POST' || (url.pathname !== '/' && url.pathname !== '/brief')) return reply(404, { ok: false, error: 'not_found' }, h);
     if (!h) return reply(403, { ok: false, error: 'origin' });
-    if (!env.BUDGET || (!env.GROQ_API_KEY && !env.GEMINI_API_KEY)) return reply(503, { ok: false, error: 'upstream' }, h);
-    const len = +req.headers.get('content-length') || 0; if (len > MAX_BODY) return reply(413, { ok: false, error: 'too_large' }, h);
-    let body; try { const raw = await req.text(); if (raw.length > MAX_BODY) return reply(413, { ok: false, error: 'too_large' }, h); body = JSON.parse(raw); } catch (e) { return reply(400, { ok: false, error: 'bad_request' }, h); }
+    if (!env.DAILY_BUDGET || !env.RL || (!env.GROQ_API_KEY && !env.GEMINI_API_KEY)) {
+      return reply(503, { ok: false, error: 'upstream' }, h);
+    }
+    try {
+      const ip = req.headers.get('CF-Connecting-IP') || 'unknown';
+      const rate = await env.RL.limit({ key: ip });
+      if (!rate.success) return reply(429, { ok: false, error: 'busy' }, h);
+    } catch {
+      return reply(503, { ok: false, error: 'upstream' }, h);
+    }
+    const { body, tooLarge } = await readBody(req);
+    if (tooLarge) return reply(413, { ok: false, error: 'too_large' }, h);
     const b = body && body.brief;
     if (!b || typeof b.concept !== 'string' || b.concept.trim().length < 12 || b.concept.length > 1300 || !b.surface) return reply(400, { ok: false, error: 'bad_request' }, h);
     const images = Array.isArray(body.images) ? body.images.filter(u => typeof u === 'string' && /^data:image\/(jpeg|png|webp);base64,/.test(u) && u.length <= MAX_IMAGE_CHARS).slice(0, MAX_IMAGES) : [];
-    if (env.RL) { try { const ip = req.headers.get('CF-Connecting-IP') || 'x'; const r = await env.RL.limit({ key: ip }); if (!r.success) return reply(429, { ok: false, error: 'busy' }, h); } catch (e) { /* binding opcional */ } }
-    const slot = await reserve(env);
+    let slot;
+    try {
+      const budget = env.DAILY_BUDGET.get(env.DAILY_BUDGET.idFromName('global'));
+      const reserved = await budget.fetch('https://budget.internal/', { method: 'POST' });
+      if (!reserved.ok) return reply(503, { ok: false, error: 'upstream' }, h);
+      slot = await reserved.json();
+    } catch {
+      return reply(503, { ok: false, error: 'upstream' }, h);
+    }
     if (!slot.ok) return reply(429, { ok: false, error: 'budget', remaining: 0 }, h);
     const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 40000);
     try {
       const out = await generate(env, { brief: b, images }, ctl.signal);
       return reply(200, { ok: true, spec: out.spec, imageUsed: out.imageUsed, imageDetail: out.imageDetail || undefined, remaining: slot.remaining }, h);
     } catch (e) {
-      await refund(env, slot); return reply(502, { ok: false, error: 'upstream', detail: String(e && e.detail || '') }, h);
+      return reply(502, { ok: false, error: 'upstream', detail: String(e && e.detail || '') }, h);
     } finally { clearTimeout(timer); }
   },
 };
