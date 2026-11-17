@@ -13,3 +13,12 @@ __pycache__/
 
 # fachada-bioma: arquivos de trabalho intermediarios ficam so local
 fachada-bioma/work/
+
+# Local credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
