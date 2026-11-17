@@ -74,7 +74,6 @@ check(same(BG.AIS.map(a => a.name), ['Gemini', 'GPT', 'Claude', 'Grok', 'DeepSee
 check(/OCR|TEXTO das imagens/.test(BG.AIS.find(a => a.name === 'DeepSeek').pt) && /não confirmei/.test(BG.AIS.find(a => a.name === 'DeepSeek').pt), 'DeepSeek: a dúvida sobre ler imagens aparece como não confirmada', '');
 
 /* ---------- B. Worker ---------- */
-const mkKV = () => { const m = new Map(); return { m, get: async k => m.get(k) ?? null, put: async (k, v) => { m.set(k, v); } }; };
 let calls = [];
 const realFetch = globalThis.fetch;
 let behavior = { groq: 'ok', gemini: 'ok' };
@@ -86,13 +85,26 @@ globalThis.fetch = async (url, init) => {
   const out = img ? { palette: ['#111111'], layout: 'wide' } : { mood: ['urban'], energy: 0.7, notes: 'ok' };
   return new Response(JSON.stringify({ choices: [{ message: { content: JSON.stringify(out) } }] }), { status: 200 });
 };
-const env = (o = {}) => ({ BUDGET: mkKV(), GROQ_API_KEY: 'gsk_SECRET_G', GEMINI_API_KEY: 'AIza_SECRET_M', ALLOWED_ORIGINS: 'https://gyulyia3d-cloud.github.io', ...o });
+const env = (overrides = {}) => {
+  const usage = new Map();
+  const durableObject = new W.DailyBudget({ storage: { kv: { get: key => usage.get(key), put: (key, value) => usage.set(key, value) } } }, overrides);
+  return {
+    usage,
+    DAILY_BUDGET: { idFromName: name => name, get: () => ({ fetch: async () => durableObject.fetch() }) },
+    RL: { limit: async () => ({ success: true }) },
+    GROQ_API_KEY: 'gsk_SECRET_G',
+    GEMINI_API_KEY: 'AIza_SECRET_M',
+    ALLOWED_ORIGINS: 'https://gyulyia3d-cloud.github.io',
+    ...overrides,
+  };
+};
 const brief = { concept: 'Uma peça para testar o Worker de ponta a ponta.', lang: 'pt', surface: { type: 'led', w: 1920, h: 1080 }, time: { bpm: 120 } };
 const post = (e, o = {}) => W.default.fetch(new Request('https://w.test/brief', { method: 'POST', headers: { 'content-type': 'application/json', Origin: 'https://gyulyia3d-cloud.github.io', ...(o.headers || {}) }, body: o.raw ?? JSON.stringify(o.body ?? { v: 1, brief }) }), e);
 try {
-  let e = env(), codes = [];
-  for (let i = 0; i < 16; i++) { const r = await post(e); codes.push(r.status); }
-  check(codes.slice(0, 14).every(c => c === 200) && codes[14] === 429 && codes[15] === 429, 'Worker: 14 gerações por dia e a 15ª é recusada com 429', codes.join());
+  let e = env();
+  const responses = await Promise.all(Array.from({ length: 16 }, () => post(e)));
+  const codes = responses.map(r => r.status);
+  check(codes.filter(c => c === 200).length === 14 && codes.filter(c => c === 429).length === 2, 'Worker: reserva no máximo 14 tentativas simultâneas', codes.join());
   const r15 = await (await post(e)).json(); check(r15.error === 'budget' && r15.remaining === 0, 'Worker: a recusa diz "budget"', JSON.stringify(r15));
   e = env({ DAILY_LIMIT: '3' }); const c3 = []; for (let i = 0; i < 4; i++) c3.push((await post(e)).status); check(c3.join() === '200,200,200,429', 'Worker: DAILY_LIMIT muda o teto', c3.join());
   e = env(); calls = []; const ok1 = await post(e); const j1 = await ok1.json(); const txt = JSON.stringify(j1);
@@ -109,18 +121,19 @@ try {
   check(imgFail.ok === true && imgFail.imageUsed === false && imgFail.imageDetail === 'gemini:500' && !JSON.stringify(imgFail).includes('SECRET'), 'Worker: se a visão falha, a geração segue só com texto e diz imageDetail (gemini:500)', JSON.stringify(imgFail));
   behavior = { groq: 'fail', gemini: 'fail' }; e = env(); const dead = await post(e); const dj = await dead.json();
   check(dj.detail === 'groq:500,gemini:500' && !JSON.stringify(dj).includes('SECRET'), 'Worker: a falha diz só o código HTTP de cada provedor (groq:500,gemini:500), sem chave nem texto', JSON.stringify(dj));
-  check(dead.status === 502 && dj.error === 'upstream' && (+e.BUDGET.m.get(`d:${new Date().toISOString().slice(0, 10)}`) || 0) === 0, 'Worker: se tudo falha, 502 e a geração do dia é devolvida (estorno)', JSON.stringify([dead.status, [...e.BUDGET.m]]));
+  check(dead.status === 502 && dj.error === 'upstream' && e.usage.get('usage')?.used === 1, 'Worker: falha do provedor conta para o limite do dia', String(dead.status));
   { const oldF = globalThis.fetch; let body0 = null; globalThis.fetch = async (u, i) => { body0 = JSON.parse(i.body); return oldF(u, i); }; behavior = { groq: 'ok', gemini: 'ok' }; e = env(); await post(e);
     check(body0.model === 'openai/gpt-oss-20b' && body0.reasoning_effort === 'low' && body0.max_tokens >= 2000 && body0.response_format.type === 'json_object', 'Worker: gpt-oss pede raciocínio baixo e teto de tokens folgado (resposta não vem vazia)', JSON.stringify(body0).slice(0, 160)); globalThis.fetch = oldF; }
   behavior = { groq: 'ok', gemini: 'ok' };
   e = env(); check((await post(e, { headers: { Origin: 'https://evil.example' } })).status === 403, 'Worker: origem não autorizada recebe 403', '');
   const okh = await post(e); check(okh.headers.get('Access-Control-Allow-Origin') === 'https://gyulyia3d-cloud.github.io', 'Worker: CORS devolve a origem autorizada (nunca *)', String(okh.headers.get('Access-Control-Allow-Origin')));
-  check((await post(e, { headers: { Origin: 'null' } })).status === 200 && (await post(env({ ALLOW_FILE_ORIGIN: 'false' }), { headers: { Origin: 'null' } })).status === 403, 'Worker: origem null (arquivo local) aceita por padrão e recusável por variável', '');
+  check((await post(e, { headers: { Origin: 'null' } })).status === 403 && (await post(env({ ALLOW_FILE_ORIGIN: 'true' }), { headers: { Origin: 'null' } })).status === 200, 'Worker: origem null só é aceita quando habilitada', '');
   check((await W.default.fetch(new Request('https://w.test/brief', { method: 'GET', headers: { Origin: 'https://gyulyia3d-cloud.github.io' } }), e)).status === 404 && (await W.default.fetch(new Request('https://w.test/outra', { method: 'POST', headers: { Origin: 'https://gyulyia3d-cloud.github.io' }, body: '{}' }), e)).status === 404, 'Worker: só POST em / ou /brief', '');
   const pf = await W.default.fetch(new Request('https://w.test/brief', { method: 'OPTIONS', headers: { Origin: 'https://gyulyia3d-cloud.github.io' } }), e); check(pf.status === 204 && /POST/.test(pf.headers.get('Access-Control-Allow-Methods')), 'Worker: pré-voo CORS responde 204', String(pf.status));
   check((await post(e, { raw: 'não é json' })).status === 400 && (await post(e, { body: { v: 1, brief: { ...brief, concept: 'curto' } } })).status === 400 && (await post(e, { body: { v: 1 } })).status === 400, 'Worker: JSON inválido, descrição curta ou sem briefing dão 400', '');
   check((await post(e, { raw: JSON.stringify({ v: 1, brief, images: ['x'.repeat(1_600_000)] }) })).status === 413, 'Worker: corpo acima de 1,5 MB dá 413', '');
-  check((await post(env({ GROQ_API_KEY: '', GEMINI_API_KEY: '' }))).status === 503 && (await post(env({ BUDGET: null }))).status === 503, 'Worker: sem chave ou sem KV responde 503 (e não gasta cota)', '');
+  check((await post(env({ GROQ_API_KEY: '', GEMINI_API_KEY: '' }))).status === 503 && (await post(env({ DAILY_BUDGET: null }))).status === 503, 'Worker: sem chave ou contador diário responde 503', '');
+  check((await post(env({ RL: { limit: async () => ({ success: false }) } }))).status === 429, 'Worker: limitação de borda responde 429', '');
 } finally { globalThis.fetch = realFetch; }
 
 /* ---------- C. navegador ---------- */
