@@ -1,5 +1,86 @@
 # Changelog
 
+## Não lançado · Junção das releases 3.21.0 e 3.22.0 com a main do GitHub
+
+As releases 3.21.0 e 3.22.0 foram feitas fora da `main` do GitHub, que seguiu com a fase 14 por outro caminho. A junção tomou o GitHub como base:
+
+- **Popover Adicionar:** fica o `app/add-ui.js` (10 categorias, tipos novos de elementos). O `app/add-pop.js` e o `add_pop_check.mjs` da 3.21.0 saem.
+- **Timeline:** fica a do GitHub (zoom, Ocultar, olho, áudio ao vivo gravado). A edição **T2** da 3.21.0 foi portada para ela: a faixa de uma camada vira slider do atraso `p.phase` (arrasto e setas em semicolcheias, Home/End, PageUp/PageDown) e cada evento vira slider da batida, sem passar do vizinho. Um gesto = uma entrada de histórico; Esc cancela. Clicar na régua continua só posicionando a cabeça de leitura. `timeline_edit_check.mjs` passou a usar a estrutura nova (`#tlIn .tlr.ly`, `#tlEv .tlev`).
+- **Fase 15 (crítica)** e **fluxo óptico** do `analyze_video.py` entram sem mudança (`critique.js` embutido entre os marcadores CRITIQUE; `critique_check.mjs` e `test_analyze_video.py` de volta no `check.mjs`).
+- O aviso (`#toast`) deixa de interceptar o mouse, como na 3.21.0.
+
+## Não lançado · Quadros de referência por ambiente, herói em LED, STANDARD sem verde
+
+O `check.mjs` falhava neste ambiente em três pontos que **já falhavam na 3.20.0** (reproduzido): GLITCH EM BLOCOS (resolvido acima, no teste), nota da galeria (GLITCH II 72 < 75) e 105 de 184 quadros de referência. A causa comum é o hash `fract(sin(x)*43758.5)` do GLSL e o rasterizador por software, que mudam com a versão do navegador: a mesma peça sai com outro padrão de ruído (comparado lado a lado com as folhas de contato da base).
+
+- **Base de quadros por ambiente** (`scripts/gl_parity.mjs`): a base vale para a versão principal do Chrome + o renderizador WebGL (`--env` mostra a chave, ex. `chrome141-swiftshader`). `--compare` usa `examples/reference/parity.<ambiente>.json` e, sem ela, a legada `parity.json` (a da máquina da autora); `--update` grava sempre a do ambiente atual e nunca sobrescreve a de outro. Nova: `parity.chrome141-swiftshader.json` (184 quadros, gerada depois de olhar as folhas de contato). **Na máquina da autora, a `parity.json` legada fica velha nos quadros da galeria 01** (mudança intencional abaixo): rode `node scripts/gl_parity.mjs --update` lá, depois de olhar os quadros.
+- **Herói em LED mais grosso** (`app/genai.js` e `brief_to_project.py`, iguais): o túnel herói em superfície de LED nasce com espessura 18 (era 9, que virava ~6,7 px numa parede de 800 px; ~26 mm a 3,9 mm de pitch, fino a 40 m). Galeria regenerada: só a 01 muda de conteúdo; GLITCH II vai de 72 a 87 e toda composição fica em 78 ou mais.
+- **Paleta STANDARD:** o acento `#00FF3C` vira `#FFFFFF` (pedido: nada verde). Projetos STANDARD já salvos no navegador guardam a paleta antiga até **Restaurar STANDARD original**. A amostra "Verde ácido" do seletor de cores continua como opção.
+
+## Não lançado · Acento branco, Ocultar a timeline e correções de teste
+
+- **Verde → branco na interface:** o acento (`--accent`) passa de verde (`#00ff3c`; `#007a22` no tema claro) a **branco** no tema escuro e à cor do texto (preto) no tema claro, onde branco sumiria no fundo. Vale para Exportar, preenchimento dos sliders, abas, seleção das miniaturas, cabeça de leitura e o resto do que usava o acento. A cor de obra `#00FF3C` da paleta STANDARD (desenhada no canvas) **não mudou**. Teste: `timeline_check.mjs` varre a interface atrás de qualquer cor verde, com controle negativo.
+- **Ocultar a timeline:** botão **Ocultar** na barra da timeline tira o painel inteiro (o scrub volta); o botão **Timeline ▴**, no alto da vista, traz de volta. Estado salvo.
+- **Timeline no toque:** o olho tinha 12 px de altura em tela de toque (o `ui_layout_check` pede 24 px, WCAG 2.2); agora tem o tamanho do interruptor do painel e as linhas crescem junto. No tema claro, as faixas ficavam ilegíveis (a vista força o escuro, mas os tons de superfície vinham do claro): a timeline fixa os seus tons.
+- **`fx_check`, GLITCH EM BLOCOS:** o efeito acende por probabilidade em passos do loop, e o quadro único do teste (30% do loop) podia cair num passo sem nenhum bloco aceso, conforme o navegador calcula o hash `sin` do GLSL. Para efeitos intermitentes (tag `glitch`), o teste agora usa a maior mudança em 8 quadros do loop; conferido por mutação (um glitch que nunca acende reprova).
+
+## Não lançado · Fase 14b-T1: timeline somente leitura
+
+Painel acoplado embaixo da vista (`docs/brand/UI-REDESIGN-PROPOSTA.md` §13, entrega T1). Mostra o que o Animation IR já guardava e só aparecia como números. Não muda projeto, formato nem render (os quadros de referência não são afetados: nada no caminho de render mudou).
+
+- **Módulo** `app/timeline.js` (`TIMELINE`). **Transporte:** início, quadro anterior, play/pausa, próximo quadro, áudio, zoom da timeline (1× a 16×), recolher. Leitura `0094/0218 · C02:3`.
+- **Régua:** compassos, tempos e, com espaço, semicolcheias; cabeça de leitura ligada ao quadro. Clicar ou arrastar na régua posiciona (pausa e vai ao quadro, como o scrub); pelo teclado, → 1 quadro, Shift+→ um tempo, Home e End. Com a timeline aberta ela **substitui a linha do scrub**; recolhida, o scrub volta.
+- **Fases** da composição (`meta.compositionIR[i].temporal.phases`) em faixas cinza e **eventos** na batida (`meta.animationIR[i].events`). Sem IR, a faixa diz que não há fases nem eventos.
+- **Uma faixa por camada**, na ordem do painel de Camadas: papel na hierarquia e comportamento do Animation IR, comportamento temporal e o que ouve (`L.temporal`), **atraso em semicolcheias** (`p.phase`: a barra começa deslocada e a sobra aparece dando a volta), ciclos das curvas LFO como marcas e **se o loop fecha** (↻; ≠ quando uma curva tem ciclo fracionário ou o loop sem emenda está desligado: o mesmo critério do arredondamento `cyc`). A régua mostra se todas fecham. Cada faixa tem rótulo acessível com tudo isso. O olho é o mesmo `toggleLayer` do painel. Não há trava: o painel de Camadas também não tem.
+- **Áudio:** bandas G, M, A, N e os golpes; sem áudio ao vivo, a fonte sintética do BPM (o loop inteiro); ao vivo, o que foi gravado ao tocar.
+- **Custo:** régua e áudio são redesenhados só quando algo muda (conferido a cada 30 quadros); a cada quadro só a cabeça de leitura anda. Altura arrastável (e pelo teclado no divisor), salva; aberta por padrão em tela larga e alta, recolhida no celular. A barra flutuante sobe para não cobrir a timeline.
+- **Teste novo** `timeline_check.mjs` (22 casos, clique de mouse de verdade; controles negativos: ciclo de 1,5 marca ≠, projeto sem IR; conferido por mutação: refazer o DOM a cada quadro e marcar sempre "fecha" reprovam).
+
+## Não lançado · Fase 14a-3: popover Adicionar
+
+Escolher o que entra na composição sem passar pelo painel de propriedades (`docs/brand/UI-REDESIGN-PROPOSTA.md` §12). Só apresentação: sem mudança de render, de formato de projeto nem de migração. O Adicionar por categoria e tipo do painel de Camadas continua igual.
+
+- **Popover** (`app/add-ui.js`, módulo `ADDUI`): abre pelo **+** no cabeçalho de Camadas e pelo botão **Adicionar** da barra flutuante. Abas pelas 10 categorias, grade de miniaturas e busca (sem acento, em todas as categorias). Ao escolher um tipo: prévia de **um quadro**, com lado maior de 256 px, na proporção da superfície, sobre as camadas de baixo, sem loop contínuo (redesenha só quando se escolhe, passa o mouse ou muda um valor); até 2 selects e 4 parâmetros em linha, com os rótulos de P1 a P4 do preset; e o botão **Adicionar camada**. Os outros parâmetros ficam no painel.
+- **Histórico:** o rascunho não toca o projeto; adicionar é **um passo** só, com rótulo, e um Ctrl+Z desfaz.
+- **Teclado e foco:** Esc e clique fora fecham e devolvem o foco a quem abriu; foco preso enquanto aberto; setas trocam a aba; Enter na busca escolhe o primeiro resultado; os atalhos da vista (espaço, 0 a 9, letras) não disparam enquanto se escolhe.
+- **Tela estreita** (até 700 px): vira gaveta encostada embaixo.
+- Tempo, Simulação e Código não têm miniatura ao vivo (precisam do histórico de quadros, assariam o loop inteiro, ou só rodam autorizados): a grade mostra um traço e a prévia avisa.
+- **Teste novo** `add_ui_check.mjs` (clique de mouse de verdade em tudo que abre e adiciona; controles negativos de canvas preto, busca vazia e dois passos de histórico; conferido por mutação: um commit a mais e o foco solto reprovam). Achado no caminho, fora desta fase e não mexido: qualquer desfazer troca `project.assets` ausente por `{}`.
+
+## Não lançado · Elementos de interface animados e biometria
+
+Doze camadas novas, distribuídas nas categorias que já existem (o menu continua com 10 categorias). Vocabulário dos elementos animados do Layer Forge e dos módulos de leitura das gerações /vj, reescrito para o motor (`app/elements-ui.js`, módulo `ELEMENTSUI`). Sem mudança no render das camadas existentes.
+
+- **Dados:** `icon` (12 ícones que animam sozinhos), `ruler` (régua com cursor), `counter` (contador fixo, vai-e-volta ou sorteando no beat), `gauge` (dial de 270° ou anéis segmentados), `coords` (leitura cartesiana, polar ou geográfica), `progress` (barra de progresso), `chart` (mercado, barras ou linha), `network` (rede de nós com pacotes), `rack` (datacenter com LEDs no passo).
+- **Texto:** `ticker` (letreiro em rolagem entre réguas). **Formas:** `sacred` (flor da vida, árvore da vida, micélio, espiral áurea, grade polar).
+- **Elementos 3D:** `face` (biometria: rosto em malha 3D com pontos de referência, em pontos, linhas ou plexus, com glow).
+- Tempo só por ciclos inteiros, acaso só por `hr()`. **Teste novo** `elements_ui_check.mjs` (31 casos desenham e diferem, determinístico, o loop fecha pelo critério do `loop_check`, andam, ciclos 0 = parado; na primeira rodada pegou a emenda do ícone "sinal", corrigida). `elements3d_check.mjs` cobre `face`; `layers_check.mjs` lista os tipos novos de Dados.
+
+## Não lançado · Elementos 3D (pontos, linhas, plexus, glow)
+
+Categoria de camada nova, **Elementos 3D**, com o **Organismo** (saiu de Formas) e cinco tipos novos de objeto em nuvem de pontos, desenhados por projetor próprio (`app/elements3d.js`, módulo `ELEMENTS3D`, sem biblioteca 3D). Projetos antigos não mudam: o organismo com os valores padrão sai idêntico (render `points`, glow 0).
+
+- **`botanic`** (Botânica): flor 3D (pétalas 5/8/13 em volta de um disco em filotaxia, abrindo e fechando) e folhagem (três frondes de samambaia).
+- **`molecule`** (Molecular): DNA em dupla hélice e molécula montada pela semente.
+- **`sigil`** (Símbolos 3D): esfera armilar astrológica (eclíptica, signos e planetas), quadratura do círculo alquímica com os quatro elementos, heptagrama e pentagrama magick.
+- **`terrain`** (Terreno): voo rasante com relevo periódico na direção do voo, para o loop fechar.
+- **`monument`** (Monumento): torre, zigurate, corredor, corpo, globo, anel e toro, portados do kit 3D do TECNOFEUDO TOTAL (projeto da autora).
+- **Render `points` / `lines` / `plexus`** e **`glow`** em todos os Elementos 3D, organismo incluso (linhas do organismo seguem as espirais 13 e 21; o plexus liga vizinhos no espaço 3D até `reach`). O glow reduz a camada em meias escalas e soma o halo, sem `ctx.filter`; em fundo claro o halo vai por baixo.
+- Tempo só por ciclos inteiros (`spin`, `cycles`); sem relógio nem acaso.
+- **Teste novo** `elements3d_check.mjs` (16 formas desenham e diferem, determinístico, emenda do loop pelo critério do `loop_check` com giro 0, renders e glow mudam a imagem, glow 0 = organismo antigo, controles negativos; a emenda pega uma respiração com ciclo fracionário, conferido por mutação). `layers_check.mjs`: o menu passa a ter 10 categorias.
+
+## Não lançado · Gerar briefing (IA gratuita opcional) e how-to das IAs
+
+Sem mudança de render nem de formato de projeto. O motor ganha um assistente que faz, na web e sem custo, o papel do `/vj`: a pessoa responde a auditoria, junta mídias e descreve o projeto, e o motor monta as composições pelas regras locais (`genai.js`); uma IA gratuita, opcional, só completa o que ficou em branco.
+
+- **Botão GERAR BRIEFING** ao lado de Carregar briefing (`app/briefgen.js`, módulo `BRIEFGEN`). Quatro seções, cada uma com o seu "Como fazer": 1 Auditoria (superfície, tempo, clima, energia, densidade, paleta, áudio, evento focal, proibidos, texto exato, entrega; com nota 0 a 100 e as perguntas pendentes, mesmos pesos de `brief_check.py`), 2 Mídias (até 3 imagens de referência; mapa de pixels em CSV ou PNG, medido localmente como regiões), 3 Descrição visual (e verbos visuais opcionais), 4 Gerar.
+- **Honestidade sobre o que foi respondido:** só conta como respondido o que a pessoa tocou; o resto usa o padrão do gerador e fica registrado em `meta.spec.assumed`. `meta.generator` diz se houve IA e o que ela preencheu. A IA nunca muda nome, conceito, superfície, tempo nem texto, e nunca sobrescreve o que a pessoa respondeu (`sanitizeSpec` e `mergeSpec`, listas fechadas).
+- **Aviso pequeno:** limite de 14 gerações por dia, compartilhado (cota gratuita); esgotado, o gerador por regras continua.
+- **Carregar briefing:** passo a passo para gerar o JSON em Gemini, GPT, Claude, Grok e DeepSeek, com o prompt pronto para copiar e a nota de como inserir as mídias (o JSON não leva imagens; elas entram na vista ou na aba Mídia). A importação agora aceita também o **briefing** em JSON (antes só projeto): o gerador local monta as composições.
+- **Worker opcional** (`worker/`, Cloudflare, sem dependências): esconde as chaves da Groq e do Gemini, impõe 14 por dia, só aceita origens autorizadas, estorna a geração se o provedor falha. **Ligado:** `ENDPOINT` em `app/briefgen.js` aponta para o Worker publicado (`worker/README.md`); se ficar vazio, a caixa da IA fica desativada e o assistente avisa. Testado com chamadas reais (17/10): texto pela Groq responde 200 em ~1,4 s com JSON válido. **A visão (Gemini) não foi confirmada:** com imagem o Worker caiu para só texto (`imageUsed: false`); ele agora devolve `imageDetail` com o código e o assistente avisa a pessoa. A primeira chamada real tinha dado 502 (teto de tokens baixo nos modelos de raciocínio, hipótese); o Worker passou a devolver `detail` com o código de cada provedor. As cotas dos planos gratuitos seguem não confirmadas.
+- **Teste novo** `briefgen_check.mjs` (listas fechadas = esquema = registry = Worker, entradas hostis com controle negativo, o Worker com fetch simulado, a interface com clique de mouse de verdade em 3 larguras, idioma, Esc, IA simulada).
+- `window.AIVJ.briefgen` expõe o módulo (testes). Barra do topo: entre 701 e 920 px o botão novo recolhe (senão cobria o botão Briefing; medido) e o caminho é Carregar briefing > Gerar briefing aqui; até 700 px o topo rola na horizontal e o botão fica num grupo `.keep`. Ao abrir, o foco vai ao primeiro campo da auditoria.
+
 ## 3.22.0 (24/10/2026) · Fase 15: crítica em três eixos e falhas críticas
 
 Só medição e relatório (módulo novo `app/critique.js`, CLI `scripts/critique.mjs`, função `AIVJ.critique(lang, {flash})`); o render, o formato de projeto e as notas do avaliador não mudaram. O avaliador estrutural só ganhou dados extras de medição (paleta, grade de energia, cobertura por quadro) e as funções `measure` e `run(lang, medição)` exportadas.

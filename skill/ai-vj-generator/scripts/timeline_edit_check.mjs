@@ -41,7 +41,7 @@ const key = (k, vk = 0) => page.send('Input.dispatchKeyEvent', { type: 'keyDown'
 const wait = async (f, ms = 4000) => { const t0 = Date.now(); while (Date.now() - t0 < ms) { if (await E(f)) return true; await sleep(60); } return false; };
 const proj = () => E(`JSON.stringify(AIVJ.project)`);
 const hash = () => E(`[3, 20, 40].map(n => { const d = AIVJ.renderFrame(0, n, 0.25, false).data; let h = 2166136261; for (let i = 0; i < d.length; i++) h = Math.imul(h ^ d[i], 16777619) >>> 0; return h; }).join()`);
-const lane = i => `#tlBody .tlrow[data-i="${i}"] .tllane`;
+const lane = i => `#tlIn .tlr.ly[data-i="${i}"]`;
 const steps = async i => +(await E(`document.querySelector('${lane(i)}').dataset.steps`));
 const phaseOf = i => E(`(AIVJ.project.compositions[0].layers[${i}].p || {}).phase`);
 const evs = async () => JSON.parse(await E(`JSON.stringify(AIVJ.project.meta.animationIR[0].events.map(e => [e.beat, e.at, e.phase]))`));
@@ -54,11 +54,11 @@ const dragBy = async (sel, dx, { hold = false, fromFx = 0.5 } = {}) => {
   if (!hold) { await mouse('mouseReleased', x + dx, y); await sleep(200); }
   return { x, y, dx };
 };
-const stepPx = async () => (await rect(lane(1))).w / 64, beatPx = async () => (await rect('#tlBody .tlstrip')).w / 16;
+const stepPx = async () => (await rect(lane(1))).w / 64, beatPx = async () => (await rect('#tlEv')).w / 16;
 
 try {
   await E(`AIVJ.state.paused = true; AIVJ.timeline.setOpen(true)`);
-  check(await wait(`!!document.querySelector('#tlBody .tlrow[data-i]')`), 'a timeline abre e monta as faixas', 'sem faixas');
+  check(await wait(`!!document.querySelector('#tlIn .tlr.ly[data-i]')`), 'a timeline abre e monta as faixas', 'sem faixas');
 
   /* atraso por arrasto */
   const h0 = await E(`AIVJ.hist`), r0 = await hash(), pj0 = JSON.parse(await proj());
@@ -118,20 +118,20 @@ try {
   /* eventos */
   const bp = await beatPx(), render0 = await hash(), hE = await E(`AIVJ.hist`);
   check(JSON.stringify(await evs()) === JSON.stringify([[0, 0, 'establish'], [3, 0.1875, 'develop'], [6, 0.375, 'transform'], [10, 0.625, 'peak'], [13, 0.8125, 'release']]), 'ponto de partida: 5 eventos em ordem, nas batidas 0, 3, 6, 10 e 13', JSON.stringify(await evs()));
-  await dragBy('#tlBody .ev[data-k="1"]', 2 * bp, { fromFx: 0 });
+  await dragBy('#tlEv .tlev[data-k="1"]', 2 * bp, { fromFx: 0 });
   let e = await evs();
   check(e[1][0] === 5 && Math.abs(e[1][1] - 0.3125) < 1e-9 && e[1][2] === 'develop', 'arrastar o evento "build" 2 batidas à direita: batida 5, at = 5/16, ainda na fase develop', JSON.stringify(e[1]));
   check((await E(`AIVJ.hist`)) === hE + 1 && /Evento build/.test((await E(`AIVJ.histLabels`)).slice(-1)[0]), 'o arrasto do evento grava uma entrada de histórico com nome', `${hE} → ${await E(`AIVJ.hist`)}`);
   check((await hash()) === render0, 'controle negativo: mexer num evento NÃO muda o render (é anotação do plano)', 'hash mudou');
-  check(await E(`document.querySelector('#tlBody .ev[data-k="1"]').getAttribute('aria-valuenow') === '5'`), 'o marcador é um slider com a batida atual', '');
-  await dragBy('#tlBody .ev[data-k="1"]', 20 * bp, { fromFx: 0 });
+  check(await E(`document.querySelector('#tlEv .tlev[data-k="1"]').getAttribute('aria-valuenow') === '5'`), 'o marcador é um slider com a batida atual', '');
+  await dragBy('#tlEv .tlev[data-k="1"]', 20 * bp, { fromFx: 0 });
   e = await evs();
   check(e[1][0] === 6, 'controle negativo: o evento não passa do vizinho (para na batida do "turn", 6)', JSON.stringify(e));
   /* "build" e "turn" agora estão na mesma batida (6): quem está por cima (o último) é o que o mouse pega, e ele não passa para trás do vizinho */
-  await dragBy('#tlBody .ev[data-k="2"]', -8 * bp, { fromFx: 0 });
+  await dragBy('#tlEv .tlev[data-k="2"]', -8 * bp, { fromFx: 0 });
   e = await evs();
   check(e[2][0] === 6 && e[1][0] === 6, 'à esquerda o evento também não passa do vizinho anterior ("turn" fica na batida 6, junto de "build")', JSON.stringify(e));
-  await E(`document.querySelector('#tlBody .ev[data-k="1"]').focus()`); await key('Home', 36);
+  await E(`document.querySelector('#tlEv .tlev[data-k="1"]').focus()`); await key('Home', 36);
   e = await evs();
   check(e[1][0] === 0 && e[1][2] === 'establish' && e[2][0] === 6, 'Home no evento "build" leva à batida 0 e a fase acompanha (establish), sem mexer nos outros', JSON.stringify(e));
   const okOrder = e.every((x, k) => Number.isInteger(x[0]) && x[0] >= 0 && x[0] < 16 && (k === 0 || x[0] >= e[k - 1][0]));
@@ -139,7 +139,7 @@ try {
   await sleep(600); await E(`AIVJ.undo(); AIVJ.undo(); AIVJ.undo()`); await sleep(200);
   check(JSON.stringify(await evs()) === JSON.stringify([[0, 0, 'establish'], [3, 0.1875, 'develop'], [6, 0.375, 'transform'], [10, 0.625, 'peak'], [13, 0.8125, 'release']]) && (await E(`AIVJ.hist`)) === hE, 'três Ctrl+Z devolvem os 5 eventos ao estado de partida', JSON.stringify(await evs()));
   /* teclado no evento */
-  await E(`document.querySelector('#tlBody .ev[data-k="3"]').focus()`);
+  await E(`document.querySelector('#tlEv .tlev[data-k="3"]').focus()`);
   await key('ArrowLeft', 37); await key('ArrowLeft', 37);
   e = await evs();
   check(e[3][0] === 8 && e[3][2] === 'transform' && (await E(`document.activeElement.dataset.k`)) === '3', 'setas no evento "focal": 10 → 8 (cruzou para a fase transform) e o foco fica nele', JSON.stringify(e[3]));
@@ -159,10 +159,10 @@ await page.close();
 try {
   page = await open(0);
   await page.evaluate(`AIVJ.state.paused = true; AIVJ.timeline.setOpen(true)`);
-  const t0 = Date.now(); while (Date.now() - t0 < 4000 && !(await page.evaluate(`!!document.querySelector('#tlBody .tlrow[data-i]')`))) await sleep(60);
+  const t0 = Date.now(); while (Date.now() - t0 < 4000 && !(await page.evaluate(`!!document.querySelector('#tlIn .tlr.ly[data-i]')`))) await sleep(60);
   const sp = (await rect(lane(1))).w / 64;
   await dragBy(lane(1), 4 * sp);
-  const n = JSON.parse(await E(`JSON.stringify({ steps: +document.querySelector('${lane(1)}').dataset.steps, ev: document.querySelectorAll('#tlBody .ev').length, ir: !!AIVJ.project.meta.animationIR })`));
+  const n = JSON.parse(await E(`JSON.stringify({ steps: +document.querySelector('${lane(1)}').dataset.steps, ev: document.querySelectorAll('#tlEv .tlev').length, ir: !!AIVJ.project.meta.animationIR })`));
   check(n.steps === 20 && n.ev === 0 && !n.ir, 'sem Animation IR: o atraso edita (16 → 20), nenhum evento é inventado e nenhum IR é criado', JSON.stringify(n));
 } catch (er) { bad('exceção (sem IR): ' + (er.message || er)); }
 await page.close();

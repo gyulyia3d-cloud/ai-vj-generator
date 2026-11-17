@@ -72,7 +72,7 @@ function rememberOrig() { P.compositions.forEach(c => { if (!ORIG[P.id + c.id]) 
 
 function renderLayers() {
   const el = pane('lay'), comp = cur();
-  el.innerHTML = `<h2 class="sec">Camadas · ${esc(comp.name)} <span class="lbl">0–9 liga · clique seleciona</span></h2>
+  el.innerHTML = `<h2 class="sec">Camadas · ${esc(comp.name)} <span class="lbl">0–9 liga · clique seleciona <button data-addpop aria-haspopup="dialog" aria-label="Adicionar camada" title="Adicionar camada">+</button></span></h2>
     <div id="lrows">${comp.layers.map((L, i) => `<div class="lrow ${ST.sel === i ? 'sel' : ''} ${ST.solo === i ? 'solo' : ''}" data-i="${i}">
       <button class="tg" data-vis aria-pressed="${L.on}" aria-label="Ligar ${esc(L.name)}"></button><span class="k">L${i}</span>
       <span style="min-width:0"><span class="nm">${esc(L.name)}</span><span class="ty">${esc((famOf(L.type) || [''])[0])} · ${esc(typeLabel(L.type))}${LAYER_ERR.has(L) ? ' · ERRO' : ''}</span></span>
@@ -80,9 +80,11 @@ function renderLayers() {
       <select data-bl aria-label="Blend ${esc(L.name)}">${Object.keys(BLENDS).map(b => `<option ${b === L.blend ? 'selected' : ''}>${b}</option>`).join('')}</select></div>`).join('')}</div>
     <div class="row"><button data-la="solo" aria-pressed="${ST.solo === ST.sel}">Solo</button><button data-la="up">↑</button><button data-la="down">↓</button><button data-la="dup">Duplicar</button><button data-la="ren">Renomear</button><button data-la="reset">Reset</button><button data-la="del">Remover</button></div>
     <div class="row"><button data-la="copy">Copiar parâmetros</button><button data-la="paste" ${ST.clip ? '' : 'disabled'}>Colar parâmetros</button><button data-la="copyL">Copiar camada</button><button data-la="pasteL" ${ST.clipL ? '' : 'disabled'}>Colar camada</button></div>
-    <div class="row"><button data-la="addpop" aria-haspopup="dialog" aria-expanded="false" class="pri">+ Adicionar camada</button></div>
+    <div class="row fill"><select id="addCat" aria-label="Categoria">${FAMILIES.map(f => `<option value="${f[0]}">${esc(f[0])}</option>`).join('')}</select><select id="addType" aria-label="Tipo de camada"></select><button data-la="add" style="flex:0 0 auto">Adicionar</button></div>
     <p class="note">As camadas valem só para esta composição. Mostrar camadas (E) abre a pilha em 3D; arraste para girar. Na viewport, arrastar move a camada selecionada; Shift + arrastar escala; Alt + arrastar gira.</p>`;
+  fillAddTypes();
 }
+function fillAddTypes() { const c = $('#addCat'), t = $('#addType'); if (!c || !t) return; const f = FAMILIES.find(x => x[0] === c.value) || FAMILIES[0]; t.innerHTML = f[1].map(x => `<option value="${x[0]}">${esc(x[1])}</option>`).join(''); c.onchange = fillAddTypes; }
 function selLayer(i) { ST.sel = i; $$('#lrows .lrow').forEach((r, k) => r.classList.toggle('sel', k === i)); syncLayerDom(); renderParams(); }
 
 function paramGroups(L) {
@@ -274,7 +276,9 @@ function setSeed(s) { P.seed = s; SEED = s; buildGrain(); commit(); renderProjec
 function copyText(s, msg) { try { navigator.clipboard.writeText(s).then(() => toast(msg), () => toast('Copie manualmente: a área de transferência foi recusada')); } catch (e) { toast('Copie manualmente'); } }
 function importJson(txt) {
   try {
-    const o = typeof txt === 'string' ? JSON.parse(txt.trim().replace(/^```(json)?|```$/g, '')) : txt;
+    let o = typeof txt === 'string' ? JSON.parse(txt.trim().replace(/^```(json)?|```$/g, '')) : txt;
+    /* um briefing (o JSON que uma IA de chat entrega) em vez de um projeto: o gerador local monta as composições; antes isto era recusado por não ter composições */
+    if (o && typeof o === 'object' && !Array.isArray(o.compositions) && typeof o.concept === 'string' && o.surface) { const errs = GENAI.checkBrief(o); if (errs.length) throw new Error(errs.join(' · ')); o = GENAI.build(o); }
     const pr = normalize(o);
     commit(true); SLOTS.briefing = pr; ST.ci = 0; setMode('briefing', true); commit(true);
     toast(`Importado: ${pr.meta.name} · ${pr.compositions.length} composições${WARN_LOAD.length ? ' · ' + WARN_LOAD.length + ' aviso(s)' : ''}`, 3600);

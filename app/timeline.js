@@ -1,119 +1,169 @@
-/* Timeline (fase 14b). T1 lê: o loop como janela, com régua de compassos e batidas, fases da composição, eventos na batida,
-   uma faixa por camada (comportamento temporal, atraso em semicolcheias, ciclos de LFO) e uma faixa de áudio.
-   T2 edita só o que já existe, sem campo novo no esquema (sem migração): arrastar a barra de uma camada (ou setas na faixa) muda L.p.phase em passos inteiros
-   de semicolcheia, e arrastar um evento (ou setas) muda meta.animationIR[].events[].beat em batidas inteiras, sem passar do vizinho. Um gesto = uma entrada no
-   histórico; Esc cancela o arrasto. O atraso muda o render; o evento é só anotação do plano (nada no render lê events). Fases e eventos vêm de meta.compositionIR e meta.animationIR
-   (projeto escrito à mão sem eles mostra só a régua e as camadas, e diz isso). O áudio da régua é o sintético do BPM (pseudoAudio), nunca o ao vivo.
-   A cabeça de leitura é um elemento só que se move por quadro; o resto é refeito quando a assinatura do que ele mostra muda.
-   Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html entre os marcadores TIMELINE. */
+/* Timeline T1, somente leitura (fase 14b-T1, docs/brand/UI-REDESIGN-PROPOSTA.md §13): painel acoplado embaixo da vista, recolhível e com altura arrastável.
+   Mostra o que hoje só aparece como números: régua (compassos, tempos, quadros) com a cabeça de leitura ligada ao scrub; fases da composição (meta.compositionIR[i].temporal.phases)
+   e eventos na batida (meta.animationIR[i].events); uma faixa por camada, na ordem do painel de Camadas, com o comportamento (Animation IR e semântica de áudio),
+   o atraso em semicolcheias (p.phase), os ciclos das curvas e se o loop fecha (ciclos inteiros declarados); e a faixa de áudio (ao vivo, gravada ao tocar, ou a fonte sintética do BPM).
+   Clicar na régua só posiciona a cabeça de leitura (como o scrub); o olho é o mesmo toggleLayer do painel de Camadas.
+   T2 (fase 14b) edita só o que já existe, sem campo novo no esquema (sem migração): arrastar a faixa de uma camada (ou setas nela) muda L.p.phase em semicolcheias
+   inteiras, e arrastar um evento (ou setas) muda meta.animationIR[].events[].beat em batidas inteiras, sem passar do vizinho. Um gesto = uma entrada no histórico;
+   Esc cancela o arrasto. O atraso muda o render; o evento é só anotação do plano (nada no render lê events).
+   Custo: a régua e o áudio são redesenhados só quando algo muda; a cada quadro só a cabeça de leitura anda (um transform).
+   Fonte de verdade: este arquivo; node scripts/embed-modules.mjs embute no index.html entre os marcadores TIMELINE. Mesmo escopo do motor (IIFE): sem import/export. */
 const TIMELINE = (() => {
-  const root = () => $('#tl');
-  const S = { open: store.get('tlOpen', null), h: store.get('tlH', 190), sig: '', tickN: 0, lastN: -1 };
-  const pct = f => (Math.max(0, Math.min(1, f)) * 100).toFixed(3) + '%';
-  const irOf = (arr, ci) => Array.isArray(arr) ? arr[ci] : null;
-
-  function model() {
-    const comp = cur(), ci = ST.ci, M = P.meta || {}, cir = irOf(M.compositionIR, ci), ani = irOf(M.animationIR, ci);
-    const LF = loopFrames(), bars = P.time.bars, fps = P.canvas.fps;
-    const phases = cir && cir.temporal && Array.isArray(cir.temporal.phases) ? cir.temporal.phases.map((p, k, a) => ({ name: p.name, from: p.at, to: k + 1 < a.length ? a[k + 1].at : 1 })) : [];
-    const events = ani && Array.isArray(ani.events) ? ani.events.map((e, k) => ({ k, name: e.name, at: e.at, beat: e.beat })) : [];
-    const lanes = comp.layers.map((L, i) => {
-      const tp = L.temporal && typeof L.temporal === 'object' ? L.temporal : null;
-      const phase = L.p && isFinite(+L.p.phase) ? +L.p.phase : 0, steps = Math.round(phase * bars * 16 * 1000) / 1000;
-      const mods = Array.isArray(L.mod) ? L.mod.filter(m => m && m.src === 'lfo' && m.shape !== 'env' && isFinite(+m.cycles)) : [];
-      return { i, name: L.name || L.type, type: L.type, on: !!L.on, behavior: tp ? tp.behavior : null, listens: tp && Array.isArray(tp.listens) ? tp.listens : [], phase: ((phase % 1) + 1) % 1, steps, cycles: mods.length ? Math.max(...mods.map(m => Math.round(+m.cycles))) : 0 };
-    });
-    return { LF, bars, fps, bpm: P.time.bpm, ci, lanes, phases, events, hasIR: !!(cir || ani), loop: !!P.time.loop, seamless: !!P.time.seamless, mode: P.time.mode };
+  const S = { hidden: !!store.get('tlHidden', false), open: store.get('tlOpen', null), h: store.get('tlH', 200), zoom: 1, sig: '', k: 0, LF: 0, rec: null, recAt: 0, dirtyAud: true };
+  const BEH_PT = { still: 'parada', drift: 'deriva', beat: 'na batida', follow: 'segue', accent: 'acento', section: 'seção', lead: 'lidera', counter: 'contra', ambient: 'ambiente', reveal: 'revela', hold: 'segura' };
+  const TIER_PT = { hero: 'herói', structure: 'estrutura', ground: 'chão', instrument: 'instrumento', text: 'texto' };
+  const BANDS = [['bass', 'G'], ['mid', 'M'], ['high', 'A'], ['rms', 'N']];
+  const q = s => document.querySelector(s);
+  const word = (m, k) => k ? (ST.lang === 'en' ? k : (m[k] || k)) : '';
+  const meta = () => P.meta || {};
+  const phasesOf = () => { const c = (meta().compositionIR || [])[ST.ci]; return c && c.temporal && Array.isArray(c.temporal.phases) ? c.temporal.phases : null; };
+  const animOf = () => (meta().animationIR || [])[ST.ci] || null;
+  const isText = t => { const f = famOf(t); return !!f && f[0] === 'Texto'; };
+  function tierOf(L) { const t = ANIMATION.tierOf(L); return t || (L.type === 'instrument' ? 'instrument' : isText(L.type) ? 'text' : null); }
+  const lfoCycles = L => (Array.isArray(L.mod) ? L.mod : []).filter(m => m && m.src === 'lfo' && m.cycles != null).map(m => +m.cycles);
+  /* fecha o loop = loop sem emenda ligado e toda curva LFO da camada com ciclos inteiros (o mesmo critério que o motor arredonda em cyc) */
+  const closes = L => !!(P.time.loop && P.time.seamless) && lfoCycles(L).every(c => Number.isInteger(c));
+  function rowInfo(L, i) {
+    const p = pm(L), sx = P.time.bars * 16, ph = ((+p.phase || 0) % 1 + 1) % 1, an = animOf(), tier = tierOf(L);
+    const ab = an && tier && an.hierarchy && an.hierarchy[tier] ? an.hierarchy[tier].behavior : null, tb = L.temporal && L.temporal.behavior;
+    const cyc = lfoCycles(L), c = cyc.length ? Math.max(...cyc) : 0;
+    return { i, L, ph, steps: Math.round(ph * sx * 100) / 100, tier, ab, tb, listens: (L.temporal && L.temporal.listens) || [], cycles: c, closes: closes(L) };
   }
-  const signature = m => JSON.stringify([m.LF, m.bars, m.bpm, m.ci, m.hasIR, m.phases, m.events, m.lanes, ST.sel, ST.lang, m.mode]);
-
-  function rulerHtml(m) {
-    const beats = m.bars * 4, out = [];
-    for (let b = 0; b < beats; b++) out.push(`<i class="${b % 4 === 0 ? 'bar' : 'beat'}" style="left:${pct(b / beats)}">${b % 4 === 0 ? `<b>C${pad(b / 4 + 1, 2)}</b>` : ''}</i>`);
-    return out.join('');
+  function rowText(r) {
+    const parts = [r.tier ? word(TIER_PT, r.tier) : null, r.ab ? word(BEH_PT, r.ab) : null, r.tb ? word(BEH_PT, r.tb) + (r.listens.length ? ' (' + r.listens.join(', ') + ')' : '') : null].filter(Boolean);
+    return parts.join(' · ') || T3('sem comportamento declarado', 'no declared behaviour');
   }
-  const r1 = x => Math.round(x * 10) / 10;
-  function laneInner(ln) {
-    const beh = ln.behavior, label = beh ? beh.toUpperCase() : T3('SEM COMPORTAMENTO', 'NO BEHAVIOUR');
-    const ticks = ln.cycles ? Array.from({ length: ln.cycles }, (_, k) => `<u style="left:${pct(((k / ln.cycles) + ln.phase) % 1)}"></u>`).join('') : '';
-    const bar = ln.phase > 0
-      ? `<span class="bar ${beh || 'none'}" data-part="main" style="left:${pct(ln.phase)};width:${pct(1 - ln.phase)}"></span><span class="bar wrap ${beh || 'none'}" data-part="wrap" style="left:0;width:${pct(ln.phase)}"></span><em style="left:${pct(ln.phase)}"></em>`
-      : `<span class="bar ${beh || 'none'}" data-part="main" style="left:0;width:100%"></span>`;
-    return `${bar}${ticks}<small>${esc(label)}${ln.steps > 0 ? ' · +' + r1(ln.steps) + '/16' : ''}</small>`;
+  function rowLabel(r) {
+    return `L${r.i} ${r.L.name}: ${rowText(r)}; ${T3('atraso', 'delay')} ${r.steps} ${T3('semicolcheia(s)', 'sixteenth(s)')}` + (r.cycles ? `; ${r.cycles} ${T3('ciclo(s)', 'cycle(s)')}` : '') + `; ${r.closes ? T3('fecha o loop', 'closes the loop') : T3('não fecha o loop', 'does not close the loop')}` + (r.L.on ? '' : '; ' + T3('desligada', 'off'));
   }
-  function laneAria(ln) {
-    const beh = ln.behavior, label = beh ? beh.toUpperCase() : T3('SEM COMPORTAMENTO', 'NO BEHAVIOUR');
-    const delay = ln.steps > 0 ? T3(`atraso ${r1(ln.steps)} semicolcheias`, `delay ${r1(ln.steps)} sixteenths`) : T3('sem atraso', 'no delay');
-    const cyc = ln.cycles ? T3(`, LFO ${ln.cycles} ciclos por loop`, `, LFO ${ln.cycles} cycles per loop`) : '';
-    const listens = ln.listens.length ? T3(`, ouve ${ln.listens.join('/')}`, `, listens ${ln.listens.join('/')}`) : T3(', não ouve a música', ', does not listen');
-    return `${ln.name}: ${label}, ${delay}${cyc}${listens}${ln.on ? '' : T3(', desligada', ', off')}`;
+  const pct = x => (x * 100).toFixed(4) + '%';
+  /* faixa de camada: slider do atraso (p.phase) em semicolcheias; data-steps e aria-valuenow espelham o valor */
+  function rowHtml(r) {
+    const cls = 'tlbar' + (r.tier === 'hero' ? ' hero' : '') + (r.L.on ? '' : ' off'), S16 = P.time.bars * 16;
+    const txt = rowText(r) + (r.steps ? ` · +${r.steps}♬` : '') + (r.cycles ? ` · ${r.cycles}×` : '');
+    const vt = T3(`atraso ${r.steps} de ${S16} semicolcheias`, `delay ${r.steps} of ${S16} sixteenths`);
+    return `<div class="tlr ly" role="slider" tabindex="0" data-i="${r.i}" data-steps="${r.steps}" aria-label="${esc(rowLabel(r))}" aria-valuemin="0" aria-valuemax="${S16 - 1}" aria-valuenow="${Math.round(r.steps)}" aria-valuetext="${esc(vt)}">${seg(cls, r.ph, 1, r.cycles, false, txt)}${r.ph > 0 ? seg(cls + ' wrap', 0, r.ph, r.cycles, true, '') : ''}<span class="tlend ${r.closes ? 'ok' : 'no'}" title="${r.closes ? T3('fecha o loop', 'closes the loop') : T3('não fecha o loop', 'does not close the loop')}">${r.closes ? '↻' : '≠'}</span></div>`;
   }
-  function laneHtml(m, ln) {
-    const sel = ln.i === ST.sel, S16 = m.bars * 16;
-    return `<div class="tlrow ${sel ? 'sel' : ''} ${ln.on ? '' : 'off'}" data-i="${ln.i}"><span class="tlname" title="${esc(ln.name)}"><span class="k">L${ln.i}</span> ${esc(ln.name)}</span>
-      <div class="tllane" role="slider" tabindex="0" aria-label="${esc(laneAria(ln))}" aria-valuemin="0" aria-valuemax="${S16 - 1}" aria-valuenow="${Math.round(ln.steps)}" aria-valuetext="${esc(T3(`atraso ${r1(ln.steps)} de ${S16} semicolcheias`, `delay ${r1(ln.steps)} of ${S16} sixteenths`))}" data-behavior="${esc(ln.behavior || '')}" data-steps="${ln.steps}" data-phase="${ln.phase}">${laneInner(ln)}</div></div>`;
+  function seg(cls, a, b, cyc, wrapRight, txt) {
+    const w = b - a; if (w <= 0) return '';
+    const bg = cyc ? `background-size:${(100 / (cyc * w)).toFixed(4)}% 100%;background-position:${wrapRight ? 'right' : 'left'} 0` : '';
+    return `<span class="${cls}" style="left:${pct(a)};width:${pct(w)};${bg}">${txt ? esc(txt) : ''}</span>`;
+  }
+  function sigOf() {
+    const c = cur(); return [ST.ci, ST.lang, P.id, P.time.bpm, P.time.bars, P.time.loop, P.time.seamless, P.time.mode, P.canvas.fps, !!phasesOf(), !!animOf(),
+      c.layers.map(L => [L.type, L.name, L.on, (L.p || {}).phase, L.temporal && L.temporal.behavior, lfoCycles(L).join(',')].join('|')).join(';')].join('#');
   }
 
   function build() {
-    const el = root(); if (!el || !$('#tlBody')) return;
-    const m = model(); S.m = m;
-    const strip = m.phases.length ? m.phases.map((p, k) => `<span class="ph p${k}" style="left:${pct(p.from)};width:${pct(p.to - p.from)}" data-phase="${esc(p.name)}">${esc(p.name)}</span>`).join('') : '';
-    const evs = m.events.map(e => `<span class="ev" role="slider" tabindex="0" style="left:${pct(e.at)}" data-event="${esc(e.name)}" data-k="${e.k}" data-beat="${e.beat}" aria-label="${esc(T3('Evento ' + e.name + ' (anotação do plano, não muda o render)', 'Event ' + e.name + ' (plan note, does not change the render)'))}" aria-valuemin="0" aria-valuemax="${m.bars * 4 - 1}" aria-valuenow="${e.beat}" title="${esc(e.name)} · ${T3('batida', 'beat')} ${e.beat}"><b>${esc(e.name)}</b></span>`).join('');
-    $('#tlBody').innerHTML = `
-      <div class="tlrow tlhead"><span class="tlname"></span><div class="tlruler" id="tlRuler" role="slider" tabindex="0" aria-label="${T3('Posição no loop', 'Position in the loop')}" aria-valuemin="0" aria-valuemax="${m.LF - 1}" aria-valuenow="${Math.max(0, S.lastN)}">${rulerHtml(m)}</div></div>
-      <div class="tlrow tlphases"><span class="tlname">${T3('FASES', 'PHASES')}</span><div class="tllane tlstrip">${strip}${evs}${m.hasIR ? '' : `<small class="tlnote">${T3('sem Animation IR neste projeto: só régua e camadas', 'no Animation IR in this project: ruler and layers only')}</small>`}</div></div>
-      ${m.lanes.map(l => laneHtml(m, l)).join('')}
-      <div class="tlrow tlaudio"><span class="tlname">${T3('ÁUDIO', 'AUDIO')}</span><div class="tllane"><canvas id="tlAud" width="800" height="36" role="img" aria-label="${T3('Bandas sintéticas do BPM ao longo do loop', 'Synthetic BPM bands across the loop')}"></canvas><small>${T3('SINTÉTICO DO BPM · graves, médios, agudos', 'SYNTHETIC FROM THE BPM · bass, mid, high')}</small></div></div>
-      <div id="tlHead" aria-hidden="true"></div>`;
-    $('#tlInfo').textContent = `${m.bars} ${T3('compassos', 'bars')} · ${m.bpm} BPM · ${m.LF} ${T3('quadros', 'frames')} · ${m.loop && m.seamless ? T3('LOOP FECHA', 'LOOP CLOSES') : m.loop ? 'LOOP' : T3('SEM LOOP', 'NO LOOP')}`;
-    drawAudio(m); S.lastN = -1; place(ST.n); fitHead();
+    const box = q('#tl'); if (!box) return;
+    const comp = cur(), LF = loopFrames(), bars = P.time.bars, ph = phasesOf(), an = animOf(), rows = comp.layers.map(rowInfo), allClose = rows.every(r => r.closes);
+    S.LF = LF; if (!S.rec || S.rec.n !== LF) S.rec = { n: LF, bass: new Float32Array(LF), mid: new Float32Array(LF), high: new Float32Array(LF), rms: new Float32Array(LF), hit: new Float32Array(LF), has: new Uint8Array(LF) };
+    const names = [`<div class="tln rl">${T3('Régua', 'Ruler')}</div>`, `<div class="tln">${T3('Fases', 'Phases')}</div>`, `<div class="tln">${T3('Eventos', 'Events')}</div>`]
+      .concat(rows.map(r => `<div class="tln ly${r.L.on ? '' : ' off'}"><button class="tg" data-tlvis="${r.i}" aria-pressed="${r.L.on}" aria-label="${T3('Ligar', 'Toggle')} ${esc(r.L.name)}"></button><span class="k">L${r.i}</span><span class="nm">${esc(r.L.name)}</span></div>`))
+      .concat([`<div class="tln au">${T3('Áudio', 'Audio')}</div>`]).join('');
+    const phRow = ph ? ph.map((x, k) => seg('tlph' + (k % 2 ? ' b' : ''), +x.at, k + 1 < ph.length ? +ph[k + 1].at : 1, 0, false, x.name)).join('')
+      : `<span class="tlnone">${T3('sem fases (projeto sem Composition IR)', 'no phases (project without Composition IR)')}</span>`;
+    const evRow = an && Array.isArray(an.events) ? an.events.map((e, k) => `<span class="tlev" role="slider" tabindex="0" data-k="${k}" data-event="${esc(e.name)}" data-beat="${e.beat}" aria-label="${esc(T3('Evento ' + e.name + ' (anotação do plano, não muda o render)', 'Event ' + e.name + ' (plan note, does not change the render)'))}" aria-valuemin="0" aria-valuemax="${bars * 4 - 1}" aria-valuenow="${e.beat}" style="left:${pct(+e.at)}" title="${esc(e.name + ' · ' + T3('tempo ', 'beat ') + (e.beat + 1))}"><i></i>${esc(e.name)}</span>`).join('')
+      : `<span class="tlnone">${T3('sem eventos (projeto sem Animation IR)', 'no events (project without Animation IR)')}</span>`;
+    const lyRows = rows.map(rowHtml).join('');
+    q('#tlNames').innerHTML = names;
+    q('#tlTracks').innerHTML = `<div id="tlIn" style="width:${S.zoom * 100}%">
+      <div class="tlr rl" id="tlRuler" role="slider" tabindex="0" aria-label="${T3('Posição no loop', 'Loop position')}" aria-valuemin="0" aria-valuemax="${LF - 1}"><canvas id="tlRc" aria-hidden="true"></canvas><span class="tlend ${allClose ? 'ok' : 'no'}">${allClose ? T3('fecha', 'closes') : T3('não fecha', 'open')}</span></div>
+      <div class="tlr" id="tlPh">${phRow}</div><div class="tlr" id="tlEv">${evRow}</div>${lyRows}
+      <div class="tlr au"><canvas id="tlAc" aria-hidden="true"></canvas><span id="tlAuL" class="tlnote"></span></div>
+      <div id="tlHead" aria-hidden="true"></div></div>`;
+    q('#tlPos') && (q('#tlPos').dataset.bars = bars);
+    S.dirtyAud = true; drawRuler(); drawAudio(); tick(ST.F || frameAt(ST.n, comp), true);
   }
-  const fitHead = () => { const hd = $('#tlHead'), b = $('#tlBody'); if (hd && b) hd.style.height = b.scrollHeight + 'px'; };
-  function drawAudio(m) {
-    const cv = $('#tlAud'); if (!cv) return;
-    const w = cv.clientWidth > 40 ? Math.round(cv.clientWidth) : 800, h = 36; cv.width = w; cv.height = h;
-    const c = cv.getContext('2d'); c.clearRect(0, 0, w, h);
-    const css = getComputedStyle(root()), cols = [css.getPropertyValue('--fg') || '#fff', css.getPropertyValue('--accent') || '#0f0', css.getPropertyValue('--dim') || '#999'];
-    ['bass', 'mid', 'high'].forEach((band, bi) => {
-      c.beginPath(); c.strokeStyle = cols[bi].trim() || '#fff'; c.lineWidth = bi === 0 ? 1.5 : 1; c.globalAlpha = bi === 0 ? 1 : 0.7;
-      for (let x = 0; x < w; x++) { const F = { beatF: (x / w) * m.bars * 4, fps: m.fps, fpb: m.fps * 60 / m.bpm, LF: m.LF, ph: x / w, n: Math.round(x / w * m.LF) }; const v = clamp(pseudoAudio(F)[band], 0, 1); x ? c.lineTo(x, h - 2 - v * (h - 6)) : c.moveTo(x, h - 2 - v * (h - 6)); }
+  function canvasFit(cv) {
+    const r = cv.getBoundingClientRect(), d = Math.min(2, window.devicePixelRatio || 1), w = Math.max(2, Math.round(r.width * d)), h = Math.max(2, Math.round(r.height * d));
+    if (cv.width !== w) cv.width = w; if (cv.height !== h) cv.height = h; return { c: cv.getContext('2d'), w, h, d };
+  }
+  const css = v => getComputedStyle(q('#tl')).getPropertyValue(v).trim() || '#888';
+  function drawRuler() {
+    const cv = q('#tlRc'); if (!cv) return;
+    const { c, w, h, d } = canvasFit(cv), bars = P.time.bars, beats = bars * 4, fg = css('--fg'), dim = css('--faint');
+    c.clearRect(0, 0, w, h); c.font = `${10 * d}px ${css('--font-title') || 'monospace'}`; c.textBaseline = 'top';
+    const pxBeat = w / beats, sixteenth = pxBeat / 4 >= 5 * d, beatLab = pxBeat >= 28 * d;
+    for (let s = 0; s <= beats * 4; s++) {
+      const x = Math.round(s / (beats * 4) * w) + 0.5, isBar = s % 16 === 0, isBeat = s % 4 === 0;
+      if (!isBeat && !sixteenth) continue;
+      c.strokeStyle = isBar ? fg : dim; c.globalAlpha = isBar ? 1 : isBeat ? 0.8 : 0.35; c.beginPath(); c.moveTo(x, h); c.lineTo(x, h - (isBar ? h * 0.7 : isBeat ? h * 0.4 : h * 0.2)); c.stroke();
+      c.globalAlpha = 1; c.fillStyle = isBar ? fg : dim;
+      if (isBar && s < beats * 4) c.fillText(String(s / 16 + 1), x + 3 * d, 2 * d);
+      else if (isBeat && beatLab && s < beats * 4) c.fillText('.' + (s / 4 % 4 + 1), x + 3 * d, 2 * d);
+    }
+  }
+  function drawAudio() {
+    const cv = q('#tlAc'); if (!cv) return; S.dirtyAud = false;
+    const { c, w, h, d } = canvasFit(cv), comp = cur(), LF = S.LF || loopFrames(), live = AUD.live(), R = S.rec;
+    c.clearRect(0, 0, w, h);
+    const val = (k, m) => R.has[m] ? R[k][m] : null;
+    const synth = [];
+    if (!live) for (let n = 0; n < LF; n++) { const F = frameAt(n, comp); synth[F.n] = pseudoAudio(F); }
+    const get = (k, m) => live ? val(k, m) : synth[m] ? synth[m][k] : null;
+    const lane = h / BANDS.length;
+    BANDS.forEach(([k], bi) => {
+      c.strokeStyle = bi === 0 ? css('--accent') : css('--dim'); c.globalAlpha = bi === 0 ? 0.9 : 0.6; c.lineWidth = d; c.beginPath(); let pen = false;
+      for (let m = 0; m < LF; m++) { const v = get(k, m); if (v == null) { pen = false; continue; } const x = (m + 0.5) / LF * w, y = (bi + 1) * lane - Math.min(1, v) * (lane - 2 * d); pen ? c.lineTo(x, y) : c.moveTo(x, y); pen = true; }
       c.stroke();
     });
-    c.globalAlpha = 1;
+    /* golpes: pico local do hit acima de 0,5 */
+    c.globalAlpha = 1; c.fillStyle = css('--fg');
+    for (let m = 0; m < LF; m++) { const v = get('hit', m), a = get('hit', (m + LF - 1) % LF), b = get('hit', (m + 1) % LF); if (v != null && v > 0.5 && (a == null || v >= a) && (b == null || v > b)) c.fillRect(Math.round(m / LF * w), 0, Math.max(1, d), 4 * d); }
+    const l = q('#tlAuL'); if (l) l.textContent = live ? T3('ao vivo: gravado ao tocar (G M A N, golpes no topo)', 'live: recorded as it plays (B M H L, hits on top)') : T3('fonte sintética do BPM (G M A N, golpes no topo)', 'synthetic BPM source (B M H L, hits on top)');
   }
-  function place(n) {
-    const hd = $('#tlHead'), m = S.m; if (!hd || !m) return;
-    hd.style.left = `calc(var(--tl-name) + (100% - var(--tl-name)) * ${(m.LF > 1 ? n / (m.LF - 1) : 0).toFixed(5)})`;
-    const r = $('#tlRuler'); if (r) r.setAttribute('aria-valuenow', n);
-    $('#tlPos').textContent = `${pad(n, 4)}/${pad(m.LF, 4)}`; S.lastN = n;
+  /* a cada quadro: só a cabeça de leitura e o rótulo; a cada 30 quadros confere se o projeto mudou */
+  function tick(F, force) {
+    const box = q('#tl'); if (!box || !S.open || S.hidden || !F) return;
+    if ((++S.k % 30 === 0 && !ed) || force) { const s = sigOf(); if (s !== S.sig) { S.sig = s; if (!force) return build(); } if (S.zoom > 1 && !force) follow(F); }
+    if (S.pz !== ST.paused) { S.pz = ST.paused; labels(); }
+    const LF = F.LF || S.LF || 1, x = F.n / LF, hd = q('#tlHead'), rl = q('#tlRuler');
+    if (hd) hd.style.left = pct(x);
+    if (rl) { rl.setAttribute('aria-valuenow', F.n); rl.setAttribute('aria-valuetext', `${T3('quadro', 'frame')} ${F.n} · ${T3('compasso', 'bar')} ${F.bar + 1} ${T3('tempo', 'beat')} ${F.beat % 4 + 1}`); }
+    const pos = q('#tlPos'); if (pos) pos.textContent = `${pad(F.n, 4)}/${pad(LF, 4)} · C${pad(F.bar + 1, 2)}:${F.beat % 4 + 1}`;
+    if (AUD.live() && S.rec && S.rec.n === LF) { const R = S.rec; for (const k of ['bass', 'mid', 'high', 'rms', 'hit']) R[k][F.n] = AUD[k] || 0; R.has[F.n] = 1; if (++S.recAt % 15 === 0) S.dirtyAud = true; }
+    if (S.dirtyAud && S.k % 15 === 0) drawAudio();
   }
+  function follow(F) { const t = q('#tlTracks'), inn = q('#tlIn'); if (!t || !inn || ST.paused) return; const x = F.n / (F.LF || 1) * inn.offsetWidth; if (x < t.scrollLeft || x > t.scrollLeft + t.clientWidth) t.scrollLeft = x - 16; }
 
-  /* chamado por tick(): a cabeça acompanha o quadro; o resto só refaz quando a assinatura muda (conferida a cada 12 quadros) */
-  function tick(F) {
-    const el = root(); if (!el || !S.open) return;
-    if (S.tickN++ % 12 === 0 && !drag) { const m = model(), s = signature(m); if (s !== S.sig) { S.sig = s; build(); } }
-    if (F.n !== S.lastN) place(F.n);
+  /* posicionar a cabeça de leitura: como o scrub (pausa e vai ao quadro); no modo reverse o quadro mostrado é LF-1-n */
+  function seek(m) {
+    const LF = loopFrames(); m = clamp(Math.round(m), 0, LF - 1);
+    setPause(true); ST.n = P.time.loop && P.time.mode === 'reverse' ? LF - 1 - m : m; tick(frameAt(ST.n, cur()), true);
   }
-
-  function setOpen(v, persist = true) {
-    S.open = !!v; const el = root(); if (!el) return;
-    el.hidden = !S.open; $('#tlToggle').setAttribute('aria-expanded', S.open);
-    $('#tlShow').hidden = S.open; $('#app').classList.toggle('tlopen', S.open);
-    if (persist) store.set('tlOpen', S.open);
-    if (S.open) { S.sig = ''; S.tickN = 0; }
-    setTimeout(fit, 30);
+  function setOpen(v, quiet) {
+    S.open = !!v; store.set('tlOpen', S.open); const box = q('#tl'); if (!box) return;
+    APP.classList.toggle('tlon', S.open && !S.hidden); box.classList.toggle('closed', !S.open);
+    const b = q('#tlTog'); b.setAttribute('aria-expanded', String(S.open)); b.textContent = S.open ? T3('Timeline ▾', 'Timeline ▾') : T3('Timeline ▴', 'Timeline ▴');
+    applyH(); if (S.open && !S.hidden) { S.sig = ''; build(); } setTimeout(fit, 30);
+    if (!quiet) toast(S.open ? T3('Timeline aberta', 'Timeline open') : T3('Timeline recolhida: o scrub volta', 'Timeline collapsed: the scrub is back'), 1100);
   }
-  function setHeight(h, persist) {
-    const vh = $('#view').getBoundingClientRect().height || 600, max = Math.max(120, Math.round(vh * 0.55));
-    S.h = clamp(Math.round(h), 110, max); root().style.setProperty('--tl-h', S.h + 'px'); $('#app').style.setProperty('--tl-h', S.h + 'px'); if (persist) store.set('tlH', S.h); setTimeout(() => { fit(); fitHead(); }, 30);
+  /* ocultar: tira a timeline inteira (e devolve o scrub); o botão Timeline na régua da vista traz de volta, como o Ocultar e o Barra da barra flutuante */
+  function setHidden(v, quiet) {
+    S.hidden = !!v; store.set('tlHidden', S.hidden); APP.classList.toggle('tlhide', S.hidden);
+    const sh = q('#tlShow'); if (sh) sh.hidden = !S.hidden;
+    setOpen(S.open, true);
+    if (S.hidden) { const sh2 = q('#tlShow'); if (sh2 && quiet !== 'nofocus' && document.activeElement && document.activeElement.closest && document.activeElement.closest('#tl')) sh2.focus({ preventScroll: true }); }
+    else { const h = q('#tlHide'); if (h && quiet !== 'nofocus' && document.activeElement === q('#tlShow')) h.focus({ preventScroll: true }); }
+    if (!quiet) toast(S.hidden ? T3('Timeline oculta: o botão Timeline, no alto da vista, traz de volta', 'Timeline hidden: the Timeline button, above the view, brings it back') : T3('Timeline de volta', 'Timeline back'), 1400);
   }
-
-  /* leitura de posição: arrastar ou apertar na régua move a cabeça de leitura (o mesmo que o scrub); nada do projeto muda */
-  function seekAt(clientX) {
-    const r = $('#tlRuler').getBoundingClientRect(), m = S.m; if (!m || r.width <= 0) return;
-    const n = Math.round(clamp((clientX - r.left) / r.width, 0, 1) * (m.LF - 1)); scrubbing = true; ST.n = n; if (!ST.paused) setPause(true); place(n);
+  function applyH() {
+    const box = q('#tl'); S.h = clamp(Math.round(S.h), 96, Math.max(120, Math.round(innerHeight * 0.6)));
+    box.style.height = S.open ? S.h + 'px' : ''; ROOT_EL.style.setProperty('--tl-h', (S.hidden ? 0 : S.open ? S.h : box.offsetHeight || 0) + 'px');
+    const g = q('#tlGrip'); g.setAttribute('aria-valuenow', S.h); g.setAttribute('aria-valuemax', Math.max(120, Math.round(innerHeight * 0.6)));
   }
-  function seekBy(d) { const m = S.m; if (!m) return; const n = clamp(ST.n + d, 0, m.LF - 1); scrubbing = true; ST.n = n; if (!ST.paused) setPause(true); place(n); setTimeout(() => { scrubbing = false; }, 0); }
+  function setZoom(z) { S.zoom = clamp(z, 1, 16); const inn = q('#tlIn'); if (inn) inn.style.width = S.zoom * 100 + '%'; q('#tlZv').textContent = S.zoom + '×'; drawRuler(); drawAudio(); }
+  function labels() {
+    const L = (id, pt, en, al) => { const b = q(id); if (!b) return; b.title = T3(pt, en); b.setAttribute('aria-label', T3(al || pt, al ? al : en)); };
+    L('#tlStart', 'Início do loop', 'Loop start'); L('#tlPrev', 'Quadro anterior', 'Previous frame'); L('#tlNext', 'Próximo quadro', 'Next frame');
+    L('#tlZo', 'Diminuir zoom da timeline', 'Timeline zoom out'); L('#tlZi', 'Aumentar zoom da timeline', 'Timeline zoom in');
+    const pl = q('#tlPlay'); if (pl) { pl.textContent = ST.paused ? 'Play' : T3('Pausa', 'Pause'); pl.setAttribute('aria-pressed', String(!ST.paused)); }
+    const au = q('#tlAud'); if (au) { au.textContent = T3('Áudio', 'Audio'); au.setAttribute('aria-pressed', $('#audBtn').getAttribute('aria-pressed')); }
+    const hi = q('#tlHide'); if (hi) { hi.textContent = T3('Ocultar', 'Hide'); hi.title = T3('Ocultar a timeline (o botão Timeline, no alto da vista, traz de volta)', 'Hide the timeline (the Timeline button above the view brings it back)'); }
+    const sh = q('#tlShow'); if (sh) { sh.textContent = T3('Timeline ▴', 'Timeline ▴'); sh.title = T3('Mostrar a timeline', 'Show the timeline'); sh.setAttribute('aria-label', T3('Mostrar a timeline', 'Show the timeline')); }
+    const g = q('#tlGrip'); if (g) g.setAttribute('aria-label', T3('Altura da timeline, arraste ou use as setas', 'Timeline height, drag or use the arrows'));
+  }
 
   /* T2: edição do que já existe. Atraso da camada (L.p.phase, fração do loop em passos de semicolcheia) e batida do evento (meta.animationIR[ci].events[k].beat). */
   const rnd = (x, d) => { const f = Math.pow(10, d); return Math.round(x * f) / f; };
@@ -123,102 +173,130 @@ const TIMELINE = (() => {
     if (n === 0) { if (L.p) delete L.p.phase; } else { L.p = L.p || {}; L.p.phase = rnd(n / S16, 6); }
     return n;
   }
+  /* repinta só a faixa (o elemento fica: a captura do ponteiro e o foco continuam nele) */
   function paintLane(i) {
-    const m = model(), ln = m.lanes[i], row = $(`#tlBody .tlrow[data-i="${i}"] .tllane`); if (!ln || !row) return;
-    S.m = m; S.sig = signature(m); row.innerHTML = laneInner(ln); row.dataset.steps = ln.steps; row.dataset.phase = ln.phase;
-    row.setAttribute('aria-label', laneAria(ln)); row.setAttribute('aria-valuenow', Math.round(ln.steps));
-    row.setAttribute('aria-valuetext', T3(`atraso ${r1(ln.steps)} de ${m.bars * 16} semicolcheias`, `delay ${r1(ln.steps)} of ${m.bars * 16} sixteenths`));
+    const host = q(`#tlIn .tlr.ly[data-i="${i}"]`), L = cur().layers[i]; if (!host || !L) return;
+    const tmp = document.createElement('div'); tmp.innerHTML = rowHtml(rowInfo(L, i)); const n = tmp.firstElementChild;
+    host.innerHTML = n.innerHTML; for (const a of ['aria-label', 'aria-valuenow', 'aria-valuetext', 'data-steps']) host.setAttribute(a, n.getAttribute(a));
+    S.sig = sigOf();
   }
-  function evList() { const a = (P.meta || {}).animationIR, ani = Array.isArray(a) ? a[ST.ci] : null; return ani && Array.isArray(ani.events) ? ani.events : null; }
-  function phaseAt(at) { const M = P.meta || {}, c = Array.isArray(M.compositionIR) ? M.compositionIR[ST.ci] : null, ph = c && c.temporal && c.temporal.phases; if (!Array.isArray(ph)) return null; let hit = null; ph.forEach(p => { if (at >= p.at) hit = p.name; }); return hit; }
+  function evList() { const a = animOf(); return a && Array.isArray(a.events) ? a.events : null; }
+  function phaseAt(at) { const ph = phasesOf(); if (!ph) return null; let hit = null; ph.forEach(p => { if (at >= p.at) hit = p.name; }); return hit; }
   /* batida inteira dentro do loop e sem passar do vizinho (a validação exige ordem); devolve a batida aplicada */
   function setBeat(k, beat) {
     const evs = evList(); if (!evs || !evs[k]) return null; const beats = P.time.bars * 4;
     const lo = k > 0 ? evs[k - 1].beat : 0, hi = k + 1 < evs.length ? evs[k + 1].beat : beats - 1, b = clamp(Math.round(beat), lo, Math.max(lo, hi));
     evs[k].beat = b; evs[k].at = rnd(b / beats, 4); const ph = phaseAt(evs[k].at); if (ph) evs[k].phase = ph; return b;
   }
-  function repaintAll() { build(); S.sig = signature(S.m); }
-  const laneLabel = i => T3('Atraso ', 'Delay ') + 'L' + i + ' ' + ((cur().layers[i] || {}).name || '');
+  const repaintAll = () => { S.sig = ''; build(); };
+  const r1 = x => Math.round(x * 10) / 10;
+  const laneLabel = i => T3('Atraso ', 'Delay ') + 'L' + i + ' ' + ((cur().layers[i] || {}).name || '') + ' ' + r1(stepsOf(cur().layers[i])) + '/16';
   const evLabel = k => T3('Evento ', 'Event ') + evList()[k].name + ' ' + T3('batida ', 'beat ') + evList()[k].beat;
   function afterEdit() { try { renderParams(); } catch (e) { /* painel ainda não montado */ } }
+  const focusEv = k => { const ev = q(`#tlEv .tlev[data-k="${k}"]`); if (ev) ev.focus({ preventScroll: true }); };
 
   /* arrasto: estado vivo no projeto, uma só entrada de histórico no fim; Esc devolve o valor de antes */
-  let drag = null;
+  let ed = null;
   function dragStart(e, kind, id, host) {
-    if (e.button !== 0) return; const m = S.m; if (!m) return; e.preventDefault(); host.setPointerCapture(e.pointerId);
+    if (e.button !== 0) return;
+    const L = kind === 'lane' ? cur().layers[id] : null, evs = kind === 'event' ? evList() : null; if (kind === 'event' && !(evs && evs[id])) return;
+    e.preventDefault(); e.stopPropagation(); host.setPointerCapture(e.pointerId);
     const box = (kind === 'lane' ? host : host.parentElement).getBoundingClientRect();
-    const L = kind === 'lane' ? cur().layers[id] : null, evs = kind === 'event' ? evList() : null;
-    drag = { kind, id, host, x0: e.clientX, w: box.width, left: box.left, S16: m.bars * 16, beats: m.bars * 4, s0: kind === 'lane' ? stepsOf(L) : 0, b0: kind === 'event' ? evs[id].beat : 0,
-      orig: kind === 'lane' ? JSON.stringify(L.p && 'phase' in L.p ? L.p.phase : null) : JSON.stringify(evs.map(v => [v.beat, v.at, v.phase])), moved: false };
+    ed = { kind, id, host, x0: e.clientX, w: box.width, left: box.left, S16: P.time.bars * 16, beats: P.time.bars * 4, s0: L ? stepsOf(L) : 0, b0: evs ? evs[id].beat : 0,
+      orig: L ? JSON.stringify(L.p && 'phase' in L.p ? L.p.phase : null) : JSON.stringify(evs.map(v => [v.beat, v.at, v.phase])), moved: false };
     if (kind === 'lane' && ST.sel !== id) selLayer(id);
     host.focus({ preventScroll: true });
     const mv = ev => dragMove(ev), end = c => { host.removeEventListener('pointermove', mv); host.removeEventListener('pointerup', up); host.removeEventListener('pointercancel', cn); dragEnd(c); }, up = () => end(false), cn = () => end(true);
     host.addEventListener('pointermove', mv); host.addEventListener('pointerup', up); host.addEventListener('pointercancel', cn);
-    drag.cancel = () => end(true);
+    ed.cancel = () => end(true);
   }
   function dragMove(e) {
-    const d = drag; if (!d || d.w <= 0) return;
+    const d = ed; if (!d || d.w <= 0) return;
     if (d.kind === 'lane') { const n = setSteps(d.id, d.s0 + (e.clientX - d.x0) / (d.w / d.S16)); if (n !== null) { d.moved = d.moved || n !== Math.round(d.s0); paintLane(d.id); } }
     else { const b = setBeat(d.id, (e.clientX - d.left) / d.w * d.beats); if (b !== null) { d.moved = d.moved || b !== d.b0; d.host.style.left = pct(evList()[d.id].at); d.host.dataset.beat = b; d.host.setAttribute('aria-valuenow', b); d.host.title = d.host.dataset.event + ' · ' + T3('batida', 'beat') + ' ' + b; } }
   }
   function dragEnd(cancelled) {
-    const d = drag; drag = null; if (!d) return;
+    const d = ed; ed = null; if (!d) return;
     if (cancelled) {
       if (d.kind === 'lane') { const L = cur().layers[d.id], v = JSON.parse(d.orig); if (v === null) { if (L.p) delete L.p.phase; } else { L.p = L.p || {}; L.p.phase = v; } paintLane(d.id); }
       else { const evs = evList(); JSON.parse(d.orig).forEach((o, k) => { evs[k].beat = o[0]; evs[k].at = o[1]; evs[k].phase = o[2]; }); repaintAll(); }
       return;
     }
     if (!d.moved) return;
-    if (d.kind === 'lane') { commit(true, laneLabel(d.id) + ' ' + r1(stepsOf(cur().layers[d.id])) + '/16'); afterEdit(); }
-    else { commit(true, evLabel(d.id)); repaintAll(); const ev = $(`#tlBody .ev[data-k="${d.id}"]`); if (ev) ev.focus({ preventScroll: true }); }
+    if (d.kind === 'lane') { commit(true, laneLabel(d.id)); afterEdit(); }
+    else { commit(true, evLabel(d.id)); repaintAll(); focusEv(d.id); }
   }
-  /* teclado: ± uma semicolcheia (evento: uma batida); PageUp/PageDown ± 4 (uma batida na camada, 4 batidas no evento); Home/End nas pontas; uma rajada vira uma só entrada de histórico */
+  /* teclado: ± uma semicolcheia (evento: uma batida); PageUp/PageDown ± 4; Home/End nas pontas; uma rajada vira uma só entrada de histórico */
   function keyEdit(e) {
-    const lane = e.target.closest('.tllane[role=slider]'), ev = e.target.closest('.ev[role=slider]'); if (!lane && !ev) return;
-    if (e.key === 'Escape') { if (drag) { e.preventDefault(); e.stopPropagation(); drag.cancel(); } return; }
+    const lane = e.target.closest('.tlr.ly[role=slider]'), ev = e.target.closest('.tlev[role=slider]'); if (!lane && !ev) return false;
+    if (e.key === 'Escape') { if (ed) { e.preventDefault(); e.stopPropagation(); ed.cancel(); } return true; }
     const d = { ArrowLeft: -1, ArrowRight: 1, PageUp: -4, PageDown: 4 }[e.key];
-    if (d === undefined && e.key !== 'Home' && e.key !== 'End') return;
+    if (d === undefined && e.key !== 'Home' && e.key !== 'End') return true;
     e.preventDefault(); e.stopPropagation();
     if (lane) {
-      const i = +lane.closest('.tlrow').dataset.i, S16 = P.time.bars * 16, now = Math.round(stepsOf(cur().layers[i]));
-      if (setSteps(i, e.key === 'Home' ? 0 : e.key === 'End' ? S16 - 1 : now + d) === null) return;
-      paintLane(i); commit(false, laneLabel(i) + ' ' + r1(stepsOf(cur().layers[i])) + '/16'); setTimeout(afterEdit, 0);
+      const i = +lane.dataset.i, S16 = P.time.bars * 16, now = Math.round(stepsOf(cur().layers[i]));
+      if (setSteps(i, e.key === 'Home' ? 0 : e.key === 'End' ? S16 - 1 : now + d) === null) return true;
+      paintLane(i); commit(false, laneLabel(i)); setTimeout(afterEdit, 0);
     } else {
-      const k = +ev.dataset.k, evs = evList(); if (!evs || !evs[k]) return; const beats = P.time.bars * 4;
-      if (setBeat(k, e.key === 'Home' ? 0 : e.key === 'End' ? beats : evs[k].beat + d) === null) return;
-      commit(false, evLabel(k)); repaintAll(); const nev = $(`#tlBody .ev[data-k="${k}"]`); if (nev) nev.focus({ preventScroll: true });
+      const k = +ev.dataset.k, evs = evList(); if (!evs || !evs[k]) return true; const beats = P.time.bars * 4;
+      if (setBeat(k, e.key === 'Home' ? 0 : e.key === 'End' ? beats : evs[k].beat + d) === null) return true;
+      commit(false, evLabel(k)); repaintAll(); focusEv(k);
     }
+    return true;
   }
 
-  const el = root();
-  if (el) {
-    const narrow = innerWidth < 1100 || innerHeight < 700;
-    if (S.open === null) S.open = !narrow;
-    setHeight(S.h, false); setOpen(S.open, false);
-    $('#tlToggle').onclick = () => setOpen(false);
-    $('#tlShow').onclick = () => setOpen(true);
-    $('#tlBtns').addEventListener('click', e => {
-      const b = e.target.closest('[data-tl]'); if (!b) return; const a = b.dataset.tl;
-      if (a === 'start') seekBy(-ST.n); else if (a === 'prev') seekBy(-1); else if (a === 'next') seekBy(1); else if (a === 'play') setPause(!ST.paused);
+  function init() {
+    if (q('#tl')) return;
+    const box = document.createElement('section'); box.id = 'tl'; box.setAttribute('aria-label', 'Timeline');
+    box.innerHTML = `<div id="tlGrip" role="separator" tabindex="0" aria-orientation="horizontal" aria-valuemin="96"></div>
+      <div id="tlBar"><button id="tlStart">⏮</button><button id="tlPrev">‹</button><button id="tlPlay"></button><button id="tlNext">›</button><button id="tlAud"></button>
+      <span id="tlPos" class="rd">0000/0000</span><span class="sp"></span><button id="tlZo">−</button><span id="tlZv" class="rd">1×</span><button id="tlZi">+</button><button id="tlTog" aria-controls="tlBody"></button><button id="tlHide"></button></div>
+      <div id="tlBody"><div id="tlNames"></div><div id="tlTracks"></div></div>`;
+    const view = q('#view'); view.appendChild(box);
+    const vt = q('#vtool'); if (vt) { const sh = document.createElement('button'); sh.id = 'tlShow'; sh.hidden = true; sh.setAttribute('aria-controls', 'tl'); sh.onclick = () => setHidden(false); vt.appendChild(sh); }
+    box.addEventListener('click', e => {
+      const b = e.target.closest('button'); if (!b) return; const F = ST.F || frameAt(ST.n, cur());
+      if (b.dataset.tlvis != null) { toggleLayer(+b.dataset.tlvis); S.sig = ''; build(); return; }
+      if (b.id === 'tlStart') seek(0); else if (b.id === 'tlPrev') seek((F.n - 1 + F.LF) % F.LF); else if (b.id === 'tlNext') seek((F.n + 1) % F.LF);
+      else if (b.id === 'tlPlay') setPause(!ST.paused); else if (b.id === 'tlAud') $('#audBtn').click();
+      else if (b.id === 'tlHide') { setHidden(true); return; } else if (b.id === 'tlZo') setZoom(S.zoom / 2); else if (b.id === 'tlZi') setZoom(S.zoom * 2); else if (b.id === 'tlTog') setOpen(!S.open);
+      labels();
     });
-    $('#tlBody').addEventListener('pointerdown', e => {
-      const evh = e.target.closest('.ev[role=slider]'); if (evh) { dragStart(e, 'event', +evh.dataset.k, evh); return; }
-      const lh = e.target.closest('.tllane[role=slider]'); if (lh) { dragStart(e, 'lane', +lh.closest('.tlrow').dataset.i, lh); return; }
-      const r = e.target.closest('#tlRuler'); if (!r) return; r.setPointerCapture(e.pointerId); seekAt(e.clientX);
-      const mv = ev => seekAt(ev.clientX), up = () => { r.removeEventListener('pointermove', mv); r.removeEventListener('pointerup', up); scrubbing = false; };
-      r.addEventListener('pointermove', mv); r.addEventListener('pointerup', up);
+    /* régua: clicar ou arrastar posiciona a cabeça de leitura (não edita nada); faixa de camada e evento editam (T2) */
+    let drag = false; const at = e => { const inn = q('#tlIn'), r = inn.getBoundingClientRect(); return (e.clientX - r.left) / r.width * loopFrames(); };
+    box.addEventListener('pointerdown', e => { if (e.button !== 0 || !e.target.closest('#tlIn') || e.target.closest('button')) return;
+      const evh = e.target.closest('.tlev[role=slider]'); if (evh) { dragStart(e, 'event', +evh.dataset.k, evh); return; }
+      const lh = e.target.closest('.tlr.ly[role=slider]'); if (lh) { dragStart(e, 'lane', +lh.dataset.i, lh); return; }
+      drag = true; e.target.setPointerCapture && e.target.setPointerCapture(e.pointerId); seek(at(e)); labels(); });
+    box.addEventListener('pointermove', e => { if (drag) seek(at(e)); });
+    const end = () => { drag = false; }; box.addEventListener('pointerup', end); box.addEventListener('pointercancel', end);
+    box.addEventListener('keydown', e => {
+      if (e.target.closest && keyEdit(e)) return;
+      const F = ST.F || frameAt(ST.n, cur());
+      if (e.target.id === 'tlRuler') {
+        const step = e.shiftKey ? Math.round(F.fpb) : 1; let m = null;
+        if (e.key === 'ArrowRight') m = (F.n + step) % F.LF; else if (e.key === 'ArrowLeft') m = (F.n - step + F.LF * 4) % F.LF; else if (e.key === 'Home') m = 0; else if (e.key === 'End') m = F.LF - 1;
+        if (m != null) { e.preventDefault(); e.stopPropagation(); seek(m); labels(); }
+      }
+      if (e.target.id === 'tlGrip') {
+        const st = e.shiftKey ? 48 : 16; let used = true;
+        if (e.key === 'ArrowUp') S.h += st; else if (e.key === 'ArrowDown') S.h -= st; else if (e.key === 'Enter' || e.key === ' ') setOpen(!S.open, true); else used = false;
+        if (used) { e.preventDefault(); e.stopPropagation(); store.set('tlH', S.h); applyH(); setTimeout(() => { fit(); drawRuler(); drawAudio(); }, 30); }
+      }
     });
-    $('#tlBody').addEventListener('keydown', e => {
-      if (!e.target.closest('#tlRuler')) { keyEdit(e); return; } const m = S.m; if (!m) return; const fpb = Math.round(m.fps * 60 / m.bpm);
-      const d = { ArrowLeft: -1, ArrowRight: 1, PageUp: -fpb, PageDown: fpb }[e.key];
-      if (d !== undefined) { e.preventDefault(); e.stopPropagation(); seekBy(d); }
-      else if (e.key === 'Home') { e.preventDefault(); e.stopPropagation(); seekBy(-ST.n); } else if (e.key === 'End') { e.preventDefault(); e.stopPropagation(); seekBy(m.LF); }
-    });
-    $('#tlBody').addEventListener('click', e => { const r = e.target.closest('.tlrow[data-i]'); if (r && ST.sel !== +r.dataset.i && !e.target.closest('#tlRuler')) { /* só leitura de seleção: espelha o painel Camadas */ selLayer(+r.dataset.i); } });
-    const sp = $('#tlSplit'), drag = e => { setHeight(innerHeight - e.clientY - ($('#foot') ? $('#foot').getBoundingClientRect().height : 0), false); };
-    sp.addEventListener('pointerdown', e => { sp.setPointerCapture(e.pointerId); document.body.classList.add('resizing'); const up = () => { sp.removeEventListener('pointermove', drag); sp.removeEventListener('pointerup', up); document.body.classList.remove('resizing'); store.set('tlH', S.h); }; sp.addEventListener('pointermove', drag); sp.addEventListener('pointerup', up); });
-    sp.addEventListener('keydown', e => { const d = { ArrowUp: 16, ArrowDown: -16 }[e.key]; if (d) { e.preventDefault(); e.stopPropagation(); setHeight(S.h + d, true); sp.setAttribute('aria-valuenow', S.h); } });
-    addEventListener('resize', () => { if (S.open) { S.sig = ''; } });
+    const grip = q('#tlGrip'); let gd = null;
+    grip.addEventListener('pointerdown', e => { if (!S.open) return; grip.setPointerCapture(e.pointerId); gd = { y: e.clientY, h: S.h }; document.body.classList.add('resizing'); e.preventDefault(); });
+    grip.addEventListener('pointermove', e => { if (!gd) return; S.h = gd.h - (e.clientY - gd.y); applyH(); });
+    const gend = () => { if (!gd) return; gd = null; document.body.classList.remove('resizing'); store.set('tlH', S.h); applyH(); fit(); drawRuler(); drawAudio(); };
+    grip.addEventListener('pointerup', gend); grip.addEventListener('pointercancel', gend);
+    q('#tlTracks').addEventListener('scroll', () => { q('#tlNames').scrollTop = q('#tlTracks').scrollTop; });
+    q('#tlNames').addEventListener('wheel', e => { q('#tlTracks').scrollTop += e.deltaY; }, { passive: true });
+    new ResizeObserver(() => { if (S.open) { drawRuler(); S.dirtyAud = true; drawAudio(); } }).observe(q('#tlTracks'));
+    /* aberta por padrão em tela larga e alta; o que a pessoa escolheu fica salvo */
+    if (S.open == null) S.open = innerWidth > 900 && innerHeight >= 700;
+    labels(); setHidden(S.hidden, 'nofocus');
   }
-  return { tick, build, setOpen, setHeight, seekBy, setSteps, setBeat, get open() { return S.open; }, get model() { return S.m; }, get height() { return S.h; } };
+  function refresh() { if (!q('#tl')) return; labels(); setOpen(S.open, true); }
+  if (typeof document !== 'undefined' && typeof $ === 'function') init();
+  return { tick, build, seek, setSteps, setBeat, setOpen, setHidden, setZoom, refresh, rowInfo, closes, get state() { return { hidden: S.hidden, open: S.open, h: S.h, zoom: S.zoom, LF: S.LF }; } };
 })();

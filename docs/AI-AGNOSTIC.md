@@ -1,6 +1,6 @@
 # Compatível com qualquer IA (ou nenhuma)
 
-O projeto não depende de uma IA específica. O que a IA faz é **conduzir o briefing e escrever um arquivo JSON**; quem desenha, anima, mede e exporta é o motor (`app/index.html`). Sem IA, a aba **Gerar** faz o mesmo caminho por regras.
+O projeto não depende de uma IA específica. O que a IA faz é **conduzir o briefing e escrever um arquivo JSON**; quem desenha, anima, mede e exporta é o motor (`app/index.html`). Sem IA, o botão **Gerar briefing** (ou o `brief_to_project.py`) faz o mesmo caminho por regras; com um Worker ligado (`worker/README.md`), uma IA gratuita completa o que ficou em branco. Em **Carregar briefing** há o passo a passo para Gemini, GPT, Claude, Grok e DeepSeek.
 
 ## O contrato
 Entrada: um briefing (`skill/ai-vj-generator/schema/brief.schema.json`). Saída: um projeto (`schema/project.schema.json`, versão `ai-vj-generator/2`). Qualquer ferramenta que escreva JSON válido nesse esquema funciona; o validador (`scripts/validate_project.py`) diz o que corrigir, em texto simples.

@@ -188,7 +188,7 @@ def build_comp(i, n, brief, mood, strat, rnd, prof=None, ir=None, cmp=None):
             if hero_t in ("tunnel", "lines", "shape") and k in hero_p and isinstance(hero_p[k], (int, float)):
                 hero_p[k] = round(hero_p[k] * f, 1)
         if hero_t == "tunnel":
-            hero_p.setdefault("weight", 9)
+            hero_p.setdefault("weight", 18)  # 9 became ~6.7 px on an 800 px wall: too thin at 40 m, the hero lost contrast (gallery 01, GLITCH II)
         if hero_t == "bitfield":
             hero_p["cell"] = int(hero_p.get("cell", 14) * 2)
     for k in ("count", "points", "rows"):
