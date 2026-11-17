@@ -21,4 +21,4 @@ Se mudou um gerador, atualize `skill/ai-vj-generator/references/project-schema.m
 ## Testes, CI e demonstração
 - `node scripts/check.mjs` termina com **"Tudo certo."** só quando nada foi pulado. Sem Chrome/Edge ele diz `PASSOU, mas N verificações foram PULADAS`; com `--strict` (ou `CI=true`) isso é falha.
 - O Chrome é achado em `CHROME_PATH`, nos caminhos usuais ou no Chromium do Playwright. Como root (contêiner, CI) os scripts usam `--no-sandbox` e WebGL por software; em máquina com GPU eles usam a GPU (`AIVJ_SOFTWARE_GL=1` força o software, `AIVJ_GPU=1` liga a GPU nos benchmarks e renders).
-- `.github/workflows/check.yml` roda os testes em cada PR; `pages.yml` publica o motor (Settings → Pages → Source: GitHub Actions).
+- `.github/workflows/check.yml` roda os testes em cada PR. A versão online do motor é publicada pelo site GYULYIA.COM.

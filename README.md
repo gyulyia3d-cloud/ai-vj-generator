@@ -9,14 +9,14 @@
 <p align="center">
   <a href="#instalação-no-claude-com-vj"><b>1 · INSTALAR NO CLAUDE</b></a> &nbsp;·&nbsp;
   <a href="#funcionalidades-e-elementos-disponíveis-online"><b>2 · FUNCIONALIDADES</b></a> &nbsp;·&nbsp;
-  <a href="https://gyulyia3d-cloud.github.io/ai-vj-generator/"><b>ABRIR O MOTOR ONLINE</b></a>
+  <a href="https://www.gyulyia.com/tools/vj-generator.html"><b>ABRIR O MOTOR ONLINE</b></a>
 </p>
 
 **Sistema generativo de animação orientado por direção de arte, com instruções que qualquer IA entende (ou nenhuma).** Você descreve a peça (superfície, música, conceito) para uma IA, preenche um briefing no navegador, ou usa o gerador sem IA. O resultado é **um arquivo JSON** que o motor abre, mostra em preview e exporta em **PNG sequence (RGB ou RGBA, projeto completo, por região ou por camada) e MP4 (H.264, sem alpha)**. Mesmo projeto + mesma semente = mesmos quadros, e todo loop fecha.
 
 *Generative animation system driven by art direction, with instructions any AI can follow (or none at all). Describe the surface, the music and the concept to an AI, fill a brief in the browser, or use the AI-free generator; get one JSON file the engine opens, previews and exports as PNG sequences (RGB or RGBA, full project, region or layer) and MP4. English summary at the end.*
 
-**Demonstração online:** <https://gyulyia3d-cloud.github.io/ai-vj-generator/> · **Documentação:** [docs/README.md](docs/README.md) · **Começo rápido:** [docs/QUICKSTART.md](docs/QUICKSTART.md) · **O que falta:** [docs/PROXIMOS-PASSOS.md](docs/PROXIMOS-PASSOS.md)
+**Demonstração online:** <https://www.gyulyia.com/tools/vj-generator.html> · **Documentação:** [docs/README.md](docs/README.md) · **Começo rápido:** [docs/QUICKSTART.md](docs/QUICKSTART.md) · **O que falta:** [docs/PROXIMOS-PASSOS.md](docs/PROXIMOS-PASSOS.md)
 
 ## Como funciona: do briefing ao quadro
 
@@ -104,7 +104,7 @@ Uma razão técnica documentada: detalhe fino demais perde legibilidade em pared
 
 ## Funcionalidades e elementos disponíveis online
 
-[**Abrir o motor online**](https://gyulyia3d-cloud.github.io/ai-vj-generator/) (Chrome, Edge ou Firefox, sem instalar nada). O motor é **um único arquivo HTML** e tudo o que está listado abaixo (camadas, shaders ISF, efeitos `fx`, presets de superfície, modulação, receitas) já vem dentro dele: você abre, escolhe um preset da sua superfície e exporta PNG sequence ou MP4. O que **não** roda online são os comandos `/vj` e os scripts de linha de comando (`brief_to_project.py`, `render.mjs`), que precisam do repositório baixado.
+[**Abrir o motor online**](https://www.gyulyia.com/tools/vj-generator.html) (Chrome, Edge ou Firefox, sem instalar nada). O motor é **um único arquivo HTML** e tudo o que está listado abaixo (camadas, shaders ISF, efeitos `fx`, presets de superfície, modulação, receitas) já vem dentro dele: você abre, escolhe um preset da sua superfície e exporta PNG sequence ou MP4. O que **não** roda online são os comandos `/vj` e os scripts de linha de comando (`brief_to_project.py`, `render.mjs`), que precisam do repositório baixado.
 
 ### O que o motor sabe fazer
 
@@ -243,7 +243,7 @@ Passo a passo ilustrado em texto: [docs/GUIA-SEM-IA.md](docs/GUIA-SEM-IA.md). Pa
 
 Você só precisa de um navegador moderno (Chrome, Edge ou Firefox). No navegador não há conta, chave de API nem instalação; só o passo por linha de comando pede Python 3. O exemplo do guia é uma parede de LED de 4500×800 com uma dobra no meio; troque pelos números da sua superfície. Versão passo a passo: [docs/GUIA-SEM-IA.md](docs/GUIA-SEM-IA.md).
 
-**1. Abrir.** Dê dois cliques em `app/index.html` (ou use a [demonstração online](https://gyulyia3d-cloud.github.io/ai-vj-generator/)). Importe um JSON escrito por alguma IA, abra o STANDARD ou clique em **Gerar briefing** (auditoria, mídias e descrição do projeto; o motor monta as composições no seu computador). Para microfone e janela de saída o navegador exige `http://`: rode `node scripts/serve.mjs` e abra `http://localhost:5173`.
+**1. Abrir.** Dê dois cliques em `app/index.html` (ou use a [demonstração online](https://www.gyulyia.com/tools/vj-generator.html)). Importe um JSON escrito por alguma IA, abra o STANDARD ou clique em **Gerar briefing** (auditoria, mídias e descrição do projeto; o motor monta as composições no seu computador). Para microfone e janela de saída o navegador exige `http://`: rode `node scripts/serve.mjs` e abra `http://localhost:5173`.
 
 **2. Preencher o briefing.** Pelo botão **Gerar briefing** você preenche tudo na tela; pela linha de comando, o briefing é um JSON (modelos em `examples/briefs/`). Gere o projeto e abra-o com **Carregar**:
 
