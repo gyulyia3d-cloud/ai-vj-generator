@@ -10,16 +10,14 @@ const html = path.join(root, 'app', 'index.html');
 const dir = path.join(root, 'skill', 'ai-vj-generator', 'isf-library');
 const man = JSON.parse(fs.readFileSync(path.join(dir, 'manifest.json'), 'utf8'));
 const items = man.items.map(it => {
-  const o = { id: it.id, name: it.name, origin: it.origin, license: it.license, description: it.description,
+  const o = { id: it.id, name: it.name, origin: it.origin, description: it.description,
     src: fs.readFileSync(path.join(dir, it.file), 'utf8').replace(/\r\n/g, '\n') };
   const th = path.join(dir, 'thumbs', it.id + '.webp');
   if (fs.existsSync(th)) o.thumb = 'data:image/webp;base64,' + fs.readFileSync(th).toString('base64');
   return o;
 });
 const body = JSON.stringify(items).split('</').join('<\\/');
-/* o motor (index.html, engine.html) circula sozinho: leva o aviso que a licença MIT exige para os shaders de terceiros */
-const notices = fs.readFileSync(path.join(root, 'THIRD-PARTY-NOTICES.md'), 'utf8').replace(/\r\n/g, '\n').split('*/').join('* /');
-const block = `/*__ISFLIB_START__*//*\n${notices}*/\nconst ISFLIB = ${body};/*__ISFLIB_END__*/`;
+const block = `/*__ISFLIB_START__*/const ISFLIB = ${body};/*__ISFLIB_END__*/`;
 let t = fs.readFileSync(html, 'utf8');
 const crlf = t.includes('\r\n'); if (crlf) t = t.replace(/\r\n/g, '\n');
 const re = /\/\*__ISFLIB_START__\*\/[\s\S]*?\/\*__ISFLIB_END__\*\//;

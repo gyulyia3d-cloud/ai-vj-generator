@@ -2,7 +2,6 @@
     "CATEGORIES": [
         "Color"
     ],
-    "CREDIT": "by VIDVOX",
     "INPUTS": [
         {
             "DEFAULT": 0.5,

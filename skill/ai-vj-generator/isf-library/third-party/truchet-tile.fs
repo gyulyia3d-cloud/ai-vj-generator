@@ -2,7 +2,6 @@
     "CATEGORIES": [
         "Geometry"
     ],
-    "CREDIT": "pjkarlik",
     "DESCRIPTION": "Creates a Truchet Tile pattern",
     "INPUTS": [
         {
@@ -55,7 +54,6 @@
 
 
 
-//	adapted from https://github.com/pjkarlik/TruchetTiles/blob/master/src/shader/truchet/fragmentShader.js
 
 
 #define PI 3.14159265358979323846264

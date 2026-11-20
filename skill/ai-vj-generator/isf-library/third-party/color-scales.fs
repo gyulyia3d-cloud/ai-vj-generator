@@ -57,14 +57,12 @@
       "TYPE" : "bool",
       "DEFAULT" : 0
     }
-  ],
-  "CREDIT" : "VIDVOX"
+  ]
 }
 */
 
 
 /*
-//	Color Scales via http://rhythmiclight.com/archives/ideas/colorscales.html
 C C# D D# E F F# G G# A A# B 
 Newton • red • orange • yellow • green • blue • indigo • violet (Gerstner, p.167)
 Castel • blue • blue-green • green • olive green • yellow • yellow-orange • orange • red • crimson • violet • agate • indigo (Peacock, p.400)

@@ -62,8 +62,7 @@
         0
       ]
     }
-  ],
-  "CREDIT" : "by VIDVOX"
+  ]
 }
 */
 

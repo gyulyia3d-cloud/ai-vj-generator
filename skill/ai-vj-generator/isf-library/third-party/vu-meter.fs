@@ -2,7 +2,6 @@
     "CATEGORIES": [
         "Geometry"
     ],
-    "CREDIT": "VIDVOX",
     "DESCRIPTION": "",
     "INPUTS": [
         {

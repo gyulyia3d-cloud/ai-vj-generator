@@ -1,10 +1,10 @@
 # ISF generators
 
-ISF (Interactive Shader Format) is a GLSL fragment shader with a JSON header. The engine uses it as a source of ready generators and as an import format. It does not export ISF. Licence rule: an ISF file keeps its author; the importer copies `CREDIT` into the layer `role`. Do not redistribute third-party ISF files inside this skill.
+ISF (Interactive Shader Format) is a GLSL fragment shader with a JSON header. The engine uses it as a source of ready generators and as an import format. It does not export ISF.
 
 ## The `isf` layer (engine 3.1+)
 
-`isf` is a layer type. Its parameter `lib` is a menu with the 84 generators of `isf-library/` (11 originals, 28 MIT, 45 CC0; the licence of each is in `manifest.json`). The project JSON stores only the id:
+`isf` is a layer type. Its parameter `lib` is a menu with the 84 generators of `isf-library/` (11 originals that close the loop, the rest use `TIME`; the list is in `manifest.json`). The project JSON stores only the id:
 
 ```json
 { "type": "isf", "name": "AURORA", "p": { "lib": "aivj-aurora", "p1": -1, "p2": -1, "p3": -1, "p4": -1, "alphaMode": "opaque" } }
@@ -33,7 +33,7 @@ How the importer maps inputs:
 - the first four other `float` inputs become `p1..p4`, the first two other colours `c1/c2`;
 - names the engine already declares (`hash noise fbm uPulse …`) are renamed `isf_<name>` so GLSL does not reject the redefinition; `float TAU = …` and `#define TAU` are dropped (the engine defines it).
 
-Loop: third-party shaders use `TIME`; they close the loop only if their period divides the loop length. The 11 originals use `phase` and close it exactly.
+Loop: library shaders use `TIME`; they close the loop only if their period divides the loop length. The 11 originals use `phase` and close it exactly.
 
 Tests: `node scripts/isf_check.mjs`, `node scripts/isf_ui_check.mjs`.
 

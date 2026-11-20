@@ -117,7 +117,7 @@ Uma razão técnica documentada: detalhe fino demais perde legibilidade em pared
 | **Camadas** | 10 categorias (Fundo, Shader, Formas, Elementos 3D, Texto, Mídia, Dados, Partículas, Efeito, Código); o tipo dentro da categoria se escolhe nos parâmetros da camada (shader GLSL, biblioteca ISF, cadeia `synth`, formas, linhas, tipografia, imagem, vídeo, objeto 3D, parallax, partículas, filtros `fx`, manchas…). |
 | **`fx`: efeitos sobre a pilha** | 22 efeitos que leem as camadas abaixo: CRT, VHS, halftone, hachura, dither, bordas, Kuwahara, painel de LED, vidro líquido, bloom, aberração, espelho, polar, glitch… |
 | **`blobs`** | acha regiões da imagem abaixo (brilho, contraste, cor, zona) e as marca com caixas, números e ligações. |
-| **ISF** | camada do tipo ISF com 84 geradores (11 originais, MIT e CC0 com autoria) escolhidos nos parâmetros da camada. |
+| **ISF** | camada do tipo ISF com 84 geradores (11 com loop exato) escolhidos nos parâmetros da camada. |
 | **Áudio** | microfone, arquivo ou fonte de teste; bandas, golpes, kick e onset com histórico, andamento por Kalman; `layer.mod` liga qualquer número a qualquer fonte. Sem áudio, tudo reage ao BPM de forma determinística. |
 | **Movimento** | 8 arquétipos de movimento, perfis de mola, formas de LFO (sin, tri, saw e 9 de atenção) e envelope de fases, 16 transições entre composições, easings Penner. |
 | **Superfície** | 12 presets de LED, telas e torres, dobras, regiões importadas de CSV/PNG (só entrada), avisos de legibilidade; render do projeto completo ou de uma região. |
@@ -164,11 +164,9 @@ Pixelate, Halftone, Dither, CRT, VHS, Aberração cromática, Bordas neon, Kuwah
 </details>
 
 <details>
-<summary><b>84 shaders ISF com autoria e licença</b></summary>
+<summary><b>84 shaders ISF</b></summary>
 
 ![Mosaico com as miniaturas dos 84 shaders ISF da biblioteca](docs/assets/isf-mosaico.webp)
-
-A biblioteca reúne shaders do projeto e shaders de terceiros. Consulte os [avisos de licença](THIRD-PARTY-NOTICES.md).
 
 </details>
 
@@ -325,7 +323,7 @@ node scripts/render.mjs projeto.aivj.json --out saida --format mp4
 node scripts/bench.mjs projeto.aivj.json             # custo por camada
 node scripts/readme-assets.mjs                       # regera os infográficos do README (docs/assets/*.svg)
 ```
-Sem dependências de npm; a única biblioteca de terceiros é o JSZip 3.10.1 (MIT ou GPLv3), embutida em `app/vendor/` (sem CDN: o export em ZIP funciona sem rede); só as fontes web vêm de fora e têm fallback do sistema. Regras do repositório: [AGENTS.md](AGENTS.md) e [CONTRIBUTING.md](CONTRIBUTING.md).
+Sem dependências de npm; o JSZip fica embutido em `app/vendor/` (sem CDN: o export em ZIP funciona sem rede); só as fontes web vêm de fora e têm fallback do sistema. Regras do repositório: [AGENTS.md](AGENTS.md) e [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## English summary
 

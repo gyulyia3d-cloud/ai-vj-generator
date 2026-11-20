@@ -2,7 +2,6 @@
     "CATEGORIES": [
         "Generator", "Geometry", "Noise"
     ],
-    "CREDIT": "by VIDVOX",
     "DESCRIPTION": "Worley/Voronoi cellular noise generator.",
     "ISFVSN": "2",
     "INPUTS": [

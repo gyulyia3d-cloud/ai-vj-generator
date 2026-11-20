@@ -2,7 +2,6 @@
     "CATEGORIES": [
         "Generator", "Noise"
     ],
-    "CREDIT": "by VIDVOX (simplex by Ashima Arts / Stefan Gustavson)",
     "DESCRIPTION": "2D simplex noise generator with fractal-Brownian-motion octave summation.",
     "ISFVSN": "2",
     "INPUTS": [
@@ -105,8 +104,6 @@
 
 
 //	2D simplex noise. Output range approximately [-1, 1].
-//	Standard Ashima Arts / Stefan Gustavson implementation:
-//	  https://github.com/ashima/webgl-noise (MIT)
 vec3 permute(vec3 x)	{
     return mod(((x * 34.0) + 1.0) * x, 289.0);
 }

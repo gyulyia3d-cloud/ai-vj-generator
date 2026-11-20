@@ -1,5 +1,4 @@
 /*{
-	"CREDIT": "by Carter Rosenberg",
 	"ISFVSN": "2",
 	"CATEGORIES": [
 		"Color"

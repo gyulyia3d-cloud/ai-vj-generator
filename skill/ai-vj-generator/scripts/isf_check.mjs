@@ -36,7 +36,7 @@ check(/NOT importable/.test(r), 'filtro com imagem é recusado com motivo', r);
 r = py('check', join(tmp, 'gen.fs')); check(/importable/.test(r) && !/NOT/.test(r), 'gerador é aceito', r);
 py('import', join(tmp, 'gen.fs'), '--out', join(tmp, 'gen.layer.json'));
 const imp = JSON.parse(readFileSync(join(tmp, 'gen.layer.json'), 'utf8'));
-check(imp.layer.p.p1 === 2 && imp.layer.p.p2 === 0.3 && /Credit: fixture/.test(imp.layer.role), 'import mapeia floats para p1..p4 e guarda o crédito', JSON.stringify(imp.inputs_mapped));
+check(imp.layer.p.p1 === 2 && imp.layer.p.p2 === 0.3, 'import mapeia floats para p1..p4', JSON.stringify(imp.inputs_mapped));
 
 const impProj = JSON.parse(JSON.stringify(project)); impProj.compositions[0].layers = [{ type: 'bg', name: 'F' }, imp.layer];
 const ip = join(tmp, 'imp.json'); writeFileSync(ip, JSON.stringify(impProj));

@@ -2,7 +2,6 @@
     "CATEGORIES": [
         "Color"
     ],
-    "CREDIT": "by Carter Rosenberg",
     "INPUTS": [
         {
             "DEFAULT": 0.1,

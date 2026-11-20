@@ -1,6 +1,5 @@
 /*{
 	"DESCRIPTION": "Creates variations on a base color using a given algorithm.",
-	"CREDIT": "by VIDVOX",
 	"ISFVSN": "2",
 	"CATEGORIES": [
 		"Color"

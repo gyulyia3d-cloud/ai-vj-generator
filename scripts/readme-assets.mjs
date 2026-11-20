@@ -148,7 +148,7 @@ function layers() {
 function library() {
   const W = 1200, cols = 28, p = 16, sz = 10, dx = 310;
   const items = [
-    ['SHADERS ISF', F.isf, 'créditos e licenças'],
+    ['SHADERS ISF', F.isf, 'geradores de um passe'],
     ['EFEITOS FX', F.fx, 'leem as camadas abaixo'],
     ['FONTES DE MODULAÇÃO', F.mod, `${F.audio} de áudio · ${F.free} sem áudio (BPM, LFO)`],
     ['PRESETS DE SUPERFÍCIE', F.presets, 'LED, telas, torres · projeção'],

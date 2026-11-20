@@ -135,8 +135,7 @@
       "TYPE" : "bool",
       "DEFAULT" : true
     }
-  ],
-  "CREDIT" : "VIDVOX"
+  ]
 }
 */
 

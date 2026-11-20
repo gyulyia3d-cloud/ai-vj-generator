@@ -2,7 +2,6 @@
     "CATEGORIES": [
         "Color"
     ],
-    "CREDIT": "VIDVOX",
     "DESCRIPTION": "Generates a gradient that fades between four different colors.",
     "INPUTS": [
         {

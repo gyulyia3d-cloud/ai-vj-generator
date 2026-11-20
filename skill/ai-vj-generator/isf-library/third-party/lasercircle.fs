@@ -1,6 +1,5 @@
 /*{
     "DESCRIPTION": "Draws a circular line with a rainbow gradient, adjustable size, position, and rotation.",
-    "CREDIT": "Cornelius // ProjectileObjects",
     "ISFVSN": "2.0",
     "CATEGORIES": [ "Generator" ],
     "INPUTS": [

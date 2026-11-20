@@ -2,7 +2,6 @@
     "CATEGORIES": [
         "Pattern", "Color"
     ],
-    "CREDIT": "VIDVOX",
     "DESCRIPTION": "Creates a stripe pattern with randomized colors",
     "INPUTS": [
         {

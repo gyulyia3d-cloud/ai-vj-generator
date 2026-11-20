@@ -2,7 +2,6 @@
     "CATEGORIES": [
         "Geometry"
     ],
-    "CREDIT": "by VIDVOX",
     "INPUTS": [
         {
             "DEFAULT": 0.5,

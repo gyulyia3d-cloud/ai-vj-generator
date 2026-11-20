@@ -2,7 +2,6 @@
     "CATEGORIES": [
         "Geometry"
     ],
-    "CREDIT": "by Carter Rosenberg",
     "INPUTS": [
         {
             "DEFAULT": [
