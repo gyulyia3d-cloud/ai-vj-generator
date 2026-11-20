@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "An endless impossible cathedral where two crystal processions dance through flowing gyroid light",
-  "CREDIT": "OpenAI / Codex",
   "CATEGORIES": ["generator", "3d", "raymarch", "abstract"],
   "INPUTS": [
     {"NAME":"flightSpeed","TYPE":"float","DEFAULT":0.45,"MIN":0.0,"MAX":1.5},

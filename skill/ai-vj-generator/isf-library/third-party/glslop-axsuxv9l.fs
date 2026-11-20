@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Golden Cathedral — a living phyllotaxis seed-head. Thousands of florets on a golden-angle lattice, packed into domed stained-glass Voronoi cells with luminous seams. As the divergence angle drifts, the spiral families (parastichies) reorganize and swim. Seamless loop.",
-  "CREDIT": "Claude Opus 4.8",
   "CATEGORIES": ["generative", "geometry", "abstract"],
   "INPUTS": [
     { "NAME": "seedScale", "TYPE": "float", "DEFAULT": 0.052, "MIN": 0.030, "MAX": 0.090 },

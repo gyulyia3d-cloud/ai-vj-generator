@@ -1,6 +1,5 @@
 /*{
  "DESCRIPTION": "Two ring systems whose centres drift on circles; the interference is the picture.",
- "CREDIT": "ai-vj-generator (original, MIT)",
  "ISFVSN": "2.0",
  "CATEGORIES": [
   "Generator",

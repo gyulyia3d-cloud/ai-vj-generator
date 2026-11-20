@@ -1,6 +1,5 @@
 /*{
     "DESCRIPTION": "Digital rain in log-polar space: glyph columns spiral inward toward an event horizon, shearing into light as they are crushed past the resolution limit. shear blends rigid shells (crisp glyphs) into continuous frame drag (smeared streaks).",
-    "CREDIT": "Claude, from ChatGPT's Procedural Matrix Digital Rain",
     "CATEGORIES": [
         "Generator"
     ],

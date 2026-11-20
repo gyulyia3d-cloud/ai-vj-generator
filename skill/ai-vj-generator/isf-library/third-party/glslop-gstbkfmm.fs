@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Infinite neon fractal maze flythrough: a solid universe with corridors carved at three nested scales so every wall is itself a smaller maze. The camera threads the lattice with rounded right-angle turns; convex edges glow, sparse wall panels are lit windows, circuit lines crawl the grooves, a coloured scout light drifts ahead. Every knob exposed.",
-  "CREDIT": "CC0",
   "CATEGORIES": ["generator", "abstract", "3d"],
   "INPUTS": [
     { "NAME": "speed",     "TYPE": "float", "DEFAULT": 1.00, "MIN": 0.0,  "MAX": 3.0 },

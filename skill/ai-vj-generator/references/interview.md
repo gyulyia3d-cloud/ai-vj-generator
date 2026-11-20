@@ -51,7 +51,7 @@ Aesthetic words are ambiguous ("dark", "clean", "futuristic", "organic"). Pin th
 10. **Audio relation.** Beat-locked pulse / bass-driven weight / full-spectrum shimmer / music-independent (shaders still react).
 11. **Narrative across the set.** Arc (arrive, build, rupture, release) / stations (equal clips) / loop one idea five ways.
 12. **Boundaries.** The three things that must never happen (e.g. "no cyan", "no particles", "nothing centred", "no text").
-13. **Software lineage.** Which look do you associate with the work: Hydra-style glitch/feedback, TouchDesigner instancing and noise, Cavalry-style geometric duplicators, Synesthesia shader worlds, game/VFX particles, motion-graphics editorial? (Used to pick the vocabulary, never to copy.)
+13. **Software lineage.** Which look do you associate with the work: glitch/feedback, instancing and noise, geometric duplicators, shader worlds, game/VFX particles, motion-graphics editorial? (Used to pick the vocabulary, never to copy.)
 14. **Viewing situation.** Distance, ambient light, crowd, camera on stage (moiré), dwell time per clip.
 
 Use the answers to write the **art-direction statement** (concept + 5 constraints) before any code. If the user answers little, state which choices you made and why, in one line each.

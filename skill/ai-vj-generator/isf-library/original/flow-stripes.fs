@@ -1,6 +1,5 @@
 /*{
  "DESCRIPTION": "Domain-warped stripes that flow and return to the start after one loop.",
- "CREDIT": "ai-vj-generator (original, MIT)",
  "ISFVSN": "2.0",
  "CATEGORIES": [
   "Generator",

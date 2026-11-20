@@ -47,7 +47,6 @@ Character animation and motion design give the vocabulary for deliberate movemen
 | Maurice Binder (Bond gun-barrel and titles, 1962–) | Silhouette, liquid light, rhythm with the theme | Silhouettes + liquid fields on beat |
 | Pablo Ferro (*Dr. Strangelove*, 1964) | Hand-drawn type, quick cuts | Type as texture, fast cutting at 1/8 |
 | Kyle Cooper (*Se7en*, 1995) | Scratched, jittery, layered type; the medium's damage as mood | `post` glitch on `text`, scramble animation |
-| Motion graphics studios (see `artists-studios.md`) | Systems, 3D abstraction, typography in space | Treat as principles, never as styles to copy |
 
 ## Loop discipline
 

@@ -1,6 +1,6 @@
 # Animation, motion, physics, VFX and math: principles as parameters
 
-How to make motion that looks intended. Every principle below is translated into something you can set in this engine (layer params, `p.echo`, `div`, `phase`, `speed`, `composition.motion`, `code` layer maths, GLSL). The sources are the working canon: Thomas and Johnston's twelve principles (*The Illusion of Life*, 1981), Richard Williams (*The Animator's Survival Kit*: spacing, timing, arcs), Material and Apple motion guidance (duration, easing, choreography), Robert Penner's easing equations, Reeves' particle systems, Reynolds' boids, Perlin and Quilez on noise and domain warping, and the generative practice of Casey Reas, Tyler Hobbs, Zach Lieberman, Manolo Gamboa Naon and others.
+How to make motion that looks intended. Every principle below is translated into something you can set in this engine (layer params, `p.echo`, `div`, `phase`, `speed`, `composition.motion`, `code` layer maths, GLSL).
 
 ## 1. The twelve principles, procedurally
 
@@ -103,7 +103,7 @@ The engine renders any frame independently, so use closed-form motion, not integ
 | **Golden ratio** 1.618 | scale steps, spacing, spiral growth |
 | **Fibonacci** | counts of arms and petals (13, 21, 34); sizes in sequence |
 | Noise (value, gradient, simplex), fBm | controlled uncertainty; use multi-octave, seeded |
-| Domain warping `f(p + g(p))` | organic flow, marble, smoke (Quilez) |
+| Domain warping `f(p + g(p))` | organic flow, marble, smoke |
 | Curl of a noise potential | divergence-free flow for particles (no sinks) |
 | Voronoi / Worley | cells, cracks, membranes, territories |
 | Signed distance fields | crisp shapes, smooth union (`vjSmin`), outlines, glows |
@@ -115,20 +115,9 @@ The engine renders any frame independently, so use closed-form motion, not integ
 
 Pick the maths from the behaviour, not the other way round. Constrain randomness: bounds, hierarchy, a seed, a reason.
 
-## 8. Practitioners and what to take from each (principles, not styles)
+## 8. Working rule: principles, never styles
 
-- **Frank Thomas, Ollie Johnston, Richard Williams:** weight, timing, spacing, arcs, anticipation.
-- **Oskar Fischinger, Len Lye, Norman McLaren, John Whitney:** abstract motion as music; rhythm as form; harmonic motion (Whitney's "digital harmony": frequency ratios drive position).
-- **Saul Bass, Pablo Ferro, Maurice Binder:** reduction, bold cut shapes, one idea per beat.
-- **Ryoji Ikeda, Carsten Nicolai:** data minimalism, precision, high-frequency information, grids, rhythm as measurement.
-- **Vera Molnár, Manfred Mohr, Casey Reas, Tyler Hobbs:** rule-based systems with controlled perturbation; flow fields; overlapping vs non-overlapping shapes; palette discipline.
-- **Zach Lieberman, Golan Levin, Memo Akten:** gesture and system; sound-image coupling; legible interaction of simple rules.
-- **Refik Anadol, teamLab, Universal Everything, Quayola:** data or form as material at architectural scale; slow, immersive transformation.
-- **Joanie Lemercier, NONOTAK, Marshmallow Laser Feast, UVA:** light, space and architecture; mapping as composition.
-- **Inigo Quilez, Matt DesLauriers, Manolo Gamboa Naon, Shadertoy authors:** SDF modelling, palettes, domain tricks, craft in few lines.
-- **VJ culture** (Resolume, Synesthesia, TouchDesigner artists): loopable, performable, layered, parameter-friendly clips.
-
-Never "make it like [artist]". Extract: what is the rule, what is the constraint, what does the audience perceive, and write an original system with this brief's concept.
+Never "make it like [artist]". Extract the rule, the constraint and what the audience perceives, and write an original system for this brief's concept.
 
 ## 9. Laws of perception that motion obeys
 

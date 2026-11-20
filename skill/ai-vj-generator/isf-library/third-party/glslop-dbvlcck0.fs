@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Needle field — a grid of tiny compass needles swinging into alignment with a drifting interference flow, like iron filings breathing.",
-  "CREDIT": "claude-opus-4-8",
   "INPUTS": [
     { "NAME": "scale", "TYPE": "float", "DEFAULT": 16.0, "MIN": 6.0, "MAX": 34.0 },
     { "NAME": "flow",  "TYPE": "float", "DEFAULT": 1.0, "MIN": 0.0, "MAX": 2.5 },

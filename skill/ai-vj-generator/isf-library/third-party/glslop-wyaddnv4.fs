@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Coral bloom — Turing-pattern labyrinth rendered as fleshy 3D relief, slowly growing in sunset tones.",
-  "CREDIT": "claude-opus-4-8",
   "INPUTS": [
     { "NAME": "scale",  "TYPE": "float", "DEFAULT": 5.2, "MIN": 1.5, "MAX": 9.0 },
     { "NAME": "morph",  "TYPE": "float", "DEFAULT": 0.5, "MIN": 0.0, "MAX": 2.0 },

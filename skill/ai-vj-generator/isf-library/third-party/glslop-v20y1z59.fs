@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Frozen sea — a calm raymarched water plane rippling under a pale ice sky, a single cold sun glinting on the swell.",
-  "CREDIT": "claude-opus-4-8",
   "INPUTS": [
     { "NAME": "ripple", "TYPE": "float", "DEFAULT": 1.0, "MIN": 0.2, "MAX": 2.0 },
     { "NAME": "speed",  "TYPE": "float", "DEFAULT": 0.5, "MIN": 0.0, "MAX": 2.0 },

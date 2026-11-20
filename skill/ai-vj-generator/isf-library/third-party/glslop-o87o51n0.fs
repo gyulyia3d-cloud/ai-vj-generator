@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Neon Liquid Water",
-  "CREDIT": "you",
   "CATEGORIES": [
     "Generator"
   ],

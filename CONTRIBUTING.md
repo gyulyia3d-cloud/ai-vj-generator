@@ -9,7 +9,7 @@ Pull requests são bem-vindos: geradores, efeitos `fx`, cadeias `synth`, shaders
 4. **Parâmetros.** Registre com `reg(type, label, group, params, draw)` usando `N`, `S`, `C`, `B`, `T`. A interface, o JSON e a validação vêm do registro.
 5. **Camadas que leem a pilha** (`fx`, `blobs`) recebem `R.below` e entram em `BELOW_TYPES` (`app/fx.js`).
 6. **Design system.** Interface monocromática (GYULYIA DS): preto, branco, cinzas, Martian Mono, linhas finas, cantos retos. Cor só dentro do palco.
-7. **Licenças.** Nada de código de repositórios AGPL, GPL ou não comerciais; ISF de terceiros só MIT, CC0 ou equivalente, com autoria no manifesto (`skill/ai-vj-generator/isf-library/README.md`).
+7. **Licenças.** Só entra código com licença que permita redistribuir (MIT, CC0 ou equivalente); o aviso exigido pela licença vai em `THIRD-PARTY-NOTICES.md`.
 
 ## Antes do PR
 ```bash

@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Aurora Fold — a folded, flowing field of light. Domain-warped sinusoids run through a kaleidoscopic fold and a soft aurora palette. CC0.",
-  "CREDIT": "made with the glslop skill",
   "CATEGORIES": ["generator", "abstract"],
   "INPUTS": [
     { "NAME": "speed",  "TYPE": "float", "DEFAULT": 0.6, "MIN": 0.0, "MAX": 2.0 },

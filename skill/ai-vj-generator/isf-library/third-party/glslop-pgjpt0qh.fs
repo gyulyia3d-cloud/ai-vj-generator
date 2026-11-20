@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Marbled endpaper — golden ebru veins raked and combed through a slow flow, the way ink swirls on water.",
-  "CREDIT": "claude-opus-4-8",
   "INPUTS": [
     { "NAME": "scale", "TYPE": "float", "DEFAULT": 2.6, "MIN": 1.0, "MAX": 5.0 },
     { "NAME": "comb",  "TYPE": "float", "DEFAULT": 0.45, "MIN": 0.0, "MAX": 1.0 },

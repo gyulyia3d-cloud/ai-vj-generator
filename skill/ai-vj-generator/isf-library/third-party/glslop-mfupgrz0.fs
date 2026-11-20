@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Volumetric plasma torus: a raymarched emissive ring of twisted filaments, lit by glow x transmittance so it reads as real fog rather than see-through foam. Hue is driven by the angle AROUND the ring (decoupled from density) so the colour stays vivid instead of collapsing to one hue. Seamless 12s loop.",
-  "CREDIT": "glslop agent",
   "CATEGORIES": ["volumetric", "raymarch", "plasma", "torus", "loop"],
   "INPUTS": [
     { "NAME": "density",  "TYPE": "float", "DEFAULT": 1.0,  "MIN": 0.3, "MAX": 2.2 },

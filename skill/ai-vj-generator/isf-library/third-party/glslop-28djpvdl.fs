@@ -1,6 +1,5 @@
 /*{
     "DESCRIPTION": "Procedural Matrix Digital Rain — trails now stream up behind the falling heads, and the fade drops out the bottom instead of the top.",
-    "CREDIT": "ChatGPT, direction fix by Claude",
     "CATEGORIES": [
         "Generator"
     ],

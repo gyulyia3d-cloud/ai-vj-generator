@@ -2,7 +2,7 @@
 
 Mathematics and physics are the largest *free* vocabulary a VJ has: exact, scalable to any pixel map, and already loaded with meaning. This file is the index. Ten forms are shipped as tested layers (`recipes/`, `python scripts/recipes.py list`); the rest are formulas to implement in a `code` layer or a shader. Use a form because its **behaviour** carries the concept, never because it looks impressive (`behavior-to-technique.md`).
 
-Formulas are public mathematics; every implementation here was written independently (`provenance.md`).
+Formulas are public mathematics.
 
 ## 1. How to choose a form
 

@@ -1,6 +1,5 @@
 /*{
  "DESCRIPTION": "Dot matrix lit by rings that radiate from the centre; made for LED walls.",
- "CREDIT": "ai-vj-generator (original, MIT)",
  "ISFVSN": "2.0",
  "CATEGORIES": [
   "Generator",

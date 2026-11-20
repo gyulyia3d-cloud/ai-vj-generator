@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Seahorse valley — a slow meditative breath into a Mandelbrot spiral, its filaments traced in glowing neon.",
-  "CREDIT": "claude-opus-4-8",
   "INPUTS": [
     { "NAME": "zoom",  "TYPE": "float", "DEFAULT": 0.008, "MIN": 0.002, "MAX": 0.1 },
     { "NAME": "swirl", "TYPE": "float", "DEFAULT": 0.06, "MIN": 0.0, "MAX": 0.4 },

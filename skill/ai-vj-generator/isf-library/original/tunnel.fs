@@ -1,6 +1,5 @@
 /*{
  "DESCRIPTION": "Polar tunnel of rings and spokes; the loop closes after `cycles` ring steps.",
- "CREDIT": "ai-vj-generator (original, MIT)",
  "ISFVSN": "2.0",
  "CATEGORIES": [
   "Generator",

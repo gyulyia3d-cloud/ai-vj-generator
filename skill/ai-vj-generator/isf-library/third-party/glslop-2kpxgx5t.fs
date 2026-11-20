@@ -1,6 +1,5 @@
 /*{
     "DESCRIPTION": "Signal Seance — a hallucinating broadcast: melting neon plasma-tech dreamscape torn apart by datamosh blocks, RGB channel rips, sync-roll dropouts and scanline static. Turn up 'glitch' for full corruption, 'dream' for deeper hallucination.",
-    "CREDIT": "CC0",
     "CATEGORIES": ["generator", "glitch", "psychedelic"],
     "INPUTS": [
         { "NAME": "speed",    "TYPE": "float", "DEFAULT": 1.0,  "MIN": 0.0, "MAX": 4.0 },

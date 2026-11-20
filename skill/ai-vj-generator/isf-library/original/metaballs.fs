@@ -1,6 +1,5 @@
 /*{
  "DESCRIPTION": "Six orbiting blobs drawn as iso-contours; orbits are whole loops.",
- "CREDIT": "ai-vj-generator (original, MIT)",
  "ISFVSN": "2.0",
  "CATEGORIES": [
   "Generator",

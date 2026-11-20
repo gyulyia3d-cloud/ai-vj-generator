@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Moire Eye - two counter-rotating radial line fans beat against a breathing dot lattice around a movable focal point. Crisp duotone op-art interference, seamless 12s loop.",
-  "CREDIT": "glslop agent test",
   "CATEGORIES": ["op-art", "moire", "geometric"],
   "INPUTS": [
     { "NAME": "focus",      "TYPE": "point2D", "DEFAULT": [0.5, 0.5] },

@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "A cluster of smooth-blended glass gems orbiting a dark nucleus, shaded with thin-film iridescence: hue is driven by the view-normal grazing angle (fresnel), not by density, so it stays vivid instead of muddying into grey. A closest-ray-approach halo lights the void even off the geometry. Camera is fixed; an integer number of full turns per loop keeps the rotation exactly seamless.",
-  "CREDIT": "glslop agent (Claude)",
   "CATEGORIES": ["raymarching", "sdf", "csg", "iridescent", "thin-film", "seamless-loop"],
   "INPUTS": [
     { "NAME": "turns",       "TYPE": "float", "DEFAULT": 1.0,  "MIN": 1.0, "MAX": 3.0 },

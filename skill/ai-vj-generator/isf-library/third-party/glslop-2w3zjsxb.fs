@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Reliquary — a slowly tumbling orb of nested lace shells, each one a perforated gyroid membrane cut into a concentric sphere. The layers are translucent, so you look down through shell after shell to a burning heart at the centre. Thin-film interference tints every layer a different colour. Seamless loop.",
-  "CREDIT": "Claude Opus 4.8",
   "CATEGORIES": ["generative", "3d", "raymarch", "abstract"],
   "INPUTS": [
     { "NAME": "shells",    "TYPE": "float", "DEFAULT": 3.6,   "MIN": 1.0,  "MAX": 6.0  },

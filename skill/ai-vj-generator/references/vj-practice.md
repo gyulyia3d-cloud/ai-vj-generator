@@ -52,13 +52,3 @@ Many gigs mix these. Clarify which one it is before building; it changes the del
 3. Play the exits first (black, hold, panic).
 4. Play one clip from each rung of the ladder, with the lighting running, from the farthest seat.
 5. Fix the worst problem, not every problem; the room opens soon.
-
-## 7. Learning resources, curated
-
-Use these to deepen a technique, never to copy a result.
-
-- **Shaders and maths:** *The Book of Shaders*, Inigo Quilez's articles (SDFs, domain warping, palettes), Lygia (a shader function library), hg_sdf (signed-distance functions), *The Nature of Code* (simulation), *Generative Design*, Anders Hoff's notes on generative algorithms.
-- **Craft:** Tyler Hobbs on flow fields, Matt DesLauriers' canvas-sketch and workshops, *Programming Design Systems* for grids and systems, Amy Goodchild on generative natural feel, Ben Kovach on making generative art feel natural.
-- **Colour:** a perceptual colour library (OKLab/OKLCH), Spectral.js for pigment-like mixing when a painterly blend is wanted.
-- **Live practice:** the VJ community writing on live mixing and gigs; the standing manifesto "Respect your VJ".
-- **Software lineages to borrow vocabulary from:** Hydra (chains of source, transform, blend), TouchDesigner (operators and signals), Cavalry (behaviours, falloffs, duplicators, distributions), Notch and Synesthesia (real-time worlds), Strudel and Tidal (patterns of time).

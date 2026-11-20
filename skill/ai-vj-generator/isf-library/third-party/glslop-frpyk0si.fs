@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Moiré lens — interfering radial gratings seen through a warping glass bulge, beating in neon.",
-  "CREDIT": "claude-opus-4-8",
   "INPUTS": [
     { "NAME": "freq", "TYPE": "float", "DEFAULT": 34.0, "MIN": 8.0, "MAX": 80.0 },
     { "NAME": "warp", "TYPE": "float", "DEFAULT": 1.4, "MIN": 0.0, "MAX": 4.0 },

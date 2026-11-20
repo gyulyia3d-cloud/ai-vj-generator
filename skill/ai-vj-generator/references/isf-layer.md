@@ -4,7 +4,7 @@ ISF (Interactive Shader Format) is a GLSL fragment shader with a JSON header. Th
 
 ## The `isf` layer (engine 3.1+)
 
-`isf` is a layer type. Its parameter `lib` is a menu with the 84 generators of `isf-library/` (11 originals, 28 MIT, 45 CC0; credit, licence and source of each in `manifest.json` and `isf-library/README.md`). The project JSON stores only the id:
+`isf` is a layer type. Its parameter `lib` is a menu with the 84 generators of `isf-library/` (11 originals, 28 MIT, 45 CC0; the licence of each is in `manifest.json`). The project JSON stores only the id:
 
 ```json
 { "type": "isf", "name": "AURORA", "p": { "lib": "aivj-aurora", "p1": -1, "p2": -1, "p3": -1, "p4": -1, "alphaMode": "opaque" } }

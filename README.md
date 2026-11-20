@@ -168,7 +168,7 @@ Pixelate, Halftone, Dither, CRT, VHS, Aberração cromática, Bordas neon, Kuwah
 
 ![Mosaico com as miniaturas dos 84 shaders ISF da biblioteca](docs/assets/isf-mosaico.webp)
 
-A biblioteca reúne shaders do projeto e shaders de terceiros. Consulte os [avisos de licença](skill/ai-vj-generator/isf-library/README.md).
+A biblioteca reúne shaders do projeto e shaders de terceiros. Consulte os [avisos de licença](THIRD-PARTY-NOTICES.md).
 
 </details>
 
@@ -333,6 +333,6 @@ AI VJ Generator is an open-source, single-file browser engine for generative ani
 
 ## Créditos
 
-Criado por **GYULYIA** (Giulia Ribeiro), artista de visuais em tempo real, São Paulo. Design system GYULYIA (monocromático, Martian Mono). A linguagem do modo STANDARD estuda o Graphic Realism; glifos, códigos e pictogramas são originais. Shaders ISF de terceiros mantêm autoria e licença (`skill/ai-vj-generator/isf-library/README.md`). A animação de abertura é a capa do VJ Generator em [gyulyia.com/tools](https://gyulyia.com/tools/vj-generator.html), capturada quadro a quadro (`docs/assets/vj-generator-thumbnail.gif`). A fonte Martian Mono embutida nos infográficos é SIL OFL 1.1 (subset latino em `docs/assets/fonts/`).
+Criado por **GYULYIA** (Giulia Ribeiro), artista de visuais em tempo real, São Paulo. Design system GYULYIA (monocromático, Martian Mono). Glifos, códigos e pictogramas são originais. Os avisos de licença de terceiros estão em `THIRD-PARTY-NOTICES.md`. A animação de abertura é a capa do VJ Generator em [gyulyia.com/tools](https://gyulyia.com/tools/vj-generator.html), capturada quadro a quadro (`docs/assets/vj-generator-thumbnail.gif`). A fonte Martian Mono embutida nos infográficos é SIL OFL 1.1 (subset latino em `docs/assets/fonts/`).
 
 [gyulyia.com](https://gyulyia.com) · [@gyulyia](https://instagram.com/gyulyia) · Licença [MIT](LICENSE)

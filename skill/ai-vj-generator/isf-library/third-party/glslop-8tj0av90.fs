@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Clean Liquid Flow Noise",
-  "CREDIT": "you",
   "CATEGORIES": ["generator"],
   "INPUTS": [
     { 

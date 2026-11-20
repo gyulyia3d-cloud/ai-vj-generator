@@ -12,7 +12,7 @@ PRINCIPLE      optical vibration from dense parallel lines under small, regular 
 PARAMETER      shader recipe RILEY WAVES · p1 lines 14 · p3 amplitude 0.4 · monochrome palette · motion smooth · 1 cycle per loop
 ```
 
-Never write "in the style of" a living artist or studio, and never reproduce a signature work (Ikeda's barcodes as his piece, Anadol's data paintings as his piece). Take the principle (binary density, latent-space fluidity) and transform it with this brief's own concept, palette and words. Historical movements and techniques (Op Art, Swiss grid, Truchet tiles) are open vocabulary.
+Never write "in the style of" a living artist or studio, and never reproduce a signature work. Take the principle and transform it with this brief's own concept, palette and words. Historical movements and techniques (Op Art, Swiss grid, Truchet tiles) are open vocabulary.
 
 ## Which file to open
 
@@ -25,8 +25,6 @@ Never write "in the style of" a living artist or studio, and never reproduce a s
 | texto, palavra, lettering, tipografia em movimento, kinetic type, letreiro, letreiro de abertura | `kinetic-type.md` |
 | arte generativa, code art, algorítmico, abstrato, sistema, regras, ruído, partículas, seed | `generative-art.md` |
 | padrão, pattern, textura geométrica, moiré, xadrez, ladrilho, halftone, ondas, op art (recipes) | `patterns.md` |
-| a named artist, VJ or studio (Ikeda, Anadol, Lemercier, ManvsMachine…), "parecido com…", "inspirado em…" | `artists-studios.md` |
-| a library or tool (p5, three.js, GSAP, Hydra, TouchDesigner, shaders), "como faço isso no meu pipeline" | `libraries.md` |
 
 Several signals → open at most three files, the ones that change the most decisions. A movement named in the brief (Op Art, Bauhaus) that `patterns.md` or `swiss-design.md` already covers does not need `art-history.md` too.
 

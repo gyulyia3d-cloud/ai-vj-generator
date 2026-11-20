@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Viscous Oil & Deep Currents",
-  "CREDIT": "Converted to ISF",
   "CATEGORIES": ["generator"],
   "INPUTS": [
     { "NAME": "speed", "TYPE": "float", "DEFAULT": 1.0, "MIN": 0.0, "MAX": 4.0 },

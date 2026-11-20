@@ -1,6 +1,5 @@
 /*{
  "DESCRIPTION": "Curtains of value noise walking on a circle of the loop phase (seamless).",
- "CREDIT": "ai-vj-generator (original, MIT)",
  "ISFVSN": "2.0",
  "CATEGORIES": [
   "Generator",

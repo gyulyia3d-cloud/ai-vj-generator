@@ -1,6 +1,5 @@
 /*{
  "DESCRIPTION": "Logarithmic spiral arms rotating a whole turn per loop.",
- "CREDIT": "ai-vj-generator (original, MIT)",
  "ISFVSN": "2.0",
  "CATEGORIES": [
   "Generator",

@@ -1,6 +1,5 @@
 /*{
  "DESCRIPTION": "Cells whose seeds orbit on circles of the loop phase; glowing edges.",
- "CREDIT": "ai-vj-generator (original, MIT)",
  "ISFVSN": "2.0",
  "CATEGORIES": [
   "Generator",

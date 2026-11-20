@@ -66,7 +66,7 @@ float k=smoothstep(.08,.5,v)*(1.-smoothstep(.6,1.1,length(uv)));
 gl_FragColor=outc(mix(uC1,uC2,clamp(v+uHigh*.3,0.,1.)),clamp(k+uHit*.2,0.,1.));}
 ```
 
-## 3. Domain-warped field (Inigo Quilez, domain warping)
+## 3. Domain-warped field (domain warping)
 `p1` scale 0.8–4, `p2` warp 0–2, `p3` contrast 0.5–3.
 
 Start values: `{"p1": 1.6, "p2": 1.1, "p3": 1.5}` (set them explicitly: the preset defaults are for another shader).

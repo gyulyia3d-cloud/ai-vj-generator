@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Domain-warped plasma with flowing interference ridges — seamless loop via circular time orbits (all motion on integer multiples of 2*PI*phase).",
-  "CREDIT": "claude via glslop llms.txt dogfood",
   "INPUTS": [
     { "NAME": "speed", "TYPE": "float", "DEFAULT": 1.0, "MIN": 0.0, "MAX": 3.0 },
     { "NAME": "warp",  "TYPE": "float", "DEFAULT": 0.55, "MIN": 0.0, "MAX": 1.4 },

@@ -59,10 +59,10 @@ const ISFX = (() => {
     if (!/\bgl_FragCoord\b/.test(body) && !body.includes('uRes')) notes.push(T3('o shader não lê a posição do pixel', 'shader does not read the pixel position'));
     if (/\bfor\s*\([^;]*;[^;]*[<>=]\s*[A-Za-z_]/.test(body)) notes.push(T3('o limite de um `for` pode ser variável: o GLSL pode exigir constante; o validador avisa', 'a `for` loop bound may be a variable: WebGL1 needs constant bounds; the validator will tell'));
     const hook = '\nvoid main(){ ' + setv.join(' ') + ' isfMain(); float a=1.0+.25*uBass+.12*uMid+.1*uHigh+.2*uHit; gl_FragColor.rgb*=a; }\n';
-    const src = decl.join('\n') + '\n' + body + hook, credit = (h.CREDIT || 'unknown author').trim();
+    const src = decl.join('\n') + '\n' + body + hook;
     const base = String(fileName || 'ISF').replace(/^.*[\\/]/, '').replace(/\.[^.]+$/, '');
     const layer = { type: 'shader', name: base.toUpperCase().slice(0, 28), on: true, opacity: 1, blend: 'add',
-      role: `Imported ISF generator (${(h.DESCRIPTION || 'no description').slice(0, 80)}). Credit: ${credit}. Audio hook added by the importer.`,
+      role: `Imported ISF generator (${(h.DESCRIPTION || 'no description').slice(0, 80)}). Audio hook added by the importer.`,
       p: Object.assign({ src, alphaMode: 'opaque', c1: 'primary', c2: 'accent' }, ...floats.map((f, k) => ({ ['p' + (k + 1)]: f[1] }))) };
     return { layer, notes, mapped: floats.map((f, k) => ({ isf: f[0], to: 'p' + (k + 1), min: f[2].MIN, max: f[2].MAX, def: f[1] })) };
   }

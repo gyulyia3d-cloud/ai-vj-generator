@@ -9,7 +9,7 @@ Images and videos in the conversation are references. Analyze them with your own
 | Image | 1. Look at it (read/view the file). 2. Run `python scripts/analyze_image.py <file>`. 3. Write the reference grammar below. |
 | Video | 1. Run `python scripts/analyze_video.py <file> --out <dir>`. 2. **View `contact_sheet.jpg` and 3–4 frames** from the output; the numbers do not replace seeing. 3. Write the reference grammar, including time. The report has an `OPTICAL FLOW` block: dominant motion (pan, zoom in/out, rotation or local), speed in widths per second, direction histogram, how much stays still. Use it for the Animation IR; it is accurate for direction and kind, rough for magnitude (zoom can read 15–30% off), and does not track motion faster than ~0.7 widths/s. `--flow opencv` (pip install opencv-python-headless) swaps the built-in numpy tracker for Farneback; the report names the backend that ran. |
 | Several | Analyze each, then compare: what do they share (the briefing's real taste) and where do they disagree (a question for the user). |
-| A link, a name, a studio | You cannot see a link's content. Say so and ask for a file or screenshot; for names use `repertoire/artists-studios.md`. |
+| A link, a name, a studio | You cannot see a link's content. Say so and ask for a file or screenshot. |
 | Audio file | You cannot measure BPM or structure here. Ask for BPM and the song's sections (intro, build, drop, break). |
 | Floor plan, stage photo, LED drawing | Treat as a surface: read dimensions, divisions and seams from it; ask for the pixel map. |
 
@@ -63,7 +63,7 @@ Looking once is not analysis. Do these steps and report what you did.
 7. **Say what you cannot see.** Resolution, compression, audio, colour accuracy, a link you cannot open, a software screenshot that shows the UI but not the output. Ask for the missing piece instead of guessing.
 8. **Translate to 3–7 design constraints** and map each to a layer, a `vars` entry or a shader rule.
 
-If the attachment is a **software screenshot or a node graph** (TouchDesigner, Resolume Wire, Cavalry, Hydra code), it is a reference for a *process*: read the operators in order, state what each does, and rebuild the behaviour as layers, a shader or a code layer. If it is a **term or an effect name** with no image, look it up in `effects-glossary.md` and propose two or three interpretations with a sentence each; ask which one the user means before building.
+If the attachment is a **software screenshot or a node graph** (a node graph or code from another tool), it is a reference for a *process*: read the operators in order, state what each does, and rebuild the behaviour as layers, a shader or a code layer. If it is a **term or an effect name** with no image, look it up in `effects-glossary.md` and propose two or three interpretations with a sentence each; ask which one the user means before building.
 
 ## Research when the reference is a name, a link or a term you do not know
 

@@ -443,7 +443,7 @@
    ],
    "cost": "high",
    "maturity": "stable",
-   "note": "The shader is picked, not written: use it as a ground or accent when a ready generator fits the concept. Credit and licence of each shader are in isf-library/README.md."
+   "note": "The shader is picked, not written: use it as a ground or accent when a ready generator fits the concept. The licence of each shader is in `isf-library/manifest.json`."
   },
   "temporal": {
    "family": "information",

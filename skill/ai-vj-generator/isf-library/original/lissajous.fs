@@ -1,6 +1,5 @@
 /*{
  "DESCRIPTION": "A few glowing Lissajous curves; the phase offset sweeps one full cycle per loop.",
- "CREDIT": "ai-vj-generator (original, MIT)",
  "ISFVSN": "2.0",
  "CATEGORIES": [
   "Generator",

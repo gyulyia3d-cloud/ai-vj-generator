@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Cooling crust — dark basalt plates drifting apart over molten cracks that glow from within, like a lava lake skinning over.",
-  "CREDIT": "claude-opus-4-8",
   "INPUTS": [
     { "NAME": "scale", "TYPE": "float", "DEFAULT": 5.0, "MIN": 2.0, "MAX": 11.0 },
     { "NAME": "heat",  "TYPE": "float", "DEFAULT": 1.0, "MIN": 0.3, "MAX": 2.0 },

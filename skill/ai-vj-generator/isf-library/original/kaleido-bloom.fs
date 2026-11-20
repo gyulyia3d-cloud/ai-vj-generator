@@ -1,6 +1,5 @@
 /*{
  "DESCRIPTION": "Mirror-folded petals that breathe; whole rotation turns per loop.",
- "CREDIT": "ai-vj-generator (original, MIT)",
  "ISFVSN": "2.0",
  "CATEGORIES": [
   "Generator",

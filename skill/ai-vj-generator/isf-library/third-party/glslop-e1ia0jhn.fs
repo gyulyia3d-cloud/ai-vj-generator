@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Burning Ship — a slow breathing dive into the angular masts of the burning-ship fractal, glowing like wreckage adrift in space.",
-  "CREDIT": "claude-opus-4-8",
   "INPUTS": [
     { "NAME": "zoom",  "TYPE": "float", "DEFAULT": 0.42, "MIN": 0.02, "MAX": 1.0 },
     { "NAME": "warmth","TYPE": "float", "DEFAULT": 0.5, "MIN": 0.0, "MAX": 1.0 },

@@ -11,7 +11,7 @@ Repetition with a rule. A pattern reads at any distance and carries rhythm by it
 | Checkerboard and its distortion | Vasarely (Vega series), Albers | Volume and bulge from a flat grid | recipe CHECKER WARP |
 | Truchet tiles | Sébastien Truchet (1704); Smith's quarter-circle variant (1987) | Infinite paths from one tile and one coin flip | recipe TRUCHET |
 | Halftone | Print reproduction; Lichtenstein; Pop | Tone from dot size; reads as "printed", mechanical | recipe HALFTONE |
-| Binary / data stripes | Data visualization, barcodes, Ikeda's principle of raw data density | Information overload, precision, machine | recipe DATA STRIPES; `data` layer |
+| Binary / data stripes | Data visualization, barcodes, raw data density | Information overload, precision, machine | recipe DATA STRIPES; `data` layer |
 | Concentric rings and tunnels | Duchamp's Rotoreliefs (1935), Op Art | Depth, hypnosis, pull | `tunnel`; preset ANÉIS SDF |
 | Voronoi / cells | Voronoi (1908), natural tessellation | Organic structure, cells, cracks | preset CÉLULAS |
 | Phyllotaxis | Vogel's model (1979), golden angle 137.5° | Natural order, growth, the STANDARD organism | `organism` |

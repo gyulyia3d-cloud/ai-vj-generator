@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Neon rain — overlapping ripple wavefronts interfering on a dark wet surface, crests catching magenta and cyan light.",
-  "CREDIT": "claude-opus-4-8",
   "INPUTS": [
     { "NAME": "freq",  "TYPE": "float", "DEFAULT": 16.0, "MIN": 6.0, "MAX": 36.0 },
     { "NAME": "speed", "TYPE": "float", "DEFAULT": 1.0, "MIN": 0.0, "MAX": 3.0 },

@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Quasicrystal — plane waves summed across symmetric axes into an aperiodic n-fold tiling, slowly phasing through jewel light.",
-  "CREDIT": "claude-opus-4-8",
   "INPUTS": [
     { "NAME": "sym",   "TYPE": "float", "DEFAULT": 7.0, "MIN": 3.0, "MAX": 12.0 },
     { "NAME": "freq",  "TYPE": "float", "DEFAULT": 52.0, "MIN": 6.0, "MAX": 90.0 },

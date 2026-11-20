@@ -1,6 +1,5 @@
 /*{
     "DESCRIPTION": "Procedural Matrix Digital Rain",
-    "CREDIT": "ChatGPT",
     "CATEGORIES": [
         "Generator"
     ],

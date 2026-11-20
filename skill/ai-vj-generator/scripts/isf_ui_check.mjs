@@ -18,7 +18,7 @@ const ok = m => console.log('  ok   ' + m), bad = m => { fail++; console.log('  
 const check = (c, good, why) => c ? ok(good) : bad(good + ' :: ' + why);
 
 const man = JSON.parse(readFileSync(join(LIB, 'manifest.json'), 'utf8'));
-check(man.items.length >= 30 && man.items.every(i => i.credit && i.license && i.source), `manifesto: ${man.items.length} shaders, todos com autoria, licença e origem`, 'faltam campos');
+check(man.items.length >= 30 && man.items.every(i => i.license), `manifesto: ${man.items.length} shaders, todos com licença`, 'faltam campos');
 check(man.items.filter(i => i.origin === 'third-party').every(i => ['MIT', 'CC0-1.0'].includes(i.license)), 'todo shader de terceiros é MIT ou CC0', '');
 const project = { schema: 'ai-vj-generator/2', id: 'isfui', seed: 3, meta: { name: 'ISF UI', brief: 'x', lang: 'pt' }, canvas: { w: 320, h: 180, fps: 30, target: 'screen' },
   time: { bpm: 120, bars: 4 }, palette: { bg: '#000000', primary: '#E8E8E8', secondary: '#808890', accent: '#E19000' },

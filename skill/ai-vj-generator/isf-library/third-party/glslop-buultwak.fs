@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Newton's basins — the fractal frontier where Newton's method on z^3-1 can't decide which root it falls to, writhing in electric neon.",
-  "CREDIT": "claude-opus-4-8",
   "INPUTS": [
     { "NAME": "zoom",  "TYPE": "float", "DEFAULT": 1.6, "MIN": 0.6, "MAX": 4.0 },
     { "NAME": "relax", "TYPE": "float", "DEFAULT": 0.5, "MIN": 0.0, "MAX": 1.0 },

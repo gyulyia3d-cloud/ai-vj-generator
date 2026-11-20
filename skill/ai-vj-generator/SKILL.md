@@ -78,7 +78,7 @@ Load only what the project needs.
 | Shader building blocks: noise, SDF 2D/3D, raymarch, Oklab, dither, easing, LED emulation (`#include`, 20 modules) | `references/glsl-library.md` |
 | Writing shaders | `references/glsl-recipes.md` (tested recipes, Hydra/Synesthesia translation), `references/project-schema.md` (GLSL contract) |
 | Writing code layers (flow fields, particles, grids, springs, Euclidean rhythms) | `references/creative-coding-patterns.md` |
-| A reference names a tool, library or effect (Hydra, TouchDesigner, Cavalry, Synesthesia, oF, p5, Strudel) | `references/software-techniques.md`, `references/effects-glossary.md` |
+| A reference names an effect or a technique | `references/effects-glossary.md` |
 | Any aspect ratio other than 16:9; viewing distance; strips, towers | `references/aspect-ratios.md` |
 | Choosing SVG / Canvas / shader / 3D / code layer | `references/behavior-to-technique.md` |
 | LED, projection, mapping, folds, white-alpha, logos, fonts, code layer | `references/surface-model.md`, `references/walls-code-assets.md`, `references/output-targets.md` |
@@ -109,7 +109,6 @@ Load only what the project needs.
 | Writing the project JSON | `references/project-schema.md` |
 | Building, exporting, handing over | `references/delivery.md`, `references/engine-operation.md`, `references/capabilities.md` |
 | Before delivery, and `/vj-critique` | `references/quality-gates.md`, `references/knowledge/visual-dna-diversity-critique.md` (§44–§45) |
-| Using third-party code, libraries or documented techniques | `references/provenance.md`, `references/repertoire/libraries.md`, `references/library-matrix.md` |
 
 Do not load everything by default.
 

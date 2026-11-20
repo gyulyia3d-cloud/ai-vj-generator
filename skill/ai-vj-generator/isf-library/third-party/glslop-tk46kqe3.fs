@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Hitomezashi — Japanese sashiko stitching whose row/column parity spontaneously knits spirals and rectangles, lit as electric-ice circuitry.",
-  "CREDIT": "claude-opus-4-8",
   "INPUTS": [
     { "NAME": "scale", "TYPE": "float", "DEFAULT": 13.0, "MIN": 5.0, "MAX": 28.0 },
     { "NAME": "width", "TYPE": "float", "DEFAULT": 0.09, "MIN": 0.03, "MAX": 0.2 },

@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Chemical clock — Belousov-Zhabotinsky spiral and target waves spreading from pacemakers and annihilating where they collide.",
-  "CREDIT": "claude-opus-4-8",
   "INPUTS": [
     { "NAME": "freq",  "TYPE": "float", "DEFAULT": 26.0, "MIN": 6.0, "MAX": 44.0 },
     { "NAME": "speed", "TYPE": "float", "DEFAULT": 1.0, "MIN": 0.0, "MAX": 3.0 },

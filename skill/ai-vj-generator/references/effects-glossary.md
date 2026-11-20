@@ -86,8 +86,6 @@ When a briefing or a reference uses a term, find it here, say what it is in plai
 | Term | What it means here |
 |---|---|
 | **Hydra** | live-coded chain of video-synth transforms with `a.fft` audio; see `software-techniques.md` |
-| **TouchDesigner (TOP/CHOP/SOP/DAT/COMP)** | operator networks for images, signals, geometry, data, containers |
-| **Resolume Arena / Avenue / Wire** | VJ media server and node patcher; named only as a vocabulary reference, not a target |
 | **Synesthesia / SSF** | audio-reactive shader scenes with JSON controls and audio uniforms |
 | **Cavalry** | procedural 2D animation: behaviours, falloffs, duplicator, stagger |
 | **Notch, Unreal, Unity VFX** | real-time 3D engines; node or blueprint particle systems |

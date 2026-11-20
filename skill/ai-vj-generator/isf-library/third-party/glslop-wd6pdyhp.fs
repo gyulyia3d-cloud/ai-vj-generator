@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Rainbow Matrix Falling Characters",
-  "CREDIT": "you",
   "CATEGORIES": ["generator"],
   "INPUTS": [
     {

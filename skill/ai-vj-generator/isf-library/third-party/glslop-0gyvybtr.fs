@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Glass square-tube tunnel v5 — Lattice Edition",
-  "CREDIT": "Craig",
   "CATEGORIES": ["generator"],
   "INPUTS": [
     { "NAME": "speed",      "TYPE": "float", "DEFAULT": 0.20, "MIN": 0.0,  "MAX": 2.0 },

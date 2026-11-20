@@ -1,5 +1,5 @@
 /*{
-  "DESCRIPTION": "Clean-room GLSL engine lowering of canonical Superflow-inspired Nested Orbit: a 121-torus ternary hierarchy held inside an authored eye-reliquary cage. Canonical build superflow:1.0.0:nested-orbit:fd54de938971; manifest SHA-256 fd54de9389716be0fbac8e249b90f167c52aaf7004ac812e9d5bc8b9dac2b9dc; schema 1.0.0; seed null/not_applicable; composition procedural_transform_led; modern experimental depth rates 1/2/4/8/16. The cage, materials, lights, and camera are reversible appearance lowering, not recovered Polarflow or proprietary topology.",
+  "DESCRIPTION": "GLSL Nested Orbit: a 121-torus ternary hierarchy held inside an authored eye-reliquary cage. Canonical build superflow:1.0.0:nested-orbit:fd54de938971; manifest SHA-256 fd54de9389716be0fbac8e249b90f167c52aaf7004ac812e9d5bc8b9dac2b9dc; schema 1.0.0; seed null/not_applicable; composition procedural_transform_led; modern experimental depth rates 1/2/4/8/16. The cage, materials, lights, and camera are reversible appearance lowering, not recovered Polarflow or proprietary topology.",
   "INPUTS": [
     { "NAME": "speed", "TYPE": "float", "DEFAULT": 1.0, "MIN": 0.25, "MAX": 2.0 },
     { "NAME": "ignite", "TYPE": "color", "DEFAULT": [1.0, 0.48, 0.12, 1.0] },

@@ -16,10 +16,6 @@ How the main generative and motion libraries think, and how to replicate each pr
 | **D3** | data → marks, scales, layouts | map a data array to marks with `K.lerp` scales; `fixed` data goes in `vars` or the code |
 | **Tone.js / Strudel / TidalCycles** | patterns of time (cycles, mini-notation, Euclidean, polymeter) | Pattern G, `K.t.beat/sub/bar`, `div` on layers |
 | **Hydra** | chains of source → transform → blend, feedback, audio via `a.fft` | GLSL recipes (`glsl-recipes.md`), echo, band uniforms |
-| **TouchDesigner** | TOP (image), CHOP (signal), SOP (geometry), COMP, instancing, feedback, GLSL TOP | signals → `K.t`/bands; instancing → Pattern E; GLSL TOP → `shader` layer |
-| **Cavalry** | behaviours drive values; falloffs weight them; a duplicator distributes; stagger offsets; connect shapes | Pattern E and D; falloff = a function of distance or index |
-| **Resolume Wire / ISF / Synesthesia** | nodes, slices, FFT, uniforms | `canvas.folds/displays`, band uniforms, `uHit`, `uBeat` |
-| **Canvas-sketch, Shadertoy, Observable** | resolution-independent units, seeded randomness, exports | the engine's 1080-unit system, `K.rng(seed)`, PNG sequences |
 
 ## 2. The deterministic toolbox
 
@@ -43,7 +39,7 @@ const proj=(x,y,z,d=900)=>{const s=d/(d+z);return [K.w/2+x*s, K.h/2+y*s, s];};
 ```
 Rotate points by `(rx, ry)` with `K.TAU*K.t.ph` times integers, project, scale size and opacity by `s`. A tilted phyllotaxis disc with a parabolic z bulge (`z = depth*(1 - r²)`) reads as a 3-D object with 2,400 dots. State camera and depth in the contract.
 
-## 4. Signals (oF / TouchDesigner CHOP vocabulary)
+## 4. Signals
 
 sine `0.5+0.5*Math.sin(A*n)`; cosine; saw `(K.t.ph*n)%1`; triangle `1-Math.abs(2*((K.t.ph*n)%1)-1)`; square `((K.t.ph*n)%1)<0.5?1:0`; noise `nz(K.t.ph*n, k, s)` (not loop-safe; use the circular domain); rand per beat `K.hash(K.t.beat, k, s)`. Combine signals (add, multiply, max) before mapping to a property, and shape with an ease.
 

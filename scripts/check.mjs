@@ -94,7 +94,7 @@ skLines <= 500 ? ok(`SKILL.md compacto (${skLines} linhas)`) : bad(`SKILL.md com
 const cited = [...new Set([...sk.matchAll(/`((?:references|scripts|assets)\/[\w./-]+)`/g)].map(m => m[1]))].filter(x => !/[<>*]/.test(x) && /\.\w+$/.test(x));
 for (const rel of cited) { try { await readFile(join(SKILL, rel)); } catch { bad('SKILL.md cita arquivo inexistente: ' + rel); } }
 ok(`SKILL.md: ${cited.length} caminhos citados conferidos`);
-for (const f of ['creative-contract.md', 'behavior-to-technique.md', 'surface-model.md', 'audio-bus.md', 'capabilities.md', 'quality-gates.md', 'library-matrix.md', 'provenance.md', 'engine-operation.md', 'craft-and-finish.md', 'animation-principles.md', 'surface-ir.md', 'design-laws.md', 'software-techniques.md', 'effects-glossary.md', 'aspect-ratios.md', 'glsl-recipes.md', 'creative-coding-patterns.md', 'knowledge/semiotics-art-color-composition.md', 'knowledge/motion-generative-gpu.md', 'knowledge/visual-dna-diversity-critique.md', 'knowledge/red-flags-and-final-loop.md']) {
+for (const f of ['creative-contract.md', 'behavior-to-technique.md', 'surface-model.md', 'audio-bus.md', 'capabilities.md', 'quality-gates.md', 'engine-operation.md', 'craft-and-finish.md', 'animation-principles.md', 'surface-ir.md', 'design-laws.md', 'effects-glossary.md', 'aspect-ratios.md', 'glsl-recipes.md', 'creative-coding-patterns.md', 'knowledge/semiotics-art-color-composition.md', 'knowledge/motion-generative-gpu.md', 'knowledge/visual-dna-diversity-critique.md', 'knowledge/red-flags-and-final-loop.md']) {
   try { await readFile(join(SKILL, 'references', f), 'utf8'); ok('referência V4 ' + f); } catch { bad('referência V4 ausente: ' + f); }
 }
 // links relativos entre references (`foo.md`, `knowledge/foo.md`) apontam para arquivos reais

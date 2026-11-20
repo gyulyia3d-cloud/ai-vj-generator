@@ -11,8 +11,12 @@ __pycache__/
 
 .claude/
 
-# fachada-bioma: arquivos de trabalho intermediarios ficam so local
-fachada-bioma/work/
+# Projetos auxiliares e arquivos de trabalho: ficam so locais, fora da publicacao
+fachada-bioma/
+pixel-map/
+reel-tutorial/
+check_final.log
+*.log
 
 # Local credentials
 .env

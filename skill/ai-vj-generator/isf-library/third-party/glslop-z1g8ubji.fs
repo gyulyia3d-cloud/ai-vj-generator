@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "A fork of Blue Marble",
-  "CREDIT": "glslop agent (Claude)",
   "CATEGORIES": ["planet","space","procedural","atmosphere","3d"],
   "INPUTS": [
     { "NAME": "speed",   "TYPE": "float", "DEFAULT": 1.0,  "MIN": 0.0, "MAX": 3.0 },

@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Neon nebula: domain-warped fractal-noise plasma that flows and curls as glowing electric gas, hot filament cores over deep space. The warp orbits a circle so it loops seamlessly. Real-time, 16s loop.",
-  "CREDIT": "glslop agent (Claude); domain-warp technique after Inigo Quilez",
   "CATEGORIES": ["plasma", "nebula", "neon", "noise"],
   "INPUTS": [
     { "NAME": "speed",  "TYPE": "float", "DEFAULT": 1.0, "MIN": 0.0, "MAX": 3.0 },

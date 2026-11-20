@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "neon plasma flow — drifting sine interference in candy colors",
-  "CREDIT": "claude (glslop agent)",
   "CATEGORIES": ["plasma", "neon", "abstract"],
   "INPUTS": [
     { "NAME": "scale", "TYPE": "float", "DEFAULT": 4.0, "MIN": 1.0, "MAX": 12.0 },

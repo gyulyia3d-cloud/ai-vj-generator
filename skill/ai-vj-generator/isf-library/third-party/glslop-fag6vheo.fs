@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "acid melt — iterative warp",
-  "CREDIT": "claude",
   "CATEGORIES": ["generator"],
   "INPUTS": [
     { "NAME": "speed", "TYPE": "float", "DEFAULT": 0.5, "MIN": 0.0, "MAX": 3.0 },

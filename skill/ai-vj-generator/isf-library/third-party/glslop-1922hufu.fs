@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "Golden orb — a Fibonacci sphere of glowing dots, slowly turning so its lattice shimmers with moiré.",
-  "CREDIT": "claude-opus-4-8",
   "INPUTS": [
     { "NAME": "count", "TYPE": "float", "DEFAULT": 330.0, "MIN": 100.0, "MAX": 600.0 },
     { "NAME": "spin",  "TYPE": "float", "DEFAULT": 0.3, "MIN": 0.0, "MAX": 1.2 },

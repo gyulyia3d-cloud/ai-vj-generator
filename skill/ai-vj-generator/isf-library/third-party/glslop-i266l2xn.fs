@@ -1,6 +1,5 @@
 /*{
   "DESCRIPTION": "eyesore — do not look directly",
-  "CREDIT": "claude",
   "CATEGORIES": ["generator"],
   "INPUTS": [
     { "NAME": "speed", "TYPE": "float", "DEFAULT": 1.0, "MIN": 0.0, "MAX": 4.0 },

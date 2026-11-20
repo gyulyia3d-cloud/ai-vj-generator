@@ -6,7 +6,7 @@
 
 ISF is a GLSL shader format with a JSON header. Import: single-pass generators only (no input image, no audio texture, no PASSES). The result is a
 `shader` layer with its inputs mapped to p1..p4 / colours; an audio hook is added so it obeys the
-"every shader reacts to audio" rule. Keep the ISF author's CREDIT (it is copied into the layer role).
+"every shader reacts to audio" rule.
 """
 import argparse, json, os, re, sys
 
@@ -132,9 +132,8 @@ def cmd_import(a):
         notes.append("a `for` loop bound may be a variable: WebGL1 needs constant bounds; the validator will tell")
     hook = "\nvoid main(){ " + " ".join(setv) + " isfMain(); float a=1.0+.25*uBass+.12*uMid+.1*uHigh+.2*uHit; gl_FragColor.rgb*=a; }\n"
     src = "\n".join(decl) + "\n" + body + hook
-    credit = (h.get("CREDIT") or "unknown author").strip()
     layer = {"type": "shader", "name": os.path.splitext(os.path.basename(a.file))[0].upper()[:28],
-             "role": f"Imported ISF generator ({h.get('DESCRIPTION', 'no description')[:80]}). Credit: {credit}. Audio hook added by the importer.",
+             "role": f"Imported ISF generator ({h.get('DESCRIPTION', 'no description')[:80]}). Audio hook added by the importer.",
              "on": True, "opacity": 1, "blend": "add",
              "p": {"src": src, "alphaMode": "opaque", "c1": "primary", "c2": "accent",
                    **{f"p{k + 1}": v[1] for k, v in enumerate(floats)}}}
